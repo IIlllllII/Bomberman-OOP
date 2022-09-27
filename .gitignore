@@ -25,7 +25,6 @@ hs_err_pid*
 /target
 /bin
 /.idea
-*.iml
 
 mvnw
 mvnw.cmd
