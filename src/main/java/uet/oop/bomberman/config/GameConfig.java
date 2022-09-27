@@ -8,9 +8,14 @@ public class GameConfig {
 
     public static final int HEIGHT = 15;
 
-    public static final String ICON_PATH = "images/icon.png";
+    public static final int PLAYER_WIDTH = 18;
+
+    public static final int PLAYER_HEIGHT = 21;
+    public static final int SCALED_FACTOR = 2;
 
     public static final int FRAME_RATE = 60;
+
+    public static final String ICON_PATH = "icon/icon.png";
 
     public static final String GREETING_PATH =
             "src/main/resources/backgrounds/greeting.jpg";

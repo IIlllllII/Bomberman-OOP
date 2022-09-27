@@ -1,7 +1,11 @@
 package uet.oop.bomberman.core;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.components.entities.*;
+import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.stillobjects.Brick;
+import uet.oop.bomberman.components.entities.stillobjects.Grass;
+import uet.oop.bomberman.components.entities.stillobjects.Portal;
+import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.GameScene;
@@ -73,8 +77,6 @@ public class SceneManager {
                 loadEnding();
                 break;
         }
-
-
     }
 
     /**

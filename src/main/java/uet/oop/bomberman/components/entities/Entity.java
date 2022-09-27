@@ -4,38 +4,21 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.graphics.Sprite;
+import uet.oop.bomberman.config.GameConfig;
 
 public abstract class Entity {
-    private int x;
-    private int y;
-    private double rotation;
-    private boolean active;
     protected Image img;
+    protected int x;
+    protected int y;
+    protected boolean active;
 
-    public Entity(){
-        active = true;
-    }
+    public Entity() {}
+
     public Entity(int x, int y, Image img) {
-        this.x = x * Sprite.SCALED_FACTOR * Sprite.DEFAULT_SIZE;
-        this.y = y * Sprite.SCALED_FACTOR * Sprite.DEFAULT_SIZE;
+        this.x = x * GameConfig.SCALED_FACTOR * Sprite.DEFAULT_SIZE;
+        this.y = y * GameConfig.SCALED_FACTOR * Sprite.DEFAULT_SIZE;
         this.img = img;
         active = true;
-    }
-
-    public void setRotation(double rotation) {
-        this.rotation = rotation;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public void setImg(Image img) {
-        this.img = img;
-    }
-
-    public double getRotation() {
-        return rotation;
     }
 
     public boolean getActive() {
@@ -44,6 +27,14 @@ public abstract class Entity {
 
     public Image getImg() {
         return img;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
     }
 
     public void render(GraphicsContext gc) {
