@@ -33,7 +33,7 @@ public class GameManager extends Application {
 
         stage.setResizable(false);
         stage.setTitle(GameConfig.NAME);
-        //stage.getIcons().add(new Image("../../../../resources/images/" + GameConfig.ICON_NAME));
+        stage.getIcons().add(new Image("/images/" + GameConfig.ICON_NAME));
         stage.setScene(scene);
 
         stage.show();
