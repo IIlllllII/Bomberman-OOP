@@ -70,6 +70,17 @@ public class GameManager extends Application {
                         SceneManager.setScreen(SceneManager.getScreen().next());
                     }
                 }
+                if (code == KeyCode.P) {
+                    if (SceneManager.getScreen() == GameScene.PLAYING) {
+                        entities = new ArrayList<>();
+                        grasses = new ArrayList<>();
+                        stillObjects = new ArrayList<>();
+                        items = new ArrayList<>();
+                        SceneManager.setLevel(SceneManager.getLevel() - 1);
+                    } else {
+                        SceneManager.setScreen(SceneManager.getScreen().prev());
+                    }
+                }
             }
         });
         AnimationTimer timer = new AnimationTimer() {

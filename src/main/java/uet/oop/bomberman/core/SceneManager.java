@@ -62,6 +62,9 @@ public class SceneManager {
                 if (level > GameConfig.LEVEL_MAX) {
                     screen = screen.next();
                     level = 1;
+                } else if (level < 1) {
+                    screen = screen.prev();
+                    level = 1;
                 } else {
                     loadLevelMap();
                 }
