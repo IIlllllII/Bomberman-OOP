@@ -151,7 +151,7 @@ public class Sprite {
             DEFAULT_SIZE, 4, 0, SpriteSheet.tiles, 14, 14
     );
 
-    public static Sprite player_right = new Sprite(
+    public static Sprite player = new Sprite(
             19, 22, 0, 0, SpriteSheet.characters,19, 22
     );
 

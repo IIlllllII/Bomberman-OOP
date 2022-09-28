@@ -1,6 +1,6 @@
 package uet.oop.bomberman.config;
 
-public enum GameScene {
+public enum GameScreen {
     GREETING,
     MAIN_MENU,
     SETTINGS,
@@ -9,12 +9,12 @@ public enum GameScene {
     PLAYING,
     ENDING;
 
-    static public final GameScene[] values = values();
+    static public final GameScreen[] values = values();
 
-    public GameScene prev() {
+    public GameScreen prev() {
         return values[(ordinal() - 1  + values.length) % values.length];
     }
-    public GameScene next() {
+    public GameScreen next() {
         return values[(ordinal() + 1) % values.length];
     }
 }

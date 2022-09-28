@@ -8,7 +8,7 @@ import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.GameScene;
+import uet.oop.bomberman.config.GameScreen;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,17 +16,18 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class SceneManager {
-    private static GameScene screen = GameScene.GREETING;
+public class ScreenManager {
+    private static GameScreen screen = GameScreen.GREETING;
     private static Image background;
     private static int level = 1;
+    private static boolean loadAsset = false;
 
-    public static GameScene getScreen() {
+    public static GameScreen getScreen() {
         return screen;
     }
 
-    public static void setScreen(GameScene screen) {
-        SceneManager.screen = screen;
+    public static void setScreen(GameScreen screen) {
+        ScreenManager.screen = screen;
     }
 
     public static Image getBackground() {
@@ -34,7 +35,7 @@ public class SceneManager {
     }
 
     public static void setBackground(Image background) {
-        SceneManager.background = background;
+        ScreenManager.background = background;
     }
 
     public static int getLevel() {
@@ -42,10 +43,44 @@ public class SceneManager {
     }
 
     public static void setLevel(int level) {
-        SceneManager.level = level;
+        ScreenManager.level = level;
     }
 
-    public static void loadCurrentScene() throws FileNotFoundException {
+    public static void nextScreen() {
+        loadAsset = false;
+        screen = screen.next();
+    }
+
+    public static void prevScreen() {
+        loadAsset = false;
+        screen = screen.prev();
+    }
+
+    public static void nextLevel() {
+        loadAsset = false;
+        level++;
+    }
+
+    public static void prevLevel() {
+        loadAsset = false;
+        level--;
+    }
+
+    public static void renderCurrentScreen() throws FileNotFoundException {
+        /**
+         * Check if assets of the current screen are loaded or not.
+         */
+        if (!loadAsset) {
+            loadAsset = true;
+            loadCurrentScreen();
+        } else {
+            Renderer.renderScreen(screen);
+            Renderer.updateScreen(screen);
+        }
+    }
+
+    public static void loadCurrentScreen() throws FileNotFoundException {
+        System.out.println(screen);
         switch (screen) {
             case GREETING:
                 loadGreeting();
@@ -64,10 +99,10 @@ public class SceneManager {
                 break;
             case PLAYING:
                 if (level > GameConfig.LEVEL_MAX) {
-                    screen = screen.next();
+                    nextScreen();
                     level = 1;
                 } else if (level < 1) {
-                    screen = screen.prev();
+                    prevScreen();
                     level = 1;
                 } else {
                     loadLevelMap();
@@ -79,28 +114,16 @@ public class SceneManager {
         }
     }
 
-    /**
-     * Load greeting screen.
-     * TODO:
-     */
     private static void loadGreeting() throws FileNotFoundException {
         InputStream stream = new FileInputStream(GameConfig.GREETING_PATH);
         background = new Image(stream);
     }
 
-    /**
-     * Load main menu screen.
-     * TODO:
-     */
     private static void loadMainMenu() throws FileNotFoundException {
         InputStream stream = new FileInputStream(GameConfig.MAIN_MENU_PATH);
         background = new Image(stream);
     }
 
-    /**
-     * Load setting screen.
-     * TODO:
-     */
     private static void loadSettings() throws FileNotFoundException {
         InputStream stream = new FileInputStream(GameConfig.SETTINGS_PATH);
         background = new Image(stream);
@@ -126,6 +149,8 @@ public class SceneManager {
      * TODO: add more entities.
      */
     private static void loadLevelMap() {
+        EntitiesManager entitiesManager = EntitiesManager.getInstance();
+
         try {
             Scanner sc = new Scanner(
                     new File(GameConfig.LEVEL_DATA[level - 1])
@@ -138,29 +163,29 @@ public class SceneManager {
             for (int j = 0; j < R; j++) {
                 String line = sc.nextLine();
                 for (int i = 0; i < C; i++) {
-                    GameManager.grasses.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    entitiesManager.grasses.add(new Grass(i, j, Sprite.grass.getFxImage()));
                     switch (line.charAt(i)) {
                         case '#':
-                            GameManager.stillObjects.add(
+                            entitiesManager.stillObjects.add(
                                     new Wall(i, j, Sprite.wall.getFxImage())
                             );
                             break;
                         case '*':
-                            GameManager.stillObjects.add(
+                            entitiesManager.stillObjects.add(
                                     new Brick(i, j, Sprite.brick.getFxImage())
                             );
                             break;
                         case 'x':
-                            GameManager.stillObjects.add(
+                            entitiesManager.stillObjects.add(
                                     new Portal(i, j, Sprite.portal.getFxImage())
                             );
-                            GameManager.stillObjects.add(
+                            entitiesManager.stillObjects.add(
                                     new Brick(i, j, Sprite.brick.getFxImage())
                             );
                             break;
                         case 'p':
-                            GameManager.entities.add(
-                                    new Bomber(i, j, Sprite.player_right.getFxImage())
+                            entitiesManager.players.add(
+                                    new Bomber(i, j, Sprite.player.getFxImage())
                             );
                             break;
                     }
