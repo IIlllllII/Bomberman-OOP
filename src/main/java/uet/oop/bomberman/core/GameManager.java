@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager extends Application {
-
     private boolean quit;
     private static GraphicsContext gc;
     private Canvas canvas;
@@ -36,14 +35,15 @@ public class GameManager extends Application {
     public void start(Stage stage) {
         canvas = new Canvas(
                 Sprite.SCALED_SIZE * GameConfig.WIDTH * 1.0,
-                Sprite.SCALED_SIZE * GameConfig.HEIGHT * 1.0
-        );
+                Sprite.SCALED_SIZE * GameConfig.HEIGHT * 1.0);
         gc = canvas.getGraphicsContext2D();
 
         Group root = new Group();
         root.getChildren().add(canvas);
 
         Scene scene = new Scene(root);
+
+        // ?
         stage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
@@ -56,31 +56,28 @@ public class GameManager extends Application {
         stage.setScene(scene);
         stage.show();
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                KeyCode code = event.getCode();
-                if (code == KeyCode.N) {
-                    if (SceneManager.getScreen() == GameScene.PLAYING) {
-                        entities = new ArrayList<>();
-                        grasses = new ArrayList<>();
-                        stillObjects = new ArrayList<>();
-                        items = new ArrayList<>();
-                        SceneManager.setLevel(SceneManager.getLevel() + 1);
-                    } else {
-                        SceneManager.setScreen(SceneManager.getScreen().next());
-                    }
+        scene.setOnKeyPressed(event -> {
+            KeyCode code = event.getCode();
+            if (code == KeyCode.N) {
+                if (SceneManager.getScreen() == GameScene.PLAYING) {
+                    entities = new ArrayList<>();
+                    grasses = new ArrayList<>();
+                    stillObjects = new ArrayList<>();
+                    items = new ArrayList<>();
+                    SceneManager.setLevel(SceneManager.getLevel() + 1);
+                } else {
+                    SceneManager.setScreen(SceneManager.getScreen().next());
                 }
-                if (code == KeyCode.P) {
-                    if (SceneManager.getScreen() == GameScene.PLAYING) {
-                        entities = new ArrayList<>();
-                        grasses = new ArrayList<>();
-                        stillObjects = new ArrayList<>();
-                        items = new ArrayList<>();
-                        SceneManager.setLevel(SceneManager.getLevel() - 1);
-                    } else {
-                        SceneManager.setScreen(SceneManager.getScreen().prev());
-                    }
+            }
+            if (code == KeyCode.P) {
+                if (SceneManager.getScreen() == GameScene.PLAYING) {
+                    entities = new ArrayList<>();
+                    grasses = new ArrayList<>();
+                    stillObjects = new ArrayList<>();
+                    items = new ArrayList<>();
+                    SceneManager.setLevel(SceneManager.getLevel() - 1);
+                } else {
+                    SceneManager.setScreen(SceneManager.getScreen().prev());
                 }
             }
         });
