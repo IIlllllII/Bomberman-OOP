@@ -1,6 +1,7 @@
-package uet.oop.bomberman.components.entities;
+package uet.oop.bomberman.components.entities.stillobjects;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.components.entities.Entity;
 
 public class Grass extends Entity {
     public Grass(int i, int j, Image fxImage) {

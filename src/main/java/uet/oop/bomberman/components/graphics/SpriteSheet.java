@@ -7,16 +7,20 @@ import java.net.URL;
 
 public class SpriteSheet {
     private final String path;
-    public final int SHEET_SIZE;
+    public final int SHEET_WIDTH;
+    public final int SHEET_HEIGHT;
     public int[] pixels;
     public BufferedImage image;
 
-    public static SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256);
+    public static SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
+    //public static SpriteSheet tiles = new SpriteSheet("/sprites/bomb_explosion.png", 213, 72);
+    public static SpriteSheet characters = new SpriteSheet("/sprites/sprites_without_border.png",439, 169);
 
-    public SpriteSheet(String path, int size) {
+    public SpriteSheet(String path, int width, int height) {
         this.path = path;
-        SHEET_SIZE = size;
-        pixels = new int[SHEET_SIZE * SHEET_SIZE];
+        SHEET_WIDTH = width;
+        SHEET_HEIGHT = height;
+        pixels = new int[SHEET_WIDTH * SHEET_HEIGHT];
         loadPixels();
     }
 
