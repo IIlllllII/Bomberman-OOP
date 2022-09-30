@@ -1,12 +1,6 @@
 package uet.oop.bomberman.core;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.components.entities.players.Bomber;
-import uet.oop.bomberman.components.entities.stillobjects.Brick;
-import uet.oop.bomberman.components.entities.stillobjects.Grass;
-import uet.oop.bomberman.components.entities.stillobjects.Portal;
-import uet.oop.bomberman.components.entities.stillobjects.Wall;
-import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.GameScreen;
 
@@ -163,30 +157,30 @@ public class ScreenManager {
             for (int j = 0; j < R; j++) {
                 String line = sc.nextLine();
                 for (int i = 0; i < C; i++) {
-                    entitiesManager.grasses.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    //entitiesManager.grasses.add(new Grass(i, j, Sprite.grass.getFxImage()));
                     switch (line.charAt(i)) {
                         case '#':
-                            entitiesManager.stillObjects.add(
-                                    new Wall(i, j, Sprite.wall.getFxImage())
-                            );
+//                            entitiesManager.stillObjects.add(
+//                                    new Wall(i, j, Sprite.wall.getFxImage())
+//                            );
                             break;
                         case '*':
-                            entitiesManager.stillObjects.add(
-                                    new Brick(i, j, Sprite.brick.getFxImage())
-                            );
+//                            entitiesManager.stillObjects.add(
+//                                    new Brick(i, j, Sprite.brick.getFxImage())
+//                            );
                             break;
                         case 'x':
-                            entitiesManager.stillObjects.add(
-                                    new Portal(i, j, Sprite.portal.getFxImage())
-                            );
-                            entitiesManager.stillObjects.add(
-                                    new Brick(i, j, Sprite.brick.getFxImage())
-                            );
+//                            entitiesManager.stillObjects.add(
+//                                    new Portal(i, j, Sprite.portal.getFxImage())
+//                            );
+//                            entitiesManager.stillObjects.add(
+//                                    new Brick(i, j, Sprite.brick.getFxImage())
+//                            );
                             break;
                         case 'p':
-                            entitiesManager.players.add(
-                                    new Bomber(i, j, Sprite.player.getFxImage())
-                            );
+//                            entitiesManager.players.add(
+//                                    new Bomber(i, j)
+//                            );
                             break;
                     }
                 }
