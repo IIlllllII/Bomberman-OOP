@@ -1,6 +1,8 @@
 package uet.oop.bomberman.sound;
 
 public class Music extends Sound {
+    public static final String MENU_MUSIC = "src/resources/sounds/Title.mp3";
+    public static final String GAME_MUSIC = "src/resources/sounds/inGame.mp3";
     private boolean loops;
 
     public enum MusicStatus {
