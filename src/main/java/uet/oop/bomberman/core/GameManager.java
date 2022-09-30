@@ -64,7 +64,6 @@ public class GameManager extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                //System.out.println((double) now / 1_000_000_000);
                 try {
                     ScreenManager.renderCurrentScreen();
                 } catch (FileNotFoundException e) {

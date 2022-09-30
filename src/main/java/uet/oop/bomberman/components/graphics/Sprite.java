@@ -246,14 +246,14 @@ public class Sprite {
 //    public static Sprite mob_dead2 = new Sprite(DEFAULT_SIZE, 15, 1, SpriteSheet.tiles, 16, 16);
 //    public static Sprite mob_dead3 = new Sprite(DEFAULT_SIZE, 15, 2, SpriteSheet.tiles, 16, 16);
 //
-//    /*
-//    |--------------------------------------------------------------------------
-//    | Bomb Sprites
-//    |--------------------------------------------------------------------------
-//     */
-//    public static Sprite bomb = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.tiles, 15, 15);
-//    public static Sprite bomb_1 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.tiles, 13, 15);
-//    public static Sprite bomb_2 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.tiles, 12, 14);
+    /*
+    |--------------------------------------------------------------------------
+    | Bomb Sprites
+    |--------------------------------------------------------------------------
+     */
+    public static Sprite bomb = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.tiles, 15, 15);
+    public static Sprite bomb_1 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.tiles, 13, 15);
+    public static Sprite bomb_2 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.tiles, 12, 14);
 //
 //    /*
 //    |--------------------------------------------------------------------------
@@ -310,4 +310,36 @@ public class Sprite {
 //    public static Sprite powerup_bombpass = new Sprite(DEFAULT_SIZE, 5, 10, SpriteSheet.tiles, 16, 16);
 //    public static Sprite powerup_flamepass = new Sprite(DEFAULT_SIZE, 6, 10, SpriteSheet.tiles, 16, 16);
 
+    /*
+    |--------------------------------------------------------------------------
+    | New Sprites for each level
+    |--------------------------------------------------------------------------
+     */
+    public static Sprite grass1 = new Sprite(DEFAULT_SIZE, 0, 0, SpriteSheet.newTiles, 32, 32);
+    public static Sprite wall1 = new Sprite(DEFAULT_SIZE, 1, 0, SpriteSheet.newTiles, 32, 32);
+    public static Sprite brick1 = new Sprite(DEFAULT_SIZE, 2, 0, SpriteSheet.newTiles, 32, 32);
+
+    public static Sprite grass2 = new Sprite(DEFAULT_SIZE, 0, 1, SpriteSheet.newTiles, 32, 32);
+    public static Sprite wall2 = new Sprite(DEFAULT_SIZE, 1, 1, SpriteSheet.newTiles, 32, 32);
+    public static Sprite brick2 = new Sprite(DEFAULT_SIZE, 2, 1, SpriteSheet.newTiles, 32, 32);
+
+    public static Sprite grass3 = new Sprite(DEFAULT_SIZE, 0, 2, SpriteSheet.newTiles, 32, 32);
+    public static Sprite wall3 = new Sprite(DEFAULT_SIZE, 1, 2, SpriteSheet.newTiles, 32, 32);
+    public static Sprite brick3 = new Sprite(DEFAULT_SIZE, 2, 2, SpriteSheet.newTiles, 32, 32);
+
+    public static Sprite grass4 = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.newTiles, 32, 32);
+    public static Sprite wall4 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.newTiles, 32, 32);
+    public static Sprite brick4 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.newTiles, 32, 32);
+
+    public static Sprite grass5 = new Sprite(DEFAULT_SIZE, 0, 4, SpriteSheet.newTiles, 32, 32);
+    public static Sprite wall5 = new Sprite(DEFAULT_SIZE, 1, 4, SpriteSheet.newTiles, 32, 32);
+    public static Sprite brick5 = new Sprite(DEFAULT_SIZE, 2, 4, SpriteSheet.newTiles, 32, 32);
+
+    public static Sprite grass6 = new Sprite(DEFAULT_SIZE, 0, 5, SpriteSheet.newTiles, 32, 32);
+    public static Sprite wall6 = new Sprite(DEFAULT_SIZE, 1, 5, SpriteSheet.newTiles, 32, 32);
+    public static Sprite brick6 = new Sprite(DEFAULT_SIZE, 2, 5, SpriteSheet.newTiles, 32, 32);
+
+    public static Sprite grass7 = new Sprite(DEFAULT_SIZE, 3, 0, SpriteSheet.newTiles, 32, 32);
+    public static Sprite wall7 = new Sprite(DEFAULT_SIZE, 4, 0, SpriteSheet.newTiles, 32, 32);
+    public static Sprite brick7 = new Sprite(DEFAULT_SIZE, 5, 0, SpriteSheet.newTiles, 32, 32);
 }
