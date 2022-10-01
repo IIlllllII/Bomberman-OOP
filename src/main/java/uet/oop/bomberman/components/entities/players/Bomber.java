@@ -1,7 +1,6 @@
 package uet.oop.bomberman.components.entities.players;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 
 public class Bomber extends Entity {
