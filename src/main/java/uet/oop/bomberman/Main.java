@@ -35,8 +35,8 @@ public class Main extends Application {
             }
         };
         loop.start();
-
     }
+
     public static void main(String[] args) {
         launch(args);
     }

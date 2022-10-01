@@ -49,8 +49,8 @@ public class IntroGame {
         stage.show();
 
         try {
-            logo = new Image(getClass().getResource("/assets/LogoIntro.png").toURI().toString());
-            bar = new Image(getClass().getResource("/assets/something/bar3.png").toURI().toString());
+            logo = new Image(getClass().getResource("/LogoIntro.png").toURI().toString());
+            bar = new Image(getClass().getResource("/something/bar3.png").toURI().toString());
             value = 0;
             delayValue = 0;
             done = false;

@@ -4,9 +4,9 @@ public class GameConfig {
 
     public static final String NAME = "Bomberman";
 
-    public static final int WIDTH = 20;
+    public static final int WIDTH = 560;
 
-    public static final int HEIGHT = 15;
+    public static final int HEIGHT = 510;
 
     public static final int PLAYER_WIDTH = 18;
 
