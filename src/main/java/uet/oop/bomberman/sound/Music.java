@@ -28,7 +28,7 @@ public class Music extends Sound {
     }
 
     public void playMusic() {
-        if (status == MusicStatus.STOP) {
+        if (status == MusicStatus.STOP && !muteAll) {
             if(loops){
                 mediaPlayer.setCycleCount(Integer.MAX_VALUE);
             }

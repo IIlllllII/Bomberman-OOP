@@ -315,7 +315,7 @@ public class Sprite {
     | New Sprites for each level
     |--------------------------------------------------------------------------
      */
-    public static Sprite grass1 = new Sprite(DEFAULT_SIZE, 0, 0, SpriteSheet.newTiles, 32, 32);
+
     public static Sprite wall1 = new Sprite(DEFAULT_SIZE, 1, 0, SpriteSheet.newTiles, 32, 32);
     public static Sprite brick1 = new Sprite(DEFAULT_SIZE, 2, 0, SpriteSheet.newTiles, 32, 32);
 

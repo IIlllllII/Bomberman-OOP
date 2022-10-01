@@ -16,6 +16,8 @@ public class Sound {
     public static final String PLACE_BOMB_SOUND = "src/resources/sounds/placeBomb.mp3";
     protected Media media;
     protected MediaPlayer mediaPlayer;
+
+    protected static boolean muteAll = false;
     private String path;
 
 
@@ -51,8 +53,18 @@ public class Sound {
         this.path = path;
     }
 
+    public static boolean isMuteAll(){
+        return Sound.muteAll;
+    }
+
+    public static void setMuteAll(boolean muteAll) {
+        Sound.muteAll = muteAll;
+    }
+
     public void playSound(){
-        mediaPlayer.play();
+        if (! Sound.muteAll) {
+            mediaPlayer.play();
+        }
     }
 
     public void mute() {
@@ -62,5 +74,4 @@ public class Sound {
     public void unmute() {
         mediaPlayer.setMute(false);
     }
-
 }

@@ -1,12 +1,12 @@
 package uet.oop.bomberman.components.entities.stillobjects;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 
 public class Brick extends Entity {
-    public Brick(int i, int j) {
-        super(i, j);
+
+    public Brick(int x, int y) {
+        super(x, y);
     }
 
     @Override
