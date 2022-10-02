@@ -3,46 +3,40 @@ package uet.oop.bomberman.core;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import uet.oop.bomberman.config.GameConfig;
 
-import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
-public class GameManager {
-    public static double FPS = 0;
-    public static boolean MUTEMUSIC;
+public class GameStage {
+    // Need to make singleton class
+    private static GameStage instance = null;
+    private double FPS;
+    private Stage stage;
+    private SceneManager sceneManager;
 
-    private static Stage stage;
-    private static Scene WINDOW;
-    private static GraphicsContext render;
-    private static Canvas canvas;
     private LinkedList<Image> icon;
 
-    double x = -10, y = -10;
-    public GameManager() {
-        MUTEMUSIC = false;
+    public static GameStage getInstance() {
+        if (instance == null) {
+            instance = new GameStage();
+        }
+        return instance;
+    }
 
-        canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
-        render = canvas.getGraphicsContext2D();
-        Group group = new Group();
-        group.getChildren().addAll(canvas);
-
-        Scene scene = new Scene(group, GameConfig.WIDTH, GameConfig.HEIGHT);
-        WINDOW = scene;
+    private GameStage() {
+        FPS = 0;
+        sceneManager = SceneManager.getInstance();
 
         stage = new Stage();
         stage.setResizable(false);
         stage.setTitle(GameConfig.NAME);
-        stage.setScene(WINDOW);
+        stage.setScene(sceneManager.getScene());
         stage.centerOnScreen();
         stage.setOnCloseRequest(e -> {
             Platform.exit();
@@ -50,23 +44,21 @@ public class GameManager {
         });
         stage.show();
 
+
         icon = new LinkedList<>();
         try {
             icon.add(new Image(getClass().getResource("/icon/icon.png").toURI().toString()));
             stage.getIcons().add(icon.get(0));
-            setCursor(canvas);
+            //setCursor(canvas);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
-        InputHandler inputHandler = InputHandler.getInstance();
-        inputHandler.handleKeyPressedEvent(scene);
 
         addLoop();
     }
 
     private void setCursor(Canvas canvas) throws URISyntaxException {
-        canvas.setCursor(Cursor.cursor(GameManager.class.getResource("/cursor/normal.png").toURI().toString()));
+        canvas.setCursor(Cursor.cursor(GameStage.class.getResource("/cursor/normal.png").toURI().toString()));
     }
 
     private void addLoop() {
@@ -83,7 +75,6 @@ public class GameManager {
                     FPS = frame;
                     frame = 0;
                     calcStart = LocalDateTime.now();
-                    System.out.println(FPS);
                 }
             }
 
@@ -101,23 +92,11 @@ public class GameManager {
         }).start();
     }
 
-    public static GraphicsContext getGraphicsContext() {
-        return render;
-    }
-
-    public static Canvas getCanvas() {
-        return canvas;
-    }
-
     public void render() {
-        try {
-            ScreenManager.renderCurrentScreen();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        sceneManager.render();
     }
 
     public void update() {
-
+        sceneManager.update();
     }
 }

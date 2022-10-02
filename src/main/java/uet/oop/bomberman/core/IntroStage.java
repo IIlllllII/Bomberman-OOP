@@ -12,12 +12,12 @@ import uet.oop.bomberman.config.GameConfig;
 
 import java.net.URISyntaxException;
 
-public class IntroGame {
+public class IntroStage {
     private double width;
     private double height;
 
     private Stage stage;
-    private GraphicsContext render;
+    private GraphicsContext gc;
     private Image logo;
     private Image bar;
     private static double value;
@@ -26,13 +26,13 @@ public class IntroGame {
     private boolean done;
     private boolean initDone;
 
-    public IntroGame(Stage mainStage) {
+    public IntroStage(Stage mainStage) {
         width = GameConfig.WIDTH;
         height = GameConfig.HEIGHT;
         initDone = false;
 
         Canvas canvas = new Canvas(width, height);
-        render = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         Group group = new Group();
         group.getChildren().add(canvas);
         Scene scene = new Scene(group, width, height);
@@ -55,7 +55,8 @@ public class IntroGame {
             delayValue = 0;
             done = false;
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Bug in IntroStage");
         }
 
         (new Thread(() -> {
@@ -74,14 +75,14 @@ public class IntroGame {
         })).start();
     }
 
-    public void draw() {
-        render.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        render.setFill(Color.web("3c75d8"));
-        render.fillRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        render.drawImage(logo, 0, 0, GameConfig.WIDTH, 245);
-        render.drawImage(bar, 58, 450);
-        render.setFill(Color.WHITE);
-        render.fillRect(58, 450, value, 20);
+    public void render() {
+        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+        gc.setFill(Color.web("3c75d8"));
+        gc.fillRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+        gc.drawImage(logo, 0, 0, GameConfig.WIDTH, 245);
+        gc.drawImage(bar, 58, 450);
+        gc.setFill(Color.WHITE);
+        gc.fillRect(58, 450, value, 20);
 
         if (value < 330) {
             value += 2;

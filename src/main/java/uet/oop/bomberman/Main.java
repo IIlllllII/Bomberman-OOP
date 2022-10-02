@@ -3,34 +3,29 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import uet.oop.bomberman.core.GameManager;
-import uet.oop.bomberman.core.IntroGame;
+import uet.oop.bomberman.core.GameStage;
+import uet.oop.bomberman.core.IntroStage;
 
 public class Main extends Application {
-    private IntroGame introGame;
-    private GameManager gameManager;
+    private IntroStage introStage;
+    private GameStage gameStage;
     private AnimationTimer loop;
 
     @Override
     public void start(Stage mainStage) {
 
-        gameManager = null;
-        introGame = new IntroGame(mainStage);
+        gameStage = null;
+        introStage = new IntroStage(mainStage);
 
         loop = new AnimationTimer() {
             @Override
             public void handle(long l) {
-//                try {
-//                    Thread.sleep(10);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-                introGame.draw();
-////                introGame.setDone(true);
-                if (introGame.isInitDone() && introGame.isDone()) {
+                introStage.render();
+//                introStage.setDone(true);  // just for debug
+                if (introStage.isInitDone() && introStage.isDone()) {
                     mainStage.close();
                     loop.stop();
-                    gameManager = new GameManager();
+                    gameStage = GameStage.getInstance();
                 }
             }
         };
