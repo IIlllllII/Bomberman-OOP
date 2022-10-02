@@ -1,4 +1,4 @@
-package uet.oop.bomberman.scenes;
+package uet.oop.bomberman.core.scenes;
 
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -6,7 +6,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.SceneManager;
 
 public class PlayScene {
     private Group root;
@@ -35,11 +34,11 @@ public class PlayScene {
     }
 
     public void update() {
-        x -= 0.5;
-        y -= 0.5;
-        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        gc.setFill(Color.color(Math.random(), Math.random(), Math.random()));
-        gc.fillRect(x, y, GameConfig.WIDTH / 2.0, GameConfig.HEIGHT / 2.0);
+//        x -= 0.5;
+//        y -= 0.5;
+//        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+//        gc.setFill(Color.color(Math.random(), Math.random(), Math.random()));
+//        gc.fillRect(x, y, GameConfig.WIDTH / 2.0, GameConfig.HEIGHT / 2.0);
     }
 
     public  void render() {

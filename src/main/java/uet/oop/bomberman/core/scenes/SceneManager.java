@@ -1,9 +1,8 @@
-package uet.oop.bomberman.core;
+package uet.oop.bomberman.core.scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import uet.oop.bomberman.scenes.MenuScene;
-import uet.oop.bomberman.scenes.PlayScene;
+import uet.oop.bomberman.core.InputHandler;
 
 public class SceneManager {
     public enum SCENES {
@@ -39,12 +38,12 @@ public class SceneManager {
         return currentScene;
     }
 
-    public void setCurrentScene(SCENES primaryScenes) {
-        if (primaryScenes == SCENES.MENU) {
+    public void setCurrentScene(SCENES primaryScene) {
+        if (primaryScene == SCENES.MENU) {
             currentScene = SCENES.MENU;
             scene.setRoot(menu.getRoot());
         }
-        if (primaryScenes == SCENES.PLAY) {
+        if (primaryScene == SCENES.PLAY) {
             currentScene = SCENES.PLAY;
             scene.setRoot(play.getRoot());
         }

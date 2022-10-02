@@ -32,10 +32,10 @@ public class EntitiesManager {
      * Renew all entities when switching to another level
      */
     public void renewEntities() {
-        players = new ArrayList<>();
-        animatedEntities = new ArrayList<>();
-        grasses = new ArrayList<>();
-        stillObjects = new ArrayList<>();
-        items = new ArrayList<>();
+        players.clear();
+        animatedEntities.clear();
+        grasses.clear();
+        stillObjects.clear();
+        items.clear();
     }
 }

@@ -1,14 +1,13 @@
-package uet.oop.bomberman.core;
+package uet.oop.bomberman.core.stages;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.SceneManager;
 
 import java.net.URISyntaxException;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * This class applies `Singleton pattern`

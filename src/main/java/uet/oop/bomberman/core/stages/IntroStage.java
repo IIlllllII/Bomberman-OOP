@@ -1,4 +1,4 @@
-package uet.oop.bomberman.core;
+package uet.oop.bomberman.core.stages;
 
 import javafx.application.Platform;
 import javafx.scene.Group;

@@ -9,5 +9,5 @@ module uet.oop.bomberman {
     exports uet.oop.bomberman;
     exports uet.oop.bomberman.config;
     exports uet.oop.bomberman.core;
-
+    exports uet.oop.bomberman.core.stages;
 }

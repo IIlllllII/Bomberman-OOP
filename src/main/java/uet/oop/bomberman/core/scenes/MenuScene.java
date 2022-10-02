@@ -1,4 +1,4 @@
-package uet.oop.bomberman.scenes;
+package uet.oop.bomberman.core.scenes;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.SceneManager;
+import uet.oop.bomberman.core.buttons.MenuButton;
 
 public class MenuScene {
     private Group root;
