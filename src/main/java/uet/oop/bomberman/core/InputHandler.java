@@ -14,7 +14,7 @@ public class InputHandler {
     private InputHandler() {}
 
     private static class SingletonHelper {
-        static final InputHandler INSTANCE = new InputHandler();
+        private static final InputHandler INSTANCE = new InputHandler();
     }
 
     public static InputHandler getInstance() {

@@ -2,8 +2,6 @@ package uet.oop.bomberman.core;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.scene.Cursor;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import uet.oop.bomberman.config.GameConfig;
@@ -11,22 +9,27 @@ import uet.oop.bomberman.config.GameConfig;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
+
+/**
+ * This class applies `Singleton pattern`
+ * with Bill Pugh Singleton Implementation.
+ *
+ * For more information:
+ * https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
+ */
 
 public class GameStage {
-    // Need to make singleton class
-    private static GameStage instance = null;
-    private double FPS;
+    private long FPS;
     private Stage stage;
     private SceneManager sceneManager;
 
-    private LinkedList<Image> icon;
+    private Image icon;
 
+    private static class SingletonHelper {
+        private static final GameStage INSTANCE = new GameStage();
+    }
     public static GameStage getInstance() {
-        if (instance == null) {
-            instance = new GameStage();
-        }
-        return instance;
+        return SingletonHelper.INSTANCE;
     }
 
     private GameStage() {
@@ -44,47 +47,22 @@ public class GameStage {
         });
         stage.show();
 
-
-        icon = new LinkedList<>();
         try {
-            icon.add(new Image(getClass().getResource("/icon/icon.png").toURI().toString()));
-            stage.getIcons().add(icon.get(0));
-            //setCursor(canvas);
+            icon = new Image(getClass().getResource("/icon/icon.png").toURI().toString());
+            stage.getIcons().add(icon);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
-        addLoop();
     }
 
-    private void setCursor(Canvas canvas) throws URISyntaxException {
-        canvas.setCursor(Cursor.cursor(GameStage.class.getResource("/cursor/normal.png").toURI().toString()));
-    }
-
-    private void addLoop() {
+    public void run() {
         (new AnimationTimer() {
-            private LocalDateTime start = LocalDateTime.now();
-            private LocalDateTime stop = LocalDateTime.now();
-            private LocalDateTime calcStart = LocalDateTime.now();
-            private int frame = 0;
-
-            private void getFps() {
-                frame++;
-                long time = Duration.between(calcStart, stop).toMillis();
-                if (time >= 1000) {
-                    FPS = frame;
-                    frame = 0;
-                    calcStart = LocalDateTime.now();
-                }
-            }
-
+            long lastTimestamp;
             @Override
-            public void handle(long l) {
-                stop = LocalDateTime.now();
-                long delay = Duration.between(start, stop).toMillis();
-                if (delay >= 14) {
-                    getFps();
-                    start = LocalDateTime.now();
+            public void handle(long now) {
+                long deltaTimeMili = (now - lastTimestamp) / 1_000_000;
+                if (deltaTimeMili >= 14) {
+                    lastTimestamp = now;
                     render();
                     update();
                 }
@@ -92,11 +70,11 @@ public class GameStage {
         }).start();
     }
 
-    public void render() {
+    private void render() {
         sceneManager.render();
     }
 
-    public void update() {
+    private void update() {
         sceneManager.update();
     }
 }

@@ -24,7 +24,7 @@ public class PlayScene {
 
         playButton = new Button("BACK");
         playButton.setOnAction(event -> {
-            SceneManager.getInstance().setCurrentScenes(SceneManager.SCENES.MENU);
+            SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
         });
 
         root.getChildren().addAll(canvas, playButton);
@@ -39,7 +39,7 @@ public class PlayScene {
         y -= 0.5;
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
         gc.setFill(Color.color(Math.random(), Math.random(), Math.random()));
-        gc.fillRect(x, y, GameConfig.WIDTH / 2, GameConfig.HEIGHT / 2);
+        gc.fillRect(x, y, GameConfig.WIDTH / 2.0, GameConfig.HEIGHT / 2.0);
     }
 
     public  void render() {

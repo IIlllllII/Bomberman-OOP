@@ -55,8 +55,7 @@ public class IntroStage {
             delayValue = 0;
             done = false;
         } catch (URISyntaxException e) {
-            //e.printStackTrace();
-            System.out.println("Bug in IntroStage");
+            e.printStackTrace();
         }
 
         (new Thread(() -> {
@@ -85,16 +84,16 @@ public class IntroStage {
         gc.fillRect(58, 450, value, 20);
 
         if (value < 330) {
-            value += 2;
+            value += 3;
         } else if (value < MAXVALUE) {
             delayValue ++;
             if (delayValue > 40 && delayValue < 180) {
                 if (delayValue % 2 == 0) {
-                    value += 1;
+                    value += 2;
                 }
             }
             if (delayValue > 280){
-                value += 1;
+                value += 2;
             }
         } else {
             value = MAXVALUE;

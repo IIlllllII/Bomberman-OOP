@@ -60,7 +60,7 @@ public class MenuScene {
                 ft.setOnFinished(event -> this.setVisible(false));
                 ft.play();
 
-                SceneManager.getInstance().setCurrentScenes(SceneManager.SCENES.PLAY);
+                SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.PLAY);
 
                 System.out.println("Play button");
             });

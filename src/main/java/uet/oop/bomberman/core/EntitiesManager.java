@@ -18,14 +18,14 @@ public class EntitiesManager {
     public List<Entity> grasses = new ArrayList<>();
     public List<Entity> stillObjects = new ArrayList<>();
     public List<Entity> items = new ArrayList<>();
-    public EntitiesManager() {}
+    private EntitiesManager() {}
 
     private static class SingletonHelper {
-        static final EntitiesManager INSTANCE = new EntitiesManager();
+        private static final EntitiesManager INSTANCE = new EntitiesManager();
     }
 
     public static EntitiesManager getInstance() {
-        return EntitiesManager.SingletonHelper.INSTANCE;
+        return SingletonHelper.INSTANCE;
     }
 
     /**
