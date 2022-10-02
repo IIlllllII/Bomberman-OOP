@@ -11,9 +11,9 @@ public class SceneManager {
 
     private static SceneManager instance = null;
     private SCENES currentScene;
-    private MenuScene menu;
-    private PlayScene play;
-    private Scene scene;
+    private final MenuScene menu;
+    private final PlayScene play;
+    private final Scene scene;
 
     public static SceneManager getInstance() {
         if (instance == null) {

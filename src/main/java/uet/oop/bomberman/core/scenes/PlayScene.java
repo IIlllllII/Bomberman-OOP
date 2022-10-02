@@ -8,20 +8,17 @@ import javafx.scene.paint.Color;
 import uet.oop.bomberman.config.GameConfig;
 
 public class PlayScene {
-    private Group root;
-    private Canvas canvas;
-    private GraphicsContext gc;
+    private final Group root;
 
-    private Button playButton;
-
-    double x = GameConfig.WIDTH, y = GameConfig.HEIGHT;
+    double x = GameConfig.WIDTH;
+    double y = GameConfig.HEIGHT;
 
     public PlayScene() {
-        canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
-        gc = canvas.getGraphicsContext2D();
+        Canvas canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
+        canvas.getGraphicsContext2D();
         root = new Group();
 
-        playButton = new Button("BACK");
+        Button playButton = new Button("BACK");
         playButton.setOnAction(event -> {
             SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
         });
