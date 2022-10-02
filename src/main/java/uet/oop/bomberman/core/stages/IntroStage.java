@@ -1,4 +1,4 @@
-package uet.oop.bomberman.core;
+package uet.oop.bomberman.core.stages;
 
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -13,11 +13,7 @@ import uet.oop.bomberman.config.GameConfig;
 import java.net.URISyntaxException;
 
 public class IntroStage {
-    private double width;
-    private double height;
-
-    private Stage stage;
-    private GraphicsContext gc;
+    private final GraphicsContext gc;
     private Image logo;
     private Image bar;
     private static double value;
@@ -27,8 +23,8 @@ public class IntroStage {
     private boolean initDone;
 
     public IntroStage(Stage mainStage) {
-        width = GameConfig.WIDTH;
-        height = GameConfig.HEIGHT;
+        double width = GameConfig.WIDTH;
+        double height = GameConfig.HEIGHT;
         initDone = false;
 
         Canvas canvas = new Canvas(width, height);
@@ -37,16 +33,15 @@ public class IntroStage {
         group.getChildren().add(canvas);
         Scene scene = new Scene(group, width, height);
 
-        stage = mainStage;
-        stage.setResizable(false);
-        stage.setTitle(GameConfig.NAME);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setOnCloseRequest(e -> {
+        mainStage.setResizable(false);
+        mainStage.setTitle(GameConfig.NAME);
+        mainStage.setScene(scene);
+        mainStage.centerOnScreen();
+        mainStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
-        stage.show();
+        mainStage.show();
 
         try {
             logo = new Image(getClass().getResource("/LogoIntro.png").toURI().toString());
