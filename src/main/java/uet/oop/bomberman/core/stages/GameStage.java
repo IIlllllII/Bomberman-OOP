@@ -18,11 +18,7 @@ import java.net.URISyntaxException;
  */
 
 public class GameStage {
-    private long FPS;
-    private Stage stage;
-    private SceneManager sceneManager;
-
-    private Image icon;
+    private final SceneManager sceneManager;
 
     private static class SingletonHelper {
         private static final GameStage INSTANCE = new GameStage();
@@ -32,10 +28,9 @@ public class GameStage {
     }
 
     private GameStage() {
-        FPS = 0;
         sceneManager = SceneManager.getInstance();
 
-        stage = new Stage();
+        Stage stage = new Stage();
         stage.setResizable(false);
         stage.setTitle(GameConfig.NAME);
         stage.setScene(sceneManager.getScene());
@@ -47,7 +42,7 @@ public class GameStage {
         stage.show();
 
         try {
-            icon = new Image(getClass().getResource("/icon/icon.png").toURI().toString());
+            Image icon = new Image(getClass().getResource("/icon/icon.png").toURI().toString());
             stage.getIcons().add(icon);
         } catch (URISyntaxException e) {
             e.printStackTrace();
