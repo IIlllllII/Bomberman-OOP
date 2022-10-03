@@ -26,7 +26,6 @@ public class InputHandler {
 
         scene.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
-
         });
     }
 }

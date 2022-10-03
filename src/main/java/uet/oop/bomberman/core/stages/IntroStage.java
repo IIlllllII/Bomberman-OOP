@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import uet.oop.bomberman.components.maps.Map;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.net.URISyntaxException;
@@ -54,6 +55,7 @@ public class IntroStage {
         }
 
         (new Thread(() -> {
+            Map.init();
 //            Bomb.init();
 //            Item.init();
 //            Balloom.init();
@@ -73,10 +75,10 @@ public class IntroStage {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
         gc.setFill(Color.web("3c75d8"));
         gc.fillRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        gc.drawImage(logo, 0, 0, GameConfig.WIDTH, 245);
-        gc.drawImage(bar, 58, 450);
+        gc.drawImage(logo, 0, 0, GameConfig.WIDTH, GameConfig.HEIGHT / 2);
+        gc.drawImage(bar, 55, GameConfig.HEIGHT - 100);
         gc.setFill(Color.WHITE);
-        gc.fillRect(58, 450, value, 20);
+        gc.fillRect(20, GameConfig.HEIGHT - 100, value, 20);
 
         if (value < 330) {
             value += 3;
