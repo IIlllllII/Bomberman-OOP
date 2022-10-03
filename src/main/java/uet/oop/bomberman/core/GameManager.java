@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.GameScreen;
@@ -54,7 +55,9 @@ public class GameManager extends Application {
 
         stage.setResizable(false);
         stage.setTitle(GameConfig.NAME);
+        //Brick.init();
         stage.getIcons().add(new Image(GameConfig.ICON_PATH));
+        //stage.getIcons().add(new Brick(10, 10, 1).getImage());
         stage.setScene(scene);
         stage.show();
 
@@ -69,8 +72,6 @@ public class GameManager extends Application {
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-
-                timer.setNow()
 
             }
         };
