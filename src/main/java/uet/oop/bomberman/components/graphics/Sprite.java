@@ -59,8 +59,8 @@ public class Sprite {
         }
     }
 
-    public static final Image movingImage(LinkedList<Image> images, int time, int timeTakesPlace) {
-        int diff = timeTakesPlace / images.size();
+    public static final Image Animation(LinkedList<Image> images, double time, double timeTakesPlace) {
+        double diff = timeTakesPlace / images.size();
 
         for(int i=1; i<=images.size(); i++){
             if(time < diff * i){

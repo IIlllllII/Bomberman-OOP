@@ -17,6 +17,9 @@ public class Brick extends Entity {
     public static LinkedList<Image> brickExplodes;
     public static boolean INIT = false;
     private int lever;
+    private boolean destroyed = false;// bị phá hủy chưa
+    private double timeDestroyed = 1000;// thời gian phá hủy
+    private double time = 0;
 
     public static void init() {
         if (!INIT) {
@@ -33,24 +36,13 @@ public class Brick extends Entity {
             brickExplodes.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 4, SpriteSheet.tiles, 16, 16).getFxImage());
             brickExplodes.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 5, SpriteSheet.tiles, 16, 16).getFxImage());
             brickExplodes.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 6, SpriteSheet.tiles, 16, 16).getFxImage());
-
-
             INIT = true;
         }
     }
-
-    private boolean destroyed = false;// bị phá hủy chưa
-    private double timeDestroyed;// thời gian phá hủy
-    private double time = 0;
-
     public Brick(int x, int y, int lever) {
         super(x, y);
         this.lever = lever;
         image = bricks.get(lever - 1);
-    }
-
-    public Image getImage() {
-        return image;
     }
 
     public void setDestroyed(boolean destroyed) {
@@ -65,11 +57,6 @@ public class Brick extends Entity {
     @Override
     public void update() {
         time += Timer.getInstance().getDeltaTime();
-        double diff = timeDestroyed / brickExplodes.size();
-        for (int i = 0; i < brickExplodes.size(); i++) {
-            if (time < diff * (i + 1)) {
-                image = brickExplodes.get(i);
-            }
-        }
+        image = Sprite.Animation(brickExplodes, time, timeDestroyed);
     }
 }
