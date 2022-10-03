@@ -17,6 +17,7 @@ public class Wall extends Entity {
     public  static  void init(){
         if(!INIT){
             walls = new LinkedList<>();
+            SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
             walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 0, SpriteSheet.newTiles, 32, 32).getFxImage());
             walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 1, SpriteSheet.newTiles, 32, 32).getFxImage());
             walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 2, SpriteSheet.newTiles, 32, 32).getFxImage());

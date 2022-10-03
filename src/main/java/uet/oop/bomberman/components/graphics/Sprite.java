@@ -10,6 +10,7 @@ import javafx.scene.image.WritableImage;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Sprite {
 
@@ -58,17 +59,16 @@ public class Sprite {
         }
     }
 
-//    public static Sprite movingSprite(Sprite normal, Sprite x1, Sprite x2, int animate, int time) {
-//        int calc = animate % time;
-//        int diff = time / 3;
-//        if(calc < diff) {
-//            return normal;
-//        }
-//        if(calc < diff * 2) {
-//            return x1;
-//        }
-//        return x2;
-//    }
+    public static final Image movingImage(LinkedList<Image> images, int time, int timeTakesPlace) {
+        int diff = timeTakesPlace / images.size();
+
+        for(int i=1; i<=images.size(); i++){
+            if(time < diff * i){
+                return images.get(i-1);
+            }
+        }
+        return images.get(images.size());
+    }
 
 //    public static Sprite movingSprite(Sprite x1, Sprite x2, int animate, int time) {
 //        int diff = time / 2;
@@ -310,36 +310,4 @@ public class Sprite {
 //    public static Sprite powerup_bombpass = new Sprite(DEFAULT_SIZE, 5, 10, SpriteSheet.tiles, 16, 16);
 //    public static Sprite powerup_flamepass = new Sprite(DEFAULT_SIZE, 6, 10, SpriteSheet.tiles, 16, 16);
 
-    /*
-    |--------------------------------------------------------------------------
-    | New Sprites for each level
-    |--------------------------------------------------------------------------
-     */
-    public static Sprite grass1 = new Sprite(DEFAULT_SIZE, 0, 0, SpriteSheet.newTiles, 32, 32);
-    public static Sprite wall1 = new Sprite(DEFAULT_SIZE, 1, 0, SpriteSheet.newTiles, 32, 32);
-    public static Sprite brick1 = new Sprite(DEFAULT_SIZE, 2, 0, SpriteSheet.newTiles, 32, 32);
-
-    public static Sprite grass2 = new Sprite(DEFAULT_SIZE, 0, 1, SpriteSheet.newTiles, 32, 32);
-    public static Sprite wall2 = new Sprite(DEFAULT_SIZE, 1, 1, SpriteSheet.newTiles, 32, 32);
-    public static Sprite brick2 = new Sprite(DEFAULT_SIZE, 2, 1, SpriteSheet.newTiles, 32, 32);
-
-    public static Sprite grass3 = new Sprite(DEFAULT_SIZE, 0, 2, SpriteSheet.newTiles, 32, 32);
-    public static Sprite wall3 = new Sprite(DEFAULT_SIZE, 1, 2, SpriteSheet.newTiles, 32, 32);
-    public static Sprite brick3 = new Sprite(DEFAULT_SIZE, 2, 2, SpriteSheet.newTiles, 32, 32);
-
-    public static Sprite grass4 = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.newTiles, 32, 32);
-    public static Sprite wall4 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.newTiles, 32, 32);
-    public static Sprite brick4 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.newTiles, 32, 32);
-
-    public static Sprite grass5 = new Sprite(DEFAULT_SIZE, 0, 4, SpriteSheet.newTiles, 32, 32);
-    public static Sprite wall5 = new Sprite(DEFAULT_SIZE, 1, 4, SpriteSheet.newTiles, 32, 32);
-    public static Sprite brick5 = new Sprite(DEFAULT_SIZE, 2, 4, SpriteSheet.newTiles, 32, 32);
-
-    public static Sprite grass6 = new Sprite(DEFAULT_SIZE, 0, 5, SpriteSheet.newTiles, 32, 32);
-    public static Sprite wall6 = new Sprite(DEFAULT_SIZE, 1, 5, SpriteSheet.newTiles, 32, 32);
-    public static Sprite brick6 = new Sprite(DEFAULT_SIZE, 2, 5, SpriteSheet.newTiles, 32, 32);
-
-    public static Sprite grass7 = new Sprite(DEFAULT_SIZE, 3, 0, SpriteSheet.newTiles, 32, 32);
-    public static Sprite wall7 = new Sprite(DEFAULT_SIZE, 4, 0, SpriteSheet.newTiles, 32, 32);
-    public static Sprite brick7 = new Sprite(DEFAULT_SIZE, 5, 0, SpriteSheet.newTiles, 32, 32);
 }

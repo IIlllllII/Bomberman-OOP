@@ -69,6 +69,9 @@ public class GameManager extends Application {
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
+
+                timer.setNow()
+
             }
         };
         timer.start();
