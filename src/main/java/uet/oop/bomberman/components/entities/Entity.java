@@ -1,8 +1,6 @@
 package uet.oop.bomberman.components.entities;
 
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.config.GameConfig;
 
@@ -14,9 +12,10 @@ public abstract class Entity {
     public Entity() {
         x = 0;
         y = 0;
+        active = true;
     }
 
-    public Entity(int x, int y) {
+    public Entity(double x, double y) {
         this.x = x * GameConfig.SCALED_FACTOR * Sprite.DEFAULT_SIZE;
         this.y = y * GameConfig.SCALED_FACTOR * Sprite.DEFAULT_SIZE;
         active = true;
@@ -46,5 +45,4 @@ public abstract class Entity {
     public abstract void render(GraphicsContext gc);
 
     public abstract void update();
-
 }
