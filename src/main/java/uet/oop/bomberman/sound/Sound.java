@@ -8,7 +8,7 @@ import java.io.File;
 public class Sound {
     public static final String TRANSFER_LEVEL_SOUND = "src/resources/sounds/levelComplete.mp3";
     public static final String EAT_POWERUP_SOUND = "src/resources/sounds/eatingItem.mp3";
-    public static final String EXPLOSION_SOUND = "src/resources/sounds/explosion.mp3";
+    public static final String EXPLODE_SOUND = "src/resources/sounds/explosion.mp3";
     public static final String DEAD_SOUND = "src/resources/sounds/LifeLost.mp3";
     public static final String LOSE_GAME_SOUND = "src/resources/sounds/gameOver.mp3";
     public static final String WIN_GAME_SOUND = "src/resources/sounds/Victory.mp3";
