@@ -48,7 +48,7 @@ public class Bomb extends Entity {
     /**
      * Create bomb.
      */
-    public Bomb(int x, int y, int flameLength, Bomber bomber) {
+    public Bomb(double x, double y, int flameLength, Bomber bomber) {
         super(x, y);
         this.flameLength = flameLength;
         this.bomber = bomber;
@@ -97,7 +97,7 @@ public class Bomb extends Entity {
      * Kích hoạt phát nổ bom.
      */
     private void explosion() {
-        flameList.add(new Flame(x, y, 4, false));
+        flameList.add(new Flame(x, y ,4, false));
     }
 
     public boolean canPassThrough(Entity e) {

@@ -53,7 +53,7 @@ public class Flame extends Entity {
         }
     }
 
-    public Flame(int x, int y, int direct, boolean last) {
+    public Flame(double x, double y, int direct, boolean last) {
         super(x, y);
         this.direct = direct;
         this.last = last;
