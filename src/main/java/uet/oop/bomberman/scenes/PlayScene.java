@@ -12,7 +12,6 @@ public class PlayScene {
     private Group root;
     private Canvas canvas;
     private GraphicsContext gc;
-
     private Button playButton;
 
     double x = GameConfig.WIDTH, y = GameConfig.HEIGHT;
