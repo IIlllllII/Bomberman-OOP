@@ -3,8 +3,8 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import uet.oop.bomberman.core.GameStage;
-import uet.oop.bomberman.core.IntroStage;
+import uet.oop.bomberman.core.stages.GameStage;
+import uet.oop.bomberman.core.stages.IntroStage;
 
 public class Main extends Application {
     private IntroStage introStage;
@@ -21,11 +21,12 @@ public class Main extends Application {
             @Override
             public void handle(long l) {
                 introStage.render();
-//                introStage.setDone(true);  // just for debug
+                introStage.setDone(true);  // just for debug
                 if (introStage.isInitDone() && introStage.isDone()) {
                     mainStage.close();
                     loop.stop();
                     gameStage = GameStage.getInstance();
+                    gameStage.run();
                 }
             }
         };

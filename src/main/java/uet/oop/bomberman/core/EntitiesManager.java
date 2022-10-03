@@ -18,24 +18,24 @@ public class EntitiesManager {
     public List<Entity> grasses = new ArrayList<>();
     public List<Entity> stillObjects = new ArrayList<>();
     public List<Entity> items = new ArrayList<>();
-    public EntitiesManager() {}
+    private EntitiesManager() {}
 
     private static class SingletonHelper {
-        static final EntitiesManager INSTANCE = new EntitiesManager();
+        private static final EntitiesManager INSTANCE = new EntitiesManager();
     }
 
     public static EntitiesManager getInstance() {
-        return EntitiesManager.SingletonHelper.INSTANCE;
+        return SingletonHelper.INSTANCE;
     }
 
     /**
      * Renew all entities when switching to another level
      */
     public void renewEntities() {
-        players = new ArrayList<>();
-        animatedEntities = new ArrayList<>();
-        grasses = new ArrayList<>();
-        stillObjects = new ArrayList<>();
-        items = new ArrayList<>();
+        players.clear();
+        animatedEntities.clear();
+        grasses.clear();
+        stillObjects.clear();
+        items.clear();
     }
 }

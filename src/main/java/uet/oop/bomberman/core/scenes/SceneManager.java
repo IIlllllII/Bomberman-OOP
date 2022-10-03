@@ -1,9 +1,8 @@
-package uet.oop.bomberman.core;
+package uet.oop.bomberman.core.scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import uet.oop.bomberman.scenes.MenuScene;
-import uet.oop.bomberman.scenes.PlayScene;
+import uet.oop.bomberman.core.InputHandler;
 
 public class SceneManager {
     public enum SCENES {
@@ -11,10 +10,10 @@ public class SceneManager {
     }
 
     private static SceneManager instance = null;
-    private SCENES currentScenes;
-    private MenuScene menu;
-    private PlayScene play;
-    private Scene scene;
+    private SCENES currentScene;
+    private final MenuScene menu;
+    private final PlayScene play;
+    private final Scene scene;
 
     public static SceneManager getInstance() {
         if (instance == null) {
@@ -29,23 +28,23 @@ public class SceneManager {
 
         scene = new Scene(menu.getRoot());
 
-        currentScenes = SCENES.MENU;
+        currentScene = SCENES.MENU;
 
         InputHandler inputHandler = InputHandler.getInstance();
         inputHandler.handleKeyPressedEvent(scene);
     }
 
-    public SCENES getCurrentScenes() {
-        return currentScenes;
+    public SCENES getCurrentScene() {
+        return currentScene;
     }
 
-    public void setCurrentScenes(SCENES primaryScenes) {
-        if (primaryScenes == SCENES.MENU) {
-            currentScenes = SCENES.MENU;
+    public void setCurrentScene(SCENES primaryScene) {
+        if (primaryScene == SCENES.MENU) {
+            currentScene = SCENES.MENU;
             scene.setRoot(menu.getRoot());
         }
-        if (primaryScenes == SCENES.PLAY) {
-            currentScenes = SCENES.PLAY;
+        if (primaryScene == SCENES.PLAY) {
+            currentScene = SCENES.PLAY;
             scene.setRoot(play.getRoot());
         }
     }
@@ -55,7 +54,7 @@ public class SceneManager {
     }
 
     public void update() {
-        switch (currentScenes) {
+        switch (currentScene) {
             case MENU: {
                 scene.setOnMouseClicked(mouseEvent -> {
                     menu.fadeIn();
@@ -75,7 +74,7 @@ public class SceneManager {
     }
 
     public void render() {
-        switch (currentScenes) {
+        switch (currentScene) {
             case MENU: {
                 break;
             }
