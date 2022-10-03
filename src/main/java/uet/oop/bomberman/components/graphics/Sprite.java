@@ -10,7 +10,6 @@ import javafx.scene.image.WritableImage;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Sprite {
 
@@ -59,24 +58,22 @@ public class Sprite {
         }
     }
 
-    public static Sprite movingSprite(List<Sprite>  sprites, int timegit){
-        int diff = time / sprites.size();
-        for(int i=1; i<= sprites.size(); i++){
-            if()
-        }
-        if(calc < diff) {
-            return normal;
-        }
-        if(calc < diff * 2) {
-            return x1;
-        }
-        return x2;
-    }
+//    public static Sprite movingSprite(Sprite normal, Sprite x1, Sprite x2, int animate, int time) {
+//        int calc = animate % time;
+//        int diff = time / 3;
+//        if(calc < diff) {
+//            return normal;
+//        }
+//        if(calc < diff * 2) {
+//            return x1;
+//        }
+//        return x2;
+//    }
 
-    public static Sprite movingSprite(Sprite x1, Sprite x2, int animate, int time) {
-        int diff = time / 2;
-        return (animate % time > diff) ? x1 : x2;
-    }
+//    public static Sprite movingSprite(Sprite x1, Sprite x2, int animate, int time) {
+//        int diff = time / 2;
+//        return (animate % time > diff) ? x1 : x2;
+//    }
 
     public int getWidth() {
         return SPRITE_WIDTH;
@@ -163,10 +160,10 @@ public class Sprite {
 //    | Bomber Sprites
 //    |--------------------------------------------------------------------------
 //     */
-    public static Sprite player_up = new Sprite(DEFAULT_SIZE, 0, 0, SpriteSheet.tiles, 12, 16);
-    public static Sprite player_down = new Sprite(DEFAULT_SIZE, 2, 0, SpriteSheet.tiles, 12, 15);
-    public static Sprite player_left = new Sprite(DEFAULT_SIZE, 3, 0, SpriteSheet.tiles, 10, 15);
-    public static Sprite player_right = new Sprite(DEFAULT_SIZE, 1, 0, SpriteSheet.tiles, 10, 16);
+//    public static Sprite player_up = new Sprite(DEFAULT_SIZE, 0, 0, SpriteSheet.tiles, 12, 16);
+//    public static Sprite player_down = new Sprite(DEFAULT_SIZE, 2, 0, SpriteSheet.tiles, 12, 15);
+//    public static Sprite player_left = new Sprite(DEFAULT_SIZE, 3, 0, SpriteSheet.tiles, 10, 15);
+//    public static Sprite player_right = new Sprite(DEFAULT_SIZE, 1, 0, SpriteSheet.tiles, 10, 16);
 //
 //    public static Sprite player_up_1 = new Sprite(DEFAULT_SIZE, 0, 1, SpriteSheet.tiles, 12, 16);
 //    public static Sprite player_up_2 = new Sprite(DEFAULT_SIZE, 0, 2, SpriteSheet.tiles, 12, 15);
@@ -318,7 +315,7 @@ public class Sprite {
     | New Sprites for each level
     |--------------------------------------------------------------------------
      */
-
+    public static Sprite grass1 = new Sprite(DEFAULT_SIZE, 0, 0, SpriteSheet.newTiles, 32, 32);
     public static Sprite wall1 = new Sprite(DEFAULT_SIZE, 1, 0, SpriteSheet.newTiles, 32, 32);
     public static Sprite brick1 = new Sprite(DEFAULT_SIZE, 2, 0, SpriteSheet.newTiles, 32, 32);
 
