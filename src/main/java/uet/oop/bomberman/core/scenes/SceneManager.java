@@ -2,6 +2,8 @@ package uet.oop.bomberman.core.scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.core.EntitiesManager;
 import uet.oop.bomberman.core.InputHandler;
 
 public class SceneManager {
@@ -30,8 +32,8 @@ public class SceneManager {
 
         currentScene = SCENES.MENU;
 
-        InputHandler inputHandler = InputHandler.getInstance();
-        inputHandler.handleKeyPressedEvent(scene);
+//        InputHandler inputHandler = InputHandler.getInstance();
+//        inputHandler.handleKeyPressedEvent(scene);
     }
 
     public SCENES getCurrentScene() {
@@ -67,6 +69,28 @@ public class SceneManager {
                 break;
             }
             case PLAY: {
+                scene.setOnKeyPressed(keyEvent -> {
+                    Direction playerDirection = null;
+                    switch (keyEvent.getCode()) {
+                        case UP:
+                            playerDirection = Direction.UP;
+                            break;
+                        case DOWN:
+                            playerDirection = Direction.DOWN;
+                            break;
+                        case RIGHT:
+                            playerDirection = Direction.RIGHT;
+                            break;
+                        case LEFT:
+                            playerDirection = Direction.LEFT;
+                            break;
+                    }
+                    EntitiesManager.getInstance().players.get(0).setDirection(playerDirection);
+                });
+                scene.setOnKeyReleased(keyEvent -> {
+                    Direction playerDirection = Direction.DOWN;
+                    EntitiesManager.getInstance().players.get(0).setDirection(playerDirection);
+                });
                 play.update();
                 break;
             }

@@ -4,18 +4,22 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
+import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.EntitiesManager;
 
 public class PlayScene {
     private final Group root;
 
+    private final GraphicsContext gc;
+    private final Canvas canvas;
     double x = GameConfig.WIDTH;
     double y = GameConfig.HEIGHT;
 
     public PlayScene() {
-        Canvas canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
-        canvas.getGraphicsContext2D();
+        canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
+        gc = canvas.getGraphicsContext2D();
         root = new Group();
 
         Button playButton = new Button("BACK");
@@ -24,6 +28,8 @@ public class PlayScene {
         });
 
         root.getChildren().addAll(canvas, playButton);
+
+        EntitiesManager.getInstance().players.add(new Bomber(10, 10));
     }
 
     public Group getRoot() {
@@ -31,14 +37,15 @@ public class PlayScene {
     }
 
     public void update() {
-//        x -= 0.5;
-//        y -= 0.5;
-//        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-//        gc.setFill(Color.color(Math.random(), Math.random(), Math.random()));
-//        gc.fillRect(x, y, GameConfig.WIDTH / 2.0, GameConfig.HEIGHT / 2.0);
+        EntitiesManager.getInstance().players.forEach(
+                Entity::update
+        );
     }
 
     public  void render() {
-
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        EntitiesManager.getInstance().players.forEach(
+                entity -> entity.render(gc)
+        );
     }
 }

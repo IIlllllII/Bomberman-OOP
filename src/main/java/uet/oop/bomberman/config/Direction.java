@@ -1,8 +1,14 @@
 package uet.oop.bomberman.config;
 
 public enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT;
+    IDLE("idle"),
+    UP("up"),
+    DOWN("down"),
+    LEFT("left"),
+    RIGHT("right");
+
+    public final String label;
+    Direction(String label) {
+        this.label = label;
+    }
 }

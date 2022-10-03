@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.net.URISyntaxException;
@@ -64,7 +65,7 @@ public class IntroStage {
 //            Ovapi.init();
 //            Pass.init();
 //            MusicPlayer.init();
-//            Bomberman.init();
+            Bomber.init();
             initDone = true;
         })).start();
     }
