@@ -19,6 +19,8 @@ public class PlayScene {
     private GraphicsContext gc;
     private Map map;
 
+    private EntitiesManager entitiesManager = EntitiesManager.getInstance();
+
     public PlayScene() {
         canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -32,7 +34,7 @@ public class PlayScene {
         root.getChildren().addAll(canvas, playButton);
 
         map = new Map();
-        EntitiesManager.getInstance().players.add(new Bomber(10, 10));
+        entitiesManager.players.add(new Bomber(10, 10));
     }
 
     public Group getRoot() {
@@ -46,31 +48,44 @@ public class PlayScene {
             Direction currentDirection = null;
             if (code == KeyCode.RIGHT || code == KeyCode.D) {
                 currentDirection = Direction.RIGHT;
-            } else if (code == KeyCode.LEFT || code == KeyCode.A) {
+            }
+            if (code == KeyCode.LEFT || code == KeyCode.A) {
                 currentDirection = Direction.LEFT;
-            } else if (code == KeyCode.UP || code == KeyCode.W) {
+            }
+            if (code == KeyCode.UP || code == KeyCode.W) {
                 currentDirection = Direction.UP;
-            } else if (code == KeyCode.DOWN || code == KeyCode.S) {
+            }
+            if (code == KeyCode.DOWN || code == KeyCode.S) {
                 currentDirection = Direction.DOWN;
             }
 
-            if (currentDirection != null) {
-                EntitiesManager.getInstance().players.get(0).setPlayerStatus(PlayerStatus.MOVING);
-                EntitiesManager.getInstance().players.get(0).setDirection(currentDirection);
-            } else {
-                EntitiesManager.getInstance().players.get(0).setPlayerStatus(PlayerStatus.IDLE);
+            //Demo "die" status
+            //TODO: remove it later.
+            if (code == KeyCode.M) {
+                entitiesManager.players.get(0).setPlayerStatus(PlayerStatus.DEAD);
             }
 
-            if (event.getCode() == KeyCode.N) {
+            if (code == KeyCode.N) {
                 map.nextLevel();
+            }
+
+            if (currentDirection != null) {
+                entitiesManager.players.get(0).setPlayerStatus(PlayerStatus.MOVING);
+                entitiesManager.players.get(0).setDirection(currentDirection);
+            } else {
+                if (entitiesManager.players.get(0).getPlayerStatus() != PlayerStatus.DEAD) {
+                    entitiesManager.players.get(0).setPlayerStatus(PlayerStatus.IDLE);
+                }
             }
         });
 
         root.setOnKeyReleased(event -> {
-            EntitiesManager.getInstance().players.get(0).setPlayerStatus(PlayerStatus.IDLE);
+            if (entitiesManager.players.get(0).getPlayerStatus() != PlayerStatus.DEAD) {
+                entitiesManager.players.get(0).setPlayerStatus(PlayerStatus.IDLE);
+            }
         });
 
-        EntitiesManager.getInstance().players.forEach(
+        entitiesManager.players.forEach(
                 Entity::update
         );
     }
@@ -78,7 +93,7 @@ public class PlayScene {
     public  void render() {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
         map.render(gc);
-        EntitiesManager.getInstance().players.forEach(
+        entitiesManager.players.forEach(
                 entity -> entity.render(gc)
         );
     }

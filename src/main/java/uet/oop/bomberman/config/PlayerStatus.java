@@ -3,7 +3,7 @@ package uet.oop.bomberman.config;
 public enum PlayerStatus {
     IDLE("idle"),
     MOVING("moving"),
-    DIE("die");
+    DEAD("dead");
 
     public final String label;
     PlayerStatus(String label) {
