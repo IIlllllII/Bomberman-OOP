@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.Timer;
 import uet.oop.bomberman.core.scenes.SceneManager;
 
 import java.net.URISyntaxException;
@@ -19,6 +20,7 @@ import java.net.URISyntaxException;
 
 public class GameStage {
     private final SceneManager sceneManager;
+    private Timer timer;
 
     private static class SingletonHelper {
         private static final GameStage INSTANCE = new GameStage();
@@ -29,6 +31,7 @@ public class GameStage {
 
     private GameStage() {
         sceneManager = SceneManager.getInstance();
+        timer = Timer.getInstance();
 
         Stage stage = new Stage();
         stage.setResizable(false);
@@ -51,15 +54,12 @@ public class GameStage {
 
     public void run() {
         (new AnimationTimer() {
-            long lastTimestamp;
             @Override
             public void handle(long now) {
-                long deltaTimeMili = (now - lastTimestamp) / 1_000_000;
-                if (deltaTimeMili >= 14) {
-                    lastTimestamp = now;
-                    render();
-                    update();
-                }
+                timer.update(now / 1000000);
+                System.out.println(timer.getDeltaTime());
+                render();
+                update();
             }
         }).start();
     }

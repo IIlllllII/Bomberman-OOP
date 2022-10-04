@@ -4,18 +4,15 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import javafx.scene.input.KeyCode;
+import uet.oop.bomberman.components.maps.Map;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.EntitiesManager;
 
 public class PlayScene {
     private final Group root;
-
-    private final GraphicsContext gc;
-    private final Canvas canvas;
-    double x = GameConfig.WIDTH;
-    double y = GameConfig.HEIGHT;
+    private Canvas canvas;
+    private GraphicsContext gc;
+    private Map map;
 
     public PlayScene() {
         canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
@@ -29,7 +26,7 @@ public class PlayScene {
 
         root.getChildren().addAll(canvas, playButton);
 
-        EntitiesManager.getInstance().players.add(new Bomber(10, 10));
+        map = new Map();
     }
 
     public Group getRoot() {
@@ -37,15 +34,15 @@ public class PlayScene {
     }
 
     public void update() {
-        EntitiesManager.getInstance().players.forEach(
-                Entity::update
-        );
+        root.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.N) {
+                map.nextLevel();
+            }
+        });
     }
 
     public  void render() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        EntitiesManager.getInstance().players.forEach(
-                entity -> entity.render(gc)
-        );
+        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
+        map.render(gc);
     }
 }
