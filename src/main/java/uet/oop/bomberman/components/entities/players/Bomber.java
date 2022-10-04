@@ -6,15 +6,18 @@ import uet.oop.bomberman.components.entities.Killable;
 import uet.oop.bomberman.components.entities.Movable;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
+import uet.oop.bomberman.core.Camera;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Bomber extends Entity implements Movable, Killable {
-    public Bomber(int i, int j) {
-        super(i, j);
+    public Bomber(double x, double y, int width, int height) {
+        super(x, y, width, height);
     }
 
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
@@ -26,6 +29,8 @@ public class Bomber extends Entity implements Movable, Killable {
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
     private Direction direction = Direction.DOWN;
+
+    private Camera camera = Camera.getInstance();
 
     public static void init() {
         if (! initialized) {
@@ -83,27 +88,27 @@ public class Bomber extends Entity implements Movable, Killable {
         switch (playerStatus) {
             case IDLE:
                 gc.drawImage(spritesDict.get("idle")[direction.index]
-                        .getFxImage(), this.x, this.y);
+                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY());
                 break;
             case MOVING:
                 gc.drawImage(spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 6]
-                        .getFxImage(), this.x, this.y);
+                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY());
                 break;
             case DEAD:
                 gc.drawImage(spritesDict.get("dead")[currentSpriteIndex / 6]
-                        .getFxImage(), this.x, this.y);
+                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY());
                 break;
         }
     }
 
     @Override
-    public void update() {
+    public void update(LevelMap levelMap) {
         if (playerStatus == PlayerStatus.MOVING) {
             currentSpriteIndex++;
             if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move(4, direction);
+            move(4, direction, levelMap);
         }
 
         //Demo "die" status.
@@ -151,23 +156,38 @@ public class Bomber extends Entity implements Movable, Killable {
     }
 
     @Override
-    public void move(int steps, Direction direction) {
+    public void move(int steps, Direction direction, LevelMap levelMap) {
+        //Note: `steps` is always positive when passed.
+
         if (playerStatus == PlayerStatus.IDLE) {
             return;
         }
+
         switch (direction) {
             case DOWN:
                 y += steps;
                 break;
             case UP:
-                y -= steps;
+                steps = -steps;
+                y += steps;
                 break;
             case RIGHT:
                 x += steps;
                 break;
             case LEFT:
-                x -= steps;
+                steps = -steps;
+                x += steps;
                 break;
+        }
+
+        if ((x < 0) || (x + width > levelMap.getWidth())) {
+            //Move back
+            x -= steps;
+        }
+
+        if ((y < 0) || (y + height > levelMap.getHeight())) {
+            //Move back
+            y -= steps;
         }
 
         //TODO: add barrier checker.

@@ -7,17 +7,18 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.players.Bomber;
-import uet.oop.bomberman.components.maps.Map;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
+import uet.oop.bomberman.core.Camera;
 import uet.oop.bomberman.core.EntitiesManager;
 
 public class PlayScene {
     private final Group root;
     private Canvas canvas;
     private GraphicsContext gc;
-    private Map map;
+    private LevelMap levelMap;
 
     private EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
@@ -33,8 +34,9 @@ public class PlayScene {
 
         root.getChildren().addAll(canvas, playButton);
 
-        map = new Map();
-        entitiesManager.players.add(new Bomber(10, 10));
+        levelMap = new LevelMap();
+        entitiesManager.players.add(new Bomber(10, 10, 16, 22));
+        Camera.getInstance().setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
     }
 
     public Group getRoot() {
@@ -66,7 +68,7 @@ public class PlayScene {
             }
 
             if (code == KeyCode.N) {
-                map.nextLevel();
+                levelMap.nextLevel();
             }
 
             if (currentDirection != null) {
@@ -85,14 +87,16 @@ public class PlayScene {
             }
         });
 
+        Camera.getInstance().update(levelMap);
+
         entitiesManager.players.forEach(
-                Entity::update
+                entity -> entity.update(levelMap)
         );
     }
 
     public  void render() {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
-        map.render(gc);
+        levelMap.render(gc);
         entitiesManager.players.forEach(
                 entity -> entity.render(gc)
         );
