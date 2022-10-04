@@ -13,14 +13,14 @@ import java.net.URISyntaxException;
 /**
  * This class applies `Singleton pattern`
  * with Bill Pugh Singleton Implementation.
- *
+ * <p>
  * For more information:
  * https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
  */
 
 public class GameStage {
     private final SceneManager sceneManager;
-    private Timer timer;
+    private final Timer timer;
 
     private static class SingletonHelper {
         private static final GameStage INSTANCE = new GameStage();
@@ -45,7 +45,7 @@ public class GameStage {
         stage.show();
 
         try {
-            Image icon = new Image(getClass().getResource("/icon/icon.png").toURI().toString());
+            Image icon = new Image(getClass().getResource(GameConfig.ICON_PATH).toURI().toString());
             stage.getIcons().add(icon);
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -56,10 +56,10 @@ public class GameStage {
         (new AnimationTimer() {
             @Override
             public void handle(long now) {
-                timer.update(now / 1000000);
-                System.out.println(timer.getDeltaTime());
-                render();
+                timer.update(now / 1_000_000);
+                //System.out.println(timer.getDeltaTime());
                 update();
+                render();
             }
         }).start();
     }

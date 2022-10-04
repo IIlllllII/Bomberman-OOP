@@ -2,9 +2,6 @@ package uet.oop.bomberman.core.scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import uet.oop.bomberman.config.Direction;
-import uet.oop.bomberman.core.EntitiesManager;
-import uet.oop.bomberman.core.InputHandler;
 
 public class SceneManager {
     public enum SCENES {
@@ -13,8 +10,8 @@ public class SceneManager {
 
     private static SceneManager instance = null;
     private SCENES currentScene;
-    private final MenuScene menu;
-    private final PlayScene play;
+    private final MenuScene menuScene;
+    private final PlayScene playScene;
     private final Scene scene;
 
     public static SceneManager getInstance() {
@@ -25,15 +22,12 @@ public class SceneManager {
     }
 
     private SceneManager() {
-        menu = new MenuScene();
-        play = new PlayScene();
+        menuScene = new MenuScene();
+        playScene = new PlayScene();
 
-        scene = new Scene(menu.getRoot());
+        scene = new Scene(menuScene.getRoot());
 
         currentScene = SCENES.MENU;
-
-//        InputHandler inputHandler = InputHandler.getInstance();
-//        inputHandler.handleKeyPressedEvent(scene);
     }
 
     public SCENES getCurrentScene() {
@@ -43,11 +37,11 @@ public class SceneManager {
     public void setCurrentScene(SCENES primaryScene) {
         if (primaryScene == SCENES.MENU) {
             currentScene = SCENES.MENU;
-            scene.setRoot(menu.getRoot());
+            scene.setRoot(menuScene.getRoot());
         }
         if (primaryScene == SCENES.PLAY) {
             currentScene = SCENES.PLAY;
-            scene.setRoot(play.getRoot());
+            scene.setRoot(playScene.getRoot());
         }
     }
 
@@ -59,39 +53,17 @@ public class SceneManager {
         switch (currentScene) {
             case MENU: {
                 scene.setOnMouseClicked(mouseEvent -> {
-                    menu.fadeIn();
+                    menuScene.fadeIn();
                 });
                 scene.setOnKeyPressed(keyEvent -> {
                     if (keyEvent.getCode() == KeyCode.ESCAPE) {
-                        menu.fadeOut();
+                        menuScene.fadeOut();
                     }
                 });
                 break;
             }
             case PLAY: {
-                scene.setOnKeyPressed(keyEvent -> {
-                    Direction playerDirection = null;
-                    switch (keyEvent.getCode()) {
-                        case UP:
-                            playerDirection = Direction.UP;
-                            break;
-                        case DOWN:
-                            playerDirection = Direction.DOWN;
-                            break;
-                        case RIGHT:
-                            playerDirection = Direction.RIGHT;
-                            break;
-                        case LEFT:
-                            playerDirection = Direction.LEFT;
-                            break;
-                    }
-                    EntitiesManager.getInstance().players.get(0).setDirection(playerDirection);
-                });
-                scene.setOnKeyReleased(keyEvent -> {
-                    Direction playerDirection = Direction.DOWN;
-                    EntitiesManager.getInstance().players.get(0).setDirection(playerDirection);
-                });
-                play.update();
+                playScene.update();
                 break;
             }
         }
@@ -103,7 +75,7 @@ public class SceneManager {
                 break;
             }
             case PLAY: {
-                play.render();
+                playScene.render();
                 break;
             }
         }

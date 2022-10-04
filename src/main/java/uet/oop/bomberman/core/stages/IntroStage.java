@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.maps.Map;
 import uet.oop.bomberman.config.GameConfig;
 
@@ -23,7 +24,7 @@ public class IntroStage {
     private boolean done;
     private boolean initDone;
 
-    public IntroStage(Stage mainStage) {
+    public IntroStage(Stage stage) {
         double width = GameConfig.WIDTH;
         double height = GameConfig.HEIGHT;
         initDone = false;
@@ -34,17 +35,19 @@ public class IntroStage {
         group.getChildren().add(canvas);
         Scene scene = new Scene(group, width, height);
 
-        mainStage.setResizable(false);
-        mainStage.setTitle(GameConfig.NAME);
-        mainStage.setScene(scene);
-        mainStage.centerOnScreen();
-        mainStage.setOnCloseRequest(e -> {
+        stage.setResizable(false);
+        stage.setTitle(GameConfig.NAME);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
-        mainStage.show();
+        stage.show();
 
         try {
+            Image icon = new Image(getClass().getResource(GameConfig.ICON_PATH).toURI().toString());
+            stage.getIcons().add(icon);
             logo = new Image(getClass().getResource("/LogoIntro.png").toURI().toString());
             bar = new Image(getClass().getResource("/something/bar3.png").toURI().toString());
             value = 0;
@@ -66,7 +69,7 @@ public class IntroStage {
 //            Ovapi.init();
 //            Pass.init();
 //            MusicPlayer.init();
-//            Bomberman.init();
+            Bomber.init();
             initDone = true;
         })).start();
     }
@@ -75,7 +78,7 @@ public class IntroStage {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
         gc.setFill(Color.web("3c75d8"));
         gc.fillRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        gc.drawImage(logo, 0, 0, GameConfig.WIDTH, GameConfig.HEIGHT / 2);
+        gc.drawImage(logo, 0, 0, GameConfig.WIDTH, GameConfig.HEIGHT / 2.0);
         gc.drawImage(bar, 55, GameConfig.HEIGHT - 100);
         gc.setFill(Color.WHITE);
         gc.fillRect(20, GameConfig.HEIGHT - 100, value, 20);

@@ -1,13 +1,13 @@
 package uet.oop.bomberman.components.entities.players;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.Killable;
 import uet.oop.bomberman.components.entities.Movable;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.PlayerStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,12 +26,23 @@ public class Bomber extends Entity implements Movable, Killable {
 
     private int currentSpriteIndex = 0;
 
-    private Direction direction;
+    private PlayerStatus playerStatus = PlayerStatus.IDLE;
+    private Direction direction = Direction.DOWN;
+
     public static void init() {
         if (! initialized) {
             SpriteSheet bombermanSheet = new SpriteSheet("/sprites/bomberman_sheet.png", 256, 128);
 
-            spritesDict.put("down", new ArrayList<>() {
+            spritesDict.put("idle", new ArrayList<>() {
+                {
+                    add(new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22));
+                    add(new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22));
+                    add(new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22));
+                    add(new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22));
+                }
+            });
+
+            spritesDict.put("moving-down", new ArrayList<>() {
                 {
                     add(new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22));
                     add(new Sprite(16, 22, 0, 2, bombermanSheet, 16, 22));
@@ -40,7 +51,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
             });
 
-            spritesDict.put("up", new ArrayList<>() {
+            spritesDict.put("moving-up", new ArrayList<>() {
                 {
                     add(new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22));
                     add(new Sprite(16, 22, 49, 2, bombermanSheet, 16, 22));
@@ -49,7 +60,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
             });
 
-            spritesDict.put("right", new ArrayList<>() {
+            spritesDict.put("moving-left", new ArrayList<>() {
                 {
                     add(new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22));
                     add(new Sprite(16, 22, 0, 26, bombermanSheet, 16, 22));
@@ -58,12 +69,18 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
             });
 
-            spritesDict.put("left", new ArrayList<>() {
+            spritesDict.put("moving-right", new ArrayList<>() {
+                {
+                    add(new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22));
+                    add(new Sprite(16, 22, 33 + 16, 26, bombermanSheet, 16, 22));
+                    add(new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22));
+                    add(new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22));
+                }
+            });
+
+            spritesDict.put("die", new ArrayList<>() {
                 {
                     add(new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22));
-                    add(new Sprite(16, 22, 0, 26, bombermanSheet, 16, 22));
-                    add(new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22));
-                    add(new Sprite(16, 22, 33, 26, bombermanSheet, 16, 22));
                 }
             });
             initialized = true;
@@ -72,23 +89,29 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(spritesDict.get(direction.label).get(currentSpriteIndex / 6).getFxImage(), this.x, this.y);
+        if (playerStatus == PlayerStatus.IDLE) {
+            gc.drawImage(spritesDict
+                    .get("idle").get(direction.index).getFxImage(), this.x, this.y);
+        } else {
+            gc.drawImage(spritesDict
+                    .get("moving-" + direction.label).get(currentSpriteIndex / 6).getFxImage(), this.x, this.y);
+        }
     }
 
     @Override
     public void update() {
-        //if (direction == Direction.DOWN) {
+        if (playerStatus == PlayerStatus.MOVING) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 6 == 4) {
+            if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).size()) {
                 currentSpriteIndex = 0;
             }
-            //System.out.println(currentSpriteIndex);
-        //}
+            move(4, direction);
+        }
     }
 
     @Override
     public boolean isKilled() {
-        return false;
+        return lives < 0;
     }
 
     @Override
@@ -101,6 +124,19 @@ public class Bomber extends Entity implements Movable, Killable {
         this.lives = lives;
     }
 
+    public PlayerStatus getPlayerStatus() {
+        return playerStatus;
+    }
+
+    public void setPlayerStatus(PlayerStatus playerStatus) {
+        this.playerStatus = playerStatus;
+    }
+
+    @Override
+    public Direction getDirection() {
+        return direction;
+    }
+
     @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
@@ -108,6 +144,9 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void move(int steps, Direction direction) {
+        if (playerStatus == PlayerStatus.IDLE) {
+            return;
+        }
         switch (direction) {
             case DOWN:
                 y += steps;
