@@ -98,6 +98,9 @@ public class Bomb extends Entity {
      */
     private void explosion() {
         flameList.add(new Flame(x, y ,4, false));
+        //check vị trí brick
+        // check vị trí của bomber
+        //check vị trí của monster ....
     }
 
     public boolean canPassThrough(Entity e) {
