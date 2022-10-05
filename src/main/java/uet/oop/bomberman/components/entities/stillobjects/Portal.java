@@ -7,13 +7,13 @@ import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 
 public class Portal extends Entity {
-    public static boolean INIT = false;
-    public static Image portal ;
-    public static void init(){
-        if(!INIT){
+    public static boolean initialized = false;
+    public static Image portal;
+    public static void init() {
+        if (! initialized) {
             SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
-            portal = new Sprite(Sprite.DEFAULT_SIZE, 4, 0, SpriteSheet.tiles, 14, 14).getFxImage();
-            INIT = true;
+            portal = new Sprite(Sprite.DEFAULT_SIZE, 4, 0, tiles, 14, 14).getFxImage();
+            initialized = true;
         }
     }
 

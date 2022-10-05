@@ -6,8 +6,8 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 
 public class Sound {
-    public static final String TRANSFER_LEVEL_SOUND = "src/resources/sounds/levelComplete.mp3";
-    public static final String EAT_POWERUP_SOUND = "src/resources/sounds/eatingItem.mp3";
+    public static final String LEVEL_COMPLETE_SOUND = "src/resources/sounds/levelComplete.mp3";
+    public static final String EAT_ITEM_SOUND = "src/resources/sounds/eatingItem.mp3";
     public static final String EXPLODE_SOUND = "src/resources/sounds/explosion.mp3";
     public static final String DEAD_SOUND = "src/resources/sounds/LifeLost.mp3";
     public static final String LOSE_GAME_SOUND = "src/resources/sounds/gameOver.mp3";
@@ -20,11 +20,10 @@ public class Sound {
     protected static boolean muteAll = false;
     private String path;
 
-
     /**
      * Constructor for creating sound from path.
      */
-    public Sound(String path){
+    public Sound(String path) {
         this.path = path;
         try{
             media = new Media(new File(path).toURI().toString());
@@ -34,7 +33,7 @@ public class Sound {
         }
     }
 
-    public Sound(){}
+    public Sound() {}
 
     public void setMedia(Media media) {
         this.media = media;
