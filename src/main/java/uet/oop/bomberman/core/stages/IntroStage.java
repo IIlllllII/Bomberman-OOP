@@ -75,30 +75,30 @@ public class IntroStage {
     }
 
     public void render() {
-        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        gc.setFill(Color.web("3c75d8"));
-        gc.fillRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        gc.drawImage(logo, 0, 0, GameConfig.WIDTH, GameConfig.HEIGHT / 2.0);
-        gc.drawImage(bar, 55, GameConfig.HEIGHT - 100);
-        gc.setFill(Color.WHITE);
-        gc.fillRect(20, GameConfig.HEIGHT - 100, value, 20);
-
-        if (value < 330) {
-            value += 3;
-        } else if (value < MAXVALUE) {
-            delayValue ++;
-            if (delayValue > 40 && delayValue < 180) {
-                if (delayValue % 2 == 0) {
-                    value += 2;
-                }
-            }
-            if (delayValue > 280){
-                value += 2;
-            }
-        } else {
-            value = MAXVALUE;
-            done = true;
-        }
+//        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+//        gc.setFill(Color.web("3c75d8"));
+//        gc.fillRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+//        gc.drawImage(logo, 0, 0, GameConfig.WIDTH, GameConfig.HEIGHT / 2.0);
+//        gc.drawImage(bar, 55, GameConfig.HEIGHT - 100);
+//        gc.setFill(Color.WHITE);
+//        gc.fillRect(20, GameConfig.HEIGHT - 100, value, 20);
+//
+//        if (value < 330) {
+//            value += 3;
+//        } else if (value < MAXVALUE) {
+//            delayValue ++;
+//            if (delayValue > 40 && delayValue < 180) {
+//                if (delayValue % 2 == 0) {
+//                    value += 2;
+//                }
+//            }
+//            if (delayValue > 280){
+//                value += 2;
+//            }
+//        } else {
+//            value = MAXVALUE;
+//            done = true;
+//        }
     }
 
     public static void setValue(double v) {
