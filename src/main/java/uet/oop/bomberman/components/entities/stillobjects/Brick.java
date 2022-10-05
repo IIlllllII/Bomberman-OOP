@@ -57,6 +57,11 @@ public class Brick extends Entity {
     @Override
     public void update() {
         time += Timer.getInstance().getDeltaTime();
-        image = Sprite.Animation(brickExplodes, time, timeDestroyed);
+        if(destroyed){
+            image = Sprite.Animation(brickExplodes, time, timeDestroyed);
+            if(time == timeDestroyed){
+                image = null;
+            }
+        }
     }
 }
