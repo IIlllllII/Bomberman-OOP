@@ -1,6 +1,7 @@
 package uet.oop.bomberman.core;
 
 import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.entities.players.Bomber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
  */
 public class EntitiesManager {
-    public List<Entity> players = new ArrayList<>();
+    public List<Bomber> players = new ArrayList<>();
     public List<Entity> animatedEntities = new ArrayList<>();
     public List<Entity> grasses = new ArrayList<>();
     public List<Entity> stillObjects = new ArrayList<>();

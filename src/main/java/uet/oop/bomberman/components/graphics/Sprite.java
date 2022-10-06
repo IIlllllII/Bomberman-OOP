@@ -37,7 +37,8 @@ public class Sprite {
         SPRITE_WIDTH = width;
         SPRITE_HEIGHT = height;
         pixels = new int[SPRITE_WIDTH * SPRITE_HEIGHT];
-        posFromSheet = new Point2D(x * SPRITE_WIDTH, y * SPRITE_HEIGHT);
+        //posFromSheet = new Point2D(x * SPRITE_WIDTH, y * SPRITE_HEIGHT);
+        posFromSheet = new Point2D(x, y);
         this.sheet = sheet;
         loadPixelFromSheet();
     }
