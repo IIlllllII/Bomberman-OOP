@@ -5,14 +5,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
-import uet.oop.bomberman.components.maps.Map;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 
 public class PlayScene {
     private final Group root;
     private Canvas canvas;
     private GraphicsContext gc;
-    private Map map;
+    private LevelMap levelMap;
 
     public PlayScene() {
         canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
@@ -26,7 +26,7 @@ public class PlayScene {
 
         root.getChildren().addAll(canvas, playButton);
 
-        map = new Map();
+        levelMap = new LevelMap();
     }
 
     public Group getRoot() {
@@ -36,13 +36,13 @@ public class PlayScene {
     public void update() {
         root.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.N) {
-                map.nextLevel();
+                levelMap.nextLevel();
             }
         });
     }
 
     public  void render() {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
-        map.render(gc);
+        levelMap.render(gc);
     }
 }
