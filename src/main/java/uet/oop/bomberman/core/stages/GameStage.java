@@ -57,7 +57,6 @@ public class GameStage {
             @Override
             public void handle(long now) {
                 timer.update(now / 1000000);
-                System.out.println(timer.getDeltaTime());
                 render();
                 update();
             }
