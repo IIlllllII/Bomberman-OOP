@@ -1,86 +1,83 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import uet.oop.bomberman.core.Camera;
+import uet.oop.bomberman.components.entities.stillobjects.Brick;
+import uet.oop.bomberman.components.entities.stillobjects.Grass;
+import uet.oop.bomberman.components.entities.stillobjects.Wall;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class LevelMap {
-    private static LinkedList<Image> map = null;
     private int[][] mapHash;
+    private Grass grass;
+    private Wall wall;
+    private final static List<Brick> brickList = new ArrayList<>();
     private int level;
 
     public static void init() {
-        map = new LinkedList<>();
-
-        try {
-            for (int i = 1; i <= 3; i++) {
-                map.add(new Image(LevelMap.class.getResource("/map/grass" + i + ".png").toURI().toString()));
-                map.add(new Image(LevelMap.class.getResource("/map/wall" + i + ".png").toURI().toString()));
-                map.add(new Image(LevelMap.class.getResource("/map/brick" +  i + ".png").toURI().toString()));
-            }
-        } catch (URISyntaxException | NullPointerException e) {
-            System.out.println("Error in map");
-        }
+        Grass.init();
+        Wall.init();
+        Brick.init();
     }
 
     public LevelMap() {
         level = 0;
-        mapHash = new int[13][31];
-
         nextLevel();
     }
 
-    public void render(GraphicsContext render) {
-        Camera camera = Camera.getInstance();
+    public void render(GraphicsContext gc) {
         for(int i = 0; i < mapHash.length; ++i) {
             for(int j = 0; j < mapHash[i].length; ++j) {
-                int temp = ((level - 1) / 3 ) * 3;
-                temp = 6;
-                render.drawImage(map.get(temp), (32 * j) - camera.getX(), (32 * i) - camera.getY(), 32, 32);
+                grass.setLocation(32 * j, 32 * i);
+                grass.render(gc);
 
-                if (mapHash[i][j] == 3) {
-                    render.drawImage(map.get(2 + temp), (32 * j) - camera.getX(), (32 * i) - camera.getY(), 32, 32);
-                } else if (mapHash[i][j] == 1) {
-                    render.drawImage(map.get(1 + temp), (32 * j) - camera.getX(), (32 * i) - camera.getY(), 32,32);
+                if (mapHash[i][j] == 1) {
+                    wall.setLocation(32 * j, 32 * i);
+                    wall.render(gc);
                 }
             }
         }
-
+        //Render all bricks
+        brickList.forEach(entity -> entity.render(gc));
     }
 
     public void nextLevel() {
         level++;
-        if (level > 9) {
-            level = 1;
-        }
+        level = (level > 3) ? 1 : level;
+
+        grass = new Grass(0,0,level);
+        wall = new Wall(0,0,level);
+        brickList.clear();
 
         try {
             File file = new File(LevelMap.class.getResource("/map/map" + level + ".map").toURI());
             Scanner scanner = new Scanner(file);
-            for (int i = 0; i < 13; i++) {
+            int row = scanner.nextInt();
+            int column = scanner.nextInt();
+            String temp = scanner.nextLine();   //skip endline after reading integers.
+
+            mapHash = new int[row][column];
+            for (int i = 0; i < row; i++) {
                 String[] tile = (scanner.nextLine()).split(",");
-                for (int j = 0; j < 31; j++) {
+                for (int j = 0; j < column; j++) {
                     int hash = Integer.parseInt(tile[j]);
-                    if (!(hash > 0 && hash < 4)) {
-                        if (hash == 9) {
-                            hash = 3;
-                        } else {
-                            hash = 2;
-                        }
-                    }
+
                     mapHash[i][j] = hash;
+                    if (hash == 3) {
+                        brickList.add(
+                                new Brick(32 * j, 32 * i, level)
+                        );
+                    }
                 }
             }
         } catch (URISyntaxException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 //    public int[][] getMapHash() {
