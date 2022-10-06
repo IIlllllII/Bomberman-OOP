@@ -28,8 +28,8 @@ public class Wall extends Entity {
             initialized = true;
         }
     }
-    public Wall(int x, int y, int level) {
-        super(x, y);
+    public Wall(int x, int y, int width, int height, int level){
+        super(x, y, width, height);
         this.level = level;
     }
 
@@ -40,7 +40,7 @@ public class Wall extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(LevelMap levelMap) {
 
     }
 }

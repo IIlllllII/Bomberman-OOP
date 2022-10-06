@@ -9,6 +9,7 @@ import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
 import uet.oop.bomberman.sound.Sound;
 
@@ -48,9 +49,14 @@ public class Bomb extends Entity {
     /**
      * Create bomb.
      */
-    public Bomb(double x, double y, int flameLength, Bomber bomber) {
-        super(x, y);
+    public Bomb(double x, double y, int width, int height, int flameLength, Bomber bomber) {
+        super(x, y, width, height);
         this.flameLength = flameLength;
+        this.bomber = bomber;
+    }
+
+    public Bomb(double x, double y, int width, int height, Bomber bomber){
+        super(x, y, width, height);
         this.bomber = bomber;
     }
 
@@ -71,7 +77,7 @@ public class Bomb extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(LevelMap levelMap) {
         time += Timer.getInstance().getDeltaTime();
         if (! explode) {
             if (allowPass) {
@@ -91,13 +97,14 @@ public class Bomb extends Entity {
                 image = null;
             }
         }
+
     }
 
     /**
      * Kích hoạt phát nổ bom.
      */
     private void explosion() {
-        flameList.add(new Flame(x, y ,4, false));
+        flameList.add(new Flame(x, y ,width, height, 4, false));
         //check vị trí brick
         // check vị trí của bomber
         //check vị trí của monster ....

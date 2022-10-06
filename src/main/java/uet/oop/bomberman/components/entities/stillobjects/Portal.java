@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 
 public class Portal extends Entity {
     public static boolean initialized = false;
@@ -17,8 +18,8 @@ public class Portal extends Entity {
         }
     }
 
-    public Portal(int x, int y){
-        super(x, y);
+    public Portal(int x, int y, int width, int height){
+        super(x, y, width, height);
     }
 
     @Override
@@ -27,7 +28,7 @@ public class Portal extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(LevelMap levelMap) {
 
     }
 }

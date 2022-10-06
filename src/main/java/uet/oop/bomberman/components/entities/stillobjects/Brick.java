@@ -39,10 +39,9 @@ public class Brick extends Entity {
             initialized = true;
         }
     }
-    public Brick(int x, int y, int level) {
-        super(x, y);
+    public Brick(int x, int y, int width, int height, int level){
+        super(x, y, width, height);
         this.level = level;
-        image = bricks.get(level - 1);
     }
 
     public void setDestroyed(boolean destroyed) {
@@ -55,7 +54,7 @@ public class Brick extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(LevelMap levelMap) {
         time += Timer.getInstance().getDeltaTime();
         if(destroyed){
             image = Sprite.animate(brickExplodes, time, timeDestroyed);

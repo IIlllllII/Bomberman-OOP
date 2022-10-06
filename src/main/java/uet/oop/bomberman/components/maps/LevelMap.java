@@ -50,8 +50,8 @@ public class LevelMap {
         level++;
         level = (level > 3) ? 1 : level;
 
-        grass = new Grass(0,0,level);
-        wall = new Wall(0,0,level);
+        grass = new Grass(0,0, 0 , 0,level);
+        wall = new Wall(0,0, 0, 0, level);
         brickList.clear();
 
         try {
@@ -70,7 +70,7 @@ public class LevelMap {
                     mapHash[i][j] = hash;
                     if (hash == 3) {
                         brickList.add(
-                                new Brick(32 * j, 32 * i, level)
+                                new Brick(32 * j, 32 * i, 32, 32, level)
                         );
                     }
                 }

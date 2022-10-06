@@ -28,8 +28,8 @@ public class Grass extends Entity {
             initialized =true;
         }
     }
-    public Grass(int x, int y, int level){
-        super(x, y);
+    public Grass(int x, int y, int width, int height, int level){
+        super(x, y, width, height);
         this.level = level;
     }
 
@@ -39,7 +39,7 @@ public class Grass extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(LevelMap levelMap) {
 
     }
 }

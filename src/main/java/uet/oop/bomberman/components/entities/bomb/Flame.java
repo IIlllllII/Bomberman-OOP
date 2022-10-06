@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
 
 import java.util.LinkedList;
@@ -58,15 +59,15 @@ public class Flame extends Entity {
         }
     }
 
-    public Flame(double x, double y, int flameDirection, boolean last) {
-        super(x, y);
+    public Flame(double x, double y,int width, int height, int flameDirection, boolean last) {
+        super(x, y, width, height);
         this.flameDirection = flameDirection;
         this.last = last;
     }
 
 
     @Override
-    public void update() {
+    public void update(LevelMap levelMap) {
         time += Timer.getInstance().getDeltaTime();
         switch (flameDirection) {
             case 0:
