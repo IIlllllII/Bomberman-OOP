@@ -41,10 +41,9 @@ public class Map {
                 int temp = ((level - 1) / 3 ) * 3;
                 temp = 6;
                 render.drawImage(map.get(temp), (32 * j)    , (32 * i), 32, 32);
-
-                if (mapHash[i][j] == 3) {
+                if (mapHash[i][j] == 1) {
                     render.drawImage(map.get(2 + temp), (32 * j), (32 * i), 32, 32);
-                } else if (mapHash[i][j] == 1) {
+                } else if (mapHash[i][j] == 3) {
                     render.drawImage(map.get(1 + temp), (32 * j), (32 * i), 32,32);
                 }
             }
@@ -54,7 +53,7 @@ public class Map {
 
     public void nextLevel() {
         level++;
-        if (level > 9) {
+        if (level > 7) {
             level = 1;
         }
 
