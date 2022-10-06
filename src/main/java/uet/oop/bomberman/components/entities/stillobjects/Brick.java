@@ -15,10 +15,10 @@ public class Brick extends Entity {
     public static LinkedList<Image> bricks;
     public static LinkedList<Image> brickExplodes;
     public static boolean initialized = false;
-    private final int level;
     private boolean destroyed = false; // bị phá hủy chưa
     private final double timeDestroyed = 1000; // thời gian phá hủy
     private double time = 0;
+    private final int level;
 
     public static void init() {
         if (!initialized) {
@@ -39,7 +39,12 @@ public class Brick extends Entity {
             initialized = true;
         }
     }
-    public Brick(int x, int y, int width, int height, int level){
+    public Brick(double x, double y, int width, int height) {
+        super(x, y, width, height);
+        this.level = LevelMap.getInstance().getLevel();
+    }
+
+    public Brick(double x, double y, int width, int height, int level) {
         super(x, y, width, height);
         this.level = level;
     }
@@ -50,11 +55,11 @@ public class Brick extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(image, x, y);
+        gc.drawImage(image, x - camera.getX(), y - camera.getY());
     }
 
     @Override
-    public void update(LevelMap levelMap) {
+    public void update() {
         time += Timer.getInstance().getDeltaTime();
         if(destroyed){
             image = Sprite.animate(brickExplodes, time, timeDestroyed);

@@ -59,7 +59,7 @@ public class Camera {
         this.height = height;
     }
 
-    public void update(LevelMap levelMap) {
+    public void update() {
         Bomber bomber = EntitiesManager.getInstance().players.get(0);
 
         this.x = (bomber.getX() + bomber.getWidth() / 2.0) - GameConfig.WIDTH / 2.0;
@@ -73,6 +73,7 @@ public class Camera {
             this.y = 0;
         }
 
+        LevelMap levelMap = LevelMap.getInstance();
         if (this.x > levelMap.getWidth() - this.width) {
             this.x = levelMap.getWidth() - this.width;
         }

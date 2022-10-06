@@ -1,9 +1,7 @@
 package uet.oop.bomberman.components.entities;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.components.graphics.Sprite;
-import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.Camera;
 
 public abstract class Entity {
     protected double x;
@@ -13,6 +11,8 @@ public abstract class Entity {
     protected int height;
 
     protected boolean active;
+
+    protected final Camera camera = Camera.getInstance();
 
     public Entity() {
         x = 0;
@@ -61,5 +61,5 @@ public abstract class Entity {
 
     public abstract void render(GraphicsContext gc);
 
-    public abstract void update(LevelMap levelMap);
+    public abstract void update();
 }

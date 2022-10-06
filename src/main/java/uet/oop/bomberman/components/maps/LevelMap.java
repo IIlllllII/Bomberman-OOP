@@ -19,15 +19,23 @@ public class LevelMap {
     private final static List<Brick> brickList = new ArrayList<>();
     private int level;
 
+    private static class SingletonHelper {
+        private static final LevelMap INSTANCE = new LevelMap();
+    }
+
+    public static LevelMap getInstance() {
+        return SingletonHelper.INSTANCE;
+    }
+
+    private LevelMap() {
+        level = 0;
+        nextLevel();
+    }
+
     public static void init() {
         Grass.init();
         Wall.init();
         Brick.init();
-    }
-
-    public LevelMap() {
-        level = 0;
-        nextLevel();
     }
 
     public void render(GraphicsContext gc) {
@@ -50,7 +58,7 @@ public class LevelMap {
         level++;
         level = (level > 3) ? 1 : level;
 
-        grass = new Grass(0,0, 0 , 0,level);
+        grass = new Grass(0,0, 0 , 0, level);
         wall = new Wall(0,0, 0, 0, level);
         brickList.clear();
 
@@ -80,9 +88,9 @@ public class LevelMap {
         }
     }
 
-//    public int[][] getMapHash() {
-//        return this.mapHash;
-//    }
+    public int getLevel() {
+        return level;
+    }
 
     public int getWidth() {
         return this.mapHash[0].length * 32;
@@ -90,5 +98,27 @@ public class LevelMap {
 
     public int getHeight() {
         return this.mapHash.length * 32;
+    }
+
+    public int[][] getMapHash() {
+        return this.mapHash;
+    }
+
+    public int getHash(String input) {
+        int output = 0;
+        switch (input) {
+            case "grass":
+                //output = ?;
+                break;
+            case "brick":
+                output = 3;
+                break;
+            case "wall":
+                output = 1;
+                break;
+            default:
+                break;
+        }
+        return output;
     }
 }

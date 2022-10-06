@@ -39,9 +39,9 @@ public class Bomb extends Entity {
             soundPlaceBomb = new Sound(Sound.PLACE_BOMB_SOUND);
             soundExplode = new Sound(Sound.EXPLODE_SOUND);
             SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 3, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 3, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 2, 3, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(16, 0, 3 * 16, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(16, 16, 3 * 16, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(16, 32, 3 * 16, tiles, 15, 15).getFxImage());
             initialized = true;
         }
     }
@@ -77,7 +77,7 @@ public class Bomb extends Entity {
     }
 
     @Override
-    public void update(LevelMap levelMap) {
+    public void update() {
         time += Timer.getInstance().getDeltaTime();
         if (! explode) {
             if (allowPass) {

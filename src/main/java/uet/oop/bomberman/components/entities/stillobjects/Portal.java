@@ -13,7 +13,7 @@ public class Portal extends Entity {
     public static void init() {
         if (! initialized) {
             SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
-            portal = new Sprite(Sprite.DEFAULT_SIZE, 4, 0, tiles, 14, 14).getFxImage();
+            portal = new Sprite(16, 4 * 16, 0, tiles, 14, 14).getFxImage();
             initialized = true;
         }
     }
@@ -24,11 +24,11 @@ public class Portal extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(portal, x, y);
+        gc.drawImage(portal, x - camera.getX(), y - camera.getY());
     }
 
     @Override
-    public void update(LevelMap levelMap) {
+    public void update() {
 
     }
 }

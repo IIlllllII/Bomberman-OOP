@@ -8,9 +8,7 @@ import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
-import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
-import uet.oop.bomberman.core.Camera;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +27,6 @@ public class Bomber extends Entity implements Movable, Killable {
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
     private Direction direction = Direction.DOWN;
-
-    private Camera camera = Camera.getInstance();
 
     public static void init() {
         if (! initialized) {
@@ -102,13 +98,13 @@ public class Bomber extends Entity implements Movable, Killable {
     }
 
     @Override
-    public void update(LevelMap levelMap) {
+    public void update() {
         if (playerStatus == PlayerStatus.MOVING) {
             currentSpriteIndex++;
             if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move(4, direction, levelMap);
+            move(4, direction);
         }
 
         //Demo "die" status.
@@ -156,7 +152,7 @@ public class Bomber extends Entity implements Movable, Killable {
     }
 
     @Override
-    public void move(int steps, Direction direction, LevelMap levelMap) {
+    public void move(int steps, Direction direction) {
         //Note: `steps` is always positive when passed.
 
         if (playerStatus == PlayerStatus.IDLE) {
@@ -180,6 +176,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 break;
         }
 
+        LevelMap levelMap = LevelMap.getInstance();
         if ((x < 0) || (x + width > levelMap.getWidth())) {
             //Move back
             x -= steps;
