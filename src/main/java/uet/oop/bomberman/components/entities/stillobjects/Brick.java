@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
+import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
 
@@ -23,19 +24,14 @@ public class Brick extends Entity {
     public static void init() {
         if (!initialized) {
             bricks = new LinkedList<>();
-            //SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
+            SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
             try {
-                for (int i = 1; i <= 3; i++) {
-                    bricks.add(new Image(LevelMap.class.getResource("/map/brick" + i + ".png").toURI().toString()));
-                }
+                bricks.add(new Image(LevelMap.class.getResource("/map/brick1.png").toURI().toString()));
+                bricks.add(new Image(LevelMap.class.getResource("/map/brick2.png").toURI().toString()));
+                bricks.add(new Sprite(16, 16, 3 * 16, newTiles, 16, 16).getFxImage());
             } catch (URISyntaxException | NullPointerException e) {
                 e.printStackTrace();
             }
-
-            //SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
-//            brickExplodes.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 4, tiles, 16, 16).getFxImage());
-//            brickExplodes.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 5, tiles, 16, 16).getFxImage());
-//            brickExplodes.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 6, tiles, 16, 16).getFxImage());
             initialized = true;
         }
     }
@@ -55,7 +51,7 @@ public class Brick extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(image, x - camera.getX(), y - camera.getY());
+        gc.drawImage(bricks.get(level - 1), x - camera.getX(), y - camera.getY());
     }
 
     @Override
