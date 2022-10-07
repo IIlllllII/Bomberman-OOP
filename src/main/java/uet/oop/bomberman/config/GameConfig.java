@@ -1,12 +1,10 @@
 package uet.oop.bomberman.config;
 
 public class GameConfig {
-
     public static final String NAME = "Bomberman";
-
     public static final int WIDTH = 496;
-
     public static final int HEIGHT = 416;
+    public static final int TILE_SIZE = 32;
 
     public static final int PLAYER_WIDTH = 18;
 

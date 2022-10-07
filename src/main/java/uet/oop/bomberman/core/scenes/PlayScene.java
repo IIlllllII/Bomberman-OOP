@@ -4,7 +4,9 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.Map;
 import uet.oop.bomberman.config.GameConfig;
 

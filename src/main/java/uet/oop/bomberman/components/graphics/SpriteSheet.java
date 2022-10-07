@@ -15,7 +15,6 @@ public class SpriteSheet {
     public static SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
     //public static SpriteSheet tiles = new SpriteSheet("/sprites/bomb_explosion.png", 213, 72);
     public static SpriteSheet characters = new SpriteSheet("/sprites/sprites_without_border.png",439, 169);
-
     public static SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
     public SpriteSheet(String path, int width, int height) {
         this.path = path;
