@@ -16,8 +16,8 @@ public abstract class Entity {
     }
 
     public Entity(double x, double y) {
-        this.x = x * GameConfig.SCALED_FACTOR * Sprite.DEFAULT_SIZE;
-        this.y = y * GameConfig.SCALED_FACTOR * Sprite.DEFAULT_SIZE;
+        this.x = x;
+        this.y = y;
         active = true;
     }
 

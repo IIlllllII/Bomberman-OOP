@@ -15,7 +15,7 @@ import uet.oop.bomberman.sound.Sound;
 import java.util.LinkedList;
 
 public class Bomb extends Entity {
-    public static boolean INIT = false;
+    public static boolean initialized = false;
     private Image image;
     public static LinkedList<Image> bombs;
     public static LinkedList<Flame> flameList = new LinkedList<>();
@@ -24,7 +24,7 @@ public class Bomb extends Entity {
     private Bomber bomber;
     private int flameLength = 1;
     private int timeBeforeExplode = 1500;
-    private double flameTime = 1000;
+    private final double flameTime = 1000;
     private double time = 0;
 
     public static Sound soundPlaceBomb;
@@ -34,14 +34,14 @@ public class Bomb extends Entity {
      * initialization image and sound Bomb.
      */
     public static void init() {
-        if (!INIT) {
+        if (!initialized) {
             soundPlaceBomb = new Sound(Sound.PLACE_BOMB_SOUND);
             soundExplode = new Sound(Sound.EXPLODE_SOUND);
-            SpriteSheet tiles = new SpriteSheet("src/main/resources/textures/classic.png", 256, 256);
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 3, SpriteSheet.tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 3, SpriteSheet.tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 2, 3, SpriteSheet.tiles, 15, 15).getFxImage());
-            INIT = true;
+            SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
+            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 3, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 3, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 2, 3, tiles, 15, 15).getFxImage());
+            initialized = true;
         }
     }
 
@@ -73,7 +73,7 @@ public class Bomb extends Entity {
     @Override
     public void update() {
         time += Timer.getInstance().getDeltaTime();
-        if (!explode) {
+        if (! explode) {
             if (allowPass) {
                 double subX = bomber.getX() - getX();
                 double subY = bomber.getY() - getY();
@@ -82,7 +82,7 @@ public class Bomb extends Entity {
                 }
             }
             if (time < timeBeforeExplode) {
-                image = Sprite.Animation(bombs, time, timeBeforeExplode);
+                image = Sprite.animate(bombs, time, timeBeforeExplode);
             } else {
                 explode = true;
                 explosion();
@@ -118,7 +118,7 @@ public class Bomb extends Entity {
             bomb.setTimeBeforeExplode(100);
         }
         return true;
-        // thêm phần cộng điểm , và qua các monster
+        //TODO: thêm phần cộng điểm, và qua các monster
     }
     @Override
     public void render(GraphicsContext gc) {

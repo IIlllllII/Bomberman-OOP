@@ -3,38 +3,39 @@ package uet.oop.bomberman.components.entities.stillobjects;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 
 public class Grass extends Entity {
     public static LinkedList<Image> grasses;
-    public static boolean INIT = false;
-    private int lever;
+    public static boolean initialized = false;
+    private final int level;
 
     public static void init() {
-        if (!INIT) {
+        if (!initialized) {
             grasses = new LinkedList<>();
             SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
-            grasses.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 0, SpriteSheet.newTiles, 32, 32).getFxImage());
-            grasses.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 1, SpriteSheet.newTiles, 32, 32).getFxImage());
-            grasses.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 2, SpriteSheet.newTiles, 32, 32).getFxImage());
-            grasses.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 3, SpriteSheet.newTiles, 32, 32).getFxImage());
-            grasses.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 4, SpriteSheet.newTiles, 32, 32).getFxImage());
-            grasses.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 5, SpriteSheet.newTiles, 32, 32).getFxImage());
-            grasses.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 6, SpriteSheet.newTiles, 32, 32).getFxImage());
-            INIT =true;
+            try {
+                grasses.add(new Image(LevelMap.class.getResource("/map/grass" +  1 + ".png").toURI().toString()));
+                grasses.add(new Image(LevelMap.class.getResource("/map/grass" +  2 + ".png").toURI().toString()));
+                grasses.add(new Image(LevelMap.class.getResource("/map/grass" +  3 + ".png").toURI().toString()));
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+            initialized =true;
         }
     }
-    public Grass(int x, int y, int lever){
+    public Grass(int x, int y, int level){
         super(x, y);
-        this.lever = lever;
+        this.level = level;
     }
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(grasses.get(lever - 1), x, y);
+        gc.drawImage(grasses.get(level - 1), x, y);
     }
 
     @Override

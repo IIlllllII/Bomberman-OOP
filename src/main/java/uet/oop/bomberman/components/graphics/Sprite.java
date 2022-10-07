@@ -14,15 +14,12 @@ import java.util.LinkedList;
 public class Sprite {
 
     public static final int DEFAULT_SIZE = 16;
-    public static final int SCALED_SIZE = DEFAULT_SIZE * GameConfig.SCALED_FACTOR;
     private static final int TRANSPARENT_COLOR = 0xffff00ff;
     public final int SPRITE_WIDTH;
     public final int SPRITE_HEIGHT;
 
     private Point2D posFromSheet;
     public int[] pixels;
-    private int actualWidth;
-    private int actualHeight;
     private SpriteSheet sheet;
 
     public Sprite(int width, int height, int color) {
@@ -41,8 +38,6 @@ public class Sprite {
         pixels = new int[SPRITE_WIDTH * SPRITE_HEIGHT];
         posFromSheet = new Point2D(x * SPRITE_WIDTH, y * SPRITE_HEIGHT);
         this.sheet = sheet;
-        actualWidth = aw;
-        actualHeight = ah;
         loadPixelFromSheet();
     }
 
@@ -58,21 +53,16 @@ public class Sprite {
         }
     }
 
-    public static final Image Animation(LinkedList<Image> images, double time, double timeTakesPlace) {
+    public static Image animate(LinkedList<Image> images, double time, double timeTakesPlace) {
         double diff = timeTakesPlace / images.size();
 
-        for(int i=1; i<=images.size(); i++){
-            if(time < diff * i){
-                return images.get(i-1);
+        for (int i = 1; i <= images.size(); i++) {
+            if (time < diff * i) {
+                return images.get(i - 1);
             }
         }
-        return images.get(images.size());
+        return images.get(images.size() - 1);
     }
-
-//    public static Sprite movingSprite(Sprite x1, Sprite x2, int animate, int time) {
-//        int diff = time / 2;
-//        return (animate % time > diff) ? x1 : x2;
-//    }
 
     public int getWidth() {
         return SPRITE_WIDTH;
@@ -131,36 +121,4 @@ public class Sprite {
         }
         return output;
     }
-
-    /*
-|--------------------------------------------------------------------------
-| Board sprites
-|--------------------------------------------------------------------------
- */
-    public static Sprite grass = new Sprite(
-            DEFAULT_SIZE, DEFAULT_SIZE, 6, 0, SpriteSheet.tiles, 16, 16
-    );
-    public static Sprite brick = new Sprite(
-            DEFAULT_SIZE, 7, 0, SpriteSheet.tiles, 16, 16
-    );
-    public static Sprite wall = new Sprite(
-            DEFAULT_SIZE, 5, 0, SpriteSheet.tiles, 16, 16
-    );
-    public static Sprite portal = new Sprite(
-            DEFAULT_SIZE, 4, 0, SpriteSheet.tiles, 14, 14
-    );
-
-    public static Sprite player = new Sprite(
-            19, 22, 0, 0, SpriteSheet.characters,19, 22
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Bomb Sprites
-    |--------------------------------------------------------------------------
-     */
-    public static Sprite bomb = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.tiles, 15, 15);
-    public static Sprite bomb_1 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.tiles, 13, 15);
-    public static Sprite bomb_2 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.tiles, 12, 14);
-
 }

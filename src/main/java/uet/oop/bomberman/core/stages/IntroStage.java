@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import uet.oop.bomberman.components.maps.Map;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.net.URISyntaxException;
@@ -55,7 +55,7 @@ public class IntroStage {
         }
 
         (new Thread(() -> {
-            Map.init();
+            LevelMap.init();
 //            Bomb.init();
 //            Item.init();
 //            Balloom.init();

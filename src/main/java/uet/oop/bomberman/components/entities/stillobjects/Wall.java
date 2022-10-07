@@ -3,40 +3,40 @@ package uet.oop.bomberman.components.entities.stillobjects;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 
+import java.net.URISyntaxException;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Wall extends Entity {
     public static LinkedList<Image> walls;
-    public static boolean INIT = false;
-    private int lever;
+    public static boolean initialized = false;
+    private final int level;
 
-    public  static  void init(){
-        if(!INIT){
+    public  static  void init() {
+        if (!initialized) {
             walls = new LinkedList<>();
             SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
-            walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 0, SpriteSheet.newTiles, 32, 32).getFxImage());
-            walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 1, SpriteSheet.newTiles, 32, 32).getFxImage());
-            walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 2, SpriteSheet.newTiles, 32, 32).getFxImage());
-            walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 3, SpriteSheet.newTiles, 32, 32).getFxImage());
-            walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 4, SpriteSheet.newTiles, 32, 32).getFxImage());
-            walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 5, SpriteSheet.newTiles, 32, 32).getFxImage());
-            walls.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 6, SpriteSheet.newTiles, 32, 32).getFxImage());
-
+            try {
+                for (int i = 1; i <= 3; i++) {
+                    walls.add(new Image(LevelMap.class.getResource("/map/wall" + i + ".png").toURI().toString()));
+                }
+            } catch (URISyntaxException | NullPointerException e) {
+                e.printStackTrace();
+            }
+            initialized = true;
         }
     }
-    public Wall(int x, int y, int lever){
+    public Wall(int x, int y, int level) {
         super(x, y);
-        this.lever = lever;
+        this.level = level;
     }
 
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(walls.get(lever -1),x, y);
+        gc.drawImage(walls.get(level -1),x, y);
     }
 
     @Override
