@@ -1,6 +1,7 @@
 package uet.oop.bomberman.core;
 
 import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.players.Bomber;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class EntitiesManager {
     public List<Entity> grasses = new ArrayList<>();
     public List<Entity> stillObjects = new ArrayList<>();
     public List<Entity> items = new ArrayList<>();
+    public Bomb bomb ;
     private EntitiesManager() {}
 
     private static class SingletonHelper {

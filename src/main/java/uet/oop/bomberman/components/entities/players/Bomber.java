@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.Killable;
 import uet.oop.bomberman.components.entities.Movable;
+import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -21,6 +22,7 @@ public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
 
+    private Bomb bomb ;
     private int lives = 3;
 
     private int currentSpriteIndex = 0;
