@@ -104,6 +104,10 @@ public class LevelMap {
         return this.mapHash;
     }
 
+    public void setMapHash(int i, int j, int value) {
+        mapHash[i][j] = value;
+    }
+
     public int getHash(String input) {
         int output = 0;
         switch (input) {

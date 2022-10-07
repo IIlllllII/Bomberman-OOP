@@ -7,6 +7,7 @@ public enum Direction {
     LEFT("left", 2),
     RIGHT("right", 3);
 
+
     public final String label;
     public final int index;
     Direction(String label, int index) {
