@@ -28,14 +28,19 @@ public class Grass extends Entity {
             initialized =true;
         }
     }
-    public Grass(int x, int y, int level){
-        super(x, y);
+    public Grass(int x, int y, int width, int height){
+        super(x, y, width, height);
+        this.level = LevelMap.getInstance().getLevel();
+    }
+
+    public Grass(int x, int y, int width, int height, int level) {
+        super(x, y, width, height);
         this.level = level;
     }
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(grasses.get(level - 1), x, y);
+        gc.drawImage(grasses.get(level - 1), x - camera.getX(), y - camera.getY());
     }
 
     @Override

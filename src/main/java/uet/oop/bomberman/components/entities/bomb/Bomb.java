@@ -9,6 +9,7 @@ import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
 import uet.oop.bomberman.sound.Sound;
 
@@ -38,9 +39,9 @@ public class Bomb extends Entity {
             soundPlaceBomb = new Sound(Sound.PLACE_BOMB_SOUND);
             soundExplode = new Sound(Sound.EXPLODE_SOUND);
             SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 0, 3, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 1, 3, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(Sprite.DEFAULT_SIZE, 2, 3, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(16, 0, 3 * 16, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(16, 16, 3 * 16, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(16, 32, 3 * 16, tiles, 15, 15).getFxImage());
             initialized = true;
         }
     }
@@ -48,9 +49,14 @@ public class Bomb extends Entity {
     /**
      * Create bomb.
      */
-    public Bomb(double x, double y, int flameLength, Bomber bomber) {
-        super(x, y);
+    public Bomb(double x, double y, int width, int height, int flameLength, Bomber bomber) {
+        super(x, y, width, height);
         this.flameLength = flameLength;
+        this.bomber = bomber;
+    }
+
+    public Bomb(double x, double y, int width, int height, Bomber bomber){
+        super(x, y, width, height);
         this.bomber = bomber;
     }
 
@@ -91,13 +97,14 @@ public class Bomb extends Entity {
                 image = null;
             }
         }
+
     }
 
     /**
      * Kích hoạt phát nổ bom.
      */
     private void explosion() {
-        flameList.add(new Flame(x, y ,4, false));
+        flameList.add(new Flame(x, y ,width, height, 4, false));
         //check vị trí brick
         // check vị trí của bomber
         //check vị trí của monster ....

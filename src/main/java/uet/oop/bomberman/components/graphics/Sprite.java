@@ -10,10 +10,9 @@ import uet.oop.bomberman.config.GameConfig;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Sprite {
-
-    public static final int DEFAULT_SIZE = 16;
     private static final int TRANSPARENT_COLOR = 0xffff00ff;
     public final int SPRITE_WIDTH;
     public final int SPRITE_HEIGHT;
@@ -36,7 +35,7 @@ public class Sprite {
         SPRITE_WIDTH = width;
         SPRITE_HEIGHT = height;
         pixels = new int[SPRITE_WIDTH * SPRITE_HEIGHT];
-        posFromSheet = new Point2D(x * SPRITE_WIDTH, y * SPRITE_HEIGHT);
+        posFromSheet = new Point2D(x, y);
         this.sheet = sheet;
         loadPixelFromSheet();
     }
@@ -53,7 +52,7 @@ public class Sprite {
         }
     }
 
-    public static Image animate(LinkedList<Image> images, double time, double timeTakesPlace) {
+    public static Image animate(List<Image> images, double time, double timeTakesPlace) {
         double diff = timeTakesPlace / images.size();
 
         for (int i = 1; i <= images.size(); i++) {
