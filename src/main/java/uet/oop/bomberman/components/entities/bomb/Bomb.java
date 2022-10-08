@@ -9,7 +9,6 @@ import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
 import uet.oop.bomberman.sound.Sound;
 
@@ -38,7 +37,7 @@ public class Bomb extends Entity {
         if (!initialized) {
             soundPlaceBomb = new Sound(Sound.PLACE_BOMB_SOUND);
             soundExplode = new Sound(Sound.EXPLODE_SOUND);
-            SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
+            SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
             bombs.add(new Sprite(16, 0, 3 * 16, tiles, 15, 15).getFxImage());
             bombs.add(new Sprite(16, 16, 3 * 16, tiles, 15, 15).getFxImage());
             bombs.add(new Sprite(16, 32, 3 * 16, tiles, 15, 15).getFxImage());

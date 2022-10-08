@@ -30,7 +30,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public static void init() {
         if (! initialized) {
-            SpriteSheet bombermanSheet = new SpriteSheet("/sprites/bomberman_sheet.png", 256, 128);
+            SpriteSheet bombermanSheet = new SpriteSheet("/spriteSheet/bomberman_sheet.png", 256, 128);
 
             spritesDict.put("idle", new Sprite[] {
                     new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
@@ -84,15 +84,15 @@ public class Bomber extends Entity implements Movable, Killable {
         switch (playerStatus) {
             case IDLE:
                 gc.drawImage(spritesDict.get("idle")[direction.index]
-                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY());
+                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
                 break;
             case MOVING:
                 gc.drawImage(spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 6]
-                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY());
+                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
                 break;
             case DEAD:
                 gc.drawImage(spritesDict.get("dead")[currentSpriteIndex / 6]
-                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY());
+                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
                 break;
         }
     }

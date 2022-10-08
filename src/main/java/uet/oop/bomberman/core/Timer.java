@@ -25,7 +25,11 @@ public class Timer {
     }
 
     public void update(long now) {
-        deltaTime = now - ticks;
+        if (deltaTime == 0.0f) {
+            deltaTime = 14.0f;
+        } else {
+            deltaTime = now - ticks;
+        }
         ticks = now;
     }
 

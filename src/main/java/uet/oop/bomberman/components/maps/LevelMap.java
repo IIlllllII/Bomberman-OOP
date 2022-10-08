@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.maps;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
@@ -8,15 +9,15 @@ import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class LevelMap {
     private int[][] mapHash;
     private Grass grass;
     private Wall wall;
-    private final static List<Brick> brickList = new ArrayList<>();
+    private final Map<Point2D, Brick> brickList = new HashMap<>();
     private int level;
 
     private static class SingletonHelper {
@@ -51,7 +52,11 @@ public class LevelMap {
             }
         }
         //Render all bricks
-        brickList.forEach(entity -> entity.render(gc));
+        brickList.forEach((key, value) -> value.render(gc));
+    }
+
+    public void update() {
+        brickList.forEach((key, value) -> value.update());
     }
 
     public void nextLevel() {
@@ -63,7 +68,7 @@ public class LevelMap {
         brickList.clear();
 
         try {
-            File file = new File(LevelMap.class.getResource("/map/map" + level + ".map").toURI());
+            File file = new File(LevelMap.class.getResource("/sprites/map/map" + level + ".map").toURI());
             Scanner scanner = new Scanner(file);
             int row = scanner.nextInt();
             int column = scanner.nextInt();
@@ -77,14 +82,20 @@ public class LevelMap {
 
                     mapHash[i][j] = hash;
                     if (hash == 3) {
-                        brickList.add(
-                                new Brick(32 * j, 32 * i, 32, 32, level)
-                        );
+                        brickList.put(new Point2D(j, i), new Brick(32 * j, 32 * i, 32, 32, level));
                     }
                 }
             }
         } catch (URISyntaxException | FileNotFoundException e) {
+            System.out.println("next level read file");
             throw new RuntimeException(e);
+        }
+    }
+
+    public void destroyBrick(int i, int j) {
+        Point2D point = new Point2D(j, i);
+        if (brickList.containsKey(point)) {
+            brickList.get(point).setDestroyed(true);
         }
     }
 
@@ -108,7 +119,7 @@ public class LevelMap {
         int output = 0;
         switch (input) {
             case "grass":
-                //output = ?;
+                output = 2;
                 break;
             case "brick":
                 output = 3;
