@@ -10,6 +10,8 @@ import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.PlayerStatus;
+import uet.oop.bomberman.sound.Music;
+import uet.oop.bomberman.sound.Sound;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +38,11 @@ public class Bomber extends Entity implements Movable, Killable {
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
     private Direction direction = Direction.DOWN;
 
+    public static Music movingSound ;
+
     public static void init() {
         if (!initialized) {
+            movingSound = new Music(Music.MOVING_SOUND, true);
             SpriteSheet bombermanSheet = new SpriteSheet("/sprites/bomberman_sheet.png", 256, 128);
 
             spritesDict.put("idle", new Sprite[]{
@@ -115,6 +120,7 @@ public class Bomber extends Entity implements Movable, Killable {
         if (playerStatus == PlayerStatus.MOVING) {
             if(direction.label.equals("bomb")){
                 direction = Direction.DOWN;
+                new Sound(Sound.PLACE_BOMB_SOUND).playSound();
                 if (bombList.size() < bombMaxCount) {
                     int bombX = ((int) this.getX() / 32 + 1)* 32;
                     int bombY = ((int) this.getY() / 32 + 1)* 32;
@@ -129,6 +135,7 @@ public class Bomber extends Entity implements Movable, Killable {
                     }
                 }
             }else{
+                movingSound.playMusic();
                 currentSpriteIndex++;
                 if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                     currentSpriteIndex = 0;
@@ -145,6 +152,9 @@ public class Bomber extends Entity implements Movable, Killable {
                 currentSpriteIndex = 0;
                 playerStatus = PlayerStatus.IDLE;
             }
+        }
+        if(playerStatus == PlayerStatus.IDLE){
+            movingSound.stopMusic();
         }
         for(int i=0; i< bombList.size(); i++){
             if(!bombList.get(i).isDone()){

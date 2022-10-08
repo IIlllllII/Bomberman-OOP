@@ -1,8 +1,10 @@
 package uet.oop.bomberman.sound;
 
 public class Music extends Sound {
-    public static final String MENU_MUSIC = "src/resources/sounds/Title.mp3";
-    public static final String GAME_MUSIC = "src/resources/sounds/inGame.mp3";
+    public static final String MENU_MUSIC = "src/main/resources/sound/Title.mp3";
+    public static final String GAME_MUSIC = "src/main/resources/sound/inGame.mp3";
+
+    public static final String MOVING_SOUND = "src/main/resources/sound/moving.mp3";
     private boolean loops;
 
     public enum MusicStatus {
@@ -55,5 +57,9 @@ public class Music extends Sound {
     public void stopMusic() {
         status = MusicStatus.STOP;
         mediaPlayer.stop();
+    }
+
+    public void setVolume(double volume){
+        mediaPlayer.setVolume(volume);
     }
 }

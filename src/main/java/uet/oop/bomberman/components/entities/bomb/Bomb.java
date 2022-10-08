@@ -33,9 +33,6 @@ public class Bomb extends Entity {
     private double time = 0;
     private boolean done = false;
 
-    public static Sound soundPlaceBomb;
-    public static Sound soundExplode;
-
     /**
      * initialization image and sound Bomb.
      */
@@ -111,6 +108,7 @@ public class Bomb extends Entity {
             } else {
                 image = null;
                 explode = true;
+                new Sound(Sound.EXPLODE_SOUND).playSound();
             }
         } else {
             explosion();

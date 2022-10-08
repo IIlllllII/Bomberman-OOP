@@ -37,6 +37,8 @@ public class PlayScene {
 
         Button playButton = new Button("BACK");
         playButton.setOnMouseClicked(event -> {
+            MenuScene.gameMusic.stopMusic();
+            MenuScene.menuMusic.playMusic();
             SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
         });
 
