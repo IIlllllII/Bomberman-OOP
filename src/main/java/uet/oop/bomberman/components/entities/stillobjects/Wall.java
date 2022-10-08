@@ -28,15 +28,19 @@ public class Wall extends Entity {
             initialized = true;
         }
     }
-    public Wall(int x, int y, int level) {
-        super(x, y);
+    public Wall(int x, int y, int width, int height){
+        super(x, y, width, height);
+        this.level = LevelMap.getInstance().getLevel();
+    }
+
+    public Wall(int x, int y, int width, int height, int level){
+        super(x, y, width, height);
         this.level = level;
     }
 
-
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(walls.get(level -1),x, y);
+        gc.drawImage(walls.get(level - 1), x - camera.getX(), y - camera.getY());
     }
 
     @Override

@@ -1,23 +1,32 @@
 package uet.oop.bomberman.components.entities;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.components.graphics.Sprite;
-import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.Camera;
 
 public abstract class Entity {
     protected double x;
     protected double y;
+
+    protected int width;
+    protected int height;
+
     protected boolean active;
+
+    protected final Camera camera = Camera.getInstance();
 
     public Entity() {
         x = 0;
         y = 0;
+        width = 0;
+        height = 0;
         active = true;
     }
 
-    public Entity(double x, double y) {
+    public Entity(double x, double y, int width, int height) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
         active = true;
     }
 
@@ -27,6 +36,14 @@ public abstract class Entity {
 
     public double getY() {
         return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void setLocation(int x, int y) {
