@@ -10,8 +10,8 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 
 public class Wall extends Entity {
-    public static LinkedList<Image> walls;
-    public static boolean initialized = false;
+    private static LinkedList<Image> walls;
+    private static boolean initialized = false;
     private final int level;
 
     public  static  void init() {
@@ -23,7 +23,8 @@ public class Wall extends Entity {
                     walls.add(new Image(LevelMap.class.getResource("/map/wall" + i + ".png").toURI().toString()));
                 }
             } catch (URISyntaxException | NullPointerException e) {
-                e.printStackTrace();
+                System.out.println("wall inti");
+                //e.printStackTrace();
             }
             initialized = true;
         }

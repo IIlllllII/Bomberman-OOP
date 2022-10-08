@@ -10,8 +10,8 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 
 public class Grass extends Entity {
-    public static LinkedList<Image> grasses;
-    public static boolean initialized = false;
+    private static LinkedList<Image> grasses;
+    private static boolean initialized = false;
     private final int level;
 
     public static void init() {
@@ -23,6 +23,7 @@ public class Grass extends Entity {
                 grasses.add(new Image(LevelMap.class.getResource("/map/grass" +  2 + ".png").toURI().toString()));
                 grasses.add(new Image(LevelMap.class.getResource("/map/grass" +  3 + ".png").toURI().toString()));
             } catch (URISyntaxException e) {
+                System.out.println("grass init");
                 throw new RuntimeException(e);
             }
             initialized =true;

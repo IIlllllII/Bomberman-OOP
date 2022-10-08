@@ -8,6 +8,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.bomb.Flame;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
@@ -59,7 +61,8 @@ public class IntroStage {
 
         (new Thread(() -> {
             LevelMap.init();
-//            Bomb.init();
+            Bomb.init();
+            Flame.init();
 //            Item.init();
 //            Balloom.init();
 //            Doll.init();

@@ -36,11 +36,22 @@ public class PlayScene {
         root = new Group();
 
         Button playButton = new Button("BACK");
-        playButton.setOnAction(event -> {
+        playButton.setOnMouseClicked(event -> {
             SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
         });
 
         root.getChildren().addAll(canvas, playButton);
+
+        root.setOnKeyPressed(event -> {
+            KeyCode code = event.getCode();
+            if (! inputList.contains(code)) {
+                inputList.add(code);
+            }
+        });
+        root.setOnKeyReleased(event -> {
+            KeyCode code = event.getCode();
+            inputList.remove(code);
+        });
 
         entitiesManager.players.add(
                 new Bomber(10, 10, 16 * GameConfig.SCALED_FACTOR, 22 * GameConfig.SCALED_FACTOR)
@@ -53,16 +64,7 @@ public class PlayScene {
     }
 
     public void update() {
-        root.setOnKeyPressed(event -> {
-            KeyCode code = event.getCode();
-            if (! inputList.contains(code)) {
-                inputList.add(code);
-            }
-        });
-        root.setOnKeyReleased(event -> {
-            KeyCode code = event.getCode();
-            inputList.remove(code);
-        });
+
 
         Direction currentDirection = null;
         if (inputList.contains(KeyCode.RIGHT) || inputList.contains(KeyCode.D)) {
@@ -76,6 +78,9 @@ public class PlayScene {
         }
         if (inputList.contains(KeyCode.DOWN) || inputList.contains(KeyCode.S)) {
             currentDirection = Direction.DOWN;
+        }
+        if  (inputList.contains(KeyCode.B)){
+            currentDirection = Direction.BOMB;
         }
 
         //Demo "die" status
@@ -103,6 +108,8 @@ public class PlayScene {
         entitiesManager.players.forEach(
                 Entity::update
         );
+
+        levelMap.update();
     }
 
     public  void render() {

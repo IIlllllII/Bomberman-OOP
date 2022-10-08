@@ -16,7 +16,8 @@ public class LevelMap {
     private int[][] mapHash;
     private Grass grass;
     private Wall wall;
-    private final static List<Brick> brickList = new ArrayList<>();
+    private final List<Brick> brickList = new ArrayList<>();
+
     private int level;
 
     private static class SingletonHelper {
@@ -54,6 +55,9 @@ public class LevelMap {
         brickList.forEach(entity -> entity.render(gc));
     }
 
+    public void update(){
+        brickList.forEach(Brick::update);
+    }
     public void nextLevel() {
         level++;
         level = (level > 3) ? 1 : level;
@@ -104,11 +108,24 @@ public class LevelMap {
         return this.mapHash;
     }
 
+    public void setBrick(int i, int j){
+        mapHash[i][j] = getHash("grass");
+        for(int k=0; k < brickList.size(); k++){
+            if (brickList.get(k).getX() == j * 32.0 && brickList.get(k).getY() == i * 32.0){
+                brickList.get(k).setDestroyed(true);
+            }
+        }
+    }
+
+    public int getMapHash(int i, int j){
+        return mapHash[i][j];
+    }
+
     public int getHash(String input) {
         int output = 0;
         switch (input) {
             case "grass":
-                //output = ?;
+                output = 2;
                 break;
             case "brick":
                 output = 3;
