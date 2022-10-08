@@ -134,6 +134,7 @@ public class Bomb extends Entity {
                 break;
             }
         }
+        System.out.println(l);
         for(int i=1; i<l; i++){
             if(i != (l -1)){
                 flameList.add(new Flame(x - 32 * i, y, width, height, 2, false));
@@ -165,15 +166,12 @@ public class Bomb extends Entity {
         for(; u <= flameLength; u++){
             if(LevelMap.getInstance().getMapHash((int)y/32 - u , (int) x/32 ) == 3){
                 LevelMap.getInstance().setBrick((int)y/32 - u , (int) x/32  );
-            }
-            if(LevelMap.getInstance().getMapHash((int)y/32 - u , (int) x/32 ) == 3){
                 break;
             }
             if (LevelMap.getInstance().getMapHash((int)y/32 - u , (int) x/32 ) == 1) {
                 break;
             }
         }
-        System.out.println(u);
         for(int i=1; i<u; i++){
             if(i != (u -1)){
                 flameList.add(new Flame(x , y - 32 * i, width, height, 0, false));
