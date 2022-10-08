@@ -1,6 +1,5 @@
 package uet.oop.bomberman.components.graphics;
 
-
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
