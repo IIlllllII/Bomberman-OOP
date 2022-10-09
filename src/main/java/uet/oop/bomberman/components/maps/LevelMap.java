@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.maps;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
@@ -8,8 +9,8 @@ import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class LevelMap {
@@ -57,6 +58,7 @@ public class LevelMap {
                 }
             }
         }
+
         //Render all destroyed bricks
         brokenBricks.forEach(entity -> entity.render(gc));
     }
@@ -74,7 +76,7 @@ public class LevelMap {
         brokenBricks.clear();
 
         try {
-            File file = new File(LevelMap.class.getResource("/map/map" + level + ".map").toURI());
+            File file = new File(LevelMap.class.getResource("/sprites/map/map" + level + ".map").toURI());
             Scanner scanner = new Scanner(file);
             int row = scanner.nextInt();
             int column = scanner.nextInt();
@@ -90,7 +92,15 @@ public class LevelMap {
                 }
             }
         } catch (URISyntaxException | FileNotFoundException e) {
+            System.out.println("next level read file");
             throw new RuntimeException(e);
+        }
+    }
+
+    public void destroyBrick(int i, int j) {
+        Point2D point = new Point2D(j, i);
+        if (brickList.containsKey(point)) {
+            brickList.get(point).setDestroyed(true);
         }
     }
 

@@ -12,7 +12,7 @@ import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
 import uet.oop.bomberman.core.Camera;
-import uet.oop.bomberman.core.EntitiesManager;
+import uet.oop.bomberman.components.entities.EntitiesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +21,9 @@ public class PlayScene {
     private final Group root;
     private final Canvas canvas;
     private final GraphicsContext gc;
-
     private final LevelMap levelMap = LevelMap.getInstance();
-
     private final Camera camera = Camera.getInstance();
-
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
-
     private final List<KeyCode> inputList = new ArrayList<>();
 
     public PlayScene() {
@@ -43,10 +39,9 @@ public class PlayScene {
         });
 
         root.getChildren().addAll(canvas, playButton);
-
         root.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
-            if (! inputList.contains(code)) {
+            if (!inputList.contains(code)) {
                 inputList.add(code);
             }
         });
@@ -97,6 +92,10 @@ public class PlayScene {
             inputList.remove(KeyCode.N);
         }
 
+        if (inputList.contains(KeyCode.B)) {
+            levelMap.destroyBrick(2, 7);
+        }
+
         if (currentDirection != null) {
             entitiesManager.players.get(0).setPlayerStatus(PlayerStatus.MOVING);
             entitiesManager.players.get(0).setDirection(currentDirection);
@@ -119,7 +118,7 @@ public class PlayScene {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
         levelMap.render(gc);
         entitiesManager.players.forEach(
-                entity -> entity.render(gc)
+            entity -> entity.render(gc)
         );
     }
 }

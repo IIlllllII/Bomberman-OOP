@@ -1,5 +1,6 @@
 package uet.oop.bomberman.config;
 
+// non
 public enum Direction {
     DOWN("down", 0),
     UP("up", 1),
