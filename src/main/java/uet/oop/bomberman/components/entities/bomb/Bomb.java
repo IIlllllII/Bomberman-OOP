@@ -32,6 +32,7 @@ public class Bomb extends Entity {
     private final double flameTime = 1000;
     private double time = 0;
     private boolean done = false;
+    private boolean hasFlame = false;
 
     /**
      * initialization image and sound Bomb.
@@ -111,7 +112,10 @@ public class Bomb extends Entity {
                 new Sound(Sound.EXPLODE_SOUND).playSound();
             }
         } else {
-            explosion();
+            if(!hasFlame){
+                explosion();
+                hasFlame = true;
+            }
             flameList.forEach(flame -> flame.update());
         }
 
