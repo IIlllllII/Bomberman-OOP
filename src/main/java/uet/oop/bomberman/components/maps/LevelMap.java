@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.maps;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
@@ -8,15 +9,15 @@ import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class LevelMap {
     private int[][] mapHash;
     private Grass grass;
     private Wall wall;
-    private final static List<Brick> brickList = new ArrayList<>();
+    private Brick brick;
+    private final List<Brick> brokenBricks = new ArrayList<>();
+
     private int level;
 
     private static class SingletonHelper {
@@ -44,26 +45,36 @@ public class LevelMap {
                 grass.setLocation(32 * j, 32 * i);
                 grass.render(gc);
 
-                if (mapHash[i][j] == 1) {
+                if (mapHash[i][j] == getHash("wall")) {
                     wall.setLocation(32 * j, 32 * i);
                     wall.render(gc);
                 }
+
+                if (mapHash[i][j] == getHash("brick")) {
+                    brick.setLocation(32 * j, 32 * i);
+                    brick.render(gc);
+                }
             }
         }
-        //Render all bricks
-        brickList.forEach(entity -> entity.render(gc));
+
+        //Render all destroyed bricks
+        brokenBricks.forEach(entity -> entity.render(gc));
     }
 
+    public void update(){
+        brokenBricks.forEach(Brick::update);
+    }
     public void nextLevel() {
         level++;
         level = (level > 3) ? 1 : level;
 
         grass = new Grass(0,0, 0 , 0, level);
         wall = new Wall(0,0, 0, 0, level);
-        brickList.clear();
+        brick = new Brick(0, 0, 0, 0, level);
+        brokenBricks.clear();
 
         try {
-            File file = new File(LevelMap.class.getResource("/map/map" + level + ".map").toURI());
+            File file = new File(LevelMap.class.getResource("/sprites/map/map" + level + ".map").toURI());
             Scanner scanner = new Scanner(file);
             int row = scanner.nextInt();
             int column = scanner.nextInt();
@@ -76,15 +87,18 @@ public class LevelMap {
                     int hash = Integer.parseInt(tile[j]);
 
                     mapHash[i][j] = hash;
-                    if (hash == 3) {
-                        brickList.add(
-                                new Brick(32 * j, 32 * i, 32, 32, level)
-                        );
-                    }
                 }
             }
         } catch (URISyntaxException | FileNotFoundException e) {
+            System.out.println("next level read file");
             throw new RuntimeException(e);
+        }
+    }
+
+    public void destroyBrick(int i, int j) {
+        Point2D point = new Point2D(j, i);
+        if (brickList.containsKey(point)) {
+            brickList.get(point).setDestroyed(true);
         }
     }
 
@@ -100,19 +114,31 @@ public class LevelMap {
         return this.mapHash.length * 32;
     }
 
+    public void setBrick(int i, int j){
+        mapHash[i][j] = getHash("grass");
+        Brick brokenBrick = new Brick(j * 32, i * 32, 32, 32, level);
+        brokenBrick.setDestroyed(true);
+        brokenBricks.add(brokenBrick);
+    }
+
     public int[][] getMapHash() {
         return this.mapHash;
     }
 
+<<<<<<< HEAD
     public void setMapHash(int i, int j, int value) {
         mapHash[i][j] = value;
+=======
+    public int getHashAt(int i, int j){
+        return mapHash[i][j];
+>>>>>>> 5d2e4bfbd8f825b5b9e8c77337522f942424bdf4
     }
 
     public int getHash(String input) {
         int output = 0;
         switch (input) {
             case "grass":
-                //output = ?;
+                output = 2;
                 break;
             case "brick":
                 output = 3;

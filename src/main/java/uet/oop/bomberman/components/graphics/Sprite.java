@@ -80,7 +80,7 @@ public class Sprite {
         PixelWriter pw = wr.getPixelWriter();
         for (int x = 0; x < SPRITE_WIDTH; x++) {
             for (int y = 0; y < SPRITE_HEIGHT; y++) {
-                if ( pixels[x + y * SPRITE_WIDTH] == TRANSPARENT_COLOR) {
+                if (pixels[x + y * SPRITE_WIDTH] == TRANSPARENT_COLOR) {
                     pw.setArgb(x, y, 0);
                 }
                 else {
@@ -90,6 +90,7 @@ public class Sprite {
         }
         Image input = new ImageView(wr).getImage();
         return resample(input);
+        //return input;
     }
 
     private Image resample(Image input) {

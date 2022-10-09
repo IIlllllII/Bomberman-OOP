@@ -1,7 +1,10 @@
-package uet.oop.bomberman.core;
+package uet.oop.bomberman.components.entities;
 
+<<<<<<< HEAD:src/main/java/uet/oop/bomberman/core/EntitiesManager.java
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+=======
+>>>>>>> 5d2e4bfbd8f825b5b9e8c77337522f942424bdf4:src/main/java/uet/oop/bomberman/components/entities/EntitiesManager.java
 import uet.oop.bomberman.components.entities.players.Bomber;
 
 import java.util.ArrayList;
@@ -10,7 +13,7 @@ import java.util.List;
 /**
  * This class applies `Singleton pattern`
  * with Bill Pugh Singleton Implementation.
- *
+ * <p>
  * For more information:
  * https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
  */

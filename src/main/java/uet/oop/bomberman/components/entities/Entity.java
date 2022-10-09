@@ -1,7 +1,9 @@
 package uet.oop.bomberman.components.entities;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.Camera;
+import uet.oop.bomberman.core.stages.GameStage;
 
 public abstract class Entity {
     protected double x;
@@ -28,6 +30,13 @@ public abstract class Entity {
         this.width = width;
         this.height = height;
         active = true;
+    }
+
+    public Entity(double x, double y) {
+        this.x = x;
+        this.y = y;
+        width = GameConfig.TILE_SIZE;
+        height = GameConfig.TILE_SIZE;
     }
 
     public double getX() {

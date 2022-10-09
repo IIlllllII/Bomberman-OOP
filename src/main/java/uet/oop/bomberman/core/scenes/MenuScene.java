@@ -13,11 +13,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.buttons.MenuButton;
+import uet.oop.bomberman.sound.Music;
+import uet.oop.bomberman.sound.Sound;
 
 public class MenuScene {
     private Group root;
     private Image background;
     private final GameMenu gameMenu;
+    public static Music menuMusic = new Music(Music.MENU_MUSIC, true);
+    public static Music gameMusic = new Music(Music.GAME_MUSIC, true);
 
     public MenuScene() {
         root = new Group();
@@ -30,9 +34,11 @@ public class MenuScene {
         ImageView imageView = new ImageView(background);
         imageView.setFitHeight(GameConfig.HEIGHT);
         imageView.setFitWidth(GameConfig.WIDTH);
-
+        gameMusic.setVolume(0.2);
+        menuMusic.setVolume(0.2);
         gameMenu = new GameMenu();
         gameMenu.setVisible(false);
+        menuMusic.playMusic();
 
         root.getChildren().addAll(imageView, gameMenu);
     }
@@ -61,7 +67,8 @@ public class MenuScene {
                 ft.play();
 
                 SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.PLAY);
-
+                menuMusic.stopMusic();
+                gameMusic.playMusic();
                 System.out.println("Play button");
             });
 
