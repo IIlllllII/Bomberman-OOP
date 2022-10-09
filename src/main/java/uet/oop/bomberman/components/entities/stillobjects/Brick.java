@@ -28,18 +28,18 @@ public class Brick extends Entity {
             bricks = new ArrayList<>();
             brickExplodes = new ArrayList<>();
             SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
+            SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
             try {
                 bricks.add(new Image(LevelMap.class.getResource("/map/brick1.png").toURI().toString()));
                 bricks.add(new Image(LevelMap.class.getResource("/map/brick2.png").toURI().toString()));
                 bricks.add(new Sprite(16, 16, 3 * 16, newTiles, 16, 16).getFxImage());
 
-                SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
                 brickExplodes.add(new Sprite(16, 7 * 16, 1 * 16, tiles, 16, 16).getFxImage());
                 brickExplodes.add(new Sprite(16, 7 * 16, 2 * 16, tiles, 16, 16).getFxImage());
                 brickExplodes.add(new Sprite(16, 7 * 16, 3 * 16, tiles, 16, 16).getFxImage());
             } catch (URISyntaxException | NullPointerException e) {
                 System.out.println("brick init");
-                //e.printStackTrace();
+                e.printStackTrace();
             }
             initialized = true;
         }

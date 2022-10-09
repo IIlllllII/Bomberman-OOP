@@ -66,8 +66,6 @@ public class PlayScene {
     }
 
     public void update() {
-
-
         Direction currentDirection = null;
         if (inputList.contains(KeyCode.RIGHT) || inputList.contains(KeyCode.D)) {
             currentDirection = Direction.RIGHT;
@@ -78,11 +76,14 @@ public class PlayScene {
         if (inputList.contains(KeyCode.UP) || inputList.contains(KeyCode.W)) {
             currentDirection = Direction.UP;
         }
+
         if (inputList.contains(KeyCode.DOWN) || inputList.contains(KeyCode.S)) {
             currentDirection = Direction.DOWN;
         }
+
         if  (inputList.contains(KeyCode.B)){
-            currentDirection = Direction.BOMB;
+            entitiesManager.players.get(0).placeBomb();
+            inputList.remove(KeyCode.B);
         }
 
         //Demo "die" status

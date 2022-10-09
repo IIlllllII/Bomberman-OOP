@@ -28,7 +28,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     private int lives = 3;
 
-    private List<Bomb> bombList = new ArrayList<>();
+    private final List<Bomb> bombList = new ArrayList<>();
 
     private int bombMaxCount = 2;
     private int bombCount = 0;
@@ -38,7 +38,7 @@ public class Bomber extends Entity implements Movable, Killable {
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
     private Direction direction = Direction.DOWN;
 
-    public static Music movingSound ;
+    public static Music movingSound;
 
     public static void init() {
         if (!initialized) {
@@ -49,7 +49,7 @@ public class Bomber extends Entity implements Movable, Killable {
                     new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 65, 26, bombermanSheet, 16, 22),
             });
 
             spritesDict.put("moving-down", new Sprite[]{
@@ -118,30 +118,12 @@ public class Bomber extends Entity implements Movable, Killable {
     @Override
     public void update() {
         if (playerStatus == PlayerStatus.MOVING) {
-            if(direction.label.equals("bomb")){
-                direction = Direction.DOWN;
-                new Sound(Sound.PLACE_BOMB_SOUND).playSound();
-                if (bombList.size() < bombMaxCount) {
-                    int bombX = ((int) this.getX() / 32 + 1)* 32;
-                    int bombY = ((int) this.getY() / 32 + 1)* 32;
-                    boolean checkBomb = false;
-                    for(Bomb bomb : bombList){
-                        if(bomb.getX() == bombX && bomb.getY() == bombY){
-                            checkBomb = true;
-                        }
-                    }
-                    if(!checkBomb){
-                        bombList.add(new Bomb(bombX, bombY, 15, 15, this));
-                    }
-                }
-            }else{
-                movingSound.playMusic();
-                currentSpriteIndex++;
-                if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
-                    currentSpriteIndex = 0;
-                }
-                move(4, direction);
+            movingSound.playMusic();
+            currentSpriteIndex++;
+            if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
+                currentSpriteIndex = 0;
             }
+            move(4, direction);
         }
 
         //Demo "die" status.
@@ -153,15 +135,36 @@ public class Bomber extends Entity implements Movable, Killable {
                 playerStatus = PlayerStatus.IDLE;
             }
         }
-        if(playerStatus == PlayerStatus.IDLE){
+        if (playerStatus == PlayerStatus.IDLE) {
             movingSound.stopMusic();
         }
-        for(int i=0; i< bombList.size(); i++){
-            if(!bombList.get(i).isDone()){
+
+        for (int i=0; i< bombList.size(); i++){
+            if (! bombList.get(i).isDone()) {
                 bombList.get(i).update();
-            }else {
+            } else {
                 bombList.remove(i);
                 i--;
+            }
+        }
+    }
+
+    public void placeBomb() {
+        direction = Direction.DOWN;
+        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
+
+        if (bombList.size() < bombMaxCount) {
+            int bombX = ((int) this.getX() / 32 + 1) * 32;
+            int bombY = ((int) this.getY() / 32 + 1) * 32;
+            boolean hasBomb = false;
+            for (Bomb bomb : bombList) {
+                if (bomb.getX() == bombX && bomb.getY() == bombY) {
+                    hasBomb = true;
+                    break;
+                }
+            }
+            if (! hasBomb) {
+                bombList.add(new Bomb(bombX, bombY, 15, 15, this));
             }
         }
     }
