@@ -5,22 +5,26 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Flame extends Entity {
     private static boolean initialized = false;
-    private static LinkedList<Image> bombExploded = new LinkedList<>();
-    private static LinkedList<Image> explosionVertical = new LinkedList<>();
-    private static LinkedList<Image> explosionHorizontal = new LinkedList<>();
-    private static LinkedList<Image> explosionHorizontalLeftLast = new LinkedList<>();
-    private static LinkedList<Image> explosionHorizontalRightLast = new LinkedList<>();
-    private static LinkedList<Image> explosionVerticalTopLast = new LinkedList<>();
-    private static LinkedList<Image> explosionVerticalDownLast = new LinkedList<>();
+    private static final List<Image> bombExploded = new ArrayList<>();
+    private static final List<Image> explosionVertical = new ArrayList<>();
+    private static final List<Image> explosionHorizontal = new ArrayList<>();
+    private static final List<Image> explosionHorizontalLeftLast = new ArrayList<>();
+    private static final List<Image> explosionHorizontalRightLast = new ArrayList<>();
+    private static final List<Image> explosionVerticalTopLast = new ArrayList<>();
+    private static final List<Image> explosionVerticalDownLast = new ArrayList<>();
     private Image image;
-    private final int flameDirection;           // Hướng của lửa: 0 Up, 1 Down, 2 Left, 3 Right, 4 Center
+
+    public enum FlameDirection {
+        UP, DOWN, LEFT, RIGHT, CENTER
+    }
+    private final FlameDirection flameDirection;
     private final boolean last;                 // Kiểm tra kết đuôi ngọn lửa
     private double time = 0;                    // Thời gian tính từ lúc lửa bắt đầu xuất hiện
     private final double flameTime = 1000;      // Thời gian lửa hiện lên
@@ -59,7 +63,7 @@ public class Flame extends Entity {
         }
     }
 
-    public Flame(double x, double y,int width, int height, int flameDirection, boolean last) {
+    public Flame(double x, double y,int width, int height, FlameDirection flameDirection, boolean last) {
         super(x, y, width, height);
         this.flameDirection = flameDirection;
         this.last = last;
@@ -71,35 +75,35 @@ public class Flame extends Entity {
         time += Timer.getInstance().getDeltaTime();
         if(time <= flameTime){
             switch (flameDirection) {
-                case 0:
+                case UP:
                     if (last) {
                         image = Sprite.animate(explosionVerticalTopLast, time, flameTime);
                     } else {
                         image = Sprite.animate(explosionVertical, time, flameTime);
                     }
                     break;
-                case 1:
+                case DOWN:
                     if (last) {
                         image = Sprite.animate(explosionVerticalDownLast, time, flameTime);
                     } else {
                         image = Sprite.animate(explosionVertical, time, flameTime);
                     }
                     break;
-                case 2:
+                case LEFT:
                     if (last) {
                         image = Sprite.animate(explosionHorizontalLeftLast, time, flameTime);
                     } else {
                         image = Sprite.animate(explosionHorizontal, time, flameTime);
                     }
                     break;
-                case 3:
+                case RIGHT:
                     if (last) {
                         image = Sprite.animate(explosionHorizontalRightLast, time, flameTime);
                     } else {
                         image = Sprite.animate(explosionHorizontal, time, flameTime);
                     }
                     break;
-                case 4:
+                case CENTER:
                     image = Sprite.animate(bombExploded, time, flameTime);
                     break;
                 default:
