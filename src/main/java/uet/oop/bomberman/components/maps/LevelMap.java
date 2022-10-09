@@ -10,9 +10,7 @@ import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class LevelMap {
     private int[][] mapHash;
@@ -55,7 +53,6 @@ public class LevelMap {
                     wall.setLocation(32 * j, 32 * i);
                     wall.render(gc);
                 }
-
                 if (mapHash[i][j] == getHash("brick")) {
                     brick.setLocation(32 * j, 32 * i);
                     brick.render(gc);
