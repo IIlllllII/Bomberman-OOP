@@ -33,6 +33,8 @@ public class PlayScene {
 
         Button playButton = new Button("BACK");
         playButton.setOnMouseClicked(event -> {
+            MenuScene.gameMusic.stopMusic();
+            MenuScene.menuMusic.playMusic();
             SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
         });
 
@@ -69,8 +71,14 @@ public class PlayScene {
         if (inputList.contains(KeyCode.UP) || inputList.contains(KeyCode.W)) {
             currentDirection = Direction.UP;
         }
+
         if (inputList.contains(KeyCode.DOWN) || inputList.contains(KeyCode.S)) {
             currentDirection = Direction.DOWN;
+        }
+
+        if  (inputList.contains(KeyCode.B)){
+            entitiesManager.players.get(0).placeBomb();
+            inputList.remove(KeyCode.B);
         }
 
         //Demo "die" status
@@ -102,6 +110,7 @@ public class PlayScene {
         entitiesManager.players.forEach(
                 Entity::update
         );
+
         levelMap.update();
     }
 

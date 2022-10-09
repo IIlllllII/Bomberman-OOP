@@ -17,22 +17,21 @@ public class Brick extends Entity {
     private static List<Image> bricks;
     private static Animation brickExplodes;
     private boolean destroyed = false; // bị phá hủy chưa
-    private final static float timeDestroyed = 1000.0f; // thời gian phá hủy
+    private static final float timeDestroyed = 1000.0f; // thời gian phá hủy
     private final int level;
 
     public static void init() {
         if (!initialized) {
             bricks = new ArrayList<>();
-
+            
             try {
-                Image image = new Image(LevelMap.class.getResource("/spriteSheet/bomb_explosion.png").toURI().toString());
-
                 SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
 
                 bricks.add(new Image(LevelMap.class.getResource("/sprites/map/brick/brick1.png").toURI().toString()));
                 bricks.add(new Image(LevelMap.class.getResource("/sprites/map/brick/brick2.png").toURI().toString()));
                 bricks.add(new Sprite(16, 16, 3 * 16, newTiles, 16, 16).getFxImage());
-
+                
+                Image image = new Image(LevelMap.class.getResource("/spriteSheet/bomb_explosion.png").toURI().toString());
                 brickExplodes = new Animation(image, 6, 6, timeDestroyed, 17.75f * 2, 54, 17.75f, 18);
             } catch (URISyntaxException | NullPointerException e) {
                 System.out.println("brick init");
@@ -63,7 +62,7 @@ public class Brick extends Entity {
 
     @Override
     public void update() {
-        if(destroyed){
+        if (destroyed) {
             brickExplodes.update();
         }
     }

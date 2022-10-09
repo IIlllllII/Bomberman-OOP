@@ -17,7 +17,9 @@ public class LevelMap {
     private int[][] mapHash;
     private Grass grass;
     private Wall wall;
-    private final Map<Point2D, Brick> brickList = new HashMap<>();
+    private Brick brick;
+    private final List<Brick> brokenBricks = new ArrayList<>();
+
     private int level;
 
     private static class SingletonHelper {
@@ -45,27 +47,33 @@ public class LevelMap {
                 grass.setLocation(32 * j, 32 * i);
                 grass.render(gc);
 
-                if (mapHash[i][j] == 1) {
+                if (mapHash[i][j] == getHash("wall")) {
                     wall.setLocation(32 * j, 32 * i);
                     wall.render(gc);
                 }
+
+                if (mapHash[i][j] == getHash("brick")) {
+                    brick.setLocation(32 * j, 32 * i);
+                    brick.render(gc);
+                }
             }
         }
-        //Render all bricks
-        brickList.forEach((key, value) -> value.render(gc));
+
+        //Render all destroyed bricks
+        brokenBricks.forEach(entity -> entity.render(gc));
     }
 
-    public void update() {
-        brickList.forEach((key, value) -> value.update());
+    public void update(){
+        brokenBricks.forEach(Brick::update);
     }
-
     public void nextLevel() {
         level++;
         level = (level > 3) ? 1 : level;
 
         grass = new Grass(0,0, 0 , 0, level);
         wall = new Wall(0,0, 0, 0, level);
-        brickList.clear();
+        brick = new Brick(0, 0, 0, 0, level);
+        brokenBricks.clear();
 
         try {
             File file = new File(LevelMap.class.getResource("/sprites/map/map" + level + ".map").toURI());
@@ -81,9 +89,6 @@ public class LevelMap {
                     int hash = Integer.parseInt(tile[j]);
 
                     mapHash[i][j] = hash;
-                    if (hash == 3) {
-                        brickList.put(new Point2D(j, i), new Brick(32 * j, 32 * i, 32, 32, level));
-                    }
                 }
             }
         } catch (URISyntaxException | FileNotFoundException e) {
@@ -111,8 +116,19 @@ public class LevelMap {
         return this.mapHash.length * 32;
     }
 
+    public void setBrick(int i, int j){
+        mapHash[i][j] = getHash("grass");
+        Brick brokenBrick = new Brick(j * 32, i * 32, 32, 32, level);
+        brokenBrick.setDestroyed(true);
+        brokenBricks.add(brokenBrick);
+    }
+
     public int[][] getMapHash() {
         return this.mapHash;
+    }
+
+    public int getHashAt(int i, int j){
+        return mapHash[i][j];
     }
 
     public int getHash(String input) {

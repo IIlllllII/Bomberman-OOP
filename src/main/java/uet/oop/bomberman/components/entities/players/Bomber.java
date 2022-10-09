@@ -4,13 +4,18 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.Killable;
 import uet.oop.bomberman.components.entities.Movable;
+import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.PlayerStatus;
+import uet.oop.bomberman.sound.Music;
+import uet.oop.bomberman.sound.Sound;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Bomber extends Entity implements Movable, Killable {
@@ -23,51 +28,59 @@ public class Bomber extends Entity implements Movable, Killable {
 
     private int lives = 3;
 
+    private final List<Bomb> bombList = new ArrayList<>();
+
+    private int bombMaxCount = 2;
+    private int bombCount = 0;
+
     private int currentSpriteIndex = 0;
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
     private Direction direction = Direction.DOWN;
 
+    public static Music movingSound;
+
     public static void init() {
-        if (! initialized) {
+        if (!initialized) {
+            movingSound = new Music(Music.MOVING_SOUND, true);
             SpriteSheet bombermanSheet = new SpriteSheet("/spriteSheet/bomberman_sheet.png", 256, 128);
 
-            spritesDict.put("idle", new Sprite[] {
+            spritesDict.put("idle", new Sprite[]{
                     new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 65, 26, bombermanSheet, 16, 22),
             });
 
-            spritesDict.put("moving-down", new Sprite[] {
+            spritesDict.put("moving-down", new Sprite[]{
                     new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 0, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33, 2, bombermanSheet, 16, 22),
             });
 
-            spritesDict.put("moving-up", new Sprite[] {
+            spritesDict.put("moving-up", new Sprite[]{
                     new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 49, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 81, 2, bombermanSheet, 16, 22),
             });
 
-            spritesDict.put("moving-left", new Sprite[] {
+            spritesDict.put("moving-left", new Sprite[]{
                     new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 0, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33, 26, bombermanSheet, 16, 22),
             });
 
-            spritesDict.put("moving-right", new Sprite[] {
+            spritesDict.put("moving-right", new Sprite[]{
                     new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33 + 16, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
             });
 
-            spritesDict.put("dead", new Sprite[] {
+            spritesDict.put("dead", new Sprite[]{
                     new Sprite(22, 21, 4, 71, bombermanSheet, 16, 22),
                     new Sprite(22, 21, 26, 71, bombermanSheet, 16, 22),
                     new Sprite(22, 21, 48, 71, bombermanSheet, 16, 22),
@@ -77,6 +90,10 @@ public class Bomber extends Entity implements Movable, Killable {
             });
             initialized = true;
         }
+    }
+
+    public void setBombMaxCount(int bombMaxCount) {
+        this.bombMaxCount = bombMaxCount;
     }
 
     @Override
@@ -95,11 +112,13 @@ public class Bomber extends Entity implements Movable, Killable {
                         .getFxImage(), this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
                 break;
         }
+        bombList.forEach(bomb -> bomb.render(gc));
     }
 
     @Override
     public void update() {
         if (playerStatus == PlayerStatus.MOVING) {
+            movingSound.playMusic();
             currentSpriteIndex++;
             if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
@@ -114,6 +133,38 @@ public class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 6 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
                 playerStatus = PlayerStatus.IDLE;
+            }
+        }
+        if (playerStatus == PlayerStatus.IDLE) {
+            movingSound.stopMusic();
+        }
+
+        for (int i=0; i< bombList.size(); i++){
+            if (! bombList.get(i).isDone()) {
+                bombList.get(i).update();
+            } else {
+                bombList.remove(i);
+                i--;
+            }
+        }
+    }
+
+    public void placeBomb() {
+        direction = Direction.DOWN;
+        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
+
+        if (bombList.size() < bombMaxCount) {
+            int bombX = ((int) this.getX() / 32 + 1) * 32;
+            int bombY = ((int) this.getY() / 32 + 1) * 32;
+            boolean hasBomb = false;
+            for (Bomb bomb : bombList) {
+                if (bomb.getX() == bombX && bomb.getY() == bombY) {
+                    hasBomb = true;
+                    break;
+                }
+            }
+            if (! hasBomb) {
+                bombList.add(new Bomb(bombX, bombY, 15, 15, this));
             }
         }
     }
