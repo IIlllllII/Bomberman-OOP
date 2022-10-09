@@ -1,5 +1,6 @@
 package uet.oop.bomberman.core;
 
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;

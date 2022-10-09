@@ -17,21 +17,17 @@ public class Grass extends Entity {
     public static void init() {
         if (!initialized) {
             grasses = new LinkedList<>();
-            SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
+            SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
             try {
-                grasses.add(new Image(LevelMap.class.getResource("/map/grass" +  1 + ".png").toURI().toString()));
-                grasses.add(new Image(LevelMap.class.getResource("/map/grass" +  2 + ".png").toURI().toString()));
-                grasses.add(new Image(LevelMap.class.getResource("/map/grass" +  3 + ".png").toURI().toString()));
+                grasses.add(new Image(LevelMap.class.getResource("/sprites/map/grass/grass" +  1 + ".png").toURI().toString()));
+                grasses.add(new Image(LevelMap.class.getResource("/sprites/map/grass/grass" +  2 + ".png").toURI().toString()));
+                grasses.add(new Image(LevelMap.class.getResource("/sprites/map/grass/grass" +  3 + ".png").toURI().toString()));
             } catch (URISyntaxException e) {
                 System.out.println("grass init");
                 throw new RuntimeException(e);
             }
             initialized =true;
         }
-    }
-    public Grass(int x, int y, int width, int height){
-        super(x, y, width, height);
-        this.level = LevelMap.getInstance().getLevel();
     }
 
     public Grass(int x, int y, int width, int height, int level) {

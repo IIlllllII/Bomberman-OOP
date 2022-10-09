@@ -31,7 +31,7 @@ public class Flame extends Entity {
 
     public static void init() {
         if (!initialized) {
-            SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256, 256);
+            SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
             bombExploded.add(new Sprite(16, 0, 4 * 16, tiles, 16, 16).getFxImage());
             bombExploded.add(new Sprite(16, 0, 5 * 16, tiles, 16, 16).getFxImage());
             bombExploded.add(new Sprite(16, 0, 6 * 16, tiles, 16, 16).getFxImage());

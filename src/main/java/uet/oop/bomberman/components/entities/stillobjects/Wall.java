@@ -7,31 +7,28 @@ import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 
 import java.net.URISyntaxException;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Wall extends Entity {
-    private static LinkedList<Image> walls;
+    private static List<Image> walls;
     private static boolean initialized = false;
     private final int level;
 
-    public  static  void init() {
+    public static void init() {
         if (!initialized) {
-            walls = new LinkedList<>();
-            SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
+            walls = new ArrayList<>();
+            SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
             try {
                 for (int i = 1; i <= 3; i++) {
-                    walls.add(new Image(LevelMap.class.getResource("/map/wall" + i + ".png").toURI().toString()));
+                    walls.add(new Image(LevelMap.class.getResource("/sprites/map/wall/wall" + i + ".png").toURI().toString()));
                 }
             } catch (URISyntaxException | NullPointerException e) {
-                System.out.println("wall inti");
-                //e.printStackTrace();
+                System.out.println("Wall init");
+                e.printStackTrace();
             }
             initialized = true;
         }
-    }
-    public Wall(int x, int y, int width, int height){
-        super(x, y, width, height);
-        this.level = LevelMap.getInstance().getLevel();
     }
 
     public Wall(int x, int y, int width, int height, int level){
