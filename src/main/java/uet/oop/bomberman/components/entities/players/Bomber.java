@@ -30,9 +30,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     private final List<Bomb> bombList = new ArrayList<>();
 
-    private int bombMaxCount = 2;
-    private int bombCount = 0;
-
+    private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
@@ -92,8 +90,8 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
-    public void setBombMaxCount(int bombMaxCount) {
-        this.bombMaxCount = bombMaxCount;
+    public void setBombMax(int bombMax) {
+        this.bombMax = bombMax;
     }
 
     @Override
@@ -150,10 +148,7 @@ public class Bomber extends Entity implements Movable, Killable {
     }
 
     public void placeBomb() {
-        direction = Direction.DOWN;
-        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
-
-        if (bombList.size() < bombMaxCount) {
+        if (bombList.size() < bombMax) {
             int bombX = ((int) this.getX() / 32 + 1) * 32;
             int bombY = ((int) this.getY() / 32 + 1) * 32;
             boolean hasBomb = false;
@@ -164,6 +159,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
             }
             if (! hasBomb) {
+                new Sound(Sound.PLACE_BOMB_SOUND).playSound();
                 bombList.add(new Bomb(bombX, bombY, 15, 15, this));
             }
         }

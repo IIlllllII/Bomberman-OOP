@@ -3,6 +3,7 @@ package uet.oop.bomberman.components.maps;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
+import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
 
 import java.io.File;
@@ -17,6 +18,8 @@ public class LevelMap {
     private Grass grass;
     private Wall wall;
     private Brick brick;
+
+    private Portal portal;
     private final List<Brick> brokenBricks = new ArrayList<>();
 
     private int level;
@@ -38,6 +41,7 @@ public class LevelMap {
         Grass.init();
         Wall.init();
         Brick.init();
+        Portal.init();
     }
 
     public void render(GraphicsContext gc) {
