@@ -9,12 +9,12 @@ public class Animation {
     private final Image image;
     private final int count;
     private final int columns;
-    private final int offsetX;
-    private final int offsetY;
-    private int sX;
-    private int sY;
-    private final int sWidth;
-    private final int sHeight;
+    private final float offsetX;
+    private final float offsetY;
+    private float sX;
+    private float sY;
+    private final float sWidth;
+    private final float sHeight;
     //Used to keep track of how long current animation frame has been on screen
     private float calcTime;
     //Used to determine the speed of the animation,is total amount of time for the entire animation
@@ -40,20 +40,25 @@ public class Animation {
 
      */
     public Animation(Image image, int count, int columns, float totalTime,
-                     int offsetX, int offsetY, int sWidth, int sHeight) {
+                     float offsetX, float offsetY, float sWidth, float sHeight) {
+
         this.image = image;
         this.count = count;
         this.columns = columns;
         this.totalTime = totalTime;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
-        sX = offsetX;
-        sY = offsetY;
         this.sWidth = sWidth;
         this.sHeight = sHeight;
-        done = false;
         timer = Timer.getInstance();
         timePerFrame = totalTime / count;
+        reset();
+    }
+
+    public void reset() {
+        sX = offsetX;
+        sY = offsetY;
+        done = false;
         calcTime = 0.0f;
         loop = false;
     }
@@ -85,7 +90,7 @@ public class Animation {
             }
             int index = (int) (calcTime / timePerFrame);
             sX = (index % columns) * sWidth  + offsetX;
-            sY = (index / columns) * sHeight + offsetY;
+            sY = ((int) (index / columns)) * sHeight + offsetY;
         }
     }
 

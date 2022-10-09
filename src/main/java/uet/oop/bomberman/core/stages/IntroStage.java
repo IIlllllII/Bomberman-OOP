@@ -1,13 +1,16 @@
 package uet.oop.bomberman.core.stages;
 
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.Transition;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
@@ -15,25 +18,46 @@ import uet.oop.bomberman.config.GameConfig;
 import java.net.URISyntaxException;
 
 public class IntroStage {
-    private final GraphicsContext gc;
-    private Image logo;
-    private Image bar;
-    private static double value;
-    private double delayValue;
-    public static final double MAXVALUE = 444;
-    private boolean done;
+    private Image background;
+    private Image loading;
+    private static boolean done;
     private boolean initDone;
 
     public IntroStage(Stage stage) {
         double width = GameConfig.WIDTH;
         double height = GameConfig.HEIGHT;
         initDone = false;
+        done = false;
 
-        Canvas canvas = new Canvas(width, height);
-        gc = canvas.getGraphicsContext2D();
-        Group group = new Group();
-        group.getChildren().add(canvas);
-        Scene scene = new Scene(group, width, height);
+        try {
+            Image icon = new Image(getClass().getResource(GameConfig.ICON_PATH).toURI().toString());
+            stage.getIcons().add(icon);
+            background = new Image(getClass().getResource("/greeting.jpg").toURI().toString());
+            loading = new Image(getClass().getResource("/intro.png").toURI().toString());
+        } catch (URISyntaxException e) {
+            System.out.println("Intro stage");
+            e.printStackTrace();
+        }
+
+        final ImageView viewBackground = new ImageView(background);
+        viewBackground.setFitWidth(GameConfig.WIDTH);
+        viewBackground.setFitHeight(GameConfig.HEIGHT);
+
+        final ImageView viewLoading = new ImageView(loading);
+        viewLoading.setLayoutX(0);
+        viewLoading.setLayoutY(GameConfig.HEIGHT - 74);
+        viewLoading.setViewport(new Rectangle2D(0, GameConfig.HEIGHT - 74, 74, 74));
+        final Animation animation = new SpriteAnimation(viewLoading, Duration.millis(5000),
+                18, 6,
+                0, 0,
+                74, 74
+        );
+        animation.play();
+        Group root = new Group();
+
+        root.getChildren().addAll(viewBackground, viewLoading);
+        Scene scene = new Scene(root, width, height);
+
 
         stage.setResizable(false);
         stage.setTitle(GameConfig.NAME);
@@ -45,17 +69,6 @@ public class IntroStage {
         });
         stage.show();
 
-        try {
-            Image icon = new Image(getClass().getResource(GameConfig.ICON_PATH).toURI().toString());
-            stage.getIcons().add(icon);
-            logo = new Image(getClass().getResource("/LogoIntro.png").toURI().toString());
-            bar = new Image(getClass().getResource("/something/bar3.png").toURI().toString());
-            value = 0;
-            delayValue = 0;
-            done = false;
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
 
         (new Thread(() -> {
             LevelMap.init();
@@ -74,46 +87,64 @@ public class IntroStage {
         })).start();
     }
 
-    public void render() {
-//        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-//        gc.setFill(Color.web("3c75d8"));
-//        gc.fillRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-//        gc.drawImage(logo, 0, 0, GameConfig.WIDTH, GameConfig.HEIGHT / 2.0);
-//        gc.drawImage(bar, 55, GameConfig.HEIGHT - 100);
-//        gc.setFill(Color.WHITE);
-//        gc.fillRect(20, GameConfig.HEIGHT - 100, value, 20);
-//
-//        if (value < 330) {
-//            value += 3;
-//        } else if (value < MAXVALUE) {
-//            delayValue ++;
-//            if (delayValue > 40 && delayValue < 180) {
-//                if (delayValue % 2 == 0) {
-//                    value += 2;
-//                }
-//            }
-//            if (delayValue > 280){
-//                value += 2;
-//            }
-//        } else {
-//            value = MAXVALUE;
-//            done = true;
-//        }
-    }
-
-    public static void setValue(double v) {
-        value = v;
-    }
-
     public boolean isDone() {
         return done;
     }
 
-    public void setDone(boolean done) {
-        this.done = done;
+    public static void setDone(boolean done) {
+        IntroStage.done = done;
     }
 
     public boolean isInitDone() {
         return initDone;
+    }
+
+    private static class SpriteAnimation extends Transition {
+        private final ImageView imageView;
+        private final int count;
+        private final int columns;
+        private final int offsetX;
+        private final int offsetY;
+        private final int width;
+        private final int height;
+        private int lastIndex;
+
+        /**
+         *
+         * @param imageView image.
+         * @param duration : how long it should take to go through all frames
+         * @param count : the number of frames
+         * @param columns : the number of the columns
+         * @param offsetX : offset of the first frame
+         * @param offsetY :
+         * @param width :
+         * @param height :
+         */
+        public SpriteAnimation(ImageView imageView, Duration duration,
+                               int count,   int columns,
+                               int offsetX, int offsetY,
+                               int width,   int height) {
+            this.imageView = imageView;
+            this.count     = count;
+            this.columns   = columns;
+            this.offsetX   = offsetX;
+            this.offsetY   = offsetY;
+            this.width     = width;
+            this.height    = height;
+            setCycleDuration(duration);
+            setInterpolator(Interpolator.LINEAR);
+        }
+
+        protected void interpolate(double k) {
+            final int index = Math.min((int) Math.floor(k * count), count - 1);
+            if (index != lastIndex) {
+                final int x = (index % columns) * width  + offsetX;
+                final int y = (index / columns) * height + offsetY;
+                imageView.setViewport(new Rectangle2D(x, y, width, height));
+                lastIndex = index;
+            } else if (index == count - 1){
+                setDone(true);
+            }
+        }
     }
 }
