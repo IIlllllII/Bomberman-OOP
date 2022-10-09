@@ -6,7 +6,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
@@ -76,7 +78,7 @@ public class PlayScene {
             currentDirection = Direction.DOWN;
         }
 
-        if  (inputList.contains(KeyCode.B)){
+        if  (inputList.contains(KeyCode.B)) {
             entitiesManager.players.get(0).placeBomb();
             inputList.remove(KeyCode.B);
         }
@@ -92,10 +94,6 @@ public class PlayScene {
             inputList.remove(KeyCode.N);
         }
 
-        if (inputList.contains(KeyCode.B)) {
-            levelMap.destroyBrick(2, 7);
-        }
-
         if (currentDirection != null) {
             entitiesManager.players.get(0).setPlayerStatus(PlayerStatus.MOVING);
             entitiesManager.players.get(0).setDirection(currentDirection);
@@ -107,18 +105,28 @@ public class PlayScene {
 
         camera.update();
 
-        entitiesManager.players.forEach(
-                Entity::update
-        );
+        entitiesManager.players.forEach(Entity::update);
 
         levelMap.update();
+
+        List<Bomb> bombList = entitiesManager.bombs;
+        for (int i = 0; i < bombList.size(); i++){
+            if (! bombList.get(i).isDone()) {
+                bombList.get(i).update();
+            } else {
+                bombList.remove(i);
+                i--;
+            }
+        }
+        entitiesManager.brokenBricks.forEach(Brick::update);
     }
 
     public  void render() {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
         levelMap.render(gc);
-        entitiesManager.players.forEach(
-            entity -> entity.render(gc)
-        );
+        entitiesManager.players.forEach(entity -> entity.render(gc));
+        entitiesManager.bombs.forEach(entity -> entity.render(gc));
+        //Render all destroyed bricks
+        entitiesManager.brokenBricks.forEach(entity -> entity.render(gc));
     }
 }

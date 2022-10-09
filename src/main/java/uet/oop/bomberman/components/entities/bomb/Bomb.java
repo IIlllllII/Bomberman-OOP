@@ -9,6 +9,7 @@ import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
 import uet.oop.bomberman.sound.Sound;
 
@@ -126,7 +127,7 @@ public class Bomb extends Entity {
         int l = 1;
         for (; l <= flameLength; l++) {
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 - l) == levelMap.getHash("brick")) {
-                levelMap.setBrick((int) y / 32, (int) x / 32 - l);
+                levelMap.destroyBrick((int) y / 32, (int) x / 32 - l);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 - l) == levelMap.getHash("wall")) {
@@ -149,7 +150,7 @@ public class Bomb extends Entity {
         int r = 1;
         for (; r <= flameLength; r++) {
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("brick")) {
-                levelMap.setBrick((int) y / 32, (int) x / 32 + r);
+                levelMap.destroyBrick((int) y / 32, (int) x / 32 + r);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("wall")) {
@@ -172,7 +173,7 @@ public class Bomb extends Entity {
         int u = 1;
         for (; u <= flameLength; u++) {
             if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32 ) == levelMap.getHash("brick")) {
-                levelMap.setBrick((int) y / 32 - u, (int) x / 32);
+                levelMap.destroyBrick((int) y / 32 - u, (int) x / 32);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32) == levelMap.getHash("wall")) {
@@ -195,7 +196,7 @@ public class Bomb extends Entity {
         int d = 1;
         for (; d <= flameLength; d++) {
             if (levelMap.getHashAt((int) y /32 + d , (int) x / 32) == levelMap.getHash("brick")) {
-                levelMap.setBrick((int) y / 32 + d , (int) x / 32);
+                levelMap.destroyBrick((int) y / 32 + d , (int) x / 32);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32 + d , (int) x / 32) == levelMap.getHash("wall")) {

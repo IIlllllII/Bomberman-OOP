@@ -1,6 +1,8 @@
 package uet.oop.bomberman.components.entities;
 
+import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.stillobjects.Brick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +16,8 @@ import java.util.List;
  */
 public class EntitiesManager {
     public List<Bomber> players = new ArrayList<>();
-    public List<Entity> animatedEntities = new ArrayList<>();
-    public List<Entity> grasses = new ArrayList<>();
-    public List<Entity> stillObjects = new ArrayList<>();
+    public List<Bomb> bombs = new ArrayList<>();
+    public List<Brick> brokenBricks = new ArrayList<>();
     public List<Entity> items = new ArrayList<>();
     private EntitiesManager() {}
 
@@ -32,10 +33,9 @@ public class EntitiesManager {
      * Renew all entities when switching to another level
      */
     public void renewEntities() {
-        players.clear();
-        animatedEntities.clear();
-        grasses.clear();
-        stillObjects.clear();
+        //players.clear();
+        bombs.clear();
+        brokenBricks.clear();
         items.clear();
     }
 }
