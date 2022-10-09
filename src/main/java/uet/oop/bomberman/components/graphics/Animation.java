@@ -41,6 +41,7 @@ public class Animation {
      */
     public Animation(Image image, int count, int columns, float totalTime,
                      float offsetX, float offsetY, float sWidth, float sHeight) {
+
         this.image = image;
         this.count = count;
         this.columns = columns;
