@@ -26,11 +26,15 @@ public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
 
-    private int lives = 3;
+    private static int lives = 3;
+    private static int steps = 4;
+    private static boolean canPassBom = false;
+    private static boolean canPassFlame = false;
+    private static boolean canPassBrick = false;
 
     private final List<Bomb> bombList = new ArrayList<>();
 
-    private int bombMax = 1;
+    private static int bombMax = 1;
     private int currentSpriteIndex = 0;
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
@@ -90,10 +94,6 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
-    public void setBombMax(int bombMax) {
-        this.bombMax = bombMax;
-    }
-
     @Override
     public void render(GraphicsContext gc) {
         switch (playerStatus) {
@@ -121,7 +121,7 @@ public class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move(4, direction);
+            move(steps, direction);
         }
 
         //Demo "die" status.
@@ -170,14 +170,32 @@ public class Bomber extends Entity implements Movable, Killable {
         return lives < 0;
     }
 
-    @Override
-    public int getLives() {
+    public static int getLives() {
         return lives;
     }
 
-    @Override
-    public void setLives(int lives) {
-        this.lives = lives;
+    public static void setLives(int lives) {
+        Bomber.lives = lives;
+    }
+
+    public static void setBombMax(int bombMax) {
+        Bomber.bombMax = bombMax;
+    }
+
+    public static void setSteps(int steps) {
+        Bomber.steps = steps;
+    }
+
+    public static void setCanPassBrick(boolean canPassBrick) {
+        Bomber.canPassBrick = canPassBrick;
+    }
+
+    public static void setCanPassFlame(boolean canPassFlame) {
+        Bomber.canPassFlame = canPassFlame;
+    }
+
+    public static void setCanPassBom(boolean canPassBom) {
+        Bomber.canPassBom = canPassBom;
     }
 
     public PlayerStatus getPlayerStatus() {

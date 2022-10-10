@@ -1,7 +1,7 @@
 package uet.oop.bomberman.components.maps;
 
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.components.entities.powerUp.*;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
 import uet.oop.bomberman.components.entities.stillobjects.Portal;
@@ -13,13 +13,14 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 public class LevelMap {
-    private int[][] mapHash;
+    private char[][] mapHash;
     private Grass grass;
     private Wall wall;
-    private Brick brick;
+    private List<Brick> brickList = new ArrayList<>();
+
+    private List<PowerUp> powerUpList = new ArrayList<>();
 
     private Portal portal;
-    private final List<Brick> brokenBricks = new ArrayList<>();
 
     private int level;
 
@@ -41,6 +42,7 @@ public class LevelMap {
         Wall.init();
         Brick.init();
         Portal.init();
+        PowerUp.init();
     }
 
     public void render(GraphicsContext gc) {
@@ -48,24 +50,22 @@ public class LevelMap {
             for(int j = 0; j < mapHash[i].length; ++j) {
                 grass.setLocation(32 * j, 32 * i);
                 grass.render(gc);
-
                 if (mapHash[i][j] == getHash("wall")) {
                     wall.setLocation(32 * j, 32 * i);
                     wall.render(gc);
                 }
-                if (mapHash[i][j] == getHash("brick")) {
-                    brick.setLocation(32 * j, 32 * i);
-                    brick.render(gc);
-                }
             }
         }
-
+        //Render all power up
+        powerUpList.forEach(powerUp -> powerUp.render(gc));
         //Render all destroyed bricks
-        brokenBricks.forEach(entity -> entity.render(gc));
+        brickList.forEach(entity -> entity.render(gc));
     }
 
     public void update(){
-        brokenBricks.forEach(Brick::update);
+
+        brickList.forEach(Brick::update);
+        powerUpList.forEach(PowerUp::update);
     }
     public void nextLevel() {
         level++;
@@ -73,35 +73,68 @@ public class LevelMap {
 
         grass = new Grass(0,0, 0 , 0, level);
         wall = new Wall(0,0, 0, 0, level);
-        brick = new Brick(0, 0, 0, 0, level);
-        brokenBricks.clear();
+        brickList.clear();
+        powerUpList.clear();
 
         try {
-            File file = new File(LevelMap.class.getResource("/sprites/map/map" + level + ".map").toURI());
+            File file = new File(LevelMap.class.getResource("/levels/level" + level + ".txt").toURI());
             Scanner scanner = new Scanner(file);
             int row = scanner.nextInt();
             int column = scanner.nextInt();
             String temp = scanner.nextLine();   //skip endline after reading integers.
 
-            mapHash = new int[row][column];
+            mapHash = new char[row][column];
             for (int i = 0; i < row; i++) {
-                String[] tile = (scanner.nextLine()).split(",");
+                String tile = scanner.nextLine();
                 for (int j = 0; j < column; j++) {
-                    int hash = Integer.parseInt(tile[j]);
-
+                    char hash = tile.charAt(j);
                     mapHash[i][j] = hash;
+                    switch (mapHash[i][j]) {
+                        case '*':
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            break;
+                        case 'b':
+                            powerUpList.add(new PlusBombItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            mapHash[i][j] = '*';
+                        case 'f':
+                            powerUpList.add(new PlusFlameItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            mapHash[i][j] = '*';
+                            break;
+                        case 's':
+                            powerUpList.add(new PlusSpeedItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            mapHash[i][j] = '*';
+                            break;
+                        case 'B':
+                            powerUpList.add(new BombPassItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            mapHash[i][j] = '*';
+                            break;
+                        case 'F':
+                            powerUpList.add(new FlamePassItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            mapHash[i][j] = '*';
+                            break;
+                        case 'W':
+                            powerUpList.add(new BrickPassItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            mapHash[i][j] = '*';
+                            break;
+                        case 'l':
+                            powerUpList.add(new PlusLiveItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            mapHash[i][j] = '*';
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         } catch (URISyntaxException | FileNotFoundException e) {
             System.out.println("next level read file");
             throw new RuntimeException(e);
-        }
-    }
-
-    public void destroyBrick(int i, int j) {
-        Point2D point = new Point2D(j, i);
-        if (brickList.containsKey(point)) {
-            brickList.get(point).setDestroyed(true);
         }
     }
 
@@ -117,14 +150,16 @@ public class LevelMap {
         return this.mapHash.length * 32;
     }
 
-    public void setBrick(int i, int j){
+    public void destroyBrick(int i, int j){
         mapHash[i][j] = getHash("grass");
-        Brick brokenBrick = new Brick(j * 32, i * 32, 32, 32, level);
-        brokenBrick.setDestroyed(true);
-        brokenBricks.add(brokenBrick);
+        for(int k=0; k< brickList.size(); k++){
+            if((j * 32) == brickList.get(k).getX() && (i * 32) == brickList.get(k).getY()){
+                brickList.get(k).setDestroyed(true);
+            }
+        }
     }
 
-    public int[][] getMapHash() {
+    public char[][] getMapHash() {
         return this.mapHash;
     }
 
@@ -132,21 +167,40 @@ public class LevelMap {
         return mapHash[i][j];
     }
 
-    public int getHash(String input) {
-        int output = 0;
+    public char getHash(String input) {
+        char output = ' ';
         switch (input) {
             case "grass":
-                output = 2;
+                output = ' ';
                 break;
             case "brick":
-                output = 3;
+                output = '*';
                 break;
             case "wall":
-                output = 1;
+                output = '#';
                 break;
             default:
                 break;
         }
         return output;
+    }
+    public String checkBrick(int i, int j){
+        char hash = mapHash[i][j];
+        if( hash == 'b' || hash == 'f' || hash == 's' || hash == 'B' || hash == 'F' || hash == 'W' || hash == 'l'){
+            return "powerUp";
+        }
+        if(hash == '*'){
+            return "brick";
+        }
+        return "other";
+    }
+
+    public void appearPowerUp(double x, double y){
+        for(int i = 0; i <= powerUpList.size(); i++){
+            if(powerUpList.get(i).getX() == x && powerUpList.get(i).getY() == y){
+                powerUpList.get(i).setAppear(true);
+                System.out.println("power up");
+            }
+        }
     }
 }

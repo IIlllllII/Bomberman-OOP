@@ -16,6 +16,8 @@ public class Brick extends Entity {
     private static boolean initialized = false;
     private static List<Image> bricks;
     private static Animation brickExplodes;
+
+    private Image image;
     private boolean destroyed = false; // bị phá hủy chưa
     private static final float timeDestroyed = 1000.0f; // thời gian phá hủy
     private final int level;
@@ -44,7 +46,8 @@ public class Brick extends Entity {
     public Brick(double x, double y, int width, int height, int level) {
         super(x, y, width, height);
         this.level = level;
-        brickExplodes.reset();
+        //brickExplodes.reset();
+        image = bricks.get(level - 1);
     }
 
     public void setDestroyed(boolean destroyed) {
@@ -64,6 +67,7 @@ public class Brick extends Entity {
     public void update() {
         if (destroyed) {
             brickExplodes.update();
+
         }
     }
 }
