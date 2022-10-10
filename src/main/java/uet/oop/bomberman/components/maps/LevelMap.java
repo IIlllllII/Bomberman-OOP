@@ -196,11 +196,10 @@ public class LevelMap {
     }
 
     public void appearPowerUp(double x, double y){
-        for(int i = 0; i <= powerUpList.size(); i++){
-            if(powerUpList.get(i).getX() == x && powerUpList.get(i).getY() == y){
-                powerUpList.get(i).setAppear(true);
-                System.out.println("power up");
+        powerUpList.forEach(powerUp -> {
+            if(x == powerUp.getX() && y == powerUp.getY()){
+                powerUp.setAppear(true);
             }
-        }
+        });
     }
 }
