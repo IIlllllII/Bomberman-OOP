@@ -157,8 +157,8 @@ public class Balloom extends Entity {
         }
         x += moveX;
         y += moveY;
-        x = lamtron(x * 10) / 10;
-        y = lamtron(y * 10) / 10;
+        x = round(x * 10) / 10;
+        y = round(y * 10) / 10;
     }
 
     private boolean checkMapHash(int i, int j) {
@@ -169,7 +169,7 @@ public class Balloom extends Entity {
         return levelMap.getHashAt(i, j) == levelMap.getHash("grass");
     }
 
-    private double lamtron(double a) {
+    private double round(double a) {
         double num = (int) (a);
         if (num + 0.5 <= a) {
             num += 1;

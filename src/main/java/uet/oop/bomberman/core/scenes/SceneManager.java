@@ -3,6 +3,9 @@ package uet.oop.bomberman.core.scenes;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SceneManager {
     public enum SCENES {
         MENU, PLAY
@@ -13,6 +16,8 @@ public class SceneManager {
     private final MenuScene menuScene;
     private final PlayScene playScene;
     private final Scene scene;
+
+    private final List<KeyCode> inputList = new ArrayList<>();
 
     public static SceneManager getInstance() {
         if (instance == null) {
@@ -52,6 +57,17 @@ public class SceneManager {
         if (primaryScene == SCENES.PLAY) {
             currentScene = SCENES.PLAY;
             scene.setRoot(playScene.getRoot());
+
+            scene.setOnKeyPressed(event -> {
+                KeyCode code = event.getCode();
+                if (!inputList.contains(code)) {
+                    inputList.add(code);
+                }
+            });
+            scene.setOnKeyReleased(event -> {
+                KeyCode code = event.getCode();
+                inputList.remove(code);
+            });
         }
     }
 
@@ -65,7 +81,7 @@ public class SceneManager {
                 break;
             }
             case PLAY: {
-                playScene.update();
+                playScene.update(inputList);
                 break;
             }
         }

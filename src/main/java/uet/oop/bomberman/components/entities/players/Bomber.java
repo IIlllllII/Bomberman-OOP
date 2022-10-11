@@ -2,6 +2,7 @@ package uet.oop.bomberman.components.entities.players;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.*;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Sprite;
@@ -10,10 +11,8 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
-import uet.oop.bomberman.sound.Music;
 import uet.oop.bomberman.sound.Sound;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,16 +20,12 @@ import java.util.Map;
 public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
-    public static Music movingSound;
-
     private int lives = 3;
     private int steps = 4;
-    private boolean canPassBom = false;
+    private boolean canPassBomb = false;
     private boolean canPassFlame = false;
     private boolean canPassBrick = false;
-    private final List<Bomb> bombList = new ArrayList<>();
     private int bombMax = 1;
-
     private int currentSpriteIndex = 0;
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
@@ -48,7 +43,6 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public static void init() {
         if (!initialized) {
-            movingSound = new Music(Music.MOVING_SOUND, true);
             SpriteSheet bombermanSheet = new SpriteSheet("/spriteSheet/bomberman_sheet.png", 256, 128);
 
             spritesDict.put("idle", new Sprite[]{
@@ -98,6 +92,43 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
+    public void handleInput(List<KeyCode> inputList) {
+        Direction currentDirection = null;
+        if (inputList.contains(KeyCode.RIGHT) || inputList.contains(KeyCode.D)) {
+            currentDirection = Direction.RIGHT;
+        }
+        if (inputList.contains(KeyCode.LEFT) || inputList.contains(KeyCode.A)) {
+            currentDirection = Direction.LEFT;
+        }
+        if (inputList.contains(KeyCode.UP) || inputList.contains(KeyCode.W)) {
+            currentDirection = Direction.UP;
+        }
+
+        if (inputList.contains(KeyCode.DOWN) || inputList.contains(KeyCode.S)) {
+            currentDirection = Direction.DOWN;
+        }
+
+        if  (inputList.contains(KeyCode.SPACE)) {
+            placeBomb();
+            inputList.remove(KeyCode.SPACE);
+        }
+
+        //Demo "die" status
+        //TODO: remove it later.
+        if (inputList.contains(KeyCode.M)) {
+            playerStatus = PlayerStatus.DEAD;
+        }
+
+        if (currentDirection != null) {
+            playerStatus = PlayerStatus.MOVING;
+            direction = currentDirection;
+        } else {
+            if (playerStatus != PlayerStatus.DEAD) {
+                playerStatus = PlayerStatus.IDLE;
+            }
+        }
+    }
+
     @Override
     public void render(GraphicsContext gc) {
         Image image = null;
@@ -118,7 +149,6 @@ public class Bomber extends Entity implements Movable, Killable {
     @Override
     public void update() {
         if (playerStatus == PlayerStatus.MOVING) {
-            movingSound.playMusic();
             currentSpriteIndex++;
             if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
@@ -134,9 +164,6 @@ public class Bomber extends Entity implements Movable, Killable {
                 currentSpriteIndex = 0;
                 playerStatus = PlayerStatus.IDLE;
             }
-        }
-        if (playerStatus == PlayerStatus.IDLE) {
-            movingSound.stopMusic();
         }
     }
 
@@ -195,8 +222,8 @@ public class Bomber extends Entity implements Movable, Killable {
         this.canPassFlame = canPassFlame;
     }
 
-    public void setCanPassBom(boolean canPassBom) {
-        this.canPassBom = canPassBom;
+    public void setCanPassBomb(boolean canPassBomb) {
+        this.canPassBomb = canPassBomb;
     }
 
     public PlayerStatus getPlayerStatus() {

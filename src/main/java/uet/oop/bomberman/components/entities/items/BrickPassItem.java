@@ -1,10 +1,8 @@
-package uet.oop.bomberman.components.entities.powerUp;
+package uet.oop.bomberman.components.entities.items;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
-import uet.oop.bomberman.components.entities.players.Bomber;
-import uet.oop.bomberman.core.Timer;
 
-public class BrickPassItem extends PowerUp {
+public class BrickPassItem extends Item {
 
     public BrickPassItem(double x, double y){
         super(x, y, powerupBrickpass);

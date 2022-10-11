@@ -1,23 +1,21 @@
-package uet.oop.bomberman.components.entities.powerUp;
+package uet.oop.bomberman.components.entities.items;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.core.Timer;
 
-public abstract class PowerUp extends Entity {
+public abstract class Item extends Entity {
     private static boolean initialized = false;
-    public static Image powerupBombs ;
-    public static Image powerupFlames ;
-    public static Image powerupSpeed ;
-    public static Image powerupBrickpass ;
-    public static Image powerupLives ;
-    public static Image powerupBombpass ;
-    public static Image powerupFlamepass ;
+    protected static Image powerupBombs;
+    protected static Image powerupFlames;
+    protected static Image powerupSpeed;
+    protected static Image powerupBrickpass;
+    protected static Image powerupLives;
+    protected static Image powerupBombpass;
+    protected static Image powerupFlamepass;
     protected Image image;
     protected double timeAppear = 5000;
     protected double timePowerUp = 30000;
@@ -28,13 +26,13 @@ public abstract class PowerUp extends Entity {
     protected double time = 0;
 
 
-    public PowerUp(double x, double y, Image image){
+    public Item(double x, double y, Image image) {
         super(x, y);
         this.image = image;
     }
 
-    public static void init(){
-        if(!initialized){
+    public static void init() {
+        if (!initialized) {
             SpriteSheet item = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
             powerupBombs = new Sprite(16, 0 * 16, 10 * 16, item, 16, 16).getFxImage();
             powerupFlames = new Sprite(16, 1 * 16, 10 * 16, item, 16, 16).getFxImage();
@@ -63,23 +61,21 @@ public abstract class PowerUp extends Entity {
         return eaten;
     }
 
-    public void changePower(){
-
-    }
+    public abstract void changePower();
 
     @Override
     public void update() {
-        if(appear){
+        if (appear) {
             time += Timer.getInstance().getDeltaTime();
-            if(time >= timeAppear || eaten){
+            if (time >= timeAppear || eaten) {
                 appear = false;
                 time = 0;
-                if(time >= timeAppear){
+                if (time >= timeAppear) {
                     done = true;
                 }
             }
         }
-        if(eaten){
+        if (eaten && !done) {
             time += Timer.getInstance().getDeltaTime();
             changePower();
         }
@@ -87,7 +83,7 @@ public abstract class PowerUp extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        if(appear){
+        if (appear) {
             gc.drawImage(image, x - camera.getX(), y - camera.getY());
         }
     }
