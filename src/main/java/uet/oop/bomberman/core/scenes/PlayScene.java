@@ -53,7 +53,7 @@ public class PlayScene {
         });
 
         entitiesManager.players.add(
-                new Bomber(10, 10, 16 * GameConfig.SCALED_FACTOR, 22 * GameConfig.SCALED_FACTOR)
+                new Bomber(33, 33, 16, 22)
         );
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
     }
@@ -105,8 +105,6 @@ public class PlayScene {
 
         camera.update();
 
-        entitiesManager.players.forEach(Entity::update);
-
         levelMap.update();
 
         List<Bomb> bombList = entitiesManager.bombs;
@@ -118,15 +116,16 @@ public class PlayScene {
                 i--;
             }
         }
+        entitiesManager.players.forEach(Entity::update);
         entitiesManager.brokenBricks.forEach(Brick::update);
     }
 
     public  void render() {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
         levelMap.render(gc);
-        entitiesManager.players.forEach(entity -> entity.render(gc));
         entitiesManager.bombs.forEach(entity -> entity.render(gc));
         //Render all destroyed bricks
         entitiesManager.brokenBricks.forEach(entity -> entity.render(gc));
+        entitiesManager.players.forEach(entity -> entity.render(gc));
     }
 }
