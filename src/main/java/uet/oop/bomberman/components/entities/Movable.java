@@ -4,7 +4,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 
 public interface Movable {
-    public Direction getDirection();
-    public void setDirection(Direction direction);
-    public void move(int steps, Direction direction);
+    Direction getDirection();
+    void setDirection(Direction direction);
+    void move();
 }

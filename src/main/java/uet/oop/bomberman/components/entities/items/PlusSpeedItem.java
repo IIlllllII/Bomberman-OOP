@@ -1,6 +1,7 @@
 package uet.oop.bomberman.components.entities.items;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.players.Bomber;
 
 public class PlusSpeedItem extends Item {
 
@@ -10,10 +11,10 @@ public class PlusSpeedItem extends Item {
 
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setSteps(8);
-        if(time >= timePowerUp){
+        EntitiesManager.getInstance().players.get(0).setSpeed(4);
+        if (time >= timePowerUp) {
             eaten = false;
-            EntitiesManager.getInstance().players.get(0).setSteps(4);
+            EntitiesManager.getInstance().players.get(0).setSpeed(Bomber.DEFAULT_SPEED);
             done = true;
         }
     }

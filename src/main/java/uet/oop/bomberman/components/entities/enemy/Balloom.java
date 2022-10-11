@@ -80,6 +80,10 @@ public class Balloom extends Entity {
         }
     }
 
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
         // plus score ...

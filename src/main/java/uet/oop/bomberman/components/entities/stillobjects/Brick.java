@@ -46,14 +46,8 @@ public class Brick extends Entity {
         }
     }
 
-    public Brick(double x, double y, int width, int height) {
-        super(x, y, width, height);
-        this.level = LevelMap.getInstance().getLevel();
-        image = bricks.get(level - 1);
-    }
-
-    public Brick(double x, double y, int width, int height, int level) {
-        super(x, y, width, height);
+    public Brick(double x, double y, int level) {
+        super(x, y);
         this.level = level;
         image = bricks.get(level - 1);
     }

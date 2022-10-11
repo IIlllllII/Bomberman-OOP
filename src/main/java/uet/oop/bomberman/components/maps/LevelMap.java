@@ -1,7 +1,6 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
@@ -15,7 +14,6 @@ import uet.oop.bomberman.config.GameConfig;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -70,8 +68,8 @@ public class LevelMap {
         level++;
         level = (level > 3) ? 1 : level;
 
-        grass = new Grass(0,0, 0 , 0, level);
-        wall = new Wall(0,0, 0, 0, level);
+        grass = new Grass(0,0, level);
+        wall = new Wall(0,0, level);
         List<Brick> brickList = entitiesManager.bricks;
         List<Item> itemList = entitiesManager.items;
         entitiesManager.renewEntities();
@@ -98,55 +96,55 @@ public class LevelMap {
                             break;
                         }
                         case '1': {
-                            entitiesManager.enemy.add(
+                            entitiesManager.enemies.add(
                                     new Balloom(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE)
                             );
                             hash = getHash("grass");
                             break;
                         }
                         case '*': {
-                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            brickList.add(new Brick(32 * j, 32 * i, level));
                             break;
                         }
                         case 'b': {
                             itemList.add(new PlusBombItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            brickList.add(new Brick(32 * j, 32 * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'f': {
                             itemList.add(new PlusFlameItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            brickList.add(new Brick(32 * j, 32 * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 's': {
                             itemList.add(new PlusSpeedItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            brickList.add(new Brick(32 * j, 32 * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'B': {
                             itemList.add(new BombPassItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            brickList.add(new Brick(32 * j, 32 * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'F': {
                             itemList.add(new FlamePassItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            brickList.add(new Brick(32 * j, 32 * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'W': {
                             itemList.add(new BrickPassItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            brickList.add(new Brick(32 * j, 32 * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'l': {
                             itemList.add(new PlusLiveItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            brickList.add(new Brick(32 * j, 32 * i, level));
                             hash = getHash("brick");
                             break;
                         }
@@ -199,6 +197,10 @@ public class LevelMap {
         return mapHash[i][j];
     }
 
+    public void setHashAt(int i, int j, String input) {
+        mapHash[i][j] = getHash(input);
+    }
+
     public char getHash(String input) {
         char output = ' ';
         switch (input) {
@@ -211,6 +213,8 @@ public class LevelMap {
             case "wall":
                 output = '#';
                 break;
+            case "bomb":
+                output = 'B';
             default:
                 break;
         }

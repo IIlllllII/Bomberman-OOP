@@ -20,8 +20,9 @@ import java.util.Map;
 public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
+    public static final int DEFAULT_SPEED = 2;
     private int lives = 3;
-    private int steps = 4;
+    private int speed = DEFAULT_SPEED;
     private boolean canPassBomb = false;
     private boolean canPassFlame = false;
     private boolean canPassBrick = false;
@@ -154,7 +155,7 @@ public class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move(steps, direction);
+            move();
         }
 
         //Demo "die" status.
@@ -170,7 +171,6 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public void placeBomb() {
         direction = Direction.DOWN;
-        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
 
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
 
@@ -187,7 +187,13 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
             }
             if (! hasBomb) {
-                bombList.add(new Bomb(bombX, bombY, 15, 15));
+                new Sound(Sound.PLACE_BOMB_SOUND).playSound();
+                bombList.add(new Bomb(bombX, bombY, 32, 32));
+
+                LevelMap.getInstance().setHashAt(
+                        bombY / GameConfig.TILE_SIZE,
+                        bombX / GameConfig.TILE_SIZE,
+                        "bomb");
             }
         }
     }
@@ -211,8 +217,8 @@ public class Bomber extends Entity implements Movable, Killable {
         this.bombMax = bombMax;
     }
 
-    public void setSteps(int steps) {
-        this.steps = steps;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
@@ -245,10 +251,14 @@ public class Bomber extends Entity implements Movable, Killable {
         this.direction = direction;
     }
 
-    @Override
-    public void move(int steps, Direction direction) {
-        //Note: `steps` is always positive when passed.
+    public BoxCollider getBomberBox() {
+        return bomberBox;
+    }
 
+    @Override
+    public void move() {
+        //Note: `steps` is always positive at first.
+        int steps = speed;
         if (playerStatus == PlayerStatus.IDLE) {
             return;
         }
@@ -289,25 +299,11 @@ public class Bomber extends Entity implements Movable, Killable {
         int topRow = (int) bomberBox.getY() / GameConfig.TILE_SIZE;
         int bottomRow = (int) (bomberBox.getY() + bomberBox.getHeight()) / GameConfig.TILE_SIZE;
 
-        int wallHash = levelMap.getHash("wall");
-        int brickHash = levelMap.getHash("brick");
-
         //Barrier checker.
-        boolean topLeftCheck =
-                ((levelMap.getHashAt(topRow, leftCol) == wallHash
-                        || levelMap.getHashAt(topRow, leftCol) == brickHash));
-
-        boolean topRightCheck =
-                ((levelMap.getHashAt(topRow, rightCol) == wallHash
-                        || levelMap.getHashAt(topRow, rightCol) == brickHash));
-
-        boolean bottomLeftCheck =
-                ((levelMap.getHashAt(bottomRow, leftCol) == wallHash
-                        || levelMap.getHashAt(bottomRow, leftCol) == brickHash));
-
-        boolean bottomRightCheck =
-                ((levelMap.getHashAt(bottomRow, rightCol) == wallHash
-                        || levelMap.getHashAt(bottomRow, rightCol) == brickHash));
+        boolean topLeftCheck = checkBarrier(topRow, leftCol);
+        boolean topRightCheck = checkBarrier(topRow, rightCol);
+        boolean bottomLeftCheck = checkBarrier(bottomRow, leftCol);
+        boolean bottomRightCheck = checkBarrier(bottomRow, rightCol);
 
         switch (direction) {
             case UP:
@@ -331,5 +327,21 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
                 break;
         }
+    }
+
+    private boolean checkBarrier(int i, int j) {
+        LevelMap levelMap = LevelMap.getInstance();
+
+        if (levelMap.getHashAt(i, j) == levelMap.getHash("bomb")) {
+            if (EntitiesManager.getInstance().bombs.get(
+                    EntitiesManager.getInstance().bombs.size() - 1
+            ).isAllowPass()) {
+                return false;
+            }
+        }
+
+        return levelMap.getHashAt(i, j) == levelMap.getHash("wall")
+                || levelMap.getHashAt(i, j) == levelMap.getHash("brick")
+                || levelMap.getHashAt(i, j) == levelMap.getHash("bomb");
     }
 }

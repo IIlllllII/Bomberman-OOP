@@ -2,6 +2,7 @@ package uet.oop.bomberman.components.entities.bomb;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Portal;
@@ -21,10 +22,10 @@ public class Bomb extends Entity {
     private static List<Image> bombs;
     private LevelMap levelMap = LevelMap.getInstance();
     private final List<Flame> flameList = new ArrayList<>();
-    private boolean allowPass;  // cho phép bomber vượt qua
+    private boolean allowPass = true;  // cho phép bomber vượt qua
     private boolean explode = false;
     private static int flameLength = 1;
-    private int timeBeforeExplode = 1500;
+    private int timeBeforeExplode = 2000;
     private final double flameTime = 1000;
     private boolean hasFlame = false;
     private double time = 0;
@@ -79,17 +80,23 @@ public class Bomb extends Entity {
         return timeBeforeExplode;
     }
 
+    public List<Flame> getFlameList() {
+        return flameList;
+    }
+
     @Override
     public void update() {
         time += Timer.getInstance().getDeltaTime();
         if (!explode) {
-//            if (allowPass) {
-//                double subX = bomber.getX() - getX();
-//                double subY = bomber.getY() - getY();
-//                if (subX < -20 || subX > 31 || subY > 33 || subY < -31) {
-//                    allowPass = false;
-//                }
-//            }
+            if (allowPass) {
+                double subX = EntitiesManager.getInstance().players.get(0).getX() - this.x;
+                subX = Math.abs(subX);
+                double subY = EntitiesManager.getInstance().players.get(0).getY() - this.y;
+                subY = Math.abs(subY);
+                if (subX > 30 || subY > 30) {
+                    allowPass = false;
+                }
+            }
             if (time < timeBeforeExplode) {
                 image = Sprite.animation(bombs, time, timeBeforeExplode);
             } else {
@@ -103,6 +110,10 @@ public class Bomb extends Entity {
             }
             flameList.forEach(flame -> flame.update());
         }
+    }
+
+    public boolean isAllowPass() {
+        return allowPass;
     }
 
     /**
@@ -190,24 +201,6 @@ public class Bomb extends Entity {
         }
         // check vị trí của bomber
         //check vị trí của monster ....
-    }
-
-    public boolean canPassThrough(Entity e) {
-        if (e instanceof Brick) {
-            Brick brick = (Brick) e;
-            brick.setDestroyed(true);
-            return false;
-        }
-        if (e instanceof Wall || e instanceof Portal) {
-            return false;
-        }
-
-        if (e instanceof Bomb) {
-            Bomb bomb = (Bomb) e;
-            bomb.setTimeBeforeExplode(100);
-        }
-        return true;
-        //TODO: thêm phần cộng điểm, và qua các monster
     }
 
     @Override
