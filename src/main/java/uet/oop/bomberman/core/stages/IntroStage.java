@@ -10,11 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
+import javafx.util.Duration;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.bomb.Flame;
-import javafx.util.Duration;
-
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -49,9 +47,8 @@ public class IntroStage {
         viewBackground.setFitHeight(GameConfig.HEIGHT);
 
         final ImageView viewLoading = new ImageView(loading);
-        viewLoading.setLayoutX(0);
-        viewLoading.setLayoutY(GameConfig.HEIGHT - 74);
-        viewLoading.setViewport(new Rectangle2D(10, GameConfig.HEIGHT - 74 - 10, 74, 74));
+        viewLoading.setLayoutX(10);
+        viewLoading.setLayoutY(GameConfig.HEIGHT - 74 - 15);
         final Animation animation = new SpriteAnimation(viewLoading, Duration.millis(5000),
                 18, 6,
                 0, 0,
@@ -79,13 +76,6 @@ public class IntroStage {
             LevelMap.init();
             Bomb.init();
             Flame.init();
-//            Item.init();
-//            Doll.init();
-//            Kondoria.init();
-//            Minvo.init();
-//            Oneal.init();
-//            Ovapi.init();
-//            Pass.init();
 //            MusicPlayer.init();
             Bomber.init();
             initDone = true;
@@ -104,6 +94,9 @@ public class IntroStage {
         return initDone;
     }
 
+    /**
+     * Needs to set the duration of a single cycle.
+     */
     private static class SpriteAnimation extends Transition {
         private final ImageView imageView;
         private final int count;
@@ -140,6 +133,12 @@ public class IntroStage {
             setInterpolator(Interpolator.LINEAR);
         }
 
+        /**
+         * called in each frame, while the Transition is running.
+         * @param k
+         * The relative position
+         */
+        @Override
         protected void interpolate(double k) {
             final int index = Math.min((int) Math.floor(k * count), count - 1);
             if (index != lastIndex) {
