@@ -299,6 +299,9 @@ public class Bomber extends Entity implements Movable, Killable {
         int topRow = (int) bomberBox.getY() / GameConfig.TILE_SIZE;
         int bottomRow = (int) (bomberBox.getY() + bomberBox.getHeight()) / GameConfig.TILE_SIZE;
 
+        int wallHash = levelMap.getHash("wall");
+        int brickHash = levelMap.getHash("brick");
+
         //Barrier checker.
         boolean topLeftCheck = checkBarrier(topRow, leftCol);
         boolean topRightCheck = checkBarrier(topRow, rightCol);

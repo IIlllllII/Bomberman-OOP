@@ -23,7 +23,6 @@ public class Brick extends Entity {
     private float time = 0;
     private final int level;
 
-
     public static void init() {
         if (!initialized) {
             bricks = new ArrayList<>();
@@ -66,7 +65,6 @@ public class Brick extends Entity {
         if (destroyed) {
             time += Timer.getInstance().getDeltaTime();
             image = Sprite.animation(brickExplodes,time, timeDestroyed);
-
         }
     }
 

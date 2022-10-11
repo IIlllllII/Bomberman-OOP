@@ -102,6 +102,13 @@ public class LevelMap {
                             hash = getHash("grass");
                             break;
                         }
+                        case '2': {
+                            entitiesManager.enemy.add(
+                                    new Oneal(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE)
+                            );
+                            hash = getHash("grass");
+                            break;
+                        }
                         case '*': {
                             brickList.add(new Brick(32 * j, 32 * i, level));
                             break;
