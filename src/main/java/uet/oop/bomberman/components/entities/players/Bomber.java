@@ -2,31 +2,25 @@ package uet.oop.bomberman.components.entities.players;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.components.entities.EntitiesManager;
-import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.entities.Killable;
-import uet.oop.bomberman.components.entities.Movable;
+import uet.oop.bomberman.components.entities.*;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
 import uet.oop.bomberman.sound.Music;
 import uet.oop.bomberman.sound.Sound;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Bomber extends Entity implements Movable, Killable {
-    public Bomber(double x, double y, int width, int height) {
-        super(x, y, width, height);
-    }
-
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
+    public static Music movingSound;
 
     private int lives = 3;
 
@@ -38,7 +32,15 @@ public class Bomber extends Entity implements Movable, Killable {
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
     private Direction direction = Direction.DOWN;
 
-    public static Music movingSound;
+    private final BoxCollider bomberBox;
+
+    public Bomber(double x, double y, int width, int height) {
+        super(x, y, width, height);
+        this.bomberBox = new BoxCollider(
+                x + (16.0 * 32 / 22 - 18) / 2, y + 18 - 2,
+                18, 18
+        );
+    }
 
     public static void init() {
         if (!initialized) {
@@ -143,9 +145,12 @@ public class Bomber extends Entity implements Movable, Killable {
         new Sound(Sound.PLACE_BOMB_SOUND).playSound();
 
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
+
+        double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;
+        double centerY = bomberBox.getY() + bomberBox.getHeight() / 2;
         if (bombList.size() < bombMaxCount) {
-            int bombX = ((int) this.getX() / 32 + 1) * 32;
-            int bombY = ((int) this.getY() / 32 + 1) * 32;
+            int bombX = ((int) centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
+            int bombY = ((int) centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             boolean hasBomb = false;
             for (Bomb bomb : bombList) {
                 if (bomb.getX() == bombX && bomb.getY() == bombY) {
@@ -219,15 +224,61 @@ public class Bomber extends Entity implements Movable, Killable {
 
         LevelMap levelMap = LevelMap.getInstance();
         if ((x < 0) || (x + width > levelMap.getWidth())) {
-            //Move back
-            x -= steps;
+            x -= steps;     //Move back
         }
 
         if ((y < 0) || (y + height > levelMap.getHeight())) {
-            //Move back
-            y -= steps;
+            y -= steps;     //Move back
         }
 
-        //TODO: add barrier checker.
+        bomberBox.setLocation(x + (16.0 * 32 / 22 - 18) / 2, y + 18 - 2);
+
+        int leftCol = (int) bomberBox.getX() / GameConfig.TILE_SIZE;
+        int rightCol = (int) (bomberBox.getX() + bomberBox.getWidth()) / GameConfig.TILE_SIZE;
+        int topRow = (int) bomberBox.getY() / GameConfig.TILE_SIZE;
+        int bottomRow = (int) (bomberBox.getY() + bomberBox.getHeight()) / GameConfig.TILE_SIZE;
+
+        int wallHash = levelMap.getHash("wall");
+        int brickHash = levelMap.getHash("brick");
+
+        //Barrier checker.
+        boolean topLeftCheck =
+                ((levelMap.getHashAt(topRow, leftCol) == wallHash
+                        || levelMap.getHashAt(topRow, leftCol) == brickHash));
+
+        boolean topRightCheck =
+                ((levelMap.getHashAt(topRow, rightCol) == wallHash
+                        || levelMap.getHashAt(topRow, rightCol) == brickHash));
+
+        boolean bottomLeftCheck =
+                ((levelMap.getHashAt(bottomRow, leftCol) == wallHash
+                        || levelMap.getHashAt(bottomRow, leftCol) == brickHash));
+
+        boolean bottomRightCheck =
+                ((levelMap.getHashAt(bottomRow, rightCol) == wallHash
+                        || levelMap.getHashAt(bottomRow, rightCol) == brickHash));
+
+        switch (direction) {
+            case UP:
+                if (topLeftCheck || topRightCheck) {
+                    y -= steps;
+                }
+                break;
+            case DOWN:
+                if (bottomLeftCheck || bottomRightCheck) {
+                    y -= steps;
+                }
+                break;
+            case RIGHT:
+                if (topRightCheck || bottomRightCheck) {
+                    x -= steps;
+                }
+                break;
+            case LEFT:
+                if (topLeftCheck || bottomLeftCheck) {
+                    x -= steps;
+                }
+                break;
+        }
     }
 }

@@ -80,7 +80,6 @@ public class LevelMap {
                 String[] tile = (scanner.nextLine()).split(",");
                 for (int j = 0; j < column; j++) {
                     int hash = Integer.parseInt(tile[j]);
-
                     mapHash[i][j] = hash;
                 }
             }
@@ -138,6 +137,7 @@ public class LevelMap {
                 output = 1;
                 break;
             default:
+                output = -1;
                 break;
         }
         return output;
