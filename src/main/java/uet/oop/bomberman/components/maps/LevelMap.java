@@ -1,6 +1,7 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.components.entities.enemy.Oneal;
 import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
@@ -103,7 +104,7 @@ public class LevelMap {
                             break;
                         }
                         case '2': {
-                            entitiesManager.enemy.add(
+                            entitiesManager.enemies.add(
                                     new Oneal(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE)
                             );
                             hash = getHash("grass");

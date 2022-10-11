@@ -78,6 +78,10 @@ public class Oneal extends Enemy {
             canMoveU = checkMapHash(i - 1, j);
             canMoveD = checkMapHash(i + 1, j);
 
+            Random r = new Random();
+            int temp = r.nextInt(3);
+            speed = (temp == 0) ? 1 : temp;
+
             if (Math.abs(jPlayer - j) < 2 && Math.abs(iPlayer - i) < 2) {
                 if (jPlayer < j && canMoveL) {
                     moveX = -speed;
@@ -124,9 +128,6 @@ public class Oneal extends Enemy {
                 }
 
                 if (check.size() > 0) {
-                    Random r = new Random();
-                    int temp = r.nextInt(3);
-                    speed = (temp == 0) ? 1 : temp;
                     int ran = r.nextInt(check.size());
                     if (check.get(ran) == Direction.UP) {
                         moveY = -speed;

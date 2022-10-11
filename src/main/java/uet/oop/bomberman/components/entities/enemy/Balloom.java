@@ -63,11 +63,6 @@ public class Balloom extends Enemy {
         return destroyed;
     }
 
-    public void setDestroyed(boolean destroyed) {
-        this.destroyed = destroyed;
-        // plus score ...
-    }
-
     @Override
     protected void move() {
         int j = (int) (x / 32);

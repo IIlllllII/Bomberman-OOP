@@ -33,6 +33,11 @@ public abstract class Enemy extends Entity {
         return destroyed;
     }
 
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
+        // plus score ...
+    }
+
     protected abstract void move();
 
     protected boolean checkMapHash(int i, int j) {

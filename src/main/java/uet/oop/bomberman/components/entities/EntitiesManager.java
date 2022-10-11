@@ -3,6 +3,7 @@ package uet.oop.bomberman.components.entities;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemy.Balloom;
+import uet.oop.bomberman.components.entities.enemy.Enemy;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
@@ -25,7 +26,7 @@ public class EntitiesManager {
     public List<Bomb> bombs = new ArrayList<>();
     public List<Brick> bricks = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
-    public List<Balloom> enemies = new ArrayList<>();
+    public List<Enemy> enemies = new ArrayList<>();
     
     private EntitiesManager() {}
 
