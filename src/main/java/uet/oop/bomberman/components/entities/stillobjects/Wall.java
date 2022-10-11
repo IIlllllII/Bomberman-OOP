@@ -31,8 +31,8 @@ public class Wall extends Entity {
         }
     }
 
-    public Wall(int x, int y, int width, int height, int level){
-        super(x, y, width, height);
+    public Wall(int x, int y, int level){
+        super(x, y);
         this.level = level;
     }
 

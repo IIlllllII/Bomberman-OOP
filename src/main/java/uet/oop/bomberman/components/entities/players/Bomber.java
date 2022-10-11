@@ -21,7 +21,7 @@ public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     private int lives = 3;
-    private int steps = 4;
+    private int steps = 2;
     private boolean canPassBomb = false;
     private boolean canPassFlame = false;
     private boolean canPassBrick = false;
@@ -36,8 +36,8 @@ public class Bomber extends Entity implements Movable, Killable {
     public Bomber(double x, double y, int w, int h) {
         super(x, y, w * GameConfig.TILE_SIZE / h, GameConfig.TILE_SIZE);
         this.bomberBox = new BoxCollider(
-                x + (this.width - 18) / 2.0, y + 18 - 2,
-                18, 18
+                x + (this.width - 15) / 2.0, y + 15 - 2,
+                15, 15
         );
     }
 
@@ -169,7 +169,6 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public void placeBomb() {
         direction = Direction.DOWN;
-        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
 
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
 
@@ -186,6 +185,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
             }
             if (! hasBomb) {
+                new Sound(Sound.PLACE_BOMB_SOUND).playSound();
                 bombList.add(new Bomb(bombX, bombY, 15, 15));
             }
         }
@@ -278,7 +278,7 @@ public class Bomber extends Entity implements Movable, Killable {
             y -= steps;     //Move back
         }
 
-        bomberBox.setLocation(x + (this.width - 18) / 2.0, y + 18 - 2);
+        bomberBox.setLocation(x + (this.width - 15) / 2.0, y + 15 - 2);
 
         int leftCol = (int) bomberBox.getX() / GameConfig.TILE_SIZE;
         int rightCol = (int) (bomberBox.getX() + bomberBox.getWidth()) / GameConfig.TILE_SIZE;

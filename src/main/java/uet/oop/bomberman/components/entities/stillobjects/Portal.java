@@ -17,8 +17,8 @@ public class Portal extends Entity {
         }
     }
 
-    public Portal(int x, int y, int width, int height){
-        super(x, y, width, height);
+    public Portal(int x, int y){
+        super(x, y);
     }
 
     @Override

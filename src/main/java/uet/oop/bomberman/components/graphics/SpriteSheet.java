@@ -11,6 +11,7 @@ import java.net.URL;
 public class SpriteSheet {
     private static boolean initialized = false;
     public static Image NES;
+    public static Image enemy;
 
     private final String path;
     public final int SHEET_WIDTH;
@@ -22,6 +23,7 @@ public class SpriteSheet {
         if (!initialized) {
             try {
                 NES = new Image(SpriteSheet.class.getResource("/spriteSheet/NES.png").toURI().toString());
+                enemy = new Image(SpriteSheet.class.getResource("/spriteSheet/enemy.png").toURI().toString());
             } catch (URISyntaxException e) {
                 System.out.println("Sprite Sheet init");
                 throw new RuntimeException(e);
