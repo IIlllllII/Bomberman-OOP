@@ -2,10 +2,7 @@ package uet.oop.bomberman.components.entities.players;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.components.entities.EntitiesManager;
-import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.entities.Killable;
-import uet.oop.bomberman.components.entities.Movable;
+import uet.oop.bomberman.components.entities.*;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
@@ -16,6 +13,7 @@ import uet.oop.bomberman.config.PlayerStatus;
 import uet.oop.bomberman.sound.Music;
 import uet.oop.bomberman.sound.Sound;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

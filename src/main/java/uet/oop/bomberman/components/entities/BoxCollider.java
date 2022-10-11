@@ -2,8 +2,6 @@ package uet.oop.bomberman.components.entities;
 
 import uet.oop.bomberman.config.GameConfig;
 
-import javax.swing.*;
-
 public class BoxCollider {
     private double x;
     private double y;
