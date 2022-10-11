@@ -35,9 +35,10 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public Bomber(double x, double y, int w, int h) {
         super(x, y, w * GameConfig.TILE_SIZE / h, GameConfig.TILE_SIZE);
-        this.bomberBox = new BoxCollider(
-                x + (this.width - 18) / 2.0, y + 18 - 2,
-                18, 18
+        bomberBox = new BoxCollider(0, 0, 15, 15);
+        bomberBox.setLocation(
+                this.x + (this.width - bomberBox.getWidth()) / 2.0,
+                this.y + bomberBox.getHeight() - 2
         );
     }
 
@@ -278,7 +279,10 @@ public class Bomber extends Entity implements Movable, Killable {
             y -= steps;     //Move back
         }
 
-        bomberBox.setLocation(x + (this.width - 18) / 2.0, y + 18 - 2);
+        bomberBox.setLocation(
+                this.x + (this.width - bomberBox.getWidth()) / 2.0,
+                this.y + bomberBox.getHeight() - 2
+        );
 
         int leftCol = (int) bomberBox.getX() / GameConfig.TILE_SIZE;
         int rightCol = (int) (bomberBox.getX() + bomberBox.getWidth()) / GameConfig.TILE_SIZE;

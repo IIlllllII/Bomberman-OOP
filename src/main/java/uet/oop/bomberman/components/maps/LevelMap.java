@@ -183,9 +183,9 @@ public class LevelMap {
             }
         });
 
-        itemList.forEach(powerUp -> {
-            if (32 * j == powerUp.getX() && 32 * i == powerUp.getY()) {
-                powerUp.setAppear(true);
+        itemList.forEach(item -> {
+            if (32 * j == item.getX() && 32 * i == item.getY()) {
+                item.setAppear(true);
             }
         });
         mapHash[i][j] = getHash("grass");
