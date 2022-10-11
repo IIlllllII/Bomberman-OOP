@@ -31,8 +31,8 @@ public abstract class Entity {
     }
 
     public Entity(double x, double y) {
-        this.x = x;
-        this.y = y;
+        this.x = (x / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
+        this.y = (y / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
         width = GameConfig.TILE_SIZE;
         height = GameConfig.TILE_SIZE;
     }

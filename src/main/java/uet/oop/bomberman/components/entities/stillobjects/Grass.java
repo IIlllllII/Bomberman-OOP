@@ -34,8 +34,8 @@ public class Grass extends Entity {
         }
     }
 
-    public Grass(int x, int y, int width, int height, int level) {
-        super(x, y, width, height);
+    public Grass(int x, int y, int level) {
+        super(x, y);
         this.level = level;
     }
 
