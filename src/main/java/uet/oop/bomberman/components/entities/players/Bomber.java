@@ -1,6 +1,8 @@
 package uet.oop.bomberman.components.entities.players;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.Killable;
 import uet.oop.bomberman.components.entities.Movable;
@@ -31,10 +33,9 @@ public class Bomber extends Entity implements Movable, Killable {
     private boolean canPassBom = false;
     private boolean canPassFlame = false;
     private boolean canPassBrick = false;
-
     private final List<Bomb> bombList = new ArrayList<>();
-
     private int bombMax = 1;
+    
     private int currentSpriteIndex = 0;
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
@@ -96,21 +97,19 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void render(GraphicsContext gc) {
+        Image image = null;
         switch (playerStatus) {
             case IDLE:
-                gc.drawImage(spritesDict.get("idle")[direction.index]
-                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
+                image = spritesDict.get("idle")[direction.index].getFxImage();
                 break;
             case MOVING:
-                gc.drawImage(spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 6]
-                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
+                image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 6].getFxImage();
                 break;
             case DEAD:
-                gc.drawImage(spritesDict.get("dead")[currentSpriteIndex / 6]
-                        .getFxImage(), this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
+                image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
                 break;
         }
-        bombList.forEach(bomb -> bomb.render(gc));
+        gc.drawImage(image, this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
     }
 
     @Override
@@ -136,21 +135,16 @@ public class Bomber extends Entity implements Movable, Killable {
         if (playerStatus == PlayerStatus.IDLE) {
             movingSound.stopMusic();
         }
-
-        for (int i = 0; i < bombList.size(); i++) {
-            if (!bombList.get(i).isDone()) {
-                bombList.get(i).update();
-            } else {
-                bombList.remove(i);
-                i--;
-            }
-        }
     }
 
     public void placeBomb() {
-        if (bombList.size() < bombMax) {
-            int bombX = (int) (getX() + getWidth() / 2) / 32 * 32;
-            int bombY = (int) (getY() + getHeight() / 2) / 32 * 32;
+        direction = Direction.DOWN;
+        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
+
+        List<Bomb> bombList = EntitiesManager.getInstance().bombs;
+        if (bombList.size() < bombMaxCount) {
+            int bombX = ((int) this.getX() / 32 + 1) * 32;
+            int bombY = ((int) this.getY() / 32 + 1) * 32;
             boolean hasBomb = false;
             for (Bomb bomb : bombList) {
                 if (bomb.getX() == bombX && bomb.getY() == bombY) {

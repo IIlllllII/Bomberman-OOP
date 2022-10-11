@@ -2,6 +2,8 @@ package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.powerUp.*;
+import uet.oop.bomberman.components.entities.EntitiesManager;
+
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
 import uet.oop.bomberman.components.entities.stillobjects.Portal;
@@ -17,7 +19,6 @@ public class LevelMap {
     private Grass grass;
     private Wall wall;
     private List<Brick> brickList = new ArrayList<>();
-
     private List<PowerUp> powerUpList = new ArrayList<>();
 
     private Portal portal;
@@ -56,9 +57,10 @@ public class LevelMap {
                 }
             }
         }
+        
         //Render all power up
         powerUpList.forEach(powerUp -> powerUp.render(gc));
-        //Render all destroyed bricks
+        //Render all bricks
         brickList.forEach(entity -> entity.render(gc));
     }
 
@@ -75,6 +77,7 @@ public class LevelMap {
         wall = new Wall(0,0, 0, 0, level);
         brickList.clear();
         powerUpList.clear();
+        EntitiesManager.getInstance().renewEntities();
 
         try {
             File file = new File(LevelMap.class.getResource("/levels/level" + level + ".txt").toURI());
@@ -152,13 +155,14 @@ public class LevelMap {
 
     public void destroyBrick(int i, int j){
         brickList.forEach(brick -> {
-            if((j * 32) == brick.getX() && (i * 32) == brick.getY()){
+            if ((j * 32) == brick.getX() && (i * 32) == brick.getY()) {
                 brick.setDestroyed(true);
-                powerUpList.forEach(powerUp -> {
-                    if (32 * j == powerUp.getX() && 32 * i == powerUp.getY()) {
-                        powerUp.setAppear(true);
-                    }
-                });
+            }
+        });
+        
+        powerUpList.forEach(powerUp -> {
+            if (32 * j == powerUp.getX() && 32 * i == powerUp.getY()) {
+                powerUp.setAppear(true);
             }
         });
         mapHash[i][j] = getHash("grass");
