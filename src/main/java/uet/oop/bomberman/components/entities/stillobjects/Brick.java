@@ -16,11 +16,14 @@ public class Brick extends Entity {
     private Image image;
     private static List<Image> bricks;
     private static List<Image> brickExplodes;
-    private static boolean initialized = false;
+
+    private Image image;
     private boolean destroyed = false; // bị phá hủy chưa
-    private final double timeDestroyed = 600; // thời gian phá hủy
-    private double time = 0;
+    private static final float timeDestroyed = 1000.0f; // thời gian phá hủy
+
+    private float time = 0;
     private final int level;
+
 
     public static void init() {
         if (!initialized) {
@@ -69,10 +72,8 @@ public class Brick extends Entity {
     public void update() {
         if (destroyed) {
             time += Timer.getInstance().getDeltaTime();
-            image = Sprite.animate(brickExplodes, time, timeDestroyed);
-            if (time >= timeDestroyed) {
-                image = null;
-            }
+            image = Sprite.animation(brickExplodes,time, timeDestroyed);
+
         }
     }
 

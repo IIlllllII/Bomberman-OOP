@@ -34,10 +34,9 @@ public class MenuScene {
         ImageView imageView = new ImageView(background);
         imageView.setFitHeight(GameConfig.HEIGHT);
         imageView.setFitWidth(GameConfig.WIDTH);
-        gameMusic.setVolume(0.2);
-        menuMusic.setVolume(0.2);
         gameMenu = new GameMenu();
         gameMenu.setVisible(false);
+
         menuMusic.playMusic();
 
         root.getChildren().addAll(imageView, gameMenu);

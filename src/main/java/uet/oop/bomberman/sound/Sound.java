@@ -75,4 +75,8 @@ public class Sound {
     public void unmute() {
         mediaPlayer.setMute(false);
     }
+
+    public void setVolume(double volume){
+        mediaPlayer.setVolume(volume);
+    }
 }

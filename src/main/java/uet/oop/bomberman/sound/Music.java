@@ -58,8 +58,4 @@ public class Music extends Sound {
         status = MusicStatus.STOP;
         mediaPlayer.stop();
     }
-
-    public void setVolume(double volume){
-        mediaPlayer.setVolume(volume);
-    }
 }

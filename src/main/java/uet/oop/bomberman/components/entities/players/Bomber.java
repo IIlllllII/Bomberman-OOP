@@ -29,10 +29,13 @@ public class Bomber extends Entity implements Movable, Killable {
     private static boolean initialized = false;
 
     private int lives = 3;
-
-    private int bombMaxCount = 2;
-    private int bombCount = 0;
-
+    private int steps = 4;
+    private boolean canPassBom = false;
+    private boolean canPassFlame = false;
+    private boolean canPassBrick = false;
+    private final List<Bomb> bombList = new ArrayList<>();
+    private int bombMax = 1;
+    
     private int currentSpriteIndex = 0;
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
@@ -92,10 +95,6 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
-    public void setBombMaxCount(int bombMaxCount) {
-        this.bombMaxCount = bombMaxCount;
-    }
-
     @Override
     public void render(GraphicsContext gc) {
         Image image = null;
@@ -121,7 +120,7 @@ public class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move(4, direction);
+            move(steps, direction);
         }
 
         //Demo "die" status.
@@ -153,8 +152,9 @@ public class Bomber extends Entity implements Movable, Killable {
                     break;
                 }
             }
-            if (! hasBomb) {
-                bombList.add(new Bomb(bombX, bombY, 15, 15, this));
+            if (!hasBomb) {
+                new Sound(Sound.PLACE_BOMB_SOUND).playSound();
+                bombList.add(new Bomb(bombX, bombY, 15, 15));
             }
         }
     }
@@ -165,13 +165,33 @@ public class Bomber extends Entity implements Movable, Killable {
     }
 
     @Override
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    @Override
     public int getLives() {
         return lives;
     }
 
-    @Override
-    public void setLives(int lives) {
-        this.lives = lives;
+    public void setBombMax(int bombMax) {
+        this.bombMax = bombMax;
+    }
+
+    public void setSteps(int steps) {
+        this.steps = steps;
+    }
+
+    public void setCanPassBrick(boolean canPassBrick) {
+        this.canPassBrick = canPassBrick;
+    }
+
+    public void setCanPassFlame(boolean canPassFlame) {
+        this.canPassFlame = canPassFlame;
+    }
+
+    public void setCanPassBom(boolean canPassBom) {
+        this.canPassBom = canPassBom;
     }
 
     public PlayerStatus getPlayerStatus() {
