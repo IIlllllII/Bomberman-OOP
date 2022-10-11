@@ -120,27 +120,29 @@ public class Balloom extends Enemy {
             }
             if (moveY == 0 && moveX == 0) {
                 Random r = new Random();
-                int ran = r.nextInt(check.size());
-                if (check.get(ran) == Direction.UP) {
-                    moveY = -speed;
-                    lastDirection = Direction.UP;
-                }
-                if (check.get(ran) == Direction.DOWN) {
-                    moveY = speed;
-                    lastDirection = Direction.DOWN;
-                }
-                if (check.get(ran) == Direction.RIGHT) {
-                    moveX = speed;
-                    if (lastDirection != Direction.RIGHT) {
-                        lastDirection = Direction.RIGHT;
-                        randomAnimation = !randomAnimation;
+                if (check.size() != 0) {
+                    int ran = r.nextInt(check.size());
+                    if (check.get(ran) == Direction.UP) {
+                        moveY = -speed;
+                        lastDirection = Direction.UP;
                     }
-                }
-                if (check.get(ran) == Direction.LEFT) {
-                    moveX = -speed;
-                    if (lastDirection != Direction.LEFT) {
-                        lastDirection = Direction.LEFT;
-                        randomAnimation = !randomAnimation;
+                    if (check.get(ran) == Direction.DOWN) {
+                        moveY = speed;
+                        lastDirection = Direction.DOWN;
+                    }
+                    if (check.get(ran) == Direction.RIGHT) {
+                        moveX = speed;
+                        if (lastDirection != Direction.RIGHT) {
+                            lastDirection = Direction.RIGHT;
+                            randomAnimation = !randomAnimation;
+                        }
+                    }
+                    if (check.get(ran) == Direction.LEFT) {
+                        moveX = -speed;
+                        if (lastDirection != Direction.LEFT) {
+                            lastDirection = Direction.LEFT;
+                            randomAnimation = !randomAnimation;
+                        }
                     }
                 }
             }
