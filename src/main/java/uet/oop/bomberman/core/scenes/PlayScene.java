@@ -53,7 +53,7 @@ public class PlayScene {
         });
 
         entitiesManager.players.add(
-                new Bomber(33, 33, 16 * GameConfig.SCALED_FACTOR, 22 * GameConfig.SCALED_FACTOR)
+                new Bomber(33, 33, 16, 22)
         );
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
     }
