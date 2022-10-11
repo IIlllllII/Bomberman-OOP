@@ -74,14 +74,15 @@ public class EntitiesManager {
         items.forEach(item -> {
             BoxCollider itemBox = new BoxCollider(item.getX(), item.getY(), 32, 32);
             if (bomberBox.isCollidedWith(itemBox)) {
-                item.setEaten(true);
+                if(item.isAppear()){
+                    item.setEaten(true);
+                }
             }
         });
 
         enemies.forEach(enemy -> {
             if (!enemy.isDestroyed() && bomberBox.isCollidedWith(new BoxCollider(
-                enemy.getX(), enemy.getY(), 30, 30
-            ))) {
+                enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
                 players.get(0).setPlayerStatus(PlayerStatus.DEAD);
             }
         });
@@ -90,7 +91,8 @@ public class EntitiesManager {
             bomb.getFlameList().forEach(flame -> {
                 BoxCollider flameBox = new BoxCollider(flame.getX(), flame.getY(), 32, 32);
 
-                if (bomberBox.isCollidedWith(flameBox)) {
+                if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
+                        && !players.get(0).isInvincible()) {
                     players.get(0).setPlayerStatus(PlayerStatus.DEAD);
                 }
 

@@ -2,9 +2,12 @@ package uet.oop.bomberman.components.entities.items;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
-public class PlusBombItem extends Item {
-    public PlusBombItem(double x, double y){
-        super(x, y, powerupBombs);
+public class BombUp extends Item {
+    /**
+     * Increase the maximum number of bombs you can lay (Max. 10).
+     */
+    public BombUp(double x, double y){
+        super(x, y, bombUp);
     }
 
     @Override

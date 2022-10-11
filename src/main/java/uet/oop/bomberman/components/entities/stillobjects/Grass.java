@@ -17,11 +17,6 @@ public class Grass extends Entity {
     public static void init() {
         if (!initialized) {
             grasses = new LinkedList<>();
-<<<<<<< HEAD
-            //SpriteSheet newTiles = new SpriteSheet("/textures/TilesMap.png", 96, 96);
-=======
-            SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
->>>>>>> 5d2e4bfbd8f825b5b9e8c77337522f942424bdf4
             try {
                 grasses.add(new Image(LevelMap.class.getResource("/sprites/map/grass/grass" +  1 + ".png").toURI().toString()));
                 grasses.add(new Image(LevelMap.class.getResource("/sprites/map/grass/grass" +  2 + ".png").toURI().toString()));

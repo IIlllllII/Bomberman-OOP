@@ -2,10 +2,12 @@ package uet.oop.bomberman.components.entities.items;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
-public class PlusLiveItem extends Item {
-
-    public PlusLiveItem(double x, double y) {
-        super(x, y, powerupLives);
+public class LivesUp extends Item {
+    /**
+     * Increase Bomberman lives.
+     */
+    public LivesUp(double x, double y) {
+        super(x, y, livesUp);
     }
 
     @Override

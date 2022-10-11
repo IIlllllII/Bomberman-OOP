@@ -2,9 +2,13 @@ package uet.oop.bomberman.components.entities.items;
 
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 
-public class PlusFlameItem extends Item {
-    public PlusFlameItem(double x, double y){
-        super(x, y, powerupFlames);
+public class FlameUp extends Item {
+    /**
+     * Increase the blast radius each bombs can make (Max. 2).
+     */
+
+    public FlameUp(double x, double y){
+        super(x, y, fireUp);
     }
 
     @Override

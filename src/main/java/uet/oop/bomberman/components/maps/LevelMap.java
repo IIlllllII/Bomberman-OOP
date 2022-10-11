@@ -73,6 +73,7 @@ public class LevelMap {
         wall = new Wall(0,0, level);
         List<Brick> brickList = entitiesManager.bricks;
         List<Item> itemList = entitiesManager.items;
+
         entitiesManager.renewEntities();
 
         try {
@@ -111,48 +112,48 @@ public class LevelMap {
                             break;
                         }
                         case '*': {
-                            brickList.add(new Brick(32 * j, 32 * i, level));
+                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             break;
                         }
                         case 'b': {
-                            itemList.add(new PlusBombItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, level));
+                            itemList.add(new BombUp(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
+                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'f': {
-                            itemList.add(new PlusFlameItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, level));
+                            itemList.add(new FlameUp(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
+                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 's': {
-                            itemList.add(new PlusSpeedItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, level));
+                            itemList.add(new SpeedUp(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
+                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'B': {
-                            itemList.add(new BombPassItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, level));
+                            itemList.add(new BombPass(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
+                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'F': {
-                            itemList.add(new FlamePassItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, level));
+                            itemList.add(new FlamePass(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
+                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'W': {
-                            itemList.add(new BrickPassItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, level));
+                            itemList.add(new BrickPass(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
+                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             hash = getHash("brick");
                             break;
                         }
                         case 'l': {
-                            itemList.add(new PlusLiveItem(32 * j, 32 * i));
-                            brickList.add(new Brick(32 * j, 32 * i, level));
+                            itemList.add(new LivesUp(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
+                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             hash = getHash("brick");
                             break;
                         }
@@ -173,24 +174,24 @@ public class LevelMap {
     }
 
     public int getWidth() {
-        return this.mapHash[0].length * 32;
+        return this.mapHash[0].length * GameConfig.TILE_SIZE;
     }
 
     public int getHeight() {
-        return this.mapHash.length * 32;
+        return this.mapHash.length * GameConfig.TILE_SIZE;
     }
 
     public void destroyBrick(int i, int j) {
         List<Brick> brickList = EntitiesManager.getInstance().bricks;
         List<Item> itemList = EntitiesManager.getInstance().items;
         brickList.forEach(brick -> {
-            if ((j * 32) == brick.getX() && (i * 32) == brick.getY()) {
+            if ((j * GameConfig.TILE_SIZE) == brick.getX() && (i * GameConfig.TILE_SIZE) == brick.getY()) {
                 brick.setDestroyed(true);
             }
         });
 
         itemList.forEach(item -> {
-            if (32 * j == item.getX() && 32 * i == item.getY()) {
+            if ((GameConfig.TILE_SIZE * j) == item.getX() && (GameConfig.TILE_SIZE * i) == item.getY()) {
                 item.setAppear(true);
             }
         });

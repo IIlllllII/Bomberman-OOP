@@ -26,6 +26,7 @@ public class Bomber extends Entity implements Movable, Killable {
     private boolean canPassBomb = false;
     private boolean canPassFlame = false;
     private boolean canPassBrick = false;
+    private boolean invincible = false;
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
@@ -110,7 +111,7 @@ public class Bomber extends Entity implements Movable, Killable {
             currentDirection = Direction.DOWN;
         }
 
-        if  (inputList.contains(KeyCode.SPACE)) {
+        if (inputList.contains(KeyCode.SPACE)) {
             placeBomb();
             inputList.remove(KeyCode.SPACE);
         }
@@ -186,7 +187,7 @@ public class Bomber extends Entity implements Movable, Killable {
                     break;
                 }
             }
-            if (! hasBomb) {
+            if (!hasBomb) {
                 new Sound(Sound.PLACE_BOMB_SOUND).playSound();
                 bombList.add(new Bomb(bombX, bombY, 32, 32));
 
@@ -225,12 +226,32 @@ public class Bomber extends Entity implements Movable, Killable {
         this.canPassBrick = canPassBrick;
     }
 
+    public boolean isCanPassBrick() {
+        return canPassBrick;
+    }
+
     public void setCanPassFlame(boolean canPassFlame) {
         this.canPassFlame = canPassFlame;
     }
 
+    public boolean isCanPassFlame() {
+        return canPassFlame;
+    }
+
     public void setCanPassBomb(boolean canPassBomb) {
         this.canPassBomb = canPassBomb;
+    }
+
+    public boolean isCanPassBomb() {
+        return canPassBomb;
+    }
+
+    public boolean isInvincible() {
+        return invincible;
+    }
+
+    public void setInvincible(boolean invincible) {
+        this.invincible = invincible;
     }
 
     public PlayerStatus getPlayerStatus() {
@@ -336,15 +357,15 @@ public class Bomber extends Entity implements Movable, Killable {
         LevelMap levelMap = LevelMap.getInstance();
 
         if (levelMap.getHashAt(i, j) == levelMap.getHash("bomb")) {
-            if (EntitiesManager.getInstance().bombs.get(
-                    EntitiesManager.getInstance().bombs.size() - 1
-            ).isAllowPass()) {
+            if (EntitiesManager.getInstance().bombs.
+                    get(EntitiesManager.getInstance().bombs.size() - 1).isAllowPass()) {
                 return false;
             }
+            return !canPassBomb;
         }
-
-        return levelMap.getHashAt(i, j) == levelMap.getHash("wall")
-                || levelMap.getHashAt(i, j) == levelMap.getHash("brick")
-                || levelMap.getHashAt(i, j) == levelMap.getHash("bomb");
+        if (levelMap.getHashAt(i, j) == levelMap.getHash("brick")) {
+            return !canPassBrick;
+        }
+        return levelMap.getHashAt(i, j) == levelMap.getHash("wall");
     }
 }

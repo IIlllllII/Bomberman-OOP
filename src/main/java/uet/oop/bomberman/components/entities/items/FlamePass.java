@@ -2,10 +2,13 @@ package uet.oop.bomberman.components.entities.items;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
-public class FlamePassItem extends Item {
+public class FlamePass extends Item {
+    /**
+     * Allows Bomberman to survive his own bomb blast (but NOT the enemies).
+     */
 
-    public FlamePassItem(double x, double y){
-        super(x, y, powerupFlamepass);
+    public FlamePass(double x, double y){
+        super(x, y, flamePass);
     }
 
     @Override

@@ -54,11 +54,6 @@ public class BoxCollider {
         double top_2 = other.getY();
         double bottom_2 = other.getY() + other.getHeight();
 
-//        return ((left_1 < right_2) &&
-//                (right_1 > left_2) &&
-//                (top_1 < bottom_2) &&
-//                (bottom_1 > top_2));
-
         if (bottom_1 <= top_2) {
             return false;
         }

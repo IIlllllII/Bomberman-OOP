@@ -9,13 +9,14 @@ import uet.oop.bomberman.core.Timer;
 
 public abstract class Item extends Entity {
     private static boolean initialized = false;
-    protected static Image powerupBombs;
-    protected static Image powerupFlames;
-    protected static Image powerupSpeed;
-    protected static Image powerupBrickpass;
-    protected static Image powerupLives;
-    protected static Image powerupBombpass;
-    protected static Image powerupFlamepass;
+    protected static Image bombUp;
+    protected static Image fireUp;
+    protected static Image speedUp;
+    protected static Image brickPass;
+    protected static Image livesUp;
+    protected static Image bombPass;
+    protected static Image flamePass;
+    protected static Image invincible;
     protected Image image;
     protected double timeAppear = 5000;
     protected double timePowerUp = 30000;
@@ -34,13 +35,14 @@ public abstract class Item extends Entity {
     public static void init() {
         if (!initialized) {
             SpriteSheet item = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            powerupBombs = new Sprite(16, 0 * 16, 10 * 16, item, 16, 16).getFxImage();
-            powerupFlames = new Sprite(16, 1 * 16, 10 * 16, item, 16, 16).getFxImage();
-            powerupSpeed = new Sprite(16, 2 * 16, 10 * 16, item, 16, 16).getFxImage();
-            powerupBrickpass = new Sprite(16, 3 * 16, 10 * 16, item, 16, 16).getFxImage();
-            powerupLives = new Sprite(16, 4 * 16, 10 * 16, item, 16, 16).getFxImage();
-            powerupBombpass = new Sprite(16, 5 * 16, 10 * 16, item, 16, 16).getFxImage();
-            powerupFlamepass = new Sprite(16, 6 * 16, 10 * 16, item, 16, 16).getFxImage();
+            bombUp = new Sprite(16, 0 * 16, 10 * 16, item, 16, 16).getFxImage();
+            fireUp = new Sprite(16, 1 * 16, 10 * 16, item, 16, 16).getFxImage();
+            speedUp = new Sprite(16, 2 * 16, 10 * 16, item, 16, 16).getFxImage();
+            brickPass = new Sprite(16, 3 * 16, 10 * 16, item, 16, 16).getFxImage();
+            livesUp = new Sprite(16, 4 * 16, 10 * 16, item, 16, 16).getFxImage();
+            bombPass = new Sprite(16, 5 * 16, 10 * 16, item, 16, 16).getFxImage();
+            flamePass = new Sprite(16, 6 * 16, 10 * 16, item, 16, 16).getFxImage();
+            invincible = new Sprite(16, 7 * 16, 10 * 16, item, 16, 16).getFxImage();
             initialized = true;
         }
     }
@@ -55,10 +57,6 @@ public abstract class Item extends Entity {
 
     public void setEaten(boolean eaten) {
         this.eaten = eaten;
-    }
-
-    public boolean isEaten() {
-        return eaten;
     }
 
     public abstract void changePower();

@@ -2,10 +2,12 @@ package uet.oop.bomberman.components.entities.items;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
-public class BrickPassItem extends Item {
-
-    public BrickPassItem(double x, double y){
-        super(x, y, powerupBrickpass);
+public class BrickPass extends Item {
+    /**
+     * Allowed Bomberman to pass through brick.
+     */
+    public BrickPass(double x, double y){
+        super(x, y, brickPass);
     }
 
     @Override
