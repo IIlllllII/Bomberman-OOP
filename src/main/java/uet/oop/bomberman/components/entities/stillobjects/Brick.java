@@ -13,11 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Brick extends Entity {
+    private static boolean initialized = false;
     private Image image;
     private static List<Image> bricks;
     private static List<Image> brickExplodes;
-
-    private Image image;
     private boolean destroyed = false; // bị phá hủy chưa
     private static final float timeDestroyed = 1000.0f; // thời gian phá hủy
 

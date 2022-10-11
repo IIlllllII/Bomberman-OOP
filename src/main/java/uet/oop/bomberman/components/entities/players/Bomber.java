@@ -142,7 +142,7 @@ public class Bomber extends Entity implements Movable, Killable {
         new Sound(Sound.PLACE_BOMB_SOUND).playSound();
 
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
-        if (bombList.size() < bombMaxCount) {
+        if (bombList.size() < bombMax) {
             int bombX = ((int) this.getX() / 32 + 1) * 32;
             int bombY = ((int) this.getY() / 32 + 1) * 32;
             boolean hasBomb = false;
