@@ -77,34 +77,34 @@ public class Flame extends Entity {
             switch (flameDirection) {
                 case UP:
                     if (last) {
-                        image = Sprite.animate(explosionVerticalTopLast, time, flameTime);
+                        image = Sprite.animation(explosionVerticalTopLast, time, flameTime);
                     } else {
-                        image = Sprite.animate(explosionVertical, time, flameTime);
+                        image = Sprite.animation(explosionVertical, time, flameTime);
                     }
                     break;
                 case DOWN:
                     if (last) {
-                        image = Sprite.animate(explosionVerticalDownLast, time, flameTime);
+                        image = Sprite.animation(explosionVerticalDownLast, time, flameTime);
                     } else {
-                        image = Sprite.animate(explosionVertical, time, flameTime);
+                        image = Sprite.animation(explosionVertical, time, flameTime);
                     }
                     break;
                 case LEFT:
                     if (last) {
-                        image = Sprite.animate(explosionHorizontalLeftLast, time, flameTime);
+                        image = Sprite.animation(explosionHorizontalLeftLast, time, flameTime);
                     } else {
-                        image = Sprite.animate(explosionHorizontal, time, flameTime);
+                        image = Sprite.animation(explosionHorizontal, time, flameTime);
                     }
                     break;
                 case RIGHT:
                     if (last) {
-                        image = Sprite.animate(explosionHorizontalRightLast, time, flameTime);
+                        image = Sprite.animation(explosionHorizontalRightLast, time, flameTime);
                     } else {
-                        image = Sprite.animate(explosionHorizontal, time, flameTime);
+                        image = Sprite.animation(explosionHorizontal, time, flameTime);
                     }
                     break;
                 case CENTER:
-                    image = Sprite.animate(bombExploded, time, flameTime);
+                    image = Sprite.animation(bombExploded, time, flameTime);
                     break;
                 default:
                     break;

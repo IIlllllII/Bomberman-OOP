@@ -1,24 +1,33 @@
 package uet.oop.bomberman.components.maps;
 
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.entities.items.*;
+import uet.oop.bomberman.components.entities.EntitiesManager;
+
+import uet.oop.bomberman.components.entities.enemy.Balloom;
+import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
+import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class LevelMap {
-    private int[][] mapHash;
+    private char[][] mapHash;
     private Grass grass;
     private Wall wall;
-    private Brick brick;
-    private final List<Brick> brokenBricks = new ArrayList<>();
+
+    private Portal portal;
 
     private int level;
+    private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     private static class SingletonHelper {
         private static final LevelMap INSTANCE = new LevelMap();
@@ -37,6 +46,8 @@ public class LevelMap {
         Grass.init();
         Wall.init();
         Brick.init();
+        Portal.init();
+        Item.init();
     }
 
     public void render(GraphicsContext gc) {
@@ -49,20 +60,11 @@ public class LevelMap {
                     wall.setLocation(32 * j, 32 * i);
                     wall.render(gc);
                 }
-
-                if (mapHash[i][j] == getHash("brick")) {
-                    brick.setLocation(32 * j, 32 * i);
-                    brick.render(gc);
-                }
             }
         }
-
-        //Render all destroyed bricks
-        brokenBricks.forEach(entity -> entity.render(gc));
     }
 
     public void update(){
-        brokenBricks.forEach(Brick::update);
     }
     public void nextLevel() {
         level++;
@@ -70,35 +72,93 @@ public class LevelMap {
 
         grass = new Grass(0,0, 0 , 0, level);
         wall = new Wall(0,0, 0, 0, level);
-        brick = new Brick(0, 0, 0, 0, level);
-        brokenBricks.clear();
+        List<Brick> brickList = entitiesManager.bricks;
+        List<Item> itemList = entitiesManager.items;
+        entitiesManager.renewEntities();
 
         try {
-            File file = new File(LevelMap.class.getResource("/sprites/map/map" + level + ".map").toURI());
+            File file = new File(GameConfig.LEVEL_DATA[level - 1]);
             Scanner scanner = new Scanner(file);
             int row = scanner.nextInt();
             int column = scanner.nextInt();
-            String temp = scanner.nextLine();   //skip endline after reading integers.
+            String temp = scanner.nextLine();   //skip end-line after reading integers.
 
-            mapHash = new int[row][column];
+            mapHash = new char[row][column];
             for (int i = 0; i < row; i++) {
-                String[] tile = (scanner.nextLine()).split(",");
+                String tile = scanner.nextLine();
                 for (int j = 0; j < column; j++) {
-                    int hash = Integer.parseInt(tile[j]);
+                    char hash = tile.charAt(j);
 
+                    switch (hash) {
+                        case 'p': {
+                            entitiesManager.players.add(
+                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                            );
+                            hash = getHash("grass");
+                            break;
+                        }
+                        case '1': {
+                            entitiesManager.enemy.add(
+                                    new Balloom(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE)
+                            );
+                            hash = getHash("grass");
+                            break;
+                        }
+                        case '*': {
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            break;
+                        }
+                        case 'b': {
+                            itemList.add(new PlusBombItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            hash = getHash("brick");
+                            break;
+                        }
+                        case 'f': {
+                            itemList.add(new PlusFlameItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            hash = getHash("brick");
+                            break;
+                        }
+                        case 's': {
+                            itemList.add(new PlusSpeedItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            hash = getHash("brick");
+                            break;
+                        }
+                        case 'B': {
+                            itemList.add(new BombPassItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            hash = getHash("brick");
+                            break;
+                        }
+                        case 'F': {
+                            itemList.add(new FlamePassItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            hash = getHash("brick");
+                            break;
+                        }
+                        case 'W': {
+                            itemList.add(new BrickPassItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            hash = getHash("brick");
+                            break;
+                        }
+                        case 'l': {
+                            itemList.add(new PlusLiveItem(32 * j, 32 * i));
+                            brickList.add(new Brick(32 * j, 32 * i, 32, 32, level));
+                            hash = getHash("brick");
+                            break;
+                        }
+                        default:
+                            break;
+                    }
                     mapHash[i][j] = hash;
                 }
             }
-        } catch (URISyntaxException | FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("next level read file");
             throw new RuntimeException(e);
-        }
-    }
-
-    public void destroyBrick(int i, int j) {
-        Point2D point = new Point2D(j, i);
-        if (brickList.containsKey(point)) {
-            brickList.get(point).setDestroyed(true);
         }
     }
 
@@ -114,37 +174,42 @@ public class LevelMap {
         return this.mapHash.length * 32;
     }
 
-    public void setBrick(int i, int j){
+    public void destroyBrick(int i, int j) {
+        List<Brick> brickList = EntitiesManager.getInstance().bricks;
+        List<Item> itemList = EntitiesManager.getInstance().items;
+        brickList.forEach(brick -> {
+            if ((j * 32) == brick.getX() && (i * 32) == brick.getY()) {
+                brick.setDestroyed(true);
+            }
+        });
+
+        itemList.forEach(powerUp -> {
+            if (32 * j == powerUp.getX() && 32 * i == powerUp.getY()) {
+                powerUp.setAppear(true);
+            }
+        });
         mapHash[i][j] = getHash("grass");
-        Brick brokenBrick = new Brick(j * 32, i * 32, 32, 32, level);
-        brokenBrick.setDestroyed(true);
-        brokenBricks.add(brokenBrick);
     }
 
-    public int[][] getMapHash() {
+    public char[][] getMapHash() {
         return this.mapHash;
     }
 
-<<<<<<< HEAD
-    public void setMapHash(int i, int j, int value) {
-        mapHash[i][j] = value;
-=======
-    public int getHashAt(int i, int j){
+    public char getHashAt(int i, int j){
         return mapHash[i][j];
->>>>>>> 5d2e4bfbd8f825b5b9e8c77337522f942424bdf4
     }
 
-    public int getHash(String input) {
-        int output = 0;
+    public char getHash(String input) {
+        char output = ' ';
         switch (input) {
             case "grass":
-                output = 2;
+                output = ' ';
                 break;
             case "brick":
-                output = 3;
+                output = '*';
                 break;
             case "wall":
-                output = 1;
+                output = '#';
                 break;
             default:
                 break;

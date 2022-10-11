@@ -1,15 +1,10 @@
 package uet.oop.bomberman.components.graphics;
 
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.*;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Sprite {
@@ -52,7 +47,7 @@ public class Sprite {
         }
     }
 
-    public static Image animate(List<Image> images, double time, double timeTakesPlace) {
+    public static Image animation(List<Image> images, double time, double timeTakesPlace) {
         double diff = timeTakesPlace / images.size();
 
         for (int i = 1; i <= images.size(); i++) {
@@ -60,7 +55,7 @@ public class Sprite {
                 return images.get(i - 1);
             }
         }
-        return images.get(images.size() - 1);
+        return null;
     }
 
     public int getWidth() {

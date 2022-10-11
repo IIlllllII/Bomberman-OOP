@@ -1,16 +1,34 @@
 package uet.oop.bomberman.components.graphics;
 
+import javafx.scene.image.Image;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class SpriteSheet {
+    private static boolean initialized = false;
+    public static Image NES;
+
     private final String path;
     public final int SHEET_WIDTH;
     public final int SHEET_HEIGHT;
     public int[] pixels;
     public BufferedImage image;
+
+    public static void init() {
+        if (!initialized) {
+            try {
+                NES = new Image(SpriteSheet.class.getResource("/spriteSheet/NES.png").toURI().toString());
+            } catch (URISyntaxException e) {
+                System.out.println("Sprite Sheet init");
+                throw new RuntimeException(e);
+            }
+            initialized = true;
+        }
+    }
     public SpriteSheet(String path, int width, int height) {
         this.path = path;
         SHEET_WIDTH = width;

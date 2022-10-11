@@ -1,11 +1,10 @@
 package uet.oop.bomberman.components.entities;
 
-<<<<<<< HEAD:src/main/java/uet/oop/bomberman/core/EntitiesManager.java
-import uet.oop.bomberman.components.entities.Entity;
+import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
-=======
->>>>>>> 5d2e4bfbd8f825b5b9e8c77337522f942424bdf4:src/main/java/uet/oop/bomberman/components/entities/EntitiesManager.java
+import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.stillobjects.Brick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +18,11 @@ import java.util.List;
  */
 public class EntitiesManager {
     public List<Bomber> players = new ArrayList<>();
-    public List<Entity> animatedEntities = new ArrayList<>();
-    public List<Entity> grasses = new ArrayList<>();
-    public List<Entity> stillObjects = new ArrayList<>();
-    public List<Entity> items = new ArrayList<>();
-    public Bomb bomb ;
+    public List<Bomb> bombs = new ArrayList<>();
+    public List<Brick> bricks = new ArrayList<>();
+    public List<Item> items = new ArrayList<>();
+    public List<Entity> enemy = new ArrayList<>();
+    
     private EntitiesManager() {}
 
     private static class SingletonHelper {
@@ -33,15 +32,39 @@ public class EntitiesManager {
     public static EntitiesManager getInstance() {
         return SingletonHelper.INSTANCE;
     }
+    
+    public void render(GraphicsContext gc) {
+        items.forEach(items -> items.render(gc));
+        bombs.forEach(entity -> entity.render(gc));
+        bricks.forEach(entity -> entity.render(gc));
+        enemy.forEach(enemy -> enemy.render(gc));
+        players.forEach(player -> player.render(gc));
+    }
+
+    public void update() {
+        players.forEach(Entity::update);
+        bricks.forEach(Brick::update);
+        enemy.forEach(Entity::update);
+        items.forEach(Entity::update);
+
+        for (int i = 0; i < bombs.size(); i++){
+            if (! bombs.get(i).isDone()) {
+                bombs.get(i).update();
+            } else {
+                bombs.remove(i);
+                i--;
+            }
+        }
+    }
 
     /**
      * Renew all entities when switching to another level
      */
     public void renewEntities() {
         players.clear();
-        animatedEntities.clear();
-        grasses.clear();
-        stillObjects.clear();
+        bombs.clear();
+        bricks.clear();
         items.clear();
+        enemy.clear();
     }
 }

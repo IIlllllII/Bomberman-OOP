@@ -12,7 +12,7 @@ public abstract class Entity {
     protected int width;
     protected int height;
 
-    protected boolean active;
+    protected boolean active = true;
 
     protected final Camera camera = Camera.getInstance();
 
@@ -21,7 +21,6 @@ public abstract class Entity {
         y = 0;
         width = 0;
         height = 0;
-        active = true;
     }
 
     public Entity(double x, double y, int width, int height) {
@@ -29,7 +28,6 @@ public abstract class Entity {
         this.y = y;
         this.width = width;
         this.height = height;
-        active = true;
     }
 
     public Entity(double x, double y) {

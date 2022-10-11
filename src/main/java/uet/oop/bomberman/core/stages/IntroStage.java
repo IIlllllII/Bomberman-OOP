@@ -16,6 +16,7 @@ import uet.oop.bomberman.components.entities.bomb.Flame;
 import javafx.util.Duration;
 
 import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 
@@ -50,7 +51,7 @@ public class IntroStage {
         final ImageView viewLoading = new ImageView(loading);
         viewLoading.setLayoutX(0);
         viewLoading.setLayoutY(GameConfig.HEIGHT - 74);
-        viewLoading.setViewport(new Rectangle2D(0, GameConfig.HEIGHT - 74, 74, 74));
+        viewLoading.setViewport(new Rectangle2D(10, GameConfig.HEIGHT - 74 - 10, 74, 74));
         final Animation animation = new SpriteAnimation(viewLoading, Duration.millis(5000),
                 18, 6,
                 0, 0,
@@ -61,7 +62,6 @@ public class IntroStage {
 
         root.getChildren().addAll(viewBackground, viewLoading);
         Scene scene = new Scene(root, width, height);
-
 
         stage.setResizable(false);
         stage.setTitle(GameConfig.NAME);
@@ -75,11 +75,11 @@ public class IntroStage {
 
 
         (new Thread(() -> {
+            SpriteSheet.init();
             LevelMap.init();
             Bomb.init();
             Flame.init();
 //            Item.init();
-//            Balloom.init();
 //            Doll.init();
 //            Kondoria.init();
 //            Minvo.init();

@@ -37,7 +37,6 @@ public class Animation {
      * @param offsetY : the source rectangle's Y coordinate position.
      * @param sWidth : the source rectangle's width.
      * @param sHeight : the source rectangle's height.
-
      */
     public Animation(Image image, int count, int columns, float totalTime,
                      float offsetX, float offsetY, float sWidth, float sHeight) {
@@ -104,5 +103,9 @@ public class Animation {
 
     public void setLoop(boolean loop) {
         this.loop = loop;
+    }
+
+    public float getCalcTime() {
+        return calcTime;
     }
 }

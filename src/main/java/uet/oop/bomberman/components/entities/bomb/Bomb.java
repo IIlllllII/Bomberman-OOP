@@ -3,12 +3,12 @@ package uet.oop.bomberman.components.entities.bomb;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
 import uet.oop.bomberman.sound.Sound;
 
@@ -19,11 +19,11 @@ public class Bomb extends Entity {
     public static boolean initialized = false;
     private Image image;
     private static List<Image> bombs;
+    private LevelMap levelMap = LevelMap.getInstance();
     private final List<Flame> flameList = new ArrayList<>();
     private boolean allowPass;  // cho phép bomber vượt qua
     private boolean explode = false;
-    private final Bomber bomber;
-    private int flameLength;
+    private static int flameLength = 1;
     private int timeBeforeExplode = 1500;
     private final double flameTime = 1000;
     private boolean hasFlame = false;
@@ -47,16 +47,8 @@ public class Bomb extends Entity {
     /**
      * Create bomb.
      */
-    public Bomb(int x, int y, int width, int height, int flameLength, Bomber bomber) {
+    public Bomb(int x, int y, int width, int height) {
         super(x, y, width, height);
-        this.flameLength = flameLength;
-        this.bomber = bomber;
-    }
-
-    public Bomb(double x, double y, int width, int height, Bomber bomber) {
-        super(x, y, width, height);
-        this.flameLength = 2;
-        this.bomber = bomber;
     }
 
     public void setDone(boolean done) {
@@ -71,12 +63,12 @@ public class Bomb extends Entity {
         this.explode = explode;
     }
 
-    public int getFlameLength() {
+    public static int getFlameLength() {
         return flameLength;
     }
 
-    public void setFlameLength(int flameLength) {
-        this.flameLength = flameLength;
+    public static void setFlameLength(int flameLength) {
+        Bomb.flameLength = flameLength;
     }
 
     public void setTimeBeforeExplode(int timeBeforeExplode) {
@@ -99,17 +91,17 @@ public class Bomb extends Entity {
 //                }
 //            }
             if (time < timeBeforeExplode) {
-                image = Sprite.animate(bombs, time, timeBeforeExplode);
+                image = Sprite.animation(bombs, time, timeBeforeExplode);
             } else {
                 image = null;
                 explode = true;
-                new Sound(Sound.EXPLODE_SOUND).playSound();
             }
         } else {
-            if (! hasFlame) {
+            if (!hasFlame) {
                 explosion();
+                new Sound(Sound.EXPLODE_SOUND).playSound();
             }
-            flameList.forEach(Flame::update);
+            flameList.forEach(flame -> flame.update());
         }
     }
 
@@ -119,26 +111,21 @@ public class Bomb extends Entity {
     private void explosion() {
         hasFlame = true;
 
-        flameList.add(new Flame(x , y, width, height, Flame.FlameDirection.CENTER, false));
-        LevelMap levelMap = LevelMap.getInstance();
+        flameList.add(new Flame(x, y, width, height, Flame.FlameDirection.CENTER, false));
 
         // check left
         int l = 1;
         for (; l <= flameLength; l++) {
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 - l) == levelMap.getHash("brick")) {
-                levelMap.setBrick((int) y / 32, (int) x / 32 - l);
+                levelMap.destroyBrick((int) y / 32, (int) x / 32 - l);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 - l) == levelMap.getHash("wall")) {
-                l--;
-                break;
-            }
-            if (l == flameLength) {
                 break;
             }
         }
-        for (int i = 1; i <= l; i++) {
-            if (i != l) {
+        for (int i = 1; i < l; i++) {
+            if (i != (l - 1)) {
                 flameList.add(new Flame(x - 32 * i, y, width, height, Flame.FlameDirection.LEFT, false));
             } else {
                 flameList.add(new Flame(x - 32 * i, y, width, height, Flame.FlameDirection.LEFT, true));
@@ -149,19 +136,15 @@ public class Bomb extends Entity {
         int r = 1;
         for (; r <= flameLength; r++) {
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("brick")) {
-                levelMap.setBrick((int) y / 32, (int) x / 32 + r);
+                levelMap.destroyBrick((int) y / 32, (int) x / 32 + r);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("wall")) {
-                r--;
-                break;
-            }
-            if (r == flameLength) {
                 break;
             }
         }
-        for (int i = 1; i <= r; i++) {
-            if (i != r) {
+        for (int i = 1; i < r; i++) {
+            if (i != (r - 1)) {
                 flameList.add(new Flame(x + 32 * i, y, width, height, Flame.FlameDirection.RIGHT, false));
             } else {
                 flameList.add(new Flame(x + 32 * i, y, width, height, Flame.FlameDirection.RIGHT, true));
@@ -171,46 +154,38 @@ public class Bomb extends Entity {
         // check up
         int u = 1;
         for (; u <= flameLength; u++) {
-            if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32 ) == levelMap.getHash("brick")) {
-                levelMap.setBrick((int) y / 32 - u, (int) x / 32);
+            if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32) == levelMap.getHash("brick")) {
+                levelMap.destroyBrick((int) y / 32 - u, (int) x / 32);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32) == levelMap.getHash("wall")) {
-                u--;
-                break;
-            }
-            if (u == flameLength) {
                 break;
             }
         }
-        for (int i = 1; i <= u; i++) {
-            if (i != u) {
-                flameList.add(new Flame(x , y - 32 * i, width, height, Flame.FlameDirection.UP, false));
+        for (int i = 1; i < u; i++) {
+            if (i != (u- 1)) {
+                flameList.add(new Flame(x, y - 32 * i, width, height, Flame.FlameDirection.UP, false));
             } else {
-                flameList.add(new Flame(x , y - 32 * i, width, height, Flame.FlameDirection.UP, true));
+                flameList.add(new Flame(x, y - 32 * i, width, height, Flame.FlameDirection.UP, true));
             }
         }
 
         // check down
         int d = 1;
         for (; d <= flameLength; d++) {
-            if (levelMap.getHashAt((int) y /32 + d , (int) x / 32) == levelMap.getHash("brick")) {
-                levelMap.setBrick((int) y / 32 + d , (int) x / 32);
+            if (levelMap.getHashAt((int) y / 32 + d, (int) x / 32) == levelMap.getHash("brick")) {
+                levelMap.destroyBrick((int) y / 32 + d, (int) x / 32);
                 break;
             }
-            if (levelMap.getHashAt((int) y / 32 + d , (int) x / 32) == levelMap.getHash("wall")) {
-                d--;
-                break;
-            }
-            if (d == flameLength) {
+            if (levelMap.getHashAt((int) y / 32 + d, (int) x / 32) == levelMap.getHash("wall")) {
                 break;
             }
         }
-        for (int i = 1; i <= d; i++) {
-            if (i != d) {
-                flameList.add(new Flame(x , y + 32 * i, width, height, Flame.FlameDirection.DOWN, false));
+        for (int i = 1; i < d; i++) {
+            if (i != (d - 1)) {
+                flameList.add(new Flame(x, y + 32 * i, width, height, Flame.FlameDirection.DOWN, false));
             } else {
-                flameList.add(new Flame(x , y + 32 * i, width, height, Flame.FlameDirection.DOWN, true));
+                flameList.add(new Flame(x, y + 32 * i, width, height, Flame.FlameDirection.DOWN, true));
             }
         }
         // check vị trí của bomber
