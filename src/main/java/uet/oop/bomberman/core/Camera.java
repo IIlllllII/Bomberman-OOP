@@ -1,5 +1,6 @@
 package uet.oop.bomberman.core;
 
+import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -29,20 +30,20 @@ public class Camera {
         return y;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
     public void setX(double x) {
         this.x = x;
     }
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void setWidth(int width) {
@@ -82,5 +83,9 @@ public class Camera {
         if (this.y > levelMap.getHeight() - this.height) {
             this.y = levelMap.getHeight() - this.height;
         }
+    }
+
+    public void render(GraphicsContext gc) {
+        // hide map
     }
 }

@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.enemy.Balloom;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
@@ -27,7 +27,6 @@ public class PlayScene {
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
     private final List<KeyCode> inputList = new ArrayList<>();
-
     public PlayScene() {
         canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -52,10 +51,8 @@ public class PlayScene {
             inputList.remove(code);
         });
 
-        entitiesManager.players.add(
-                new Bomber(10, 10, 16 * GameConfig.SCALED_FACTOR, 22 * GameConfig.SCALED_FACTOR)
-        );
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+
     }
 
     public Group getRoot() {
@@ -103,9 +100,10 @@ public class PlayScene {
             }
         }
 
+        // update first
         camera.update();
 
-        entitiesManager.players.forEach(Entity::update);
+        entitiesManager.update();
 
         levelMap.update();
 
@@ -118,15 +116,12 @@ public class PlayScene {
                 i--;
             }
         }
-        entitiesManager.brokenBricks.forEach(Brick::update);
     }
 
-    public  void render() {
+    public void render() {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
         levelMap.render(gc);
-        entitiesManager.players.forEach(entity -> entity.render(gc));
-        entitiesManager.bombs.forEach(entity -> entity.render(gc));
-        //Render all destroyed bricks
-        entitiesManager.brokenBricks.forEach(entity -> entity.render(gc));
+
+        entitiesManager.render(gc);
     }
 }

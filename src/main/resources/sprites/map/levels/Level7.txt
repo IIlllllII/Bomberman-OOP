@@ -1,4 +1,4 @@
-7 13 31
+13 31
 ###############################
 #xp           b          8   x#
 # # # # # # # # # # # # # # # #
@@ -15,8 +15,7 @@
 
 
 Mô tả cấu trúc tệp cấu hình màn chơi:
-1/ Dòng đầu tiên bao gồm 3 số nguyên L, R, C:
-L - số thứ tự màn chơi
+1/ Dòng đầu tiên bao gồm 2 số nguyên R, C:
 R - số hàng của bản đồ
 C - số cột của bản đồ
 
@@ -44,5 +43,5 @@ B - Bomb Pass Item
 F - Flame Pass Item
 W - Brick Pass Item
 l - Plus 1 live
-
 Kí tự khác các kí tự trên - Grass
+
