@@ -3,10 +3,10 @@ package uet.oop.bomberman.components.entities.stillobjects;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
+import uet.oop.bomberman.core.Timer;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -15,12 +15,15 @@ import java.util.List;
 public class Brick extends Entity {
     private static boolean initialized = false;
     private static List<Image> bricks;
-    private static Animation brickExplodes;
+    private static List<Image> brickExplodes;
 
     private Image image;
     private boolean destroyed = false; // bị phá hủy chưa
     private static final float timeDestroyed = 1000.0f; // thời gian phá hủy
+
+    private float time = 0;
     private final int level;
+
 
     public static void init() {
         if (!initialized) {
@@ -32,9 +35,13 @@ public class Brick extends Entity {
                 bricks.add(new Image(LevelMap.class.getResource("/sprites/map/brick/brick1.png").toURI().toString()));
                 bricks.add(new Image(LevelMap.class.getResource("/sprites/map/brick/brick2.png").toURI().toString()));
                 bricks.add(new Sprite(16, 16, 3 * 16, newTiles, 16, 16).getFxImage());
-                
-                Image image = new Image(LevelMap.class.getResource("/spriteSheet/bomb_explosion.png").toURI().toString());
-                brickExplodes = new Animation(image, 6, 6, timeDestroyed, 17.75f * 2, 54, 17.75f, 18);
+
+                brickExplodes = new ArrayList<>();
+                SpriteSheet explodes = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
+                brickExplodes.add(new Sprite(16, 7 * 16, 1 * 16, explodes, 16, 16 ).getFxImage());
+                brickExplodes.add(new Sprite(16, 7 * 16, 2 * 16, explodes, 16, 16 ).getFxImage());
+                brickExplodes.add(new Sprite(16, 7 * 16, 3 * 16, explodes, 16, 16 ).getFxImage());
+
             } catch (URISyntaxException | NullPointerException e) {
                 System.out.println("brick init");
                 e.printStackTrace();
@@ -59,14 +66,15 @@ public class Brick extends Entity {
         if (!destroyed) {
             gc.drawImage(bricks.get(level - 1), x - camera.getX(), y - camera.getY());
         } else {
-            brickExplodes.render(gc, x - camera.getX(), y - camera.getY());
+            gc.drawImage(image, x - camera.getX(), y - camera.getY());
         }
     }
 
     @Override
     public void update() {
         if (destroyed) {
-            brickExplodes.update();
+            time += Timer.getInstance().getDeltaTime();
+            image = Sprite.animation(brickExplodes,time, timeDestroyed);
 
         }
     }

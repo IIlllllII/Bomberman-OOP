@@ -3,7 +3,6 @@ package uet.oop.bomberman.components.entities.bomb;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
@@ -92,7 +91,7 @@ public class Bomb extends Entity {
 //                }
 //            }
             if (time < timeBeforeExplode) {
-                image = Sprite.animate(bombs, time, timeBeforeExplode);
+                image = Sprite.animation(bombs, time, timeBeforeExplode);
             } else {
                 image = null;
                 explode = true;
