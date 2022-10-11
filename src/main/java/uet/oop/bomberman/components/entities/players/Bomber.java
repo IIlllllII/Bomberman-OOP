@@ -26,15 +26,15 @@ public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
 
-    private static int lives = 3;
-    private static int steps = 4;
-    private static boolean canPassBom = false;
-    private static boolean canPassFlame = false;
-    private static boolean canPassBrick = false;
+    private int lives = 3;
+    private int steps = 4;
+    private boolean canPassBom = false;
+    private boolean canPassFlame = false;
+    private boolean canPassBrick = false;
 
     private final List<Bomb> bombList = new ArrayList<>();
 
-    private static int bombMax = 1;
+    private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
@@ -137,8 +137,8 @@ public class Bomber extends Entity implements Movable, Killable {
             movingSound.stopMusic();
         }
 
-        for (int i=0; i< bombList.size(); i++){
-            if (! bombList.get(i).isDone()) {
+        for (int i = 0; i < bombList.size(); i++) {
+            if (!bombList.get(i).isDone()) {
                 bombList.get(i).update();
             } else {
                 bombList.remove(i);
@@ -149,8 +149,8 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public void placeBomb() {
         if (bombList.size() < bombMax) {
-            int bombX = ((int) this.getX() / 32 + 1) * 32;
-            int bombY = ((int) this.getY() / 32 + 1) * 32;
+            int bombX = (int) (getX() + getWidth() / 2) / 32 * 32;
+            int bombY = (int) (getY() + getHeight() / 2) / 32 * 32;
             boolean hasBomb = false;
             for (Bomb bomb : bombList) {
                 if (bomb.getX() == bombX && bomb.getY() == bombY) {
@@ -158,9 +158,9 @@ public class Bomber extends Entity implements Movable, Killable {
                     break;
                 }
             }
-            if (! hasBomb) {
+            if (!hasBomb) {
                 new Sound(Sound.PLACE_BOMB_SOUND).playSound();
-                bombList.add(new Bomb(bombX, bombY, 15, 15, this));
+                bombList.add(new Bomb(bombX, bombY, 15, 15));
             }
         }
     }
@@ -170,32 +170,34 @@ public class Bomber extends Entity implements Movable, Killable {
         return lives < 0;
     }
 
-    public static int getLives() {
+    @Override
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    @Override
+    public int getLives() {
         return lives;
     }
 
-    public static void setLives(int lives) {
-        Bomber.lives = lives;
+    public void setBombMax(int bombMax) {
+        this.bombMax = bombMax;
     }
 
-    public static void setBombMax(int bombMax) {
-        Bomber.bombMax = bombMax;
+    public void setSteps(int steps) {
+        this.steps = steps;
     }
 
-    public static void setSteps(int steps) {
-        Bomber.steps = steps;
+    public void setCanPassBrick(boolean canPassBrick) {
+        this.canPassBrick = canPassBrick;
     }
 
-    public static void setCanPassBrick(boolean canPassBrick) {
-        Bomber.canPassBrick = canPassBrick;
+    public void setCanPassFlame(boolean canPassFlame) {
+        this.canPassFlame = canPassFlame;
     }
 
-    public static void setCanPassFlame(boolean canPassFlame) {
-        Bomber.canPassFlame = canPassFlame;
-    }
-
-    public static void setCanPassBom(boolean canPassBom) {
-        Bomber.canPassBom = canPassBom;
+    public void setCanPassBom(boolean canPassBom) {
+        this.canPassBom = canPassBom;
     }
 
     public PlayerStatus getPlayerStatus() {

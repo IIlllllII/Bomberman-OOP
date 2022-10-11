@@ -2,6 +2,7 @@ package uet.oop.bomberman.components.entities.powerUp;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.graphics.Sprite;
@@ -22,6 +23,8 @@ public abstract class PowerUp extends Entity {
     protected double timePowerUp = 30000;
     protected boolean appear = false;
     protected boolean eaten = false;
+
+    protected boolean done = false;
     protected double time = 0;
 
 
@@ -48,17 +51,44 @@ public abstract class PowerUp extends Entity {
         this.appear = appear;
     }
 
+    public boolean isAppear() {
+        return appear;
+    }
+
     public void setEaten(boolean eaten) {
         this.eaten = eaten;
     }
 
-    @Override
-    public void update() {
+    public boolean isEaten() {
+        return eaten;
+    }
+
+    public void changePower(){
 
     }
 
     @Override
+    public void update() {
+        if(appear){
+            time += Timer.getInstance().getDeltaTime();
+            if(time >= timeAppear || eaten){
+                appear = false;
+                time = 0;
+                if(time >= timeAppear){
+                    done = true;
+                }
+            }
+        }
+        if(eaten){
+            time += Timer.getInstance().getDeltaTime();
+            changePower();
+        }
+    }
+
+    @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(image, x - camera.getX(), y - camera.getY());
+        if(appear){
+            gc.drawImage(image, x - camera.getX(), y - camera.getY());
+        }
     }
 }

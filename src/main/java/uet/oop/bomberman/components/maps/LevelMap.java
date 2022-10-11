@@ -151,12 +151,17 @@ public class LevelMap {
     }
 
     public void destroyBrick(int i, int j){
-        mapHash[i][j] = getHash("grass");
-        for(int k=0; k< brickList.size(); k++){
-            if((j * 32) == brickList.get(k).getX() && (i * 32) == brickList.get(k).getY()){
-                brickList.get(k).setDestroyed(true);
+        brickList.forEach(brick -> {
+            if((j * 32) == brick.getX() && (i * 32) == brick.getY()){
+                brick.setDestroyed(true);
+                powerUpList.forEach(powerUp -> {
+                    if (32 * j == powerUp.getX() && 32 * i == powerUp.getY()) {
+                        powerUp.setAppear(true);
+                    }
+                });
             }
-        }
+        });
+        mapHash[i][j] = getHash("grass");
     }
 
     public char[][] getMapHash() {
@@ -183,23 +188,5 @@ public class LevelMap {
                 break;
         }
         return output;
-    }
-    public String checkBrick(int i, int j){
-        char hash = mapHash[i][j];
-        if( hash == 'b' || hash == 'f' || hash == 's' || hash == 'B' || hash == 'F' || hash == 'W' || hash == 'l'){
-            return "powerUp";
-        }
-        if(hash == '*'){
-            return "brick";
-        }
-        return "other";
-    }
-
-    public void appearPowerUp(double x, double y){
-        powerUpList.forEach(powerUp -> {
-            if(x == powerUp.getX() && y == powerUp.getY()){
-                powerUp.setAppear(true);
-            }
-        });
     }
 }

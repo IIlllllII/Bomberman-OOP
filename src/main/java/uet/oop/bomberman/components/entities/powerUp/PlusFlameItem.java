@@ -10,23 +10,12 @@ public class PlusFlameItem extends PowerUp {
     }
 
     @Override
-    public void update() {
-        if(appear){
-            time += Timer.getInstance().getDeltaTime();
-            if(time >= timeAppear || eaten){
-                image = null;
-                appear = false;
-                time = 0;
-            }
+    public void changePower() {
+        Bomb.setFlameLength(2);
+        if(time >= timePowerUp){
+            eaten = false;
+            Bomb.setFlameLength(1);
+            done = true;
         }
-        if(eaten){
-            time += Timer.getInstance().getDeltaTime();
-            Bomb.setFlameLength(2);
-            if(time >= timePowerUp){
-                eaten = false;
-                Bomb.setFlameLength(1);
-            }
-        }
-
     }
 }

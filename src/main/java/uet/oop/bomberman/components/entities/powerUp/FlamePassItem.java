@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.entities.powerUp;
 
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.core.Timer;
 
@@ -10,22 +11,12 @@ public class FlamePassItem extends PowerUp{
     }
 
     @Override
-    public void update() {
-        if(appear){
-            time += Timer.getInstance().getDeltaTime();
-            if(time >= timeAppear || eaten){
-                image = null;
-                appear = false;
-                time = 0;
-            }
-        }
-        if(eaten){
-            time += Timer.getInstance().getDeltaTime();
-            Bomber.setCanPassFlame(true);
-            if(time >= timePowerUp){
-                Bomber.setCanPassFlame(false);
-                eaten = false;
-            }
+    public void changePower() {
+        EntitiesManager.getInstance().players.get(0).setCanPassFlame(true);
+        if(time >= timePowerUp){
+            EntitiesManager.getInstance().players.get(0).setCanPassFlame(false);
+            eaten = false;
+            done = true;
         }
     }
 }

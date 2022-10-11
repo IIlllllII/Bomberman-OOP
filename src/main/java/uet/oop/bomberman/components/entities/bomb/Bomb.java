@@ -20,10 +20,10 @@ public class Bomb extends Entity {
     public static boolean initialized = false;
     private Image image;
     private static List<Image> bombs;
+    private LevelMap levelMap = LevelMap.getInstance();
     private final List<Flame> flameList = new ArrayList<>();
     private boolean allowPass;  // cho phép bomber vượt qua
     private boolean explode = false;
-    private final Bomber bomber;
     private static int flameLength = 1;
     private int timeBeforeExplode = 1500;
     private final double flameTime = 1000;
@@ -48,16 +48,8 @@ public class Bomb extends Entity {
     /**
      * Create bomb.
      */
-    public Bomb(int x, int y, int width, int height, int flameLength, Bomber bomber) {
+    public Bomb(int x, int y, int width, int height) {
         super(x, y, width, height);
-        this.flameLength = flameLength;
-        this.bomber = bomber;
-    }
-
-    public Bomb(double x, double y, int width, int height, Bomber bomber) {
-        super(x, y, width, height);
-        this.flameLength = 2;
-        this.bomber = bomber;
     }
 
     public void setDone(boolean done) {
@@ -121,22 +113,15 @@ public class Bomb extends Entity {
         hasFlame = true;
 
         flameList.add(new Flame(x, y, width, height, Flame.FlameDirection.CENTER, false));
-        LevelMap levelMap = LevelMap.getInstance();
 
         // check left
         int l = 1;
         for (; l <= flameLength; l++) {
-            if (levelMap.checkBrick((int) y / 32, (int) x / 32 - l).equals("brick")) {
+            if (levelMap.getHashAt((int) y / 32, (int) x / 32 - l) == levelMap.getHash("brick")) {
                 levelMap.destroyBrick((int) y / 32, (int) x / 32 - l);
-                break;
-            }
-            if (levelMap.checkBrick((int) y / 32, (int) x / 32 - l).equals("powerUp")) {
-                levelMap.destroyBrick((int) y / 32, (int) x / 32 - l);
-                levelMap.appearPowerUp(x - 32 * l, y);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 - l) == levelMap.getHash("wall")) {
-                l--;
                 break;
             }
         }
@@ -151,17 +136,11 @@ public class Bomb extends Entity {
         //check right
         int r = 1;
         for (; r <= flameLength; r++) {
-            if (levelMap.checkBrick((int) y / 32, (int) x / 32 + r).equals("brick")) {
+            if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("brick")) {
                 levelMap.destroyBrick((int) y / 32, (int) x / 32 + r);
-                break;
-            }
-            if (levelMap.checkBrick((int) y / 32, (int) x / 32 + r).equals("powerUp")) {
-                levelMap.destroyBrick((int) y / 32, (int) x / 32 + r);
-                levelMap.appearPowerUp(x + 32 * r, y);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("wall")) {
-                r--;
                 break;
             }
         }
@@ -176,17 +155,11 @@ public class Bomb extends Entity {
         // check up
         int u = 1;
         for (; u <= flameLength; u++) {
-            if (levelMap.checkBrick((int) y / 32 - u, (int) x / 32).equals("brick")) {
+            if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32) == levelMap.getHash("brick")) {
                 levelMap.destroyBrick((int) y / 32 - u, (int) x / 32);
-                break;
-            }
-            if (levelMap.checkBrick((int) y / 32 - u, (int) x / 32).equals("powerUp")) {
-                levelMap.destroyBrick((int) y / 32 - u, (int) x / 32);
-                levelMap.appearPowerUp(x, y - 32 * u);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32) == levelMap.getHash("wall")) {
-                u--;
                 break;
             }
         }
@@ -201,17 +174,11 @@ public class Bomb extends Entity {
         // check down
         int d = 1;
         for (; d <= flameLength; d++) {
-            if (levelMap.checkBrick((int) y / 32 + d, (int) x / 32).equals("brick")) {
+            if (levelMap.getHashAt((int) y / 32 + d, (int) x / 32) == levelMap.getHash("brick")) {
                 levelMap.destroyBrick((int) y / 32 + d, (int) x / 32);
-                break;
-            }
-            if (levelMap.checkBrick((int) y / 32 + d, (int) x / 32).equals("powerUp")) {
-                levelMap.destroyBrick((int) y / 32 + d, (int) x / 32);
-                levelMap.appearPowerUp(x, y + 32 * d);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32 + d, (int) x / 32) == levelMap.getHash("wall")) {
-                d--;
                 break;
             }
         }
