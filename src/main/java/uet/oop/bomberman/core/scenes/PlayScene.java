@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.enemy.Balloom;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
@@ -52,9 +52,9 @@ public class PlayScene {
             inputList.remove(code);
         });
 
-        entitiesManager.players.add(
-                new Bomber(33, 33, 16, 22)
-        );
+//        entitiesManager.players.add(
+//                new Bomber(33, 33, 16, 22)
+//        );
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
     }
 
@@ -103,7 +103,10 @@ public class PlayScene {
             }
         }
 
+        // update first
         camera.update();
+
+        entitiesManager.update();
 
         levelMap.update();
 
@@ -116,16 +119,13 @@ public class PlayScene {
                 i--;
             }
         }
-        entitiesManager.players.forEach(Entity::update);
-        entitiesManager.brokenBricks.forEach(Brick::update);
+        //entitiesManager.brokenBricks.forEach(Brick::update);
     }
 
-    public  void render() {
+    public void render() {
         gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
         levelMap.render(gc);
-        entitiesManager.bombs.forEach(entity -> entity.render(gc));
-        //Render all destroyed bricks
-        entitiesManager.brokenBricks.forEach(entity -> entity.render(gc));
-        entitiesManager.players.forEach(entity -> entity.render(gc));
+
+        entitiesManager.render(gc);
     }
 }

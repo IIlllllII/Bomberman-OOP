@@ -27,17 +27,27 @@ public class SceneManager {
 
         scene = new Scene(menuScene.getRoot());
 
-        currentScene = SCENES.MENU;
+        setCurrentScene(SCENES.MENU);
     }
 
     public SCENES getCurrentScene() {
         return currentScene;
     }
 
-    public void setCurrentScene(SCENES primaryScene) {
+    void setCurrentScene(SCENES primaryScene) {
         if (primaryScene == SCENES.MENU) {
             currentScene = SCENES.MENU;
+
             scene.setRoot(menuScene.getRoot());
+
+            scene.setOnMouseClicked(mouseEvent -> {
+                menuScene.fadeIn();
+            });
+            scene.setOnKeyPressed(keyEvent -> {
+                if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                    menuScene.fadeOut();
+                }
+            });
         }
         if (primaryScene == SCENES.PLAY) {
             currentScene = SCENES.PLAY;
@@ -52,14 +62,6 @@ public class SceneManager {
     public void update() {
         switch (currentScene) {
             case MENU: {
-                scene.setOnMouseClicked(mouseEvent -> {
-                    menuScene.fadeIn();
-                });
-                scene.setOnKeyPressed(keyEvent -> {
-                    if (keyEvent.getCode() == KeyCode.ESCAPE) {
-                        menuScene.fadeOut();
-                    }
-                });
                 break;
             }
             case PLAY: {

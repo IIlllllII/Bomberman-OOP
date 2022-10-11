@@ -4,15 +4,17 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.powerUp.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
+import uet.oop.bomberman.components.entities.enemy.Balloom;
+import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
 import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.entities.stillobjects.Wall;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Scanner;
 
 public class LevelMap {
     private char[][] mapHash;
@@ -24,6 +26,7 @@ public class LevelMap {
     private Portal portal;
 
     private int level;
+    private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     private static class SingletonHelper {
         private static final LevelMap INSTANCE = new LevelMap();
@@ -51,13 +54,14 @@ public class LevelMap {
             for(int j = 0; j < mapHash[i].length; ++j) {
                 grass.setLocation(32 * j, 32 * i);
                 grass.render(gc);
+
                 if (mapHash[i][j] == getHash("wall")) {
                     wall.setLocation(32 * j, 32 * i);
                     wall.render(gc);
                 }
             }
         }
-        
+
         //Render all power up
         powerUpList.forEach(powerUp -> powerUp.render(gc));
         //Render all bricks
@@ -80,17 +84,33 @@ public class LevelMap {
         EntitiesManager.getInstance().renewEntities();
 
         try {
-            File file = new File(LevelMap.class.getResource("/levels/level" + level + ".txt").toURI());
+            File file = new File(GameConfig.LEVEL_DATA[level - 1]);
             Scanner scanner = new Scanner(file);
             int row = scanner.nextInt();
             int column = scanner.nextInt();
-            String temp = scanner.nextLine();   //skip endline after reading integers.
+            String temp = scanner.nextLine();   //skip end-line after reading integers.
 
             mapHash = new char[row][column];
             for (int i = 0; i < row; i++) {
                 String tile = scanner.nextLine();
                 for (int j = 0; j < column; j++) {
                     char hash = tile.charAt(j);
+//                    switch (hash) {
+//                        case 'p': {
+//                            entitiesManager.players.add(
+//                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE,
+//                                            16 * GameConfig.SCALED_FACTOR, 22 * GameConfig.SCALED_FACTOR)
+//                            );
+//                            hash = getHash("grass");
+//                            break;
+//                        }
+//                        case '1': {
+//                            entitiesManager.enemy.add(new Balloom(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+//                            hash = getHash("grass");
+//                            break;
+//                        }
+//                    }
+
                     mapHash[i][j] = hash;
                     switch (mapHash[i][j]) {
                         case '*':
@@ -135,7 +155,7 @@ public class LevelMap {
                     }
                 }
             }
-        } catch (URISyntaxException | FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("next level read file");
             throw new RuntimeException(e);
         }
@@ -159,7 +179,7 @@ public class LevelMap {
                 brick.setDestroyed(true);
             }
         });
-        
+
         powerUpList.forEach(powerUp -> {
             if (32 * j == powerUp.getX() && 32 * i == powerUp.getY()) {
                 powerUp.setAppear(true);
@@ -172,7 +192,7 @@ public class LevelMap {
         return this.mapHash;
     }
 
-    public int getHashAt(int i, int j){
+    public char getHashAt(int i, int j){
         return mapHash[i][j];
     }
 

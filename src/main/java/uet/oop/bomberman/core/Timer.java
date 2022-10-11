@@ -20,13 +20,13 @@ public class Timer {
     }
 
     private Timer() {
-        deltaTime = 0.0f;
+        deltaTime = 0.0;
         ticks = 0;
     }
 
     public void update(long now) {
-        if (deltaTime == 0.0f) {
-            deltaTime = 14.0f;
+        if (deltaTime == 0.0) {
+            deltaTime = 14.0;
         } else {
             deltaTime = now - ticks;
         }
