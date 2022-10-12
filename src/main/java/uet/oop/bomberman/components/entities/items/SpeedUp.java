@@ -13,10 +13,10 @@ public class SpeedUp extends Item {
 
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setSpeed(4);
+        EntitiesManager.getInstance().players.get(0).setSpeed(Bomber.DEFAULT_SPEED);
         if (time >= timePowerUp) {
             eaten = false;
-            EntitiesManager.getInstance().players.get(0).setSpeed(Bomber.DEFAULT_SPEED * 2);
+            EntitiesManager.getInstance().players.get(0).setSpeed(Bomber.DEFAULT_SPEED );
             done = true;
         }
     }

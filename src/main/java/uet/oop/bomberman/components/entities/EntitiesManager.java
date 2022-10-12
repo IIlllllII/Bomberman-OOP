@@ -30,6 +30,7 @@ public class EntitiesManager {
     public List<Enemy> enemies = new ArrayList<>();
     public Portal portal = new Portal(0, 0);
 
+
     private EntitiesManager() {
     }
 
@@ -92,7 +93,7 @@ public class EntitiesManager {
                 enemies.remove(i);
                 i--;
             } else {
-                if (enemy.isDestroyed() && bomberBox.isCollidedWith(new BoxCollider(
+                if ( bomberBox.isCollidedWith(new BoxCollider(
                         enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
                     players.get(0).setPlayerStatus(PlayerStatus.DEAD);
                 }

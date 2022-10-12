@@ -80,6 +80,10 @@ public class Bomb extends Entity {
         return timeBeforeExplode;
     }
 
+    public List<Flame> getFlameList() {
+        return flameList;
+    }
+
     @Override
     public void update() {
         time += Timer.getInstance().getDeltaTime();

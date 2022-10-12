@@ -18,10 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Bomber extends Entity implements Movable, Killable {
-    public Bomber(double x, double y, int width, int height) {
-        super(x, y, width, height);
-    }
-
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final int DEFAULT_SPEED = 2;
@@ -223,8 +219,8 @@ public class Bomber extends Entity implements Movable, Killable {
         this.bombMax = bombMax;
     }
 
-    public void setSteps(int steps) {
-        this.steps = steps;
+    public void setSpeed(int speed) {
+        this.speed= speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
@@ -247,10 +243,6 @@ public class Bomber extends Entity implements Movable, Killable {
         this.canPassBomb = canPassBomb;
     }
 
-    public boolean isCanPassBomb() {
-        return canPassBomb;
-    }
-
     public boolean isInvincible() {
         return invincible;
     }
@@ -265,6 +257,10 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public void setPlayerStatus(PlayerStatus playerStatus) {
         this.playerStatus = playerStatus;
+    }
+
+    public BoxCollider getBomberBox() {
+        return bomberBox;
     }
 
     @Override

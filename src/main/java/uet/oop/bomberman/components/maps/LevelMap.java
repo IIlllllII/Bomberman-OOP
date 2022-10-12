@@ -45,7 +45,7 @@ public class LevelMap {
         Wall.init();
         Brick.init();
         Portal.init();
-        PowerUp.init();
+        Item.init();
     }
 
     public void render(GraphicsContext gc) {
