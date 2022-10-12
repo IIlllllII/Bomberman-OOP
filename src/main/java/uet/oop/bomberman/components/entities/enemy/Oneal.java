@@ -42,6 +42,8 @@ public class Oneal extends Enemy {
             if (!animationDeath.isDone()) {
                 //gc.setFont(PlayWindow.MCFONT);
                 gc.fillText(" + " + score, x + 16, y + 20 - animationDeath.getCalcTime() / 32);
+            }else {
+                done = true;
             }
         }
     }

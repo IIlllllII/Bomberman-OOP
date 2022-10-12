@@ -16,15 +16,13 @@ import uet.oop.bomberman.config.GameConfig;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class LevelMap {
     private char[][] mapHash;
     private Grass grass;
     private Wall wall;
-
-    private Portal portal;
-
     private int level;
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
@@ -50,8 +48,8 @@ public class LevelMap {
     }
 
     public void render(GraphicsContext gc) {
-        for(int i = 0; i < mapHash.length; ++i) {
-            for(int j = 0; j < mapHash[i].length; ++j) {
+        for (int i = 0; i < mapHash.length; ++i) {
+            for (int j = 0; j < mapHash[i].length; ++j) {
                 grass.setLocation(32 * j, 32 * i);
                 grass.render(gc);
 
@@ -63,18 +61,17 @@ public class LevelMap {
         }
     }
 
-    public void update(){
+    public void update() {
     }
+
     public void nextLevel() {
         level++;
         level = (level > 3) ? 1 : level;
-
-        grass = new Grass(0,0, level);
-        wall = new Wall(0,0, level);
+        grass = new Grass(0, 0, level);
+        wall = new Wall(0, 0, level);
+        entitiesManager.renewEntities();
         List<Brick> brickList = entitiesManager.bricks;
         List<Item> itemList = entitiesManager.items;
-
-        entitiesManager.renewEntities();
 
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
@@ -163,6 +160,11 @@ public class LevelMap {
                     mapHash[i][j] = hash;
                 }
             }
+            Random r = new Random();
+//            int index = Math.abs(r.nextInt() % brickList.size());
+            int index = 0;
+            System.out.println(index);
+            entitiesManager.portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
         } catch (FileNotFoundException e) {
             System.out.println("next level read file");
             throw new RuntimeException(e);
@@ -184,6 +186,7 @@ public class LevelMap {
     public void destroyBrick(int i, int j) {
         List<Brick> brickList = EntitiesManager.getInstance().bricks;
         List<Item> itemList = EntitiesManager.getInstance().items;
+        Portal portal = EntitiesManager.getInstance().portal;
         brickList.forEach(brick -> {
             if ((j * GameConfig.TILE_SIZE) == brick.getX() && (i * GameConfig.TILE_SIZE) == brick.getY()) {
                 brick.setDestroyed(true);
@@ -196,13 +199,17 @@ public class LevelMap {
             }
         });
         mapHash[i][j] = getHash("grass");
+        if ((j * GameConfig.TILE_SIZE) == portal.getX() && (i * GameConfig.TILE_SIZE) == portal.getY()) {
+            portal.setAppear(true);
+            mapHash[i][j] = getHash("portal");
+        }
     }
 
     public char[][] getMapHash() {
         return this.mapHash;
     }
 
-    public char getHashAt(int i, int j){
+    public char getHashAt(int i, int j) {
         return mapHash[i][j];
     }
 
@@ -224,6 +231,8 @@ public class LevelMap {
                 break;
             case "bomb":
                 output = 'B';
+            case "portal":
+                output = 'x';
             default:
                 break;
         }

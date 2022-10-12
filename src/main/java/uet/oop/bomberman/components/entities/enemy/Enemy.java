@@ -11,6 +11,7 @@ public abstract class Enemy extends Entity {
     protected Animation animationRight;
     protected Animation animationDeath;
     protected boolean destroyed = false;
+    protected boolean done = false;
     protected double moveX = 0;
     protected double moveY = 0;
     protected boolean canMoveR = false;
@@ -36,6 +37,10 @@ public abstract class Enemy extends Entity {
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
         // plus score ...
+    }
+
+    public boolean isDone() {
+        return done;
     }
 
     protected abstract void move();
