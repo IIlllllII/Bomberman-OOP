@@ -57,7 +57,9 @@ public class EntitiesManager {
         bricks.forEach(Brick::update);
         enemies.forEach(Entity::update);
         items.forEach(Entity::update);
-
+        if (enemies.size() == 0) {
+            portal.setCanPass(true);
+        }
         for (int i = 0; i < bombs.size(); i++) {
             if (!bombs.get(i).isDone()) {
                 bombs.get(i).update();
@@ -69,9 +71,6 @@ public class EntitiesManager {
                 bombs.remove(i);
                 i--;
             }
-        }
-        if (enemies.size() == 0) {
-            portal.setCanPass(true);
         }
     }
 
@@ -87,15 +86,18 @@ public class EntitiesManager {
             }
         });
 
-        enemies.forEach(enemy -> {
-            if(enemy.isDone()){
-                enemies.remove(enemy);
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy enemy = enemies.get(i);
+            if (enemy.isDone()) {
+                enemies.remove(i);
+                i--;
+            } else {
+                if (enemy.isDestroyed() && bomberBox.isCollidedWith(new BoxCollider(
+                        enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
+                    players.get(0).setPlayerStatus(PlayerStatus.DEAD);
+                }
             }
-            if (!enemy.isDestroyed() && bomberBox.isCollidedWith(new BoxCollider(
-                    enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
-                players.get(0).setPlayerStatus(PlayerStatus.DEAD);
-            }
-        });
+        }
 
         bombs.forEach(bomb -> {
             bomb.getFlameList().forEach(flame -> {

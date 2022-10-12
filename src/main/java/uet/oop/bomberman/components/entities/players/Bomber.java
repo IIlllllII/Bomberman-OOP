@@ -368,10 +368,12 @@ public class Bomber extends Entity implements Movable, Killable {
         }
 
         if (levelMap.getHashAt(i, j) == levelMap.getHash("portal")) {
-            if(EntitiesManager.getInstance().portal.isCanPass()){
-                levelMap.nextLevel();
+            if (EntitiesManager.getInstance().portal.isCanPass()) {
+                levelMap.prepareNextLevel();
+                return false;
+            } else {
+                return true;
             }
-            return true;
         }
 
         return levelMap.getHashAt(i, j) == levelMap.getHash("wall");

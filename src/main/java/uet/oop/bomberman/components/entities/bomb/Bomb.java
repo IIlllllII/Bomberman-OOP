@@ -199,8 +199,6 @@ public class Bomb extends Entity {
                 flameList.add(new Flame(x, y + 32 * i, width, height, Flame.FlameDirection.DOWN, true));
             }
         }
-        // check vị trí của bomber
-        //check vị trí của monster ....
     }
 
     @Override
