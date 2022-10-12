@@ -1,6 +1,7 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.components.entities.enemy.Dahl;
 import uet.oop.bomberman.components.entities.enemy.Oneal;
 import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
@@ -116,6 +117,13 @@ public class LevelMap {
                             hash = getHash("grass");
                             break;
                         }
+                        case '3': {
+                            entitiesManager.enemies.add(
+                                    new Dahl(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE)
+                            );
+                            hash = getHash("grass");
+                            break;
+                        }
                         case '*': {
                             brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             break;
@@ -169,8 +177,7 @@ public class LevelMap {
                 }
             }
             Random r = new Random();
-            int index = Math.abs(r.nextInt(brickList.size()));
-            //int index = 0;
+            int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);
             entitiesManager.portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
         } catch (FileNotFoundException e) {

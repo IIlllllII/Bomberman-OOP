@@ -6,6 +6,10 @@ import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public abstract class Enemy extends Entity {
     protected Animation animationLeft;
     protected Animation animationRight;
@@ -18,17 +22,48 @@ public abstract class Enemy extends Entity {
     protected boolean canMoveL = false;
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
-    protected Direction lastDirection;
-    protected boolean randomAnimation; // left or right
+    Random r = new Random();
+    protected Direction lastDirection = Direction.values()[r.nextInt(Direction.values().length)];;
+
+    protected List<Direction> directionList = new ArrayList<>();
+    protected boolean randomAnimation = false; // left or right
+    protected int speed = 1;
     protected int score;
 
     public Enemy(double x, double y) {
         super(x, y);
     }
 
-    public abstract void render(GraphicsContext gc);
+    public void render(GraphicsContext gc) {
+        if (!destroyed) {
+            if (randomAnimation) {
+                animationLeft.render(gc, x - camera.getX(), y - camera.getY());
+            } else {
+                animationRight.render(gc, x - camera.getX(), y - camera.getY());
+            }
+        } else {
+            animationDeath.render(gc, x - camera.getX(), y - camera.getY());
+            if (!animationDeath.isDone()) {
+                //gc.setFont(PlayWindow.MCFONT);
+                gc.fillText(" + " + score, x + 16, y + 20 - animationDeath.getCalcTime() / 32);
+            } else {
+                done = true;
+            }
+        }
+    }
 
-    public abstract void update();
+    public void update(){
+        if (!destroyed) {
+            move();
+            if (randomAnimation) {
+                animationLeft.update();
+            } else {
+                animationRight.update();
+            }
+        } else {
+            animationDeath.update();
+        }
+    }
 
     public boolean isDestroyed() {
         return destroyed;
@@ -51,5 +86,54 @@ public abstract class Enemy extends Entity {
             return false;
         }
         return levelMap.getHashAt(i, j) == levelMap.getHash("grass");
+    }
+
+    protected void initDirectionList(){
+        directionList.clear();
+        directionList.add(Direction.UP);
+        directionList.add(Direction.DOWN);
+        directionList.add(Direction.RIGHT);
+        directionList.add(Direction.LEFT);
+    }
+
+    protected void checkMove(){
+        switch (lastDirection) {
+            case UP: {
+                if (canMoveU) {
+                    moveY = -speed;
+                    initDirectionList();
+                } else {
+                    directionList.remove(Direction.UP);
+                }
+                break;
+            }
+            case DOWN: {
+                if (canMoveD) {
+                    moveY = speed;
+                    initDirectionList();
+                } else {
+                    directionList.remove(Direction.DOWN);
+                }
+                break;
+            }
+            case LEFT: {
+                if (canMoveL) {
+                    moveX = -speed;
+                    initDirectionList();
+                } else {
+                    directionList.remove(Direction.LEFT);
+                }
+                break;
+            }
+            case RIGHT: {
+                if (canMoveR) {
+                    moveX = speed;
+                    initDirectionList();
+                } else {
+                    directionList.remove(Direction.RIGHT);
+                }
+                break;
+            }
+        }
     }
 }
