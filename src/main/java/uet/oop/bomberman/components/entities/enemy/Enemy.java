@@ -40,7 +40,7 @@ public abstract class Enemy extends Entity {
     }
 
     public boolean isDone() {
-        return done;
+        return animationDeath.isDone();
     }
 
     protected abstract void move();

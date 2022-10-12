@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Bomber extends Entity implements Movable, Killable {
+    public Bomber(double x, double y, int width, int height) {
+        super(x, y, width, height);
+    }
+
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final int DEFAULT_SPEED = 2;
@@ -172,6 +176,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public void placeBomb() {
         direction = Direction.DOWN;
+        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
 
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
 
@@ -218,8 +223,8 @@ public class Bomber extends Entity implements Movable, Killable {
         this.bombMax = bombMax;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setSteps(int steps) {
+        this.steps = steps;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
@@ -270,10 +275,6 @@ public class Bomber extends Entity implements Movable, Killable {
     @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
-    }
-
-    public BoxCollider getBomberBox() {
-        return bomberBox;
     }
 
     @Override
@@ -368,10 +369,12 @@ public class Bomber extends Entity implements Movable, Killable {
         }
 
         if (levelMap.getHashAt(i, j) == levelMap.getHash("portal")) {
-            if(EntitiesManager.getInstance().portal.isCanPass()){
-                levelMap.nextLevel();
+            if (EntitiesManager.getInstance().portal.isCanPass()) {
+                levelMap.prepareNextLevel();
+                return false;
+            } else {
+                return true;
             }
-            return true;
         }
 
         return levelMap.getHashAt(i, j) == levelMap.getHash("wall");

@@ -24,6 +24,7 @@ public class LevelMap {
     private Grass grass;
     private Wall wall;
     private int level;
+    private boolean levelComplete;
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     private static class SingletonHelper {
@@ -44,15 +45,14 @@ public class LevelMap {
         Wall.init();
         Brick.init();
         Portal.init();
-        Item.init();
+        PowerUp.init();
     }
 
     public void render(GraphicsContext gc) {
-        for (int i = 0; i < mapHash.length; ++i) {
-            for (int j = 0; j < mapHash[i].length; ++j) {
+        for(int i = 0; i < mapHash.length; ++i) {
+            for(int j = 0; j < mapHash[i].length; ++j) {
                 grass.setLocation(32 * j, 32 * i);
                 grass.render(gc);
-
                 if (mapHash[i][j] == getHash("wall")) {
                     wall.setLocation(32 * j, 32 * i);
                     wall.render(gc);
@@ -62,6 +62,14 @@ public class LevelMap {
     }
 
     public void update() {
+        if (levelComplete) {
+            nextLevel();
+            levelComplete = false;
+        }
+    }
+
+    public void prepareNextLevel() {
+        levelComplete = true;
     }
 
     public void nextLevel() {
@@ -161,9 +169,9 @@ public class LevelMap {
                 }
             }
             Random r = new Random();
-//            int index = Math.abs(r.nextInt() % brickList.size());
-            int index = 0;
-            System.out.println(index);
+            int index = Math.abs(r.nextInt(brickList.size()));
+            //int index = 0;
+            System.out.println("Portal index: " + index);
             entitiesManager.portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
         } catch (FileNotFoundException e) {
             System.out.println("next level read file");
@@ -231,8 +239,10 @@ public class LevelMap {
                 break;
             case "bomb":
                 output = 'B';
+                break;
             case "portal":
                 output = 'x';
+                break;
             default:
                 break;
         }
