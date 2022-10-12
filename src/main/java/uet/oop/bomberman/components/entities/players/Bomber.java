@@ -2,50 +2,50 @@ package uet.oop.bomberman.components.entities.players;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.components.entities.EntitiesManager;
-import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.entities.Killable;
-import uet.oop.bomberman.components.entities.Movable;
+import javafx.scene.input.KeyCode;
+import uet.oop.bomberman.components.entities.*;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
-import uet.oop.bomberman.sound.Music;
 import uet.oop.bomberman.sound.Sound;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Bomber extends Entity implements Movable, Killable {
-    public Bomber(double x, double y, int width, int height) {
-        super(x, y, width, height);
-    }
-
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
-
+    public static final int DEFAULT_SPEED = 2;
     private int lives = 3;
-    private int steps = 4;
-    private boolean canPassBom = false;
+    private int speed = DEFAULT_SPEED;
+    private boolean canPassBomb = false;
     private boolean canPassFlame = false;
     private boolean canPassBrick = false;
-    private final List<Bomb> bombList = new ArrayList<>();
+    private boolean invincible = false;
     private int bombMax = 1;
-    
     private int currentSpriteIndex = 0;
 
     private PlayerStatus playerStatus = PlayerStatus.IDLE;
     private Direction direction = Direction.DOWN;
 
-    public static Music movingSound;
+    private final BoxCollider bomberBox;
+
+    public Bomber(double x, double y, int w, int h) {
+        super(x, y, w * GameConfig.TILE_SIZE / h, GameConfig.TILE_SIZE);
+        bomberBox = new BoxCollider(0, 0, 15, 15);
+        bomberBox.setLocation(
+                this.x + (this.width - bomberBox.getWidth()) / 2.0,
+                this.y + bomberBox.getHeight() - 2
+        );
+    }
 
     public static void init() {
         if (!initialized) {
-            movingSound = new Music(Music.MOVING_SOUND, true);
             SpriteSheet bombermanSheet = new SpriteSheet("/spriteSheet/bomberman_sheet.png", 256, 128);
 
             spritesDict.put("idle", new Sprite[]{
@@ -95,6 +95,43 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
+    public void handleInput(List<KeyCode> inputList) {
+        Direction currentDirection = null;
+        if (inputList.contains(KeyCode.RIGHT) || inputList.contains(KeyCode.D)) {
+            currentDirection = Direction.RIGHT;
+        }
+        if (inputList.contains(KeyCode.LEFT) || inputList.contains(KeyCode.A)) {
+            currentDirection = Direction.LEFT;
+        }
+        if (inputList.contains(KeyCode.UP) || inputList.contains(KeyCode.W)) {
+            currentDirection = Direction.UP;
+        }
+
+        if (inputList.contains(KeyCode.DOWN) || inputList.contains(KeyCode.S)) {
+            currentDirection = Direction.DOWN;
+        }
+
+        if (inputList.contains(KeyCode.SPACE)) {
+            placeBomb();
+            inputList.remove(KeyCode.SPACE);
+        }
+
+        //Demo "die" status
+        //TODO: remove it later.
+        if (inputList.contains(KeyCode.M)) {
+            playerStatus = PlayerStatus.DEAD;
+        }
+
+        if (currentDirection != null) {
+            playerStatus = PlayerStatus.MOVING;
+            direction = currentDirection;
+        } else {
+            if (playerStatus != PlayerStatus.DEAD) {
+                playerStatus = PlayerStatus.IDLE;
+            }
+        }
+    }
+
     @Override
     public void render(GraphicsContext gc) {
         Image image = null;
@@ -109,18 +146,17 @@ public class Bomber extends Entity implements Movable, Killable {
                 image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
                 break;
         }
-        gc.drawImage(image, this.x - camera.getX(), this.y - camera.getY(), 16.0 * 32 / 22, 32);
+        gc.drawImage(image, this.x - camera.getX(), this.y - camera.getY(), this.width, this.height);
     }
 
     @Override
     public void update() {
         if (playerStatus == PlayerStatus.MOVING) {
-            movingSound.playMusic();
             currentSpriteIndex++;
             if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move(steps, direction);
+            move();
         }
 
         //Demo "die" status.
@@ -132,19 +168,18 @@ public class Bomber extends Entity implements Movable, Killable {
                 playerStatus = PlayerStatus.IDLE;
             }
         }
-        if (playerStatus == PlayerStatus.IDLE) {
-            movingSound.stopMusic();
-        }
     }
 
     public void placeBomb() {
         direction = Direction.DOWN;
-        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
 
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
-        if (bombList.size() < bombMaxCount) {
-            int bombX = ((int) this.getX() / 32 + 1) * 32;
-            int bombY = ((int) this.getY() / 32 + 1) * 32;
+
+        double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;
+        double centerY = bomberBox.getY() + bomberBox.getHeight() / 2;
+        if (bombList.size() < bombMax) {
+            int bombX = ((int) centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
+            int bombY = ((int) centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             boolean hasBomb = false;
             for (Bomb bomb : bombList) {
                 if (bomb.getX() == bombX && bomb.getY() == bombY) {
@@ -154,7 +189,12 @@ public class Bomber extends Entity implements Movable, Killable {
             }
             if (!hasBomb) {
                 new Sound(Sound.PLACE_BOMB_SOUND).playSound();
-                bombList.add(new Bomb(bombX, bombY, 15, 15));
+                bombList.add(new Bomb(bombX, bombY, 32, 32));
+
+                LevelMap.getInstance().setHashAt(
+                        bombY / GameConfig.TILE_SIZE,
+                        bombX / GameConfig.TILE_SIZE,
+                        "bomb");
             }
         }
     }
@@ -178,20 +218,40 @@ public class Bomber extends Entity implements Movable, Killable {
         this.bombMax = bombMax;
     }
 
-    public void setSteps(int steps) {
-        this.steps = steps;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
         this.canPassBrick = canPassBrick;
     }
 
+    public boolean isCanPassBrick() {
+        return canPassBrick;
+    }
+
     public void setCanPassFlame(boolean canPassFlame) {
         this.canPassFlame = canPassFlame;
     }
 
-    public void setCanPassBom(boolean canPassBom) {
-        this.canPassBom = canPassBom;
+    public boolean isCanPassFlame() {
+        return canPassFlame;
+    }
+
+    public void setCanPassBomb(boolean canPassBomb) {
+        this.canPassBomb = canPassBomb;
+    }
+
+    public boolean isCanPassBomb() {
+        return canPassBomb;
+    }
+
+    public boolean isInvincible() {
+        return invincible;
+    }
+
+    public void setInvincible(boolean invincible) {
+        this.invincible = invincible;
     }
 
     public PlayerStatus getPlayerStatus() {
@@ -212,10 +272,14 @@ public class Bomber extends Entity implements Movable, Killable {
         this.direction = direction;
     }
 
-    @Override
-    public void move(int steps, Direction direction) {
-        //Note: `steps` is always positive when passed.
+    public BoxCollider getBomberBox() {
+        return bomberBox;
+    }
 
+    @Override
+    public void move() {
+        //Note: `steps` is always positive at first.
+        int steps = speed;
         if (playerStatus == PlayerStatus.IDLE) {
             return;
         }
@@ -239,15 +303,77 @@ public class Bomber extends Entity implements Movable, Killable {
 
         LevelMap levelMap = LevelMap.getInstance();
         if ((x < 0) || (x + width > levelMap.getWidth())) {
-            //Move back
-            x -= steps;
+            x -= steps;     //Move back
         }
 
         if ((y < 0) || (y + height > levelMap.getHeight())) {
-            //Move back
-            y -= steps;
+            y -= steps;     //Move back
         }
 
-        //TODO: add barrier checker.
+        bomberBox.setLocation(
+                this.x + (this.width - bomberBox.getWidth()) / 2.0,
+                this.y + bomberBox.getHeight() - 2
+        );
+
+        int leftCol = (int) bomberBox.getX() / GameConfig.TILE_SIZE;
+        int rightCol = (int) (bomberBox.getX() + bomberBox.getWidth()) / GameConfig.TILE_SIZE;
+        int topRow = (int) bomberBox.getY() / GameConfig.TILE_SIZE;
+        int bottomRow = (int) (bomberBox.getY() + bomberBox.getHeight()) / GameConfig.TILE_SIZE;
+
+        int wallHash = levelMap.getHash("wall");
+        int brickHash = levelMap.getHash("brick");
+
+        //Barrier checker.
+        boolean topLeftCheck = checkBarrier(topRow, leftCol);
+        boolean topRightCheck = checkBarrier(topRow, rightCol);
+        boolean bottomLeftCheck = checkBarrier(bottomRow, leftCol);
+        boolean bottomRightCheck = checkBarrier(bottomRow, rightCol);
+
+        switch (direction) {
+            case UP:
+                if (topLeftCheck || topRightCheck) {
+                    y -= steps;
+                }
+                break;
+            case DOWN:
+                if (bottomLeftCheck || bottomRightCheck) {
+                    y -= steps;
+                }
+                break;
+            case RIGHT:
+                if (topRightCheck || bottomRightCheck) {
+                    x -= steps;
+                }
+                break;
+            case LEFT:
+                if (topLeftCheck || bottomLeftCheck) {
+                    x -= steps;
+                }
+                break;
+        }
+    }
+
+    private boolean checkBarrier(int i, int j) {
+        LevelMap levelMap = LevelMap.getInstance();
+
+        if (levelMap.getHashAt(i, j) == levelMap.getHash("bomb")) {
+            if (EntitiesManager.getInstance().bombs.
+                    get(EntitiesManager.getInstance().bombs.size() - 1).isAllowPass()) {
+                return false;
+            }
+            return !canPassBomb;
+        }
+        if (levelMap.getHashAt(i, j) == levelMap.getHash("brick")) {
+            return !canPassBrick;
+        }
+
+        if (levelMap.getHashAt(i, j) == levelMap.getHash("portal")) {
+            if(EntitiesManager.getInstance().portal.isCanPass()){
+                levelMap.nextLevel();
+            }
+            return true;
+        }
+
+        return levelMap.getHashAt(i, j) == levelMap.getHash("wall");
     }
 }

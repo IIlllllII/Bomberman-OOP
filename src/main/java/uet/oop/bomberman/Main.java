@@ -20,7 +20,7 @@ public class Main extends Application {
         loop = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                //introStage.setDone(true);  // just for debug
+                //IntroStage.setDone(true);  // just for debug
                 if (introStage.isInitDone() && introStage.isDone()) {
                     mainStage.close();
                     loop.stop();

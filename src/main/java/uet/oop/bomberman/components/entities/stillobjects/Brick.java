@@ -13,17 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Brick extends Entity {
+    private static boolean initialized = false;
     private Image image;
     private static List<Image> bricks;
     private static List<Image> brickExplodes;
-
-    private Image image;
     private boolean destroyed = false; // bị phá hủy chưa
     private static final float timeDestroyed = 1000.0f; // thời gian phá hủy
 
     private float time = 0;
     private final int level;
-
 
     public static void init() {
         if (!initialized) {
@@ -47,14 +45,8 @@ public class Brick extends Entity {
         }
     }
 
-    public Brick(double x, double y, int width, int height) {
-        super(x, y, width, height);
-        this.level = LevelMap.getInstance().getLevel();
-        image = bricks.get(level - 1);
-    }
-
-    public Brick(double x, double y, int width, int height, int level) {
-        super(x, y, width, height);
+    public Brick(double x, double y, int level) {
+        super(x, y);
         this.level = level;
         image = bricks.get(level - 1);
     }
@@ -73,7 +65,6 @@ public class Brick extends Entity {
         if (destroyed) {
             time += Timer.getInstance().getDeltaTime();
             image = Sprite.animation(brickExplodes,time, timeDestroyed);
-
         }
     }
 

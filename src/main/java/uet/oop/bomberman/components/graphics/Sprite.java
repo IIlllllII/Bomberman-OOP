@@ -1,11 +1,7 @@
 package uet.oop.bomberman.components.graphics;
 
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.*;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.util.Arrays;

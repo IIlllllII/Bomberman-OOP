@@ -14,10 +14,9 @@ import javafx.util.Duration;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.buttons.MenuButton;
 import uet.oop.bomberman.sound.Music;
-import uet.oop.bomberman.sound.Sound;
 
 public class MenuScene {
-    private Group root;
+    private final Group root;
     private Image background;
     private final GameMenu gameMenu;
     public static Music menuMusic = new Music(Music.MENU_MUSIC, true);

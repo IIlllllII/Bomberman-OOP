@@ -8,17 +8,20 @@ import uet.oop.bomberman.components.graphics.SpriteSheet;
 
 public class Portal extends Entity {
     public static boolean initialized = false;
-    public static Image portal;
+    private static Image portal;
+    private boolean appear = false;
+    private boolean canPass = false;
+
     public static void init() {
-        if (! initialized) {
+        if (!initialized) {
             SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            portal = new Sprite(16, 4 * 16, 0, tiles, 14, 14).getFxImage();
+            portal = new Sprite(16, 4 * 16, 0, tiles, 15, 15).getFxImage();
             initialized = true;
         }
     }
 
-    public Portal(int x, int y, int width, int height){
-        super(x, y, width, height);
+    public Portal(double x, double y) {
+        super(x, y);
     }
 
     @Override
@@ -29,5 +32,21 @@ public class Portal extends Entity {
     @Override
     public void update() {
 
+    }
+
+    public boolean isAppear() {
+        return appear;
+    }
+
+    public void setAppear(boolean appear) {
+        this.appear = appear;
+    }
+
+    public boolean isCanPass() {
+        return canPass;
+    }
+
+    public void setCanPass(boolean canPass) {
+        this.canPass = canPass;
     }
 }
