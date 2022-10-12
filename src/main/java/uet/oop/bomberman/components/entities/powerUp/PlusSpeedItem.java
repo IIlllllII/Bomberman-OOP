@@ -12,10 +12,10 @@ public class PlusSpeedItem extends PowerUp{
 
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setSteps(8);
+        EntitiesManager.getInstance().players.get(0).setSpeed(Bomber.DEFAULT_SPEED * 2);
         if(time >= timePowerUp){
             eaten = false;
-            EntitiesManager.getInstance().players.get(0).setSteps(4);
+            EntitiesManager.getInstance().players.get(0).setSpeed(Bomber.DEFAULT_SPEED);
             done = true;
         }
     }
