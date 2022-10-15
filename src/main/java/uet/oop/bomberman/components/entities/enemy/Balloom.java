@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.entities.enemy;
 
+import javafx.scene.Camera;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
@@ -40,7 +41,9 @@ public class Balloom extends Enemy {
             animationDeath.render(gc, x - camera.getX(), y - camera.getY());
             if (!animationDeath.isDone()) {
                 //gc.setFont(PlayWindow.MCFONT);
-                gc.fillText(" + " + score, x + 16, y + 20 - animationDeath.getCalcTime() / 32);
+                gc.fillText(" + " + score,
+                        x + 16 - camera.getX(),
+                        y + 20 - camera.getY() - animationDeath.getCalcTime() / 32);
             }
         }
     }

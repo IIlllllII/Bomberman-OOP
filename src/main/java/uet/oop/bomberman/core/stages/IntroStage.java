@@ -1,15 +1,15 @@
 package uet.oop.bomberman.core.stages;
 
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
+import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
-import javafx.application.Platform;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.bomb.Flame;
@@ -21,55 +21,76 @@ import uet.oop.bomberman.config.GameConfig;
 import java.net.URISyntaxException;
 
 public class IntroStage {
-    private Image background;
-    private Image loading;
-    private static boolean done;
+    private boolean loadDone;
     private boolean initDone;
+    private final Scene scene;
 
-    public IntroStage(Stage stage) {
-        double width = GameConfig.WIDTH;
-        double height = GameConfig.HEIGHT;
+    private static class SingletonHelper {
+        private static final IntroStage INSTANCE = new IntroStage();
+    }
+    public static IntroStage getInstance() {
+        return IntroStage.SingletonHelper.INSTANCE;
+    }
+
+    private IntroStage() {
         initDone = false;
-        done = false;
+        loadDone = false;
 
+        Group root = new Group();
         try {
-            Image icon = new Image(getClass().getResource(GameConfig.ICON_PATH).toURI().toString());
-            stage.getIcons().add(icon);
-            background = new Image(getClass().getResource("/greeting.jpg").toURI().toString());
-            loading = new Image(getClass().getResource("/intro.png").toURI().toString());
+            Image background = new Image(getClass().getResource("/intro.jpg").toURI().toString());
+            ImageView imageView = new ImageView(background);
+            imageView.setFitWidth(GameConfig.WIDTH);
+            imageView.setFitHeight(GameConfig.HEIGHT);
+            root.getChildren().add(imageView);
         } catch (URISyntaxException e) {
-            System.out.println("Intro stage");
-            e.printStackTrace();
+            System.out.println("background intro");
+            throw new RuntimeException(e);
         }
 
-        final ImageView viewBackground = new ImageView(background);
-        viewBackground.setFitWidth(GameConfig.WIDTH);
-        viewBackground.setFitHeight(GameConfig.HEIGHT);
+        // Fading
+        final FadeTransition fading = new FadeTransition();
+        {
+            fading.setDuration(Duration.millis(1000));
+            fading.setFromValue(1);
+            fading.setToValue(0);
+            fading.setNode(root);
+            fading.setOnFinished(event -> loadDone = true);
+        }
 
-        final ImageView viewLoading = new ImageView(loading);
-        viewLoading.setLayoutX(10);
-        viewLoading.setLayoutY(GameConfig.HEIGHT - 74 - 15);
-        final Animation animation = new SpriteAnimation(viewLoading, Duration.millis(5000),
-                18, 6,
-                0, 0,
-                74, 74
-        );
-        animation.play();
-        Group root = new Group();
+        // progress bar
+        final ProgressBar progressBar = new ProgressBar(0);
+        {
+            progressBar.setPrefWidth(300);
+            progressBar.setLayoutX(GameConfig.WIDTH / 2.0 - 150);
+            progressBar.setLayoutY(GameConfig.HEIGHT * 8 / 9.0);
+            progressBar.setEffect(new Bloom() {
+                {
+                    setInput(new Reflection());
+                }
+            });
 
-        root.getChildren().addAll(viewBackground, viewLoading);
-        Scene scene = new Scene(root, width, height);
+            final Transition progressAnimation = new Transition() {
+                {
+                    setCycleDuration(Duration.millis(4000));
+                }
 
-        stage.setResizable(false);
-        stage.setTitle(GameConfig.NAME);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
-        stage.show();
+                @Override
+                protected void interpolate(double frac) {
+                    progressBar.setProgress(frac);
+                }
+            };
+            progressAnimation.play();
+            progressAnimation.setOnFinished(event -> {
+                progressBar.setVisible(false);
+                fading.play();
+            });
+        }
 
+        root.getChildren().add(progressBar);
+
+        scene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT,
+                Color.rgb(4, 219, 251));
 
         (new Thread(() -> {
             SpriteSheet.init();
@@ -83,72 +104,14 @@ public class IntroStage {
     }
 
     public boolean isDone() {
-        return done;
+        return loadDone && initDone;
     }
 
-    public static void setDone(boolean done) {
-        IntroStage.done = done;
+    public void setLoadDone(boolean loadDone) {
+        this.loadDone = loadDone;
     }
 
-    public boolean isInitDone() {
-        return initDone;
-    }
-
-    /**
-     * Needs to set the duration of a single cycle.
-     */
-    private static class SpriteAnimation extends Transition {
-        private final ImageView imageView;
-        private final int count;
-        private final int columns;
-        private final int offsetX;
-        private final int offsetY;
-        private final int width;
-        private final int height;
-        private int lastIndex;
-
-        /**
-         *
-         * @param imageView image.
-         * @param duration : how long it should take to go through all frames
-         * @param count : the number of frames
-         * @param columns : the number of the columns
-         * @param offsetX : offset of the first frame
-         * @param offsetY :
-         * @param width :
-         * @param height :
-         */
-        public SpriteAnimation(ImageView imageView, Duration duration,
-                               int count,   int columns,
-                               int offsetX, int offsetY,
-                               int width,   int height) {
-            this.imageView = imageView;
-            this.count     = count;
-            this.columns   = columns;
-            this.offsetX   = offsetX;
-            this.offsetY   = offsetY;
-            this.width     = width;
-            this.height    = height;
-            setCycleDuration(duration);
-            setInterpolator(Interpolator.LINEAR);
-        }
-
-        /**
-         * called in each frame, while the Transition is running.
-         * @param k
-         * The relative position
-         */
-        @Override
-        protected void interpolate(double k) {
-            final int index = Math.min((int) Math.floor(k * count), count - 1);
-            if (index != lastIndex) {
-                final int x = (index % columns) * width  + offsetX;
-                final int y = (index / columns) * height + offsetY;
-                imageView.setViewport(new Rectangle2D(x, y, width, height));
-                lastIndex = index;
-            } else if (index == count - 1){
-                setDone(true);
-            }
-        }
+    public Scene getScene() {
+        return scene;
     }
 }
