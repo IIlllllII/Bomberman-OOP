@@ -41,7 +41,7 @@ public class Main extends Application {
         loop = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                introStage.setLoadDone(true);  // just for debug
+                //introStage.setLoadDone(true);  // just for debug
                 if (introStage.isDone()) {
                     loop.stop();
                     gameStage = GameStage.getInstance();
