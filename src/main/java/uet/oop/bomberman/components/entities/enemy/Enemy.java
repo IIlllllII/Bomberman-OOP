@@ -27,7 +27,7 @@ public abstract class Enemy extends Entity {
 
     protected List<Direction> directionList = new ArrayList<>();
     protected boolean randomAnimation = false; // left or right
-    protected int speed = 1;
+    protected double speed = 1;
     protected int score;
 
     public Enemy(double x, double y) {
@@ -90,10 +90,10 @@ public abstract class Enemy extends Entity {
 
     protected void initDirectionList(){
         directionList.clear();
+        directionList.add(Direction.LEFT);
+        directionList.add(Direction.RIGHT);
         directionList.add(Direction.UP);
         directionList.add(Direction.DOWN);
-        directionList.add(Direction.RIGHT);
-        directionList.add(Direction.LEFT);
     }
 
     protected void checkMove(){

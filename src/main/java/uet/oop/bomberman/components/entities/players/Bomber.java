@@ -172,8 +172,6 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public void placeBomb() {
         direction = Direction.DOWN;
-        new Sound(Sound.PLACE_BOMB_SOUND).playSound();
-
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
 
         double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;

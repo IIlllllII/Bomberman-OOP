@@ -1,12 +1,10 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.components.entities.enemy.Dahl;
-import uet.oop.bomberman.components.entities.enemy.Oneal;
+import uet.oop.bomberman.components.entities.enemy.*;
 import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
-import uet.oop.bomberman.components.entities.enemy.Balloom;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Grass;
@@ -50,8 +48,8 @@ public class LevelMap {
     }
 
     public void render(GraphicsContext gc) {
-        for(int i = 0; i < mapHash.length; ++i) {
-            for(int j = 0; j < mapHash[i].length; ++j) {
+        for (int i = 0; i < mapHash.length; ++i) {
+            for (int j = 0; j < mapHash[i].length; ++j) {
                 grass.setLocation(32 * j, 32 * i);
                 grass.render(gc);
                 if (mapHash[i][j] == getHash("wall")) {
@@ -75,12 +73,13 @@ public class LevelMap {
 
     public void nextLevel() {
         level++;
-        level = (level > 3) ? 1 : level;
+        level = (level > 7) ? 1 : level;
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
         entitiesManager.renewEntities();
         List<Brick> brickList = entitiesManager.bricks;
         List<Item> itemList = entitiesManager.items;
+        List<Enemy> enemyList = entitiesManager.enemies;
 
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
@@ -104,23 +103,42 @@ public class LevelMap {
                             break;
                         }
                         case '1': {
-                            entitiesManager.enemies.add(
-                                    new Balloom(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE)
-                            );
+                            enemyList.add(new Balloom(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
                             hash = getHash("grass");
                             break;
                         }
                         case '2': {
-                            entitiesManager.enemies.add(
-                                    new Oneal(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE)
-                            );
+                            enemyList.add(new Oneal(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
                             hash = getHash("grass");
                             break;
                         }
                         case '3': {
-                            entitiesManager.enemies.add(
-                                    new Dahl(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE)
-                            );
+                            enemyList.add(new Dahl(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            hash = getHash("grass");
+                            break;
+                        }
+                        case '4': {
+                            enemyList.add(new Minvo(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            hash = getHash("grass");
+                            break;
+                        }
+                        case '5': {
+                            enemyList.add(new Doria(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            hash = getHash("grass");
+                            break;
+                        }
+                        case '6': {
+                            enemyList.add(new Ovape(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            hash = getHash("grass");
+                            break;
+                        }
+                        case '7': {
+                            enemyList.add(new Pass(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            hash = getHash("grass");
+                            break;
+                        }
+                        case '8': {
+                            enemyList.add(new Pontan(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
                             hash = getHash("grass");
                             break;
                         }

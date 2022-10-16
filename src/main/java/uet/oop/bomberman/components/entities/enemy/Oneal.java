@@ -46,7 +46,7 @@ public class Oneal extends Enemy {
             int temp = r.nextInt(3);
             speed = (temp == 0) ? 1 : temp;
 
-            if (Math.abs(jPlayer - j) < 2 && Math.abs(iPlayer - i) < 2) {
+            if (Math.abs(jPlayer - j) < 3 && Math.abs(iPlayer - i) < 3) {
                 if (jPlayer < j && canMoveL) {
                     moveX = -speed;
                 } else if (jPlayer > j && canMoveR) {

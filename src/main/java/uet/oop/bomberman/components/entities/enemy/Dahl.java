@@ -20,7 +20,7 @@ public class Dahl extends Enemy{
         randomAnimation = false;
         initDirectionList();
         speed = 2;
-        score = 100;
+        score = 400;
     }
 
     @Override
