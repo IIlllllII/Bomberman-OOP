@@ -9,6 +9,7 @@ public class BombPass extends Item {
 
     public BombPass(double x, double y){
         super(x, y, bombPass);
+        setTimePowerUp(60000);
     }
 
     @Override

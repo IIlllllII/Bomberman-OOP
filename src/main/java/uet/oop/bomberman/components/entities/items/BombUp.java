@@ -8,6 +8,7 @@ public class BombUp extends Item {
      */
     public BombUp(double x, double y){
         super(x, y, bombUp);
+        setTimePowerUp(60000);
     }
 
     @Override

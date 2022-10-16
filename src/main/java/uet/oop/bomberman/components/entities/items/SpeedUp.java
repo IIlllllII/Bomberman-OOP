@@ -9,6 +9,7 @@ public class SpeedUp extends Item {
      */
     public SpeedUp(double x, double y){
         super(x, y, speedUp);
+        setTimePowerUp(60000);
     }
 
     @Override

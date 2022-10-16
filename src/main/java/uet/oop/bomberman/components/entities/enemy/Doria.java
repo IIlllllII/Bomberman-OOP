@@ -4,6 +4,7 @@ import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
+import uet.oop.bomberman.config.Direction;
 
 public class Doria extends Enemy {
 
@@ -36,31 +37,41 @@ public class Doria extends Enemy {
             canMoveL = checkMapHash(i, j - 1);
             canMoveU = checkMapHash(i - 1, j);
             canMoveD = checkMapHash(i + 1, j);
-            if (jPlayer == j) {
-                moveX = 0;
-            } else if (jPlayer < j) {
-                if (canMoveL) {
-                    moveX = -speed;
-                }
 
-            } else if (jPlayer > j && canMoveR) {
-                moveX = speed;
-            }
-            if (iPlayer == i) {
-                moveY = 0;
-            } else if (iPlayer < i && canMoveU) {
-                moveY = -speed;
-            } else if (iPlayer > i && canMoveD) {
-                moveY = speed;
-            }
-            if (moveY != 0 && moveX != 0) {
-                if (Math.abs(iPlayer - i) > Math.abs(jPlayer - j)) {
-                    moveX = 0;
-                } else {
-                    moveY = 0;
+            if (Math.abs(jPlayer - j) >= Math.abs(iPlayer - i)){
+                if(jPlayer >= j){
+                    if(canMoveR){
+                        lastDirection = Direction.RIGHT;
+                    }else {
+                        int ran = r.nextInt(directionList.size());
+                        lastDirection = directionList.get(ran);
+                    }
+                }else {
+                    if(canMoveL){
+                        lastDirection = Direction.LEFT;
+                    }else {
+                        int ran = r.nextInt(directionList.size());
+                        lastDirection = directionList.get(ran);
+                    }
+                }
+            } else {
+                if(iPlayer >= i){
+                    if(canMoveD){
+                        lastDirection = Direction.DOWN;
+                    }else {
+                        int ran = r.nextInt(directionList.size());
+                        lastDirection = directionList.get(ran);
+                    }
+                }else {
+                    if(canMoveU){
+                        lastDirection = Direction.UP;
+                    }else {
+                        int ran = r.nextInt(directionList.size());
+                        lastDirection = directionList.get(ran);
+                    }
                 }
             }
-
+            checkMove();
         }
         x += moveX;
         y += moveY;

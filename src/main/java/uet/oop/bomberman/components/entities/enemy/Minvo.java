@@ -37,18 +37,42 @@ public class Minvo extends Enemy{
             canMoveD = checkMapHash(i + 1, j);
 
             if (Math.abs(jPlayer - j) < 3 && Math.abs(iPlayer - i) < 3) {
-                if (jPlayer < j && canMoveL) {
-                    moveX = -speed;
-                } else if (jPlayer > j && canMoveR) {
-                    moveX = speed;
-                } else if (iPlayer < i && canMoveU) {
-                    moveY = -speed;
-                } else if (iPlayer > i && canMoveD) {
-                    moveY = speed;
+                if (Math.abs(jPlayer - j) >= Math.abs(iPlayer - i)) {
+                    if (jPlayer >= j) {
+                        if (canMoveR) {
+                            lastDirection = Direction.RIGHT;
+                        } else {
+                            int ran = r.nextInt(directionList.size());
+                            lastDirection = directionList.get(ran);
+                        }
+                    } else {
+                        if (canMoveL) {
+                            lastDirection = Direction.LEFT;
+                        } else {
+                            int ran = r.nextInt(directionList.size());
+                            lastDirection = directionList.get(ran);
+                        }
+                    }
+                    checkMove();
+                } else {
+                    if (iPlayer >= i) {
+                        if (canMoveD) {
+                            lastDirection = Direction.DOWN;
+                        } else {
+                            int ran = r.nextInt(directionList.size());
+                            lastDirection = directionList.get(ran);
+                        }
+                    } else {
+                        if (canMoveU) {
+                            lastDirection = Direction.UP;
+                        } else {
+                            int ran = r.nextInt(directionList.size());
+                            lastDirection = directionList.get(ran);
+                        }
+                    }
                 }
             } else {
-                checkMove();
-                if(directionList.size() != 0){
+                if (directionList.size() != 0) {
                     int ran = r.nextInt(directionList.size());
                     if (directionList.get(ran) == Direction.UP) {
                         lastDirection = Direction.UP;
@@ -66,6 +90,7 @@ public class Minvo extends Enemy{
                     }
                 }
             }
+            checkMove();
         }
         x += moveX;
         y += moveY;

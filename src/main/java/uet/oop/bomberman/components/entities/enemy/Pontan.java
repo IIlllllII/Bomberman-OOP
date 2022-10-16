@@ -1,7 +1,9 @@
 package uet.oop.bomberman.components.entities.enemy;
 
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 
 public class Pontan extends  Enemy{
@@ -20,8 +22,13 @@ public class Pontan extends  Enemy{
 
     @Override
     protected void move() {
-        int j = (int) (x / 32);
-        int i = (int) (y / 32);
+        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+
+        int j = (int) ((x + 12) / 32);
+        int i = (int) ((y + 16) / 32);
+        int jPlayer = (int) (bomberX + 16) / 32;
+        int iPlayer = (int) (bomberY + 16) / 32;
 
         if (j * 32 == x && i * 32 == y) {
             moveX = 0;
@@ -31,26 +38,52 @@ public class Pontan extends  Enemy{
             canMoveU = checkMapHash(i - 1, j);
             canMoveD = checkMapHash(i + 1, j);
 
-            checkMove();
-            if (directionList.size() != 0) {
-                int ran = r.nextInt(directionList.size());
-                if (directionList.get(ran) == Direction.UP) {
-                    lastDirection = Direction.UP;
+            if (Math.abs(jPlayer - j) >= Math.abs(iPlayer - i)){
+                if(jPlayer >= j){
+                    if(canMoveR){
+                        lastDirection = Direction.RIGHT;
+                    }else {
+                        int ran = r.nextInt(directionList.size());
+                        lastDirection = directionList.get(ran);
+                    }
+                }else {
+                    if(canMoveL){
+                        lastDirection = Direction.LEFT;
+                    }else {
+                        int ran = r.nextInt(directionList.size());
+                        lastDirection = directionList.get(ran);
+                    }
                 }
-                if (directionList.get(ran) == Direction.DOWN) {
-                    lastDirection = Direction.DOWN;
-                }
-                if (directionList.get(ran) == Direction.RIGHT) {
-                    lastDirection = Direction.RIGHT;
-                    randomAnimation = false;
-                }
-                if (directionList.get(ran) == Direction.LEFT) {
-                    lastDirection = Direction.LEFT;
-                    randomAnimation = true;
+            } else {
+                if(iPlayer >= i){
+                    if(canMoveD){
+                        lastDirection = Direction.DOWN;
+                    }else {
+                        int ran = r.nextInt(directionList.size());
+                        lastDirection = directionList.get(ran);
+                    }
+                }else {
+                    if(canMoveU){
+                        lastDirection = Direction.UP;
+                    }else {
+                        int ran = r.nextInt(directionList.size());
+                        lastDirection = directionList.get(ran);
+                    }
                 }
             }
+            checkMove();
         }
         x += moveX;
         y += moveY;
+    }
+
+    @Override
+    protected boolean checkMapHash(int i, int j) {
+        LevelMap levelMap = LevelMap.getInstance();
+        if (i < 0 || i > (levelMap.getHeight() / 32) - 1 || j < 0 || j > (levelMap.getWidth() / 32) - 1) {
+            return false;
+        }
+        return levelMap.getHashAt(i, j) == levelMap.getHash("grass")
+                || levelMap.getHashAt(i, j) == levelMap.getHash("brick");
     }
 }

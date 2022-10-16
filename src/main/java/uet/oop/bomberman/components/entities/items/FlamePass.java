@@ -9,6 +9,7 @@ public class FlamePass extends Item {
 
     public FlamePass(double x, double y){
         super(x, y, flamePass);
+        setTimePowerUp(60000);
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Initialized extends Item{
 
     public Initialized(double x, double y){
         super(x, y, bombPass);
+        setTimePowerUp(30000);
     }
     @Override
     public void changePower() {
