@@ -1,4 +1,4 @@
-package uet.oop.bomberman.components.entities.enemy;
+package uet.oop.bomberman.components.entities.enemies;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.Entity;
@@ -22,7 +22,7 @@ public abstract class Enemy extends Entity {
     protected boolean canMoveL = false;
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
-    Random r = new Random();
+    protected Random r = new Random();
     protected Direction lastDirection = Direction.values()[r.nextInt(Direction.values().length)];;
 
     protected List<Direction> directionList = new ArrayList<>();
@@ -45,7 +45,9 @@ public abstract class Enemy extends Entity {
             animationDeath.render(gc, x - camera.getX(), y - camera.getY());
             if (!animationDeath.isDone()) {
                 //gc.setFont(PlayWindow.MCFONT);
-                gc.fillText(" + " + score, x + 16, y + 20 - animationDeath.getCalcTime() / 32);
+                gc.fillText(" + " + score,
+                        x - camera.getX() + 16,
+                        y - camera.getY() + 20 - animationDeath.getCalcTime() / 32);
             } else {
                 done = true;
             }

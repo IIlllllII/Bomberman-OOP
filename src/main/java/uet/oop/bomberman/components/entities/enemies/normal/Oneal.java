@@ -1,21 +1,24 @@
-package uet.oop.bomberman.components.entities.enemy;
+package uet.oop.bomberman.components.entities.enemies.normal;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.config.Direction;
 
-public class Minvo extends Enemy{
-    public Minvo(double x, double y){
+public class Oneal extends Enemy {
+
+    public Oneal(double x, double y) {
         super(x, y);
-        animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0, 128, 32, 32);
-        animationRight = new Animation(SpriteSheet.enemy, 3, 3, 1000, 96, 128, 32, 32);
-        animationDeath = new Animation(SpriteSheet.enemy, 4, 4, 1000, 192, 128, 32, 32);
-        animationLeft.setLoop(true);
+
+        animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 3000, 0, 32, 32, 32);
+        animationRight = new Animation(SpriteSheet.enemy, 3, 3, 3000, 96, 32, 32, 32);
+        animationDeath = new Animation(SpriteSheet.enemy, 3, 3, 1000, 192, 32, 32, 32);
         animationRight.setLoop(true);
+        animationLeft.setLoop(true);
         initDirectionList();
-        speed = 2;
-        score = 800;
+
+        score = 200;
     }
 
     @Override
@@ -35,6 +38,9 @@ public class Minvo extends Enemy{
             canMoveL = checkMapHash(i, j - 1);
             canMoveU = checkMapHash(i - 1, j);
             canMoveD = checkMapHash(i + 1, j);
+
+            int temp = r.nextInt(3);
+            speed = (temp == 0) ? 1 : temp;
 
             if (Math.abs(jPlayer - j) < 3 && Math.abs(iPlayer - i) < 3) {
                 if (Math.abs(jPlayer - j) >= Math.abs(iPlayer - i)) {

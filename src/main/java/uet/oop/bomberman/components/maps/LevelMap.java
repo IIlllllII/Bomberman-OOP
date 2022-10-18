@@ -1,7 +1,10 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.components.entities.enemy.*;
+import uet.oop.bomberman.components.entities.enemies.*;
+import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
+import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
+import uet.oop.bomberman.components.entities.enemies.normal.*;
 import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
@@ -73,13 +76,16 @@ public class LevelMap {
 
     public void nextLevel() {
         level++;
-        level = (level > 7) ? 1 : level;
+        level = (level > 8) ? 1 : level;
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
         entitiesManager.renewEntities();
         List<Brick> brickList = entitiesManager.bricks;
         List<Item> itemList = entitiesManager.items;
         List<Enemy> enemyList = entitiesManager.enemies;
+
+        System.out.println("Current: " + brickList.size() + " " + itemList.size()
+        + " " + enemyList.size());
 
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
@@ -142,6 +148,16 @@ public class LevelMap {
                             hash = getHash("grass");
                             break;
                         }
+                        case '9': {
+                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            hash = getHash("grass");
+                            break;
+                        }
+                        case 'S': {
+                            enemyList.add(new Saru(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            hash = getHash("grass");
+                            break;
+                        }
                         case '*': {
                             brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             break;
@@ -194,6 +210,7 @@ public class LevelMap {
                     mapHash[i][j] = hash;
                 }
             }
+            if (level == 8) return;
             Random r = new Random();
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);

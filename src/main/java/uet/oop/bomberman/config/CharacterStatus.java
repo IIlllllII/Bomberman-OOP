@@ -1,12 +1,12 @@
 package uet.oop.bomberman.config;
 
-public enum PlayerStatus {
+public enum CharacterStatus {
     IDLE("idle"),
     MOVING("moving"),
     DEAD("dead");
 
     public final String label;
-    PlayerStatus(String label) {
+    CharacterStatus(String label) {
         this.label = label;
     }
 }

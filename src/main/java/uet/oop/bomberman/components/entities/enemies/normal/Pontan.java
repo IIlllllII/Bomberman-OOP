@@ -1,12 +1,13 @@
-package uet.oop.bomberman.components.entities.enemy;
+package uet.oop.bomberman.components.entities.enemies.normal;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 
-public class Pontan extends  Enemy{
+public class Pontan extends Enemy {
     public Pontan(double x, double y){
         super(x, y);
         animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0 * 32, 2 * 32, 32, 32);
