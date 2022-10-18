@@ -27,7 +27,7 @@ public class EntitiesManager {
     public List<Brick> bricks = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
-    
+
     private EntitiesManager() {}
 
     private static class SingletonHelper {
@@ -37,7 +37,7 @@ public class EntitiesManager {
     public static EntitiesManager getInstance() {
         return SingletonHelper.INSTANCE;
     }
-    
+
     public void render(GraphicsContext gc) {
         items.forEach(items -> items.render(gc));
         bombs.forEach(entity -> entity.render(gc));
@@ -82,7 +82,7 @@ public class EntitiesManager {
 
         enemies.forEach(enemy -> {
             if (!enemy.isDestroyed() && bomberBox.isCollidedWith(new BoxCollider(
-                enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
+                    enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
                 players.get(0).setPlayerStatus(PlayerStatus.DEAD);
             }
         });

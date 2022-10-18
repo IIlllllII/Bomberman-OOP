@@ -1,132 +1,141 @@
 package uet.oop.bomberman.core.scenes;
 
+import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.buttons.MenuButton;
+import uet.oop.bomberman.core.scenes.menu.Leaderboards;
+import uet.oop.bomberman.core.scenes.menu.Setting;
+import uet.oop.bomberman.core.scenes.menu.SliderShow;
 import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.buttons.MenuButton;
-import uet.oop.bomberman.sound.Music;
+import uet.oop.bomberman.core.sound.Music;
 
 public class MenuScene {
-    private final Group root;
-    private Image background;
+    private final StackPane root;
+    private static final SliderShow background = new SliderShow(2, 4);
     private final GameMenu gameMenu;
     public static Music menuMusic = new Music(Music.MENU_MUSIC, true);
     public static Music gameMusic = new Music(Music.GAME_MUSIC, true);
 
-    public MenuScene() {
-        root = new Group();
+    private static class SingletonHelper {
+        private static final MenuScene INSTANCE = new MenuScene();
+    }
+    public static MenuScene getInstance() {
+        return MenuScene.SingletonHelper.INSTANCE;
+    }
+    private MenuScene() {
+        root = new StackPane();
+        root.setAlignment(Pos.CENTER);
 
-        try {
-            background = new Image(getClass().getResource("/bkg.jpg").toURI().toString());
-        } catch (Exception e) {
-            System.out.println("bkg menu screen");
-        }
-        ImageView imageView = new ImageView(background);
-        imageView.setFitHeight(GameConfig.HEIGHT);
-        imageView.setFitWidth(GameConfig.WIDTH);
+        background.setPrefWidth(GameConfig.WIDTH);
+        background.setPrefHeight(GameConfig.HEIGHT);
+
         gameMenu = new GameMenu();
         gameMenu.setVisible(false);
 
         menuMusic.playMusic();
 
-        root.getChildren().addAll(imageView, gameMenu);
+        root.getChildren().addAll(background, gameMenu);
+
+        root.setOnMouseClicked(event -> {
+            System.out.println("click from menu");
+            fadeIn();
+        });
+
+//        root.setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.ESCAPE) {
+//                fadeOut();
+//            }
+//        });
     }
 
-    private class GameMenu extends Parent {
+    public void zoom() {
+        gameMenu.setScaleX(GameConfig.ZOOM);
+        gameMenu.setScaleY(GameConfig.ZOOM);
+    }
+
+    private static class GameMenu extends VBox {
         public GameMenu() {
+            setStyle("-fx-background-color: rgba(128, 128, 128, 0.5)");
+            setAlignment(Pos.CENTER);
+            setSpacing(45);
+
+            ImageView logo = new ImageView(new Image("/Logo1.png"));
+
             VBox menu0 = new VBox(10);
             VBox menu1 = new VBox(10);
 
-            menu0.setTranslateX(100);
-            menu0.setTranslateY(200);
+            getChildren().add(0, logo);
+            getChildren().add(1, menu0);
 
-            menu1.setTranslateX(100);
-            menu1.setTranslateY(200);
+            Leaderboards leaderboards = new Leaderboards(300, 160);
+            Setting setting = new Setting(300, 180);
 
-            final int offset = 400;
-
-            menu1.setTranslateX(offset);
-
-            MenuButton buttonResume = new MenuButton("PLAY");
-            buttonResume.setOnMouseClicked(mouseEvent -> {
+            MenuButton buttonPlay = new MenuButton("New Game");
+            buttonPlay.setOnMouseClicked(mouseEvent -> {
                 FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
                 ft.setFromValue(1);
                 ft.setToValue(0);
-                ft.setOnFinished(event -> this.setVisible(false));
-                ft.play();
-
-                SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.PLAY);
-                menuMusic.stopMusic();
-                gameMusic.playMusic();
-                System.out.println("Play button");
-            });
-
-            MenuButton btnOptions = new MenuButton("OPTION");
-            btnOptions.setOnMouseClicked(event -> {
-                getChildren().add(menu1);
-                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu0);
-                tt.setToX(menu0.getTranslateX() - offset);
-
-                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu1);
-                tt1.setToX(menu0.getTranslateX());
-
-                tt.play();
-                tt1.play();
-
-                tt.setOnFinished(event1 -> {
-                    getChildren().remove(menu0);
+                ft.setOnFinished(event ->
+                {
+                    background.stop();
+                    this.setVisible(false);
+                    System.out.println("Play button");
+                    SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.PLAY);
                 });
+                ft.play();
             });
 
-            MenuButton btnExit = new MenuButton("EXIT");
+            MenuButton btnBack = new MenuButton("Back");
+            btnBack.setOnMouseClicked(event -> {
+                menu1.getChildren().clear();
+                getChildren().remove(menu1);
+                getChildren().add(1, menu0);
+            });
+
+            MenuButton btnLeaderboards = new MenuButton("Leaderboards");
+            btnLeaderboards.setOnMouseClicked(event -> {
+                getChildren().remove(menu0);
+                menu1.getChildren().add(0, leaderboards);
+                menu1.getChildren().add(1, btnBack);
+                getChildren().add(1, menu1);
+            });
+
+            MenuButton btnSetting = new MenuButton("Setting");
+            btnSetting.setOnMouseClicked(event -> {
+                getChildren().remove(menu0);
+                menu1.getChildren().add(0, setting);
+                menu1.getChildren().add(1, btnBack);
+                getChildren().add(1, menu1);
+            });
+
+            MenuButton btnAbout = new MenuButton("About");
+            btnAbout.setOnMouseClicked(event -> {
+
+            });
+
+            MenuButton btnExit = new MenuButton("Exit");
             btnExit.setOnMouseClicked(event -> {
                 Platform.exit();
                 System.exit(0);
             });
 
-            MenuButton btnBack = new MenuButton("BACK");
-            btnBack.setOnMouseClicked(event -> {
-                getChildren().add(menu0);
-
-                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu1);
-                tt.setToX(menu0.getTranslateX() + offset);
-
-                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu0);
-                tt1.setToX(menu1.getTranslateX());
-
-                tt.play();
-                tt1.play();
-
-                tt.setOnFinished(event1 -> {
-                    getChildren().remove(menu1);
-                });
-            });
-
-            MenuButton btnSound = new MenuButton("SOUND");
-            MenuButton btnVideo = new MenuButton("VIDEO");
-
-            menu0.getChildren().addAll(buttonResume, btnOptions, btnExit);
-            menu1.getChildren().addAll(btnBack, btnSound, btnVideo);
-
-            Rectangle bg = new Rectangle(GameConfig.WIDTH, GameConfig.HEIGHT);
-            bg.setFill(Color.GREY);
-            bg.setOpacity(0.4);
-
-            getChildren().addAll(bg, menu0);
+            menu0.getChildren().addAll(buttonPlay, btnLeaderboards, btnSetting, btnAbout, btnExit);
         }
     }
 
-    public Group getRoot() {
+    public Parent getRoot() {
         return root;
+    }
+
+    public void reset() {
+        background.reset();
     }
 
     public void fadeIn() {
@@ -134,7 +143,7 @@ public class MenuScene {
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
             ft.setFromValue(0);
             ft.setToValue(1);
-
+            background.setOpacity(0.8);
             gameMenu.setVisible(true);
             ft.play();
         }
@@ -145,7 +154,10 @@ public class MenuScene {
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
             ft.setFromValue(1);
             ft.setToValue(0);
-            ft.setOnFinished(event -> gameMenu.setVisible(false));
+            ft.setOnFinished(event -> {
+                background.setOpacity(1);
+                gameMenu.setVisible(false);
+            });
             ft.play();
         }
     }

@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.Bloom;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +18,7 @@ import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.HighScore;
 
 import java.net.URISyntaxException;
 
@@ -61,14 +63,12 @@ public class IntroStage {
         // progress bar
         final ProgressBar progressBar = new ProgressBar(0);
         {
-            progressBar.setPrefWidth(300);
-            progressBar.setLayoutX(GameConfig.WIDTH / 2.0 - 150);
+            progressBar.setPrefWidth(GameConfig.WIDTH);
+            progressBar.setLayoutX(0);
             progressBar.setLayoutY(GameConfig.HEIGHT * 8 / 9.0);
-            progressBar.setEffect(new Bloom() {
-                {
-                    setInput(new Reflection());
-                }
-            });
+            ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setInput(new Reflection());
+            progressBar.setEffect(colorAdjust);
 
             final Transition progressAnimation = new Transition() {
                 {
@@ -77,6 +77,7 @@ public class IntroStage {
 
                 @Override
                 protected void interpolate(double frac) {
+                    colorAdjust.setHue(0.25 - frac / 2);
                     progressBar.setProgress(frac);
                 }
             };
@@ -93,6 +94,7 @@ public class IntroStage {
                 Color.rgb(4, 219, 251));
 
         (new Thread(() -> {
+            HighScore.init();
             SpriteSheet.init();
             LevelMap.init();
             Bomb.init();

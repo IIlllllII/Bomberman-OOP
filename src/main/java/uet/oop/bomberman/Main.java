@@ -14,10 +14,12 @@ import java.net.URISyntaxException;
 public class Main extends Application {
     private GameStage gameStage;
     private AnimationTimer loop;
+    private static Stage mainStage;
 
     // Entry point.
     @Override
     public void start(Stage mainStage) {
+        Main.mainStage = mainStage;
         gameStage = null;
         IntroStage introStage = IntroStage.getInstance();
 
@@ -28,10 +30,18 @@ public class Main extends Application {
             System.out.println("icon path");
         }
 
-        mainStage.setResizable(true);
-        mainStage.setTitle(GameConfig.NAME);
         mainStage.setScene(introStage.getScene());
+        mainStage.setResizable(false);
+        mainStage.setTitle(GameConfig.NAME);
         mainStage.centerOnScreen();
+        mainStage.setAlwaysOnTop(true);
+        mainStage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                mainStage.setOpacity(0.5);
+            } else {
+                mainStage.setOpacity(1);
+            }
+        });
         mainStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
@@ -46,6 +56,7 @@ public class Main extends Application {
                     loop.stop();
                     gameStage = GameStage.getInstance();
                     mainStage.setScene(gameStage.getScene());
+                    zoom();
                     gameStage.run();
                 }
             }
@@ -53,6 +64,11 @@ public class Main extends Application {
         loop.start();
     }
 
+    public static void zoom() {
+        mainStage.setWidth(GameConfig.WIDTH * GameConfig.ZOOM);
+        mainStage.setHeight(GameConfig.HEIGHT * GameConfig.ZOOM);
+        mainStage.centerOnScreen();
+    }
     public static void main(String[] args) {
         launch(args);
     }
