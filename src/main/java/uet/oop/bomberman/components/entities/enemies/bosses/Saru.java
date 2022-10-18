@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.config.Direction;
 
 import java.util.HashMap;
@@ -11,11 +12,12 @@ import java.util.Map;
 
 public class Saru extends Enemy {
     private final Map<String, Animation> animationDict = new HashMap<>();
-
     private Direction currentDirection;
+    private CharacterStatus saruStatus;
 
     public Saru(double x, double y) {
         super(x, y);
+
         animationDict.put("down",
                 new Animation(SpriteSheet.saru, 2, 2, 1000, 5, 48,
                         21, 18, 21 * 1.5f, 18 * 1.5f, 5f, false));
@@ -26,11 +28,11 @@ public class Saru extends Enemy {
 
         animationDict.put("right",
                 new Animation(SpriteSheet.saru, 2, 2, 1000, 3, 71,
-                        21, 18, 21 * 1.5f, 18 * 1.5f, 9f, false));
+                        21, 18, 21 * 1.6f, 18 * 1.6f, 9f, false));
 
         animationDict.put("left",
                 new Animation(SpriteSheet.saru, 2, 2, 1000, 3, 71,
-                        21, 18, 21 * 1.5f, 18 * 1.5f, 9f, true));
+                        21, 18, 21 * 1.8f, 18 * 1.8f, 9f, true));
 
         animationDict.put("idle",
                 new Animation(SpriteSheet.saru, 4, 4, 1000, 3, 3,
@@ -48,16 +50,19 @@ public class Saru extends Enemy {
         animationDict.get("death").setLoop(false);
 
         initDirectionList();
+        saruStatus = CharacterStatus.IDLE;
         currentDirection = Direction.DOWN;
-        //currentDirection = Direction.values()[(new Random()).nextInt(Direction.values().length)];
-        score = 10000;
+        score = 5000;
     }
 
     @Override
     public void render(GraphicsContext gc) {
         if (!destroyed) {
-            animationDict.get(currentDirection.label)
-                    .render(gc, x - camera.getX(), y - camera.getY());
+            if (saruStatus == CharacterStatus.IDLE) {
+                animationDict.get("idle").render(gc, x - camera.getX(), y - camera.getY());
+            } else {
+                animationDict.get(currentDirection.label).render(gc, x - camera.getX(), y - camera.getY());
+            }
         } else {
             animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
             if (! animationDict.get("death").isDone()) {
@@ -72,11 +77,16 @@ public class Saru extends Enemy {
 
     @Override
     public void update() {
-        if (!destroyed) {
+        if (destroyed) {
+            animationDict.get("death").update();
+            return;
+        }
+
+        if (saruStatus == CharacterStatus.IDLE) {
+            animationDict.get("idle").update();
+        } else {
             move();
             animationDict.get(currentDirection.label).update();
-        } else {
-            animationDict.get("death").update();
         }
     }
 

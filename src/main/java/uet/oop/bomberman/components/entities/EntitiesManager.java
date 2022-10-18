@@ -3,6 +3,7 @@ package uet.oop.bomberman.components.entities;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
+import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
@@ -11,6 +12,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.CharacterStatus;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,7 @@ public class EntitiesManager {
         BoxCollider bomberBox = players.get(0).getBomberBox();
 
         items.forEach(item -> {
-            BoxCollider itemBox = new BoxCollider(item.getX(), item.getY(), 32, 32);
+            BoxCollider itemBox = new BoxCollider(item.getX(), item.getY());
             if (bomberBox.isCollidedWith(itemBox)) {
                 if (item.isAppear()) {
                     item.setEaten(true);
@@ -92,8 +94,13 @@ public class EntitiesManager {
                 enemies.remove(i);
                 i--;
             } else {
-                if ( bomberBox.isCollidedWith(new BoxCollider(
-                        enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
+                BoxCollider enemyBox;
+                if (enemy instanceof Banana) {
+                    enemyBox = ((Banana) enemy).getBoxCollider();
+                } else {
+                    enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
+                }
+                if ( bomberBox.isCollidedWith(enemyBox) && !players.get(0).isInvincible()) {
                     players.get(0).setPlayerStatus(CharacterStatus.DEAD);
                 }
             }
@@ -101,7 +108,7 @@ public class EntitiesManager {
 
         bombs.forEach(bomb -> {
             bomb.getFlameList().forEach(flame -> {
-                BoxCollider flameBox = new BoxCollider(flame.getX(), flame.getY(), 32, 32);
+                BoxCollider flameBox = new BoxCollider(flame.getX(), flame.getY());
 
                 if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
                         && !players.get(0).isInvincible()) {
@@ -109,9 +116,16 @@ public class EntitiesManager {
                 }
 
                 enemies.forEach(enemy -> {
-                    BoxCollider enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
-                    if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
-                        enemy.setDestroyed(true);
+                    if (enemy instanceof Banana) {
+                        BoxCollider enemyBox = ((Banana) enemy).getBoxCollider();
+                        if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
+                            ((Banana) enemy).decreaseLives();
+                        }
+                    } else {
+                        BoxCollider enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
+                        if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
+                            enemy.setDestroyed(true);
+                        }
                     }
                 });
             });

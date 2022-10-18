@@ -149,7 +149,7 @@ public class LevelMap {
                             break;
                         }
                         case '9': {
-                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE + 15, i * GameConfig.TILE_SIZE - 5));
                             hash = getHash("grass");
                             break;
                         }

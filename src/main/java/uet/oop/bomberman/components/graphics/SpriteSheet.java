@@ -13,7 +13,8 @@ public class SpriteSheet {
     private static boolean initialized = false;
     public static Image NES;
     public static Image enemy;
-    public static Image banana;
+    public static Image normalBanana;
+    public static Image deathBanana;
     public static Image saru;
 
     private final String path;
@@ -27,7 +28,7 @@ public class SpriteSheet {
             try {
                 NES = new Image(SpriteSheet.class.getResource("/spriteSheet/NES.png").toURI().toString());
                 enemy = new Image(SpriteSheet.class.getResource("/spriteSheet/enemy.png").toURI().toString());
-                banana = new Image(SpriteSheet.class.getResource("/spriteSheet/Banana.png").toURI().toString());
+                normalBanana = new Image(SpriteSheet.class.getResource("/spriteSheet/banana_normal.png").toURI().toString());
                 saru = new Image(SpriteSheet.class.getResource("/spriteSheet/Monkey.png").toURI().toString());
             } catch (URISyntaxException e) {
                 System.out.println("Sprite Sheet init");
