@@ -5,6 +5,7 @@ import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,8 @@ public abstract class Enemy extends Entity {
 
     protected boolean checkMapHash(int i, int j) {
         LevelMap levelMap = LevelMap.getInstance();
-        if (i < 0 || i > (levelMap.getHeight() / 32) - 1 || j < 0 || j > (levelMap.getWidth() / 32) - 1) {
+        if (i < 0 || i > (levelMap.getHeight() / GameConfig.TILE_SIZE) - 1
+                || j < 0 || j > (levelMap.getWidth() / GameConfig.TILE_SIZE) - 1) {
             return false;
         }
         return levelMap.getHashAt(i, j) == levelMap.getHash("grass");

@@ -3,6 +3,7 @@ package uet.oop.bomberman.components.entities.enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ public class Dahl extends Enemy {
 
     @Override
     protected void move() {
-        int j = (int) (x / 32);
-        int i = (int) (y / 32);
-        if (j * 32 == x && i * 32 == y) {
+        int j = (int) (x / GameConfig.TILE_SIZE);
+        int i = (int) (y / GameConfig.TILE_SIZE);
+        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
             canMoveR = checkMapHash(i, j + 1);

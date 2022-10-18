@@ -5,6 +5,7 @@ import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 
 public class Ovape extends Enemy {
     private boolean checkWall = false;
@@ -33,15 +34,15 @@ public class Ovape extends Enemy {
     @Override
     protected void move() {
         LevelMap levelMap = LevelMap.getInstance();
-        int j = (int) (x / 32);
-        int i = (int) (y / 32);
+        int j = (int) (x / GameConfig.TILE_SIZE);
+        int i = (int) (y / GameConfig.TILE_SIZE);
         if(levelMap.getHashAt(i, j) == levelMap.getHash("wall")){
             checkWall = true;
         } else {
             checkWall = false;
         }
 
-        if (j * 32 == x && i * 32 == y) {
+        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
             canMoveR = checkMapHash(i, j + 1);
@@ -62,7 +63,8 @@ public class Ovape extends Enemy {
     @Override
     protected boolean checkMapHash(int i, int j) {
         LevelMap levelMap = LevelMap.getInstance();
-        if (i < 0 || i > (levelMap.getHeight() / 32) - 1 || j < 0 || j > (levelMap.getWidth() / 32) - 1) {
+        if (i < 0 || i > (levelMap.getHeight() / GameConfig.TILE_SIZE) - 1
+                || j < 0 || j > (levelMap.getWidth() / GameConfig.TILE_SIZE) - 1) {
             return false;
         }
         return true;

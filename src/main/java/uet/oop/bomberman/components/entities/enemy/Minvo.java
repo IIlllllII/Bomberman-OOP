@@ -5,6 +5,7 @@ import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -24,10 +25,10 @@ public class Minvo extends Enemy{
 
     @Override
     protected void move() {
-        int j = (int) ((x + 12) / 32);
-        int i = (int) ((y + 16) / 32);
+        int j = (int) (x / GameConfig.TILE_SIZE);
+        int i = (int) (y  / GameConfig.TILE_SIZE);
 
-        if (j * 32 == x && i * 32 == y) {
+        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
             lastDirection = findWay(i, j);
@@ -46,8 +47,8 @@ public class Minvo extends Enemy{
         double bomberX = EntitiesManager.getInstance().players.get(0).getX();
         double bomberY = EntitiesManager.getInstance().players.get(0).getY();
 
-        int jBomber = (int) (bomberX + 16) / 32;
-        int iBomber = (int) (bomberY + 16) / 32;
+        int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
+        int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
 
         int ran = r.nextInt(directionList.size());
         if (Math.abs(jBomber - j) > 2 || Math.abs(iBomber - i) > 2){

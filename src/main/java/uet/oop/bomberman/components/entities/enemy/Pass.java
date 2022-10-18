@@ -29,7 +29,7 @@ public class Pass extends Enemy {
     protected void move() {
         int j = (int) ((x + 12) / 32);
         int i = (int) ((y + 16) / 32);
-        if (j * 32 == x && i * 32 == y) {
+        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
             lastDirection = findWay(i, j);

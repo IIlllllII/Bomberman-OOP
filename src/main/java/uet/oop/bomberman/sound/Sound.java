@@ -17,6 +17,7 @@ public class Sound {
     protected MediaPlayer mediaPlayer;
 
     protected static boolean muteAll = false;
+    protected boolean mute = true;
     private String path;
 
     /**
@@ -29,6 +30,9 @@ public class Sound {
             mediaPlayer = new MediaPlayer(media);
         }catch (Exception e){
             System.out.println("uet.oop.bomberman.sound : error load media");
+        }
+        if(isMuteAll()){
+            setMute(false);
         }
     }
 
@@ -68,12 +72,12 @@ public class Sound {
         }
     }
 
-    public void mute() {
-        mediaPlayer.setMute(true);
+    public boolean isMute() {
+        return mute;
     }
 
-    public void unmute() {
-        mediaPlayer.setMute(false);
+    public void setMute(boolean mute) {
+        mediaPlayer.setMute(mute);
     }
 
     public void setVolume(double volume){

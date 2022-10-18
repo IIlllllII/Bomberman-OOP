@@ -5,6 +5,7 @@ import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -25,9 +26,9 @@ public class Pontan extends  Enemy{
 
     @Override
     protected void move() {
-        int j = (int) ((x + 12) / 32);
-        int i = (int) ((y + 16) / 32);
-        if (j * 32 == x && i * 32 == y) {
+        int j = (int) (x / GameConfig.TILE_SIZE);
+        int i = (int) (y / GameConfig.TILE_SIZE);
+        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
             lastDirection = findWay(i, j);
@@ -45,7 +46,8 @@ public class Pontan extends  Enemy{
     @Override
     protected boolean checkMapHash(int i, int j) {
         LevelMap levelMap = LevelMap.getInstance();
-        if (i < 0 || i > (levelMap.getHeight() / 32) - 1 || j < 0 || j > (levelMap.getWidth() / 32) - 1) {
+        if (i < 0 || i > (levelMap.getHeight() / GameConfig.TILE_SIZE) - 1
+                || j < 0 || j > (levelMap.getWidth() / GameConfig.TILE_SIZE) - 1) {
             return false;
         }
         return levelMap.getHashAt(i, j) == levelMap.getHash("grass")
@@ -66,8 +68,8 @@ public class Pontan extends  Enemy{
         double bomberX = EntitiesManager.getInstance().players.get(0).getX();
         double bomberY = EntitiesManager.getInstance().players.get(0).getY();
 
-        int jBomber = (int) (bomberX + 16) / 32;
-        int iBomber = (int) (bomberY + 16) / 32;
+        int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
+        int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
 
         canMoveR = checkMapHash(i, j + 1);
         canMoveL = checkMapHash(i, j - 1);
