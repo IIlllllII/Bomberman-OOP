@@ -23,12 +23,13 @@ public abstract class Enemy extends Entity {
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
     Random r = new Random();
-    protected Direction lastDirection = Direction.values()[r.nextInt(Direction.values().length)];;
+    protected Direction lastDirection;
 
     protected List<Direction> directionList = new ArrayList<>();
     protected boolean randomAnimation = false; // left or right
     protected double speed = 1;
     protected int score;
+    public static int sumScore = 0;
 
     public Enemy(double x, double y) {
         super(x, y);
@@ -44,7 +45,6 @@ public abstract class Enemy extends Entity {
         } else {
             animationDeath.render(gc, x - camera.getX(), y - camera.getY());
             if (!animationDeath.isDone()) {
-                //gc.setFont(PlayWindow.MCFONT);
                 gc.fillText(" + " + score, x + 16, y + 20 - animationDeath.getCalcTime() / 32);
             } else {
                 done = true;
@@ -71,7 +71,7 @@ public abstract class Enemy extends Entity {
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
-        // plus score ...
+        sumScore += score;
     }
 
     public boolean isDone() {

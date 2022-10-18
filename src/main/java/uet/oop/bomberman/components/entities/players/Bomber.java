@@ -217,6 +217,10 @@ public class Bomber extends Entity implements Movable, Killable {
         this.bombMax = bombMax;
     }
 
+    public int getBombMax() {
+        return bombMax;
+    }
+
     public void setSpeed(int speed) {
         this.speed= speed;
     }

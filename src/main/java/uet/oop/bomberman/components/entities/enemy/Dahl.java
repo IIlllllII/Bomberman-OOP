@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Dahl extends Enemy{
-    public Dahl(double x, double y){
+public class Dahl extends Enemy {
+    public Dahl(double x, double y) {
         super(x, y);
 
         animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0, 96, 32, 32);
@@ -19,6 +19,7 @@ public class Dahl extends Enemy{
         animationRight.setLoop(true);
         randomAnimation = false;
         initDirectionList();
+        lastDirection = directionList.get(r.nextInt(directionList.size()));
         speed = 2;
         score = 400;
     }
@@ -36,24 +37,9 @@ public class Dahl extends Enemy{
             canMoveD = checkMapHash(i + 1, j);
 
             checkMove();
-            if (moveY == 0 && moveX == 0) {
-                if (directionList.size() != 0) {
-                    int ran = r.nextInt(directionList.size());
-                    if (directionList.get(ran) == Direction.UP) {
-                        lastDirection = Direction.UP;
-                    }
-                    if (directionList.get(ran) == Direction.DOWN) {
-                        lastDirection = Direction.DOWN;
-                    }
-                    if (directionList.get(ran) == Direction.RIGHT) {
-                        lastDirection = Direction.RIGHT;
-                        randomAnimation = false;
-                    }
-                    if (directionList.get(ran) == Direction.LEFT) {
-                        lastDirection = Direction.LEFT;
-                        randomAnimation = true;
-                    }
-                }
+            if (moveY == 0 && moveX == 0 && directionList.size() != 0) {
+                int ran = r.nextInt(directionList.size());
+                lastDirection = directionList.get(ran);
             }
         }
         x += moveX;

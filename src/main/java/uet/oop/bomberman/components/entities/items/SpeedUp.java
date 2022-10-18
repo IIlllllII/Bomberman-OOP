@@ -9,16 +9,13 @@ public class SpeedUp extends Item {
      */
     public SpeedUp(double x, double y){
         super(x, y, speedUp);
-        setTimePowerUp(60000);
     }
 
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setSpeed(Bomber.DEFAULT_SPEED);
-        if (time >= timePowerUp) {
-            eaten = false;
-            EntitiesManager.getInstance().players.get(0).setSpeed(Bomber.DEFAULT_SPEED );
-            done = true;
-        }
+        Bomber bomber = EntitiesManager.getInstance().players.get(0);
+        bomber.setSpeed(Bomber.DEFAULT_SPEED * 2);
+        eaten = false;
+        done = true;
     }
 }

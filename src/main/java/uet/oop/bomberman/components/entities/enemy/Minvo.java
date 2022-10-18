@@ -3,7 +3,11 @@ package uet.oop.bomberman.components.entities.enemy;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Minvo extends Enemy{
     public Minvo(double x, double y){
@@ -20,79 +24,119 @@ public class Minvo extends Enemy{
 
     @Override
     protected void move() {
-        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
-        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
-
         int j = (int) ((x + 12) / 32);
         int i = (int) ((y + 16) / 32);
-        int jPlayer = (int) (bomberX + 16) / 32;
-        int iPlayer = (int) (bomberY + 16) / 32;
 
         if (j * 32 == x && i * 32 == y) {
             moveX = 0;
             moveY = 0;
+            lastDirection = findWay(i, j);
+
+            canMoveR = checkMapHash(i, j + 1);
+            canMoveL = checkMapHash(i, j - 1);
+            canMoveU = checkMapHash(i - 1, j);
+            canMoveD = checkMapHash(i + 1, j);
+            checkMove();
+        }
+        x += moveX;
+        y += moveY;
+    }
+
+    private Direction findWay(int i, int j) {
+        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+
+        int jBomber = (int) (bomberX + 16) / 32;
+        int iBomber = (int) (bomberY + 16) / 32;
+
+        int ran = r.nextInt(directionList.size());
+        if (Math.abs(jBomber - j) > 2 || Math.abs(iBomber - i) > 2){
+            return directionList.get(ran);
+        }
+
+        LevelMap levelMap = LevelMap.getInstance();
+        boolean[][] checkPass =
+                new boolean[levelMap.getMapHash().length][levelMap.getMapHash()[0].length];
+
+        for (int m = 0; m < checkPass.length; m++) {
+            for (int n = 0; n < checkPass[0].length; n++) {
+                checkPass[m][n] = false;
+            }
+        }
+
+        canMoveR = checkMapHash(i, j + 1);
+        canMoveL = checkMapHash(i, j - 1);
+        canMoveU = checkMapHash(i - 1, j);
+        canMoveD = checkMapHash(i + 1, j);
+
+        Queue<Direction> direc = new LinkedList<>();
+        Queue<Integer> tileI = new LinkedList<>();
+        Queue<Integer> tileJ = new LinkedList<>();
+
+        checkPass[i][j] = true;
+        if (canMoveR && !checkPass[i][j + 1]) {
+            checkPass[i][j + 1] = true;
+            direc.add(Direction.RIGHT);
+            tileI.add(i);
+            tileJ.add(j + 1);
+        }
+        if (canMoveL && !checkPass[i][j - 1]) {
+            checkPass[i][j - 1] = true;
+            direc.add(Direction.LEFT);
+            tileI.add(i);
+            tileJ.add(j - 1);
+        }
+        if (canMoveU && !checkPass[i - 1][j]) {
+            checkPass[i - 1][j] = true;
+            direc.add(Direction.UP);
+            tileI.add(i - 1);
+            tileJ.add(j);
+        }
+        if (canMoveD && !checkPass[i + 1][j]) {
+            checkPass[i + 1][j] = true;
+            direc.add(Direction.DOWN);
+            tileI.add(i + 1);
+            tileJ.add(j);
+        }
+
+        while (!direc.isEmpty()) {
+            Direction direction = direc.poll();
+            i = tileI.poll();
+            j = tileJ.poll();
+            if (i == iBomber && j == jBomber) {
+                return direction;
+            }
+
             canMoveR = checkMapHash(i, j + 1);
             canMoveL = checkMapHash(i, j - 1);
             canMoveU = checkMapHash(i - 1, j);
             canMoveD = checkMapHash(i + 1, j);
 
-            if (Math.abs(jPlayer - j) < 3 && Math.abs(iPlayer - i) < 3) {
-                if (Math.abs(jPlayer - j) >= Math.abs(iPlayer - i)) {
-                    if (jPlayer >= j) {
-                        if (canMoveR) {
-                            lastDirection = Direction.RIGHT;
-                        } else {
-                            int ran = r.nextInt(directionList.size());
-                            lastDirection = directionList.get(ran);
-                        }
-                    } else {
-                        if (canMoveL) {
-                            lastDirection = Direction.LEFT;
-                        } else {
-                            int ran = r.nextInt(directionList.size());
-                            lastDirection = directionList.get(ran);
-                        }
-                    }
-                    checkMove();
-                } else {
-                    if (iPlayer >= i) {
-                        if (canMoveD) {
-                            lastDirection = Direction.DOWN;
-                        } else {
-                            int ran = r.nextInt(directionList.size());
-                            lastDirection = directionList.get(ran);
-                        }
-                    } else {
-                        if (canMoveU) {
-                            lastDirection = Direction.UP;
-                        } else {
-                            int ran = r.nextInt(directionList.size());
-                            lastDirection = directionList.get(ran);
-                        }
-                    }
-                }
-            } else {
-                if (directionList.size() != 0) {
-                    int ran = r.nextInt(directionList.size());
-                    if (directionList.get(ran) == Direction.UP) {
-                        lastDirection = Direction.UP;
-                    }
-                    if (directionList.get(ran) == Direction.DOWN) {
-                        lastDirection = Direction.DOWN;
-                    }
-                    if (directionList.get(ran) == Direction.RIGHT) {
-                        lastDirection = Direction.RIGHT;
-                        randomAnimation = false;
-                    }
-                    if (directionList.get(ran) == Direction.LEFT) {
-                        lastDirection = Direction.LEFT;
-                        randomAnimation = true;
-                    }
-                }
+            if (canMoveR && !checkPass[i][j + 1]) {
+                checkPass[i][j + 1] = true;
+                direc.add(direction);
+                tileI.add(i);
+                tileJ.add(j + 1);
             }
-            checkMove();
+            if (canMoveL && !checkPass[i][j - 1]) {
+                checkPass[i][j - 1] = true;
+                direc.add(direction);
+                tileI.add(i);
+                tileJ.add(j - 1);
+            }
+            if (canMoveU && !checkPass[i - 1][j]) {
+                checkPass[i - 1][j] = true;
+                direc.add(direction);
+                tileI.add(i - 1);
+                tileJ.add(j);
+            }
+            if (canMoveD && !checkPass[i + 1][j]) {
+                checkPass[i + 1][j] = true;
+                direc.add(direction);
+                tileI.add(i + 1);
+                tileJ.add(j);
+            }
         }
-        x += moveX;
-        y += moveY;
+        return directionList.get(ran);
     }
 }

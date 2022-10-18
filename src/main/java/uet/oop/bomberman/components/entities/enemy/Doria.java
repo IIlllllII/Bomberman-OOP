@@ -1,13 +1,17 @@
 package uet.oop.bomberman.components.entities.enemy;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Doria extends Enemy {
-
     public Doria(double x, double y) {
         super(x, y);
         animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0, 160, 32, 32);
@@ -22,68 +26,150 @@ public class Doria extends Enemy {
 
     @Override
     protected void move() {
-        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
-        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
-
         int j = (int) ((x + 12) / 32);
         int i = (int) ((y + 16) / 32);
-        int jPlayer = (int) (bomberX + 16) / 32;
-        int iPlayer = (int) (bomberY + 16) / 32;
-
         if (j * 32 == x && i * 32 == y) {
             moveX = 0;
             moveY = 0;
+            lastDirection = findWay(i, j);
+
             canMoveR = checkMapHash(i, j + 1);
             canMoveL = checkMapHash(i, j - 1);
             canMoveU = checkMapHash(i - 1, j);
             canMoveD = checkMapHash(i + 1, j);
-
-            if (Math.abs(jPlayer - j) >= Math.abs(iPlayer - i)){
-                if(jPlayer >= j){
-                    if(canMoveR){
-                        lastDirection = Direction.RIGHT;
-                    }else {
-                        int ran = r.nextInt(directionList.size());
-                        lastDirection = directionList.get(ran);
-                    }
-                }else {
-                    if(canMoveL){
-                        lastDirection = Direction.LEFT;
-                    }else {
-                        int ran = r.nextInt(directionList.size());
-                        lastDirection = directionList.get(ran);
-                    }
-                }
-            } else {
-                if(iPlayer >= i){
-                    if(canMoveD){
-                        lastDirection = Direction.DOWN;
-                    }else {
-                        int ran = r.nextInt(directionList.size());
-                        lastDirection = directionList.get(ran);
-                    }
-                }else {
-                    if(canMoveU){
-                        lastDirection = Direction.UP;
-                    }else {
-                        int ran = r.nextInt(directionList.size());
-                        lastDirection = directionList.get(ran);
-                    }
-                }
-            }
             checkMove();
         }
         x += moveX;
         y += moveY;
     }
 
-    @Override
-    protected boolean checkMapHash(int i, int j) {
+//    @Override
+//    protected boolean checkMapHash(int i, int j) {
+//        LevelMap levelMap = LevelMap.getInstance();
+//        if (i < 0 || i > (levelMap.getHeight() / 32) - 1 || j < 0 || j > (levelMap.getWidth() / 32) - 1) {
+//            return false;
+//        }
+//        return levelMap.getHashAt(i, j) == levelMap.getHash("grass")
+//                || levelMap.getHashAt(i, j) == levelMap.getHash("brick");
+//    }
+
+    private Direction findWay(int i, int j) {
         LevelMap levelMap = LevelMap.getInstance();
-        if (i < 0 || i > (levelMap.getHeight() / 32) - 1 || j < 0 || j > (levelMap.getWidth() / 32) - 1) {
-            return false;
+        boolean[][] checkPass =
+                new boolean[levelMap.getMapHash().length][levelMap.getMapHash()[0].length];
+
+        for (int m = 0; m < checkPass.length; m++) {
+            for (int n = 0; n < checkPass[0].length; n++) {
+                checkPass[m][n] = false;
+            }
         }
-        return levelMap.getHashAt(i, j) == levelMap.getHash("grass")
-                || levelMap.getHashAt(i, j) == levelMap.getHash("brick");
+
+        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+
+        int jBomber = (int) (bomberX + 16) / 32;
+        int iBomber = (int) (bomberY + 16) / 32;
+
+        canMoveR = checkMapHash(i, j + 1);
+        canMoveL = checkMapHash(i, j - 1);
+        canMoveU = checkMapHash(i - 1, j);
+        canMoveD = checkMapHash(i + 1, j);
+
+        Queue<Direction> direc = new LinkedList<>();
+        Queue<Integer> iTile = new LinkedList<>();
+        Queue<Integer> jTile = new LinkedList<>();
+
+        // Tránh bomb
+        boolean checkBomb = false;
+        for(Bomb bomb : EntitiesManager.getInstance().bombs){
+            int iBomb = (int) bomb.getY() / GameConfig.TILE_SIZE;
+            int jBomb = (int) bomb.getX() / GameConfig.TILE_SIZE;
+            if((i == iBomb && Math.abs(j - jBomb) <= Bomb.getFlameLength() + 1) && j != jBomb){
+                if(j - jBomb <= Bomb.getFlameLength() + 1){
+                    directionList.remove(Direction.LEFT);
+                }else {
+                    directionList.remove(Direction.RIGHT);
+                }
+            }
+            if(j == jBomb && Math.abs(i - iBomb) <= Bomb.getFlameLength() + 1 && i != iBomb){
+                if(i - iBomb <= Bomb.getFlameLength() + 1){
+                    directionList.remove(Direction.UP);
+                }else {
+                    directionList.remove(Direction.DOWN);
+                }
+            }
+        }
+
+        checkPass[i][j] = true;
+        if (canMoveR && !checkPass[i][j + 1]) {
+            checkPass[i][j + 1] = true;
+            direc.add(Direction.RIGHT);
+            iTile.add(i);
+            jTile.add(j + 1);
+        }
+        if (canMoveL && !checkPass[i][j - 1]) {
+            checkPass[i][j - 1] = true;
+            direc.add(Direction.LEFT);
+            iTile.add(i);
+            jTile.add(j - 1);
+        }
+        if (canMoveU && !checkPass[i - 1][j]) {
+            checkPass[i - 1][j] = true;
+            direc.add(Direction.UP);
+            iTile.add(i - 1);
+            jTile.add(j);
+        }
+        if (canMoveD && !checkPass[i + 1][j]) {
+            checkPass[i + 1][j] = true;
+            direc.add(Direction.DOWN);
+            iTile.add(i + 1);
+            jTile.add(j);
+        }
+
+        while (!direc.isEmpty()) {
+            Direction direction = direc.poll();
+            i = iTile.poll();
+            j = jTile.poll();
+            if (i == iBomber && j == jBomber) {
+                for(int k = 0; k < directionList.size(); k++){
+                    if(directionList.get(k) == direction){
+                        return direction;
+                    }
+                }
+            }
+
+            canMoveR = checkMapHash(i, j + 1);
+            canMoveL = checkMapHash(i, j - 1);
+            canMoveU = checkMapHash(i - 1, j);
+            canMoveD = checkMapHash(i + 1, j);
+
+            if (canMoveR && !checkPass[i][j + 1]) {
+                checkPass[i][j + 1] = true;
+                direc.add(direction);
+                iTile.add(i);
+                jTile.add(j + 1);
+            }
+            if (canMoveL && !checkPass[i][j - 1]) {
+                checkPass[i][j - 1] = true;
+                direc.add(direction);
+                iTile.add(i);
+                jTile.add(j - 1);
+            }
+            if (canMoveU && !checkPass[i - 1][j]) {
+                checkPass[i - 1][j] = true;
+                direc.add(direction);
+                iTile.add(i - 1);
+                jTile.add(j);
+            }
+            if (canMoveD && !checkPass[i + 1][j]) {
+                checkPass[i + 1][j] = true;
+                direc.add(direction);
+                iTile.add(i + 1);
+                jTile.add(j);
+            }
+        }
+
+        int ran = r.nextInt(directionList.size());
+        return directionList.get(ran);
     }
 }

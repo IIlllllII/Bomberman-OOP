@@ -1,6 +1,7 @@
 package uet.oop.bomberman.components.entities.items;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.players.Bomber;
 
 public class LivesUp extends Item {
     /**
@@ -12,7 +13,8 @@ public class LivesUp extends Item {
 
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setLives(EntitiesManager.getInstance().players.get(0).getLives() + 1);
+        Bomber bomber = EntitiesManager.getInstance().players.get(0);
+        bomber.setLives(bomber.getLives() + 1);
         eaten = false;
         done = true;
     }

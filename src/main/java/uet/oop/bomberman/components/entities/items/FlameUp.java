@@ -1,6 +1,8 @@
 package uet.oop.bomberman.components.entities.items;
 
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.players.Bomber;
 
 public class FlameUp extends Item {
     /**
@@ -9,16 +11,12 @@ public class FlameUp extends Item {
 
     public FlameUp(double x, double y){
         super(x, y, fireUp);
-        setTimePowerUp(60000);
     }
 
     @Override
     public void changePower() {
-        Bomb.setFlameLength(2);
-        if(time >= timePowerUp){
-            eaten = false;
-            Bomb.setFlameLength(1);
-            done = true;
-        }
+        Bomb.setFlameLength(Bomb.getFlameLength() + 1);
+        eaten = false;
+        done = true;
     }
 }

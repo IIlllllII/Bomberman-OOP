@@ -25,6 +25,7 @@ public class Ovape extends Enemy {
         animationPassWallRight.setLoop(true);
         animationPassWallLeft.setLoop(true);
         initDirectionList();
+        lastDirection = directionList.get(r.nextInt(directionList.size()));
 
         score = 2000;
     }
@@ -51,20 +52,7 @@ public class Ovape extends Enemy {
             checkMove();
             if (directionList.size() != 0) {
                 int ran = r.nextInt(directionList.size());
-                if (directionList.get(ran) == Direction.UP) {
-                    lastDirection = Direction.UP;
-                }
-                if (directionList.get(ran) == Direction.DOWN) {
-                    lastDirection = Direction.DOWN;
-                }
-                if (directionList.get(ran) == Direction.RIGHT) {
-                    lastDirection = Direction.RIGHT;
-                    randomAnimation = false;
-                }
-                if (directionList.get(ran) == Direction.LEFT) {
-                    lastDirection = Direction.LEFT;
-                    randomAnimation = true;
-                }
+                lastDirection = directionList.get(ran);
             }
         }
         x += moveX;
