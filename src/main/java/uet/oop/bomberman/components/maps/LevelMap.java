@@ -80,6 +80,7 @@ public class LevelMap {
         List<Brick> brickList = entitiesManager.bricks;
         List<Item> itemList = entitiesManager.items;
         List<Enemy> enemyList = entitiesManager.enemies;
+        Portal portal = entitiesManager.portal;
 
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
@@ -146,48 +147,6 @@ public class LevelMap {
                             brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             break;
                         }
-                        case 'b': {
-                            itemList.add(new BombUp(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
-                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
-                            hash = getHash("brick");
-                            break;
-                        }
-                        case 'f': {
-                            itemList.add(new FlameUp(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
-                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
-                            hash = getHash("brick");
-                            break;
-                        }
-                        case 's': {
-                            itemList.add(new SpeedUp(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
-                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
-                            hash = getHash("brick");
-                            break;
-                        }
-                        case 'B': {
-                            itemList.add(new BombPass(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
-                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
-                            hash = getHash("brick");
-                            break;
-                        }
-                        case 'F': {
-                            itemList.add(new FlamePass(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
-                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
-                            hash = getHash("brick");
-                            break;
-                        }
-                        case 'W': {
-                            itemList.add(new BrickPass(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
-                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
-                            hash = getHash("brick");
-                            break;
-                        }
-                        case 'l': {
-                            itemList.add(new LivesUp(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i));
-                            brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
-                            hash = getHash("brick");
-                            break;
-                        }
                         default:
                             break;
                     }
@@ -197,7 +156,67 @@ public class LevelMap {
             Random r = new Random();
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);
-            entitiesManager.portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
+            portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
+
+            double xItem = 0;
+            double yItem = 0;
+            String tile = scanner.nextLine();
+            for(int i = 0; i < tile.length(); i++){
+                char hash = tile.charAt(i);
+                boolean checkItem = false;
+                while (!checkItem) {
+                    int ran = r.nextInt(brickList.size());
+                    boolean check = false;
+                    if (brickList.get(ran).getX() == portal.getX()
+                            && brickList.get(ran).getY() == portal.getY()) {
+                        check = true;
+                    }
+                    for (int j = 0; j < itemList.size(); j++) {
+                        if (brickList.get(ran).getX() == itemList.get(j).getX()
+                                && brickList.get(ran).getY() == itemList.get(j).getY()) {
+                            check = true;
+                        }
+                    }
+                    if(!check){
+                        xItem = brickList.get(ran).getX();
+                        yItem = brickList.get(ran).getY();
+                        checkItem = true;
+                    }
+                }
+
+                switch (hash) {
+                    case 'b': {
+                        itemList.add(new BombUp(xItem, yItem));
+                        break;
+                    }
+                    case 'f': {
+                        itemList.add(new FlameUp(xItem, yItem));
+                        break;
+                    }
+                    case 's': {
+                        itemList.add(new SpeedUp(xItem, yItem));
+                        break;
+                    }
+                    case 'B': {
+                        itemList.add(new BombPass(xItem, yItem));
+                        break;
+                    }
+                    case 'F': {
+                        itemList.add(new FlamePass(xItem, yItem));
+                        break;
+                    }
+                    case 'W': {
+                        itemList.add(new BrickPass(xItem, yItem));
+                        break;
+                    }
+                    case 'l': {
+                        itemList.add(new LivesUp(xItem, yItem));
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
         } catch (FileNotFoundException e) {
             System.out.println("next level read file");
             throw new RuntimeException(e);
