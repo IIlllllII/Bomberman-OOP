@@ -66,7 +66,7 @@ public class Main extends Application {
 
     public static void zoom() {
         mainStage.setWidth(GameConfig.WIDTH * GameConfig.ZOOM);
-        mainStage.setHeight(GameConfig.HEIGHT * GameConfig.ZOOM);
+        mainStage.setHeight(GameConfig.HEIGHT * GameConfig.ZOOM + 37);
         mainStage.centerOnScreen();
     }
     public static void main(String[] args) {
