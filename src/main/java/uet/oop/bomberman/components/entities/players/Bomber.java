@@ -10,8 +10,8 @@ import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.PlayerStatus;
-import uet.oop.bomberman.core.sound.Sound;
+import uet.oop.bomberman.config.CharacterStatus;
+import uet.oop.bomberman.sound.Sound;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,17 +30,17 @@ public class Bomber extends Entity implements Movable, Killable {
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
-    private PlayerStatus playerStatus = PlayerStatus.IDLE;
+    private CharacterStatus playerStatus = CharacterStatus.IDLE;
     private Direction direction = Direction.DOWN;
 
     private final BoxCollider bomberBox;
 
     public Bomber(double x, double y, int w, int h) {
-        super(x, y, w * GameConfig.TILE_SIZE / h, GameConfig.TILE_SIZE);
-        bomberBox = new BoxCollider(0, 0, 15, 15);
+        super(x, y, (int) ((1.2 * w * GameConfig.TILE_SIZE) / h), (int) (1.2 * GameConfig.TILE_SIZE));
+        bomberBox = new BoxCollider(0, 0, 20, 20);
         bomberBox.setLocation(
                 this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + bomberBox.getHeight() - 2
+                this.y + bomberBox.getHeight() - 10
         );
     }
 
@@ -58,28 +58,36 @@ public class Bomber extends Entity implements Movable, Killable {
             spritesDict.put("moving-down", new Sprite[]{
                     new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 0, 2, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 0, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 33, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33, 2, bombermanSheet, 16, 22),
             });
 
             spritesDict.put("moving-up", new Sprite[]{
                     new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 49, 2, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 49, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 81, 2, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 81, 2, bombermanSheet, 16, 22),
             });
 
             spritesDict.put("moving-left", new Sprite[]{
                     new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 0, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 0, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 33, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33, 26, bombermanSheet, 16, 22),
             });
 
             spritesDict.put("moving-right", new Sprite[]{
                     new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33 + 16, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 33 + 16, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
             });
 
@@ -119,15 +127,15 @@ public class Bomber extends Entity implements Movable, Killable {
         //Demo "die" status
         //TODO: remove it later.
         if (inputList.contains(KeyCode.M)) {
-            playerStatus = PlayerStatus.DEAD;
+            playerStatus = CharacterStatus.DEAD;
         }
 
         if (currentDirection != null) {
-            playerStatus = PlayerStatus.MOVING;
+            playerStatus = CharacterStatus.MOVING;
             direction = currentDirection;
         } else {
-            if (playerStatus != PlayerStatus.DEAD) {
-                playerStatus = PlayerStatus.IDLE;
+            if (playerStatus != CharacterStatus.DEAD) {
+                playerStatus = CharacterStatus.IDLE;
             }
         }
     }
@@ -140,20 +148,25 @@ public class Bomber extends Entity implements Movable, Killable {
                 image = spritesDict.get("idle")[direction.index].getFxImage();
                 break;
             case MOVING:
-                image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 6].getFxImage();
+                image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
                 break;
             case DEAD:
-                image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
+                image = spritesDict.get("dead")[currentSpriteIndex / 4].getFxImage();
+                gc.drawImage(image, this.x - camera.getX(), this.y - camera.getY() - 3,
+                        2 * 22 * 0.8, 2 * 21 * 0.8);
                 break;
+        }
+        if (playerStatus == CharacterStatus.DEAD) {
+            return;
         }
         gc.drawImage(image, this.x - camera.getX(), this.y - camera.getY(), this.width, this.height);
     }
 
     @Override
     public void update() {
-        if (playerStatus == PlayerStatus.MOVING) {
+        if (playerStatus == CharacterStatus.MOVING) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 6 >= spritesDict.get("moving-" + direction.label).length) {
+            if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
             move();
@@ -161,11 +174,11 @@ public class Bomber extends Entity implements Movable, Killable {
 
         //Demo "die" status.
         //TODO: change it later.
-        if (playerStatus == PlayerStatus.DEAD) {
+        if (playerStatus == CharacterStatus.DEAD) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 6 >= spritesDict.get("dead").length) {
+            if (currentSpriteIndex / 4 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
-                playerStatus = PlayerStatus.IDLE;
+                playerStatus = CharacterStatus.IDLE;
             }
         }
     }
@@ -217,10 +230,6 @@ public class Bomber extends Entity implements Movable, Killable {
         this.bombMax = bombMax;
     }
 
-    public int getBombMax() {
-        return bombMax;
-    }
-
     public void setSpeed(int speed) {
         this.speed= speed;
     }
@@ -253,11 +262,11 @@ public class Bomber extends Entity implements Movable, Killable {
         this.invincible = invincible;
     }
 
-    public PlayerStatus getPlayerStatus() {
+    public CharacterStatus getPlayerStatus() {
         return playerStatus;
     }
 
-    public void setPlayerStatus(PlayerStatus playerStatus) {
+    public void setPlayerStatus(CharacterStatus playerStatus) {
         this.playerStatus = playerStatus;
     }
 
@@ -279,7 +288,7 @@ public class Bomber extends Entity implements Movable, Killable {
     public void move() {
         //Note: `steps` is always positive at first.
         int steps = speed;
-        if (playerStatus == PlayerStatus.IDLE) {
+        if (playerStatus == CharacterStatus.IDLE) {
             return;
         }
 

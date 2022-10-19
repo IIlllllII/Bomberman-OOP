@@ -1,28 +1,25 @@
-package uet.oop.bomberman.components.entities.enemy;
+package uet.oop.bomberman.components.entities.enemies.normal;
 
-import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-public class Balloom extends Enemy {
-
-    public Balloom(double x, double y) {
+public class Dahl extends Enemy {
+    public Dahl(double x, double y) {
         super(x, y);
 
-        animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0, 0, 32, 32);
-        animationRight = new Animation(SpriteSheet.enemy, 3, 3, 1000, 96, 0, 32, 32);
-        animationDeath = new Animation(SpriteSheet.enemy, 4, 4, 1000, 192, 0, 32, 32);
+        animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0, 96, 32, 32);
+        animationRight = new Animation(SpriteSheet.enemy, 3, 3, 1000, 96, 96, 32, 32);
+        animationDeath = new Animation(SpriteSheet.enemy, 4, 4, 1000, 192, 96, 32, 32);
         animationLeft.setLoop(true);
         animationRight.setLoop(true);
+        randomAnimation = false;
         initDirectionList();
         lastDirection = directionList.get(r.nextInt(directionList.size()));
-        score = 100;
+        speed = 2;
+        score = 400;
     }
 
     @Override

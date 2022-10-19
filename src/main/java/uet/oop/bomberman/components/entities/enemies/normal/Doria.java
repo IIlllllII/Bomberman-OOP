@@ -1,7 +1,8 @@
-package uet.oop.bomberman.components.entities.enemy;
+package uet.oop.bomberman.components.entities.enemies.normal;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -12,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Doria extends Enemy {
+
     public Doria(double x, double y) {
         super(x, y);
         animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0, 160, 32, 32);

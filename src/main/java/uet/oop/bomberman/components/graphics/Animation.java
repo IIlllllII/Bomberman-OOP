@@ -15,6 +15,11 @@ public class Animation {
     private float sY;
     private final float sWidth;
     private final float sHeight;
+    private final float dWidth;
+    private final float dHeight;
+    private final float paddingX;
+    private final boolean flip;
+
     //Used to keep track of how long current animation frame has been on screen
     private float calcTime;
     //Used to determine the speed of the animation,is total amount of time for the entire animation
@@ -40,7 +45,6 @@ public class Animation {
      */
     public Animation(Image image, int count, int columns, float totalTime,
                      float offsetX, float offsetY, float sWidth, float sHeight) {
-
         this.image = image;
         this.count = count;
         this.columns = columns;
@@ -49,6 +53,48 @@ public class Animation {
         this.offsetY = offsetY;
         this.sWidth = sWidth;
         this.sHeight = sHeight;
+
+        this.flip = false;
+        this.dWidth = GameConfig.TILE_SIZE;
+        this.dHeight = GameConfig.TILE_SIZE;
+        this.paddingX = 0;
+
+        timer = Timer.getInstance();
+        timePerFrame = totalTime / count;
+        reset();
+    }
+
+    /**
+     *
+     * @param image : spriteSheet.
+     * @param count : the number of frames.
+     * @param columns : the number of the columns.
+     * @param totalTime : (milli) total amount of time for the entire animation.
+     * @param offsetX : the source rectangle's X coordinate position.
+     * @param offsetY : the source rectangle's Y coordinate position.
+     * @param sWidth : the source rectangle's width.
+     * @param sHeight : the source rectangle's height.
+     * @param dWidth: the destination rectangle's width.
+     * @param dHeight: the destination rectangle's height.
+     */
+    public Animation(Image image, int count, int columns, float totalTime,
+                     float offsetX, float offsetY, float sWidth, float sHeight,
+                     float dWidth, float dHeight, float paddingX, boolean flip) {
+        this.image = image;
+        this.count = count;
+        this.columns = columns;
+        this.totalTime = totalTime;
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        this.sWidth = sWidth;
+        this.sHeight = sHeight;
+
+        this.flip = flip;
+        this.dWidth = (flip) ? -dWidth : dWidth;
+        //this.dWidth = dWidth;
+        this.dHeight = dHeight;
+        this.paddingX = paddingX;
+
         timer = Timer.getInstance();
         timePerFrame = totalTime / count;
         reset();
@@ -71,7 +117,7 @@ public class Animation {
     public void render(GraphicsContext gc, double dX, double dY) {
         if (!done) {
             gc.drawImage(image, sX, sY, sWidth, sHeight, dX, dY,
-                    GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+                    dWidth, dHeight);
         }
     }
 
@@ -88,7 +134,7 @@ public class Animation {
                 }
             }
             int index = (int) (calcTime / timePerFrame);
-            sX = (index % columns) * sWidth  + offsetX;
+            sX = (index % columns) * (sWidth + paddingX)  + offsetX;
             sY = ((int) (index / columns)) * sHeight + offsetY;
         }
     }

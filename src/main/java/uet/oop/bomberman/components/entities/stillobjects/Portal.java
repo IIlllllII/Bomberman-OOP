@@ -26,7 +26,9 @@ public class Portal extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(portal, x - camera.getX(), y - camera.getY());
+        if (appear) {
+            gc.drawImage(portal, x - camera.getX(), y - camera.getY());
+        }
     }
 
     @Override

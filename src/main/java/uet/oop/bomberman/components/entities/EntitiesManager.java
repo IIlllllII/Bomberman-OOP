@@ -2,14 +2,14 @@ package uet.oop.bomberman.components.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
-import uet.oop.bomberman.components.entities.enemy.Enemy;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
 import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.PlayerStatus;
+import uet.oop.bomberman.config.CharacterStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +94,7 @@ public class EntitiesManager {
             } else {
                 if ( bomberBox.isCollidedWith(new BoxCollider(
                         enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
-                    players.get(0).setPlayerStatus(PlayerStatus.DEAD);
+                    players.get(0).setPlayerStatus(CharacterStatus.DEAD);
                 }
             }
         }
@@ -105,7 +105,7 @@ public class EntitiesManager {
 
                 if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
                         && !players.get(0).isInvincible()) {
-                    players.get(0).setPlayerStatus(PlayerStatus.DEAD);
+                    players.get(0).setPlayerStatus(CharacterStatus.DEAD);
                 }
 
                 enemies.forEach(enemy -> {
@@ -128,5 +128,6 @@ public class EntitiesManager {
         items.clear();
         enemies.clear();
         portal = new Portal(0, 0);
+        portal.setAppear(false);
     }
 }
