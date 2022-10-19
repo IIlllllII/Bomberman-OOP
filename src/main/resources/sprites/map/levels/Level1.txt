@@ -2,17 +2,17 @@
 ###############################
 #*     ** *    *   *  * * *   #
 # # # # # # #*#*# # # #*#*#*# #
-#*  *    F     *      *   * * #
+#*  *    *     *      *   * * #
 # # # # # #*# #*#*#*# # # # #*#
-#f      *    B*  *  *s    1  x#
+#*      *    **  *  **    1   #
 # # # # # # # # # #*# #*# # # #
-#*   b 1   *  *  *   *       *#
+#*   * 1   *  *  *   *       *#
 # # # # #*# # # #*#*# # # # # #
 #    1    * # *   *          *#
 #*# # # # # # # #*# # # # # # #
-#p   x      #**       1  *    #
+#p   *      #**       1  *    #
 ###############################
-
+F f B s b
 
 Mô tả cấu trúc tệp cấu hình màn chơi:
 1/ Dòng đầu tiên bao gồm 2 số nguyên R, C:
@@ -35,6 +35,8 @@ p - Bomber
 6 - Dragon
 7 - batMonster
 8 - Phoenix
+
+3/ Dòng cuối cùng bao gồm các item sẽ xuất hiện trong level
 Items:
 b - Bomb Item
 f - Flame Item

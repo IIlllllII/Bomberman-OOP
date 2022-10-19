@@ -99,7 +99,6 @@ public class IntroStage {
             LevelMap.init();
             Bomb.init();
             Flame.init();
-//            MusicPlayer.init();
             Bomber.init();
             initDone = true;
         })).start();

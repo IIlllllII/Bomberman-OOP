@@ -53,7 +53,7 @@ public abstract class Entity {
         return height;
     }
 
-    public void setLocation(int x, int y) {
+    public void setLocation(double x, double y) {
         this.x = x;
         this.y = y;
     }

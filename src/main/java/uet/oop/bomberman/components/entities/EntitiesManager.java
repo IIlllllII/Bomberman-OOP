@@ -2,11 +2,11 @@ package uet.oop.bomberman.components.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
-import uet.oop.bomberman.components.entities.enemy.Balloom;
 import uet.oop.bomberman.components.entities.enemy.Enemy;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.stillobjects.Brick;
+import uet.oop.bomberman.components.entities.stillobjects.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
@@ -27,8 +27,11 @@ public class EntitiesManager {
     public List<Brick> bricks = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
+    public Portal portal = new Portal(0, 0);
 
-    private EntitiesManager() {}
+
+    private EntitiesManager() {
+    }
 
     private static class SingletonHelper {
         private static final EntitiesManager INSTANCE = new EntitiesManager();
@@ -40,6 +43,7 @@ public class EntitiesManager {
 
     public void render(GraphicsContext gc) {
         items.forEach(items -> items.render(gc));
+        portal.render(gc);
         bombs.forEach(entity -> entity.render(gc));
         bricks.forEach(entity -> entity.render(gc));
         enemies.forEach(enemy -> enemy.render(gc));
@@ -53,9 +57,11 @@ public class EntitiesManager {
         bricks.forEach(Brick::update);
         enemies.forEach(Entity::update);
         items.forEach(Entity::update);
-
-        for (int i = 0; i < bombs.size(); i++){
-            if (! bombs.get(i).isDone()) {
+        if (enemies.size() == 0) {
+            portal.setCanPass(true);
+        }
+        for (int i = 0; i < bombs.size(); i++) {
+            if (!bombs.get(i).isDone()) {
                 bombs.get(i).update();
             } else {
                 LevelMap.getInstance().setHashAt(
@@ -74,18 +80,24 @@ public class EntitiesManager {
         items.forEach(item -> {
             BoxCollider itemBox = new BoxCollider(item.getX(), item.getY(), 32, 32);
             if (bomberBox.isCollidedWith(itemBox)) {
-                if(item.isAppear()){
+                if (item.isAppear()) {
                     item.setEaten(true);
                 }
             }
         });
 
-        enemies.forEach(enemy -> {
-            if (!enemy.isDestroyed() && bomberBox.isCollidedWith(new BoxCollider(
-                    enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
-                players.get(0).setPlayerStatus(PlayerStatus.DEAD);
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy enemy = enemies.get(i);
+            if (enemy.isDone()) {
+                enemies.remove(i);
+                i--;
+            } else {
+                if ( bomberBox.isCollidedWith(new BoxCollider(
+                        enemy.getX(), enemy.getY(), 30, 30)) && !players.get(0).isInvincible()) {
+                    players.get(0).setPlayerStatus(PlayerStatus.DEAD);
+                }
             }
-        });
+        }
 
         bombs.forEach(bomb -> {
             bomb.getFlameList().forEach(flame -> {
@@ -115,5 +127,6 @@ public class EntitiesManager {
         bricks.clear();
         items.clear();
         enemies.clear();
+        portal = new Portal(0, 0);
     }
 }

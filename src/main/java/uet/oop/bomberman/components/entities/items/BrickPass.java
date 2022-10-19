@@ -8,6 +8,7 @@ public class BrickPass extends Item {
      */
     public BrickPass(double x, double y){
         super(x, y, brickPass);
+        setTimePowerUp(60000);
     }
 
     @Override

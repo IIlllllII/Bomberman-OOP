@@ -1,6 +1,5 @@
 package uet.oop.bomberman.components.entities.enemy;
 
-import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
@@ -8,34 +7,30 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class Oneal extends Enemy {
-
-    public Oneal(double x, double y) {
+public class Minvo extends Enemy{
+    public Minvo(double x, double y){
         super(x, y);
-
-        animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 3000, 0, 32, 32, 32);
-        animationRight = new Animation(SpriteSheet.enemy, 3, 3, 3000, 96, 32, 32, 32);
-        animationDeath = new Animation(SpriteSheet.enemy, 3, 3, 1000, 192, 32, 32, 32);
-        animationRight.setLoop(true);
+        animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0, 128, 32, 32);
+        animationRight = new Animation(SpriteSheet.enemy, 3, 3, 1000, 96, 128, 32, 32);
+        animationDeath = new Animation(SpriteSheet.enemy, 4, 4, 1000, 192, 128, 32, 32);
         animationLeft.setLoop(true);
+        animationRight.setLoop(true);
         initDirectionList();
-
-        score = 200;
+        speed = 2;
+        score = 800;
     }
 
     @Override
     protected void move() {
         int j = (int) (x / GameConfig.TILE_SIZE);
-        int i = (int) (y / GameConfig.TILE_SIZE);
+        int i = (int) (y  / GameConfig.TILE_SIZE);
 
         if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
-            int temp = r.nextInt(3);
-            speed = (temp == 0) ? 1 : temp;
-
             lastDirection = findWay(i, j);
 
             canMoveR = checkMapHash(i, j + 1);
@@ -76,39 +71,39 @@ public class Oneal extends Enemy {
         canMoveD = checkMapHash(i + 1, j);
 
         Queue<Direction> direc = new LinkedList<>();
-        Queue<Integer> iTile = new LinkedList<>();
-        Queue<Integer> jTile = new LinkedList<>();
+        Queue<Integer> tileI = new LinkedList<>();
+        Queue<Integer> tileJ = new LinkedList<>();
 
         checkPass[i][j] = true;
         if (canMoveR && !checkPass[i][j + 1]) {
             checkPass[i][j + 1] = true;
             direc.add(Direction.RIGHT);
-            iTile.add(i);
-            jTile.add(j + 1);
+            tileI.add(i);
+            tileJ.add(j + 1);
         }
         if (canMoveL && !checkPass[i][j - 1]) {
             checkPass[i][j - 1] = true;
             direc.add(Direction.LEFT);
-            iTile.add(i);
-            jTile.add(j - 1);
+            tileI.add(i);
+            tileJ.add(j - 1);
         }
         if (canMoveU && !checkPass[i - 1][j]) {
             checkPass[i - 1][j] = true;
             direc.add(Direction.UP);
-            iTile.add(i - 1);
-            jTile.add(j);
+            tileI.add(i - 1);
+            tileJ.add(j);
         }
         if (canMoveD && !checkPass[i + 1][j]) {
             checkPass[i + 1][j] = true;
             direc.add(Direction.DOWN);
-            iTile.add(i + 1);
-            jTile.add(j);
+            tileI.add(i + 1);
+            tileJ.add(j);
         }
 
         while (!direc.isEmpty()) {
             Direction direction = direc.poll();
-            i = iTile.poll();
-            j = jTile.poll();
+            i = tileI.poll();
+            j = tileJ.poll();
             if (i == iBomber && j == jBomber) {
                 return direction;
             }
@@ -121,30 +116,28 @@ public class Oneal extends Enemy {
             if (canMoveR && !checkPass[i][j + 1]) {
                 checkPass[i][j + 1] = true;
                 direc.add(direction);
-                iTile.add(i);
-                jTile.add(j + 1);
+                tileI.add(i);
+                tileJ.add(j + 1);
             }
             if (canMoveL && !checkPass[i][j - 1]) {
                 checkPass[i][j - 1] = true;
                 direc.add(direction);
-                iTile.add(i);
-                jTile.add(j - 1);
+                tileI.add(i);
+                tileJ.add(j - 1);
             }
             if (canMoveU && !checkPass[i - 1][j]) {
                 checkPass[i - 1][j] = true;
                 direc.add(direction);
-                iTile.add(i - 1);
-                jTile.add(j);
+                tileI.add(i - 1);
+                tileJ.add(j);
             }
             if (canMoveD && !checkPass[i + 1][j]) {
                 checkPass[i + 1][j] = true;
                 direc.add(direction);
-                iTile.add(i + 1);
-                jTile.add(j);
+                tileI.add(i + 1);
+                tileJ.add(j);
             }
         }
         return directionList.get(ran);
     }
 }
-
-

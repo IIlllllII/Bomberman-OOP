@@ -56,6 +56,7 @@ public class PlayScene {
             inputList.remove(KeyCode.N);
         }
 
+        levelMap.update();
         entitiesManager.players.get(0).handleInput(inputList);
 
         // update first
