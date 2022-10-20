@@ -113,7 +113,7 @@ public class LevelMap {
                     switch (hash) {
                         case 'p': {
                             entitiesManager.players.add(
-                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
                             );
                             hash = getHash("grass");
                             break;

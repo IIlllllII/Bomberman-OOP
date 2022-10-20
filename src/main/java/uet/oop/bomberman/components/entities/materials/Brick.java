@@ -18,7 +18,7 @@ public class Brick extends Entity {
     private static List<Image> bricks;
     private static List<Image> brickExplodes;
     private boolean destroyed = false; // bị phá hủy chưa
-    private static final float timeDestroyed = 1000.0f; // thời gian phá hủy
+    private static final float timeDestroyed = 500.0f; // thời gian phá hủy
 
     private float time = 0;
     private final int level;

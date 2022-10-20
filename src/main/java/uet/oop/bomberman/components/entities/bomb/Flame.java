@@ -27,7 +27,9 @@ public class Flame extends Entity {
     private final FlameDirection flameDirection;
     private final boolean last;                 // Kiểm tra kết đuôi ngọn lửa
     private double time = 0;                    // Thời gian tính từ lúc lửa bắt đầu xuất hiện
-    private final double flameTime = 1000;      // Thời gian lửa hiện lên
+    private final double flameTime = 300;      // Thời gian lửa hiện lên
+
+    private boolean done;
 
     public static void init() {
         if (!initialized) {
@@ -67,13 +69,14 @@ public class Flame extends Entity {
         super(x, y, width, height);
         this.flameDirection = flameDirection;
         this.last = last;
+        done = false;
     }
 
 
     @Override
     public void update() {
         time += Timer.getInstance().getDeltaTime();
-        if(time <= flameTime){
+        if (time <= flameTime) {
             switch (flameDirection) {
                 case UP:
                     if (last) {
@@ -109,15 +112,20 @@ public class Flame extends Entity {
                 default:
                     break;
             }
-        }else{
+        } else {
             image = null;
+            done = true;
         }
     }
 
     @Override
     public void render(GraphicsContext gc) {
-        if(time < flameTime){
+        if (time <= flameTime) {
             gc.drawImage(image, x - camera.getX(), y - camera.getY());
         }
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

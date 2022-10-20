@@ -121,26 +121,28 @@ public class EntitiesManager {
 
         bombs.forEach(bomb -> {
             bomb.getFlameList().forEach(flame -> {
-                BoxCollider flameBox = new BoxCollider(flame.getX(), flame.getY());
+                if (! flame.isDone()) {
+                    BoxCollider flameBox = new BoxCollider(flame.getX(), flame.getY());
 
-                if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
-                        && !players.get(0).isInvincible()) {
-                    players.get(0).setPlayerStatus(CharacterStatus.DEAD);
-                }
-
-                enemies.forEach(enemy -> {
-                    if (enemy instanceof Banana) {
-                        BoxCollider enemyBox = ((Banana) enemy).getBoxCollider();
-                        if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
-                            ((Banana) enemy).decreaseLives();
-                        }
-                    } else {
-                        BoxCollider enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
-                        if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
-                            enemy.setDestroyed(true);
-                        }
+                    if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
+                            && !players.get(0).isInvincible()) {
+                        players.get(0).setPlayerStatus(CharacterStatus.DEAD);
                     }
-                });
+
+                    enemies.forEach(enemy -> {
+                        if (enemy instanceof Banana) {
+                            BoxCollider enemyBox = ((Banana) enemy).getBoxCollider();
+                            if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
+                                ((Banana) enemy).decreaseLives();
+                            }
+                        } else {
+                            BoxCollider enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
+                            if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
+                                enemy.setDestroyed(true);
+                            }
+                        }
+                    });
+                }
             });
         });
     }

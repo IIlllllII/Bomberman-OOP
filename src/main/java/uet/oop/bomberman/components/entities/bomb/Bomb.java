@@ -103,7 +103,7 @@ public class Bomb extends Entity {
                 subX = Math.abs(subX);
                 double subY = EntitiesManager.getInstance().players.get(0).getY() - this.y;
                 subY = Math.abs(subY);
-                if (subX > 30 || subY > 30) {
+                if (subX > 20 || subY > 20) {
                     allowPass = false;
                 }
             }
