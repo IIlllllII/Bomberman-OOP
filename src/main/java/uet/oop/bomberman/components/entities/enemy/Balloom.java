@@ -20,8 +20,11 @@ public class Balloom extends Enemy {
         animationDeath = new Animation(SpriteSheet.enemy, 4, 4, 1000, 192, 0, 32, 32);
         animationLeft.setLoop(true);
         animationRight.setLoop(true);
-        initDirectionList();
-        lastDirection = directionList.get(r.nextInt(directionList.size()));
+
+        Random r = new Random();
+        lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        randomAnimation = false;
+
         score = 100;
     }
 

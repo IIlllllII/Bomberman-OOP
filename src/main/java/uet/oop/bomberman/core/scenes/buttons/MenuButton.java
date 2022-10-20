@@ -1,4 +1,4 @@
-package uet.oop.bomberman.core.buttons;
+package uet.oop.bomberman.core.scenes.buttons;
 
 import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;
@@ -15,30 +15,50 @@ public class MenuButton extends StackPane {
 
     public MenuButton(String name) {
         text = new Text(name);
-        text.setFont(Font.font(20));
+        text.setFont(new Font("/font1.ttf", 18));
+        text.setStyle("-fx-font-weight: bold");
         text.setFill(Color.WHITE);
 
-        Rectangle bg = new Rectangle(200, 30);
+        Rectangle bg = new Rectangle(160, 30);
         bg.setOpacity(0.6);
         bg.setFill(Color.BLACK);
         bg.setEffect(new GaussianBlur((3.5)));
 
-        setAlignment(Pos.CENTER_LEFT);
+        if (name.equals("New Game")) {
+            setScaleX(1.2);
+            setScaleY(1.2);
+            bg.setOpacity(0.7);
+        }
+
+        setAlignment(Pos.CENTER);
         setRotate(-0.5);
         getChildren().addAll(bg, text);
 
         setOnMouseEntered(mouseEvent -> {
-            bg.setTranslateX(10);
-            text.setTranslateX(10);
-            bg.setFill(Color.WHITE);
-            text.setFill(Color.BLACK);
+            if (name.equals("New Game")) {
+                setScaleX(1.4);
+                setScaleY(1.4);
+                bg.setFill(Color.GREEN);
+            } else {
+                setScaleX(1.1);
+                setScaleY(1.1);
+                if (name.equals("Exit")) {
+                    bg.setFill(Color.CRIMSON);
+                } else {
+                    bg.setFill(Color.BLUE);
+                }
+            }
         });
 
         setOnMouseExited(mouseEvent -> {
-            bg.setTranslateX(0);
-            text.setTranslateX(0);
+            if (!name.equals("New Game")) {
+                setScaleX(1);
+                setScaleY(1);
+            } else {
+                setScaleX(1.2);
+                setScaleY(1.2);
+            }
             bg.setFill(Color.BLACK);
-            text.setFill(Color.WHITE);
         });
 
         DropShadow drop = new DropShadow(50, Color.WHITE);

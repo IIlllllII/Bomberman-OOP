@@ -1,4 +1,4 @@
-package uet.oop.bomberman.sound;
+package uet.oop.bomberman.core.sound;
 
 public class Music extends Sound {
     public static final String MENU_MUSIC = "src/main/resources/sound/Title.mp3";

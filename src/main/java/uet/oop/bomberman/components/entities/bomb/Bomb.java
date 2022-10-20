@@ -4,14 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.Entity;
-import uet.oop.bomberman.components.entities.stillobjects.Brick;
-import uet.oop.bomberman.components.entities.stillobjects.Portal;
-import uet.oop.bomberman.components.entities.stillobjects.Wall;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.Timer;
-import uet.oop.bomberman.sound.Sound;
+import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.ArrayList;
 import java.util.List;

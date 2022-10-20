@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.transform.Scale;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
@@ -31,6 +32,16 @@ public class PlayScene {
 
     public Group getRoot() {
         return root;
+    }
+
+    public void zoom() {
+        Scale scale = new Scale();
+        scale.setPivotX(0);
+        scale.setPivotY(0);
+        scale.setX(GameConfig.ZOOM);
+        scale.setY(GameConfig.ZOOM);
+        gc.getCanvas().getTransforms().clear();
+        gc.getCanvas().getTransforms().add(scale);
     }
 
     public void update(List<KeyCode> inputList) {

@@ -1,4 +1,4 @@
-package uet.oop.bomberman.sound;
+package uet.oop.bomberman.core.sound;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -29,7 +29,7 @@ public class Sound {
             media = new Media(new File(path).toURI().toString());
             mediaPlayer = new MediaPlayer(media);
         }catch (Exception e){
-            System.out.println("uet.oop.bomberman.sound : error load media");
+            System.out.println("uet.oop.bomberman.core.sound : error load media");
         }
         if(isMuteAll()){
             setMute(false);

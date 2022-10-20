@@ -11,7 +11,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.PlayerStatus;
-import uet.oop.bomberman.sound.Sound;
+import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.HashMap;
 import java.util.List;

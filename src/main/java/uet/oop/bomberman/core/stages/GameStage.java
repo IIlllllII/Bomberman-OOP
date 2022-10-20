@@ -1,14 +1,9 @@
 package uet.oop.bomberman.core.stages;
 
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
-import uet.oop.bomberman.config.GameConfig;
+import javafx.scene.Scene;
 import uet.oop.bomberman.core.Timer;
 import uet.oop.bomberman.core.scenes.SceneManager;
-
-import java.net.URISyntaxException;
 
 /**
  * This class applies `Singleton pattern`
@@ -21,6 +16,7 @@ import java.net.URISyntaxException;
 public class GameStage {
     private final SceneManager sceneManager;
     private final Timer timer;
+    private final Scene scene;
 
     private static class SingletonHelper {
         private static final GameStage INSTANCE = new GameStage();
@@ -33,23 +29,7 @@ public class GameStage {
         sceneManager = SceneManager.getInstance();
         timer = Timer.getInstance();
 
-        Stage stage = new Stage();
-        stage.setResizable(false);
-        stage.setTitle(GameConfig.NAME);
-        stage.setScene(sceneManager.getScene());
-        stage.centerOnScreen();
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
-        stage.show();
-
-        try {
-            Image icon = new Image(getClass().getResource(GameConfig.ICON_PATH).toURI().toString());
-            stage.getIcons().add(icon);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        scene = sceneManager.getScene();
     }
 
     public void run() {
@@ -57,11 +37,14 @@ public class GameStage {
             @Override
             public void handle(long now) {
                 timer.update(now / 1_000_000);
-                //System.out.println(timer.getDeltaTime());
                 update();
                 render();
             }
         }).start();
+    }
+
+    public Scene getScene() {
+        return scene;
     }
 
     private void render() {

@@ -9,8 +9,8 @@ import uet.oop.bomberman.config.GameConfig;
 public class Camera {
     private double x;
     private double y;
-    private int width;
-    private int height;
+    private double width;
+    private double height;
 
     private Camera() {}
 
@@ -38,11 +38,11 @@ public class Camera {
         this.y = y;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
@@ -54,7 +54,7 @@ public class Camera {
         this.height = height;
     }
 
-    public void setInfo(double x, double y, int width, int height) {
+    public void setInfo(double x, double y, double width, double height) {
         this.x = x;
         this.y = y;
         this.width = width;
