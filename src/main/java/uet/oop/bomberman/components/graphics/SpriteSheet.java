@@ -1,8 +1,6 @@
 package uet.oop.bomberman.components.graphics;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,7 +12,7 @@ public class SpriteSheet {
     public static Image NES;
     public static Image enemy;
     public static Image normalBanana;
-    public static Image deathBanana;
+    public static Image deadBanana;
     public static Image saru;
 
     private final String path;
@@ -29,6 +27,7 @@ public class SpriteSheet {
                 NES = new Image(SpriteSheet.class.getResource("/spriteSheet/NES.png").toURI().toString());
                 enemy = new Image(SpriteSheet.class.getResource("/spriteSheet/enemy.png").toURI().toString());
                 normalBanana = new Image(SpriteSheet.class.getResource("/spriteSheet/banana_normal.png").toURI().toString());
+                deadBanana = new Image(SpriteSheet.class.getResource("/spriteSheet/banana_dead.png").toURI().toString());
                 saru = new Image(SpriteSheet.class.getResource("/spriteSheet/Monkey.png").toURI().toString());
             } catch (URISyntaxException e) {
                 System.out.println("Sprite Sheet init");

@@ -5,20 +5,17 @@ import uet.oop.bomberman.components.entities.BoxCollider;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
-import uet.oop.bomberman.config.GameConfig;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class Banana extends Enemy {
     private final Map<String, Animation> animationDict = new HashMap<>();
 
     private Direction currentDirection;
 
-    private BoxCollider boxCollider;
+    private final BoxCollider boxCollider;
 
     private int lives;
 
@@ -42,9 +39,10 @@ public class Banana extends Enemy {
         animationDict.put("right",
                 new Animation(SpriteSheet.normalBanana, 8, 8, 1000, 3, 247,
                 47, 74, 47 * 1.5f, 74 * 1.5f, 4f, false));
+
         animationDict.put("death",
-                new Animation(SpriteSheet.normalBanana, 8, 8, 1000, 3, 84,
-                47, 74, 47 * 1.5f, 74 * 1.5f, 4f, false));
+                new Animation(SpriteSheet.deadBanana, 24, 24, 3000, 0, 0,
+                76, 89, 76 * 1.5f, 89 * 1.5f, 3.3f, false));
 
         animationDict.get("down").setLoop(true);
         animationDict.get("up").setLoop(true);
@@ -100,7 +98,7 @@ public class Banana extends Enemy {
     private void updateBoxCollider() {
         boxCollider.setLocation(
                 this.x + (this.width - boxCollider.getWidth()) / 2.0,
-                this.y + (this.height - boxCollider.getHeight()) / 2.0 + 15
+                this.y + (this.height - boxCollider.getHeight()) / 2.0 + 10
         );
     }
 
@@ -134,8 +132,6 @@ public class Banana extends Enemy {
             canMoveL = checkMapHash(i, j - 1);
             canMoveU = checkMapHash(i - 1, j);
             canMoveD = checkMapHash(i + 1, j);
-
-            System.out.println(i + " " + j + " " + canMoveD + " " + canMoveL + " " + canMoveU + " " + canMoveD);
 
             checkMove();
             if (moveY == 0 && moveX == 0) {
