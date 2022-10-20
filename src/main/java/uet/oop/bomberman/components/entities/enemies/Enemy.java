@@ -1,11 +1,16 @@
 package uet.oop.bomberman.components.entities.enemies;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.stages.GameStage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +29,12 @@ public abstract class Enemy extends Entity {
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
     protected Random r = new Random();
-    protected Direction lastDirection = Direction.values()[r.nextInt(Direction.values().length)];;
+    protected Direction lastDirection;
 
     protected List<Direction> directionList = new ArrayList<>();
     protected boolean randomAnimation = false; // left or right
     protected double speed = 1;
     protected int score;
-    public static int sumScore = 0;
 
     public Enemy(double x, double y) {
         super(x, y);
@@ -46,7 +50,9 @@ public abstract class Enemy extends Entity {
         } else {
             animationDeath.render(gc, x - camera.getX(), y - camera.getY());
             if (!animationDeath.isDone()) {
-                //gc.setFont(PlayWindow.MCFONT);
+                Text text = new Text();
+                gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+                gc.setFill(Color.SNOW);
                 gc.fillText(" + " + score,
                         x - camera.getX() + 16,
                         y - camera.getY() + 20 - animationDeath.getCalcTime() / 32);
@@ -75,7 +81,7 @@ public abstract class Enemy extends Entity {
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
-        sumScore += score;
+        GameStage.getInstance().plusTotalScore(score);
     }
 
     public boolean isDone() {

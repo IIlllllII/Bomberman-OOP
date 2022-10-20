@@ -1,4 +1,4 @@
-package uet.oop.bomberman.components.entities.stillobjects;
+package uet.oop.bomberman.components.entities.materials;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -18,7 +18,7 @@ public class Brick extends Entity {
     private static List<Image> bricks;
     private static List<Image> brickExplodes;
     private boolean destroyed = false; // bị phá hủy chưa
-    private static final float timeDestroyed = 1000.0f; // thời gian phá hủy
+    private static final float timeDestroyed = 500.0f; // thời gian phá hủy
 
     private float time = 0;
     private final int level;
@@ -36,9 +36,9 @@ public class Brick extends Entity {
                 bricks.add(new Image(LevelMap.class.getResource("/sprites/map/brick/brick3.png").toURI().toString()));
                 bricks.add(new Sprite(16, 16, 3 * 16, newTiles, 16, 16).getFxImage());
                 bricks.add(new Sprite(16, 16, 5 * 16, newTiles, 16, 16).getFxImage());
-                bricks.add(new Sprite(16, 4 * 16  ,0, newTiles, 16, 16).getFxImage());
+                bricks.add(new Sprite(16, 5 * 16, 0, newTiles, 16, 16).getFxImage());
                 //Map boss
-                bricks.add(new Sprite(16, 4 * 16  ,0, newTiles, 16, 16).getFxImage());
+                bricks.add(new Sprite(16, 4 * 16, 0, newTiles, 16, 16).getFxImage());
 
                 brickExplodes.add(new Sprite(16, 7 * 16, 1 * 16, tiles, 16, 16).getFxImage());
                 brickExplodes.add(new Sprite(16, 7 * 16, 2 * 16, tiles, 16, 16).getFxImage());

@@ -3,7 +3,6 @@ package uet.oop.bomberman.components.entities.enemies.normal;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 
 public class Dahl extends Enemy {

@@ -8,11 +8,12 @@ import uet.oop.bomberman.components.entities.enemies.normal.*;
 import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
+import uet.oop.bomberman.components.entities.items.item_types.*;
 import uet.oop.bomberman.components.entities.players.Bomber;
-import uet.oop.bomberman.components.entities.stillobjects.Brick;
-import uet.oop.bomberman.components.entities.stillobjects.Grass;
-import uet.oop.bomberman.components.entities.stillobjects.Portal;
-import uet.oop.bomberman.components.entities.stillobjects.Wall;
+import uet.oop.bomberman.components.entities.materials.Brick;
+import uet.oop.bomberman.components.entities.materials.Grass;
+import uet.oop.bomberman.components.entities.materials.Portal;
+import uet.oop.bomberman.components.entities.materials.Wall;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.io.File;
@@ -71,7 +72,15 @@ public class LevelMap {
     }
 
     public void prepareNextLevel() {
-        levelComplete = true;
+        //levelComplete = true;
+
+        //Change all bricks left into coins:
+        entitiesManager.bricks.forEach(brick -> {
+            entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
+            mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
+                    = getHash("coin");
+        });
+        entitiesManager.bricks.clear();
     }
 
     public void nextLevel() {
@@ -104,7 +113,7 @@ public class LevelMap {
                     switch (hash) {
                         case 'p': {
                             entitiesManager.players.add(
-                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
                             );
                             hash = getHash("grass");
                             break;
@@ -150,7 +159,7 @@ public class LevelMap {
                             break;
                         }
                         case '9': {
-                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE + 15, i * GameConfig.TILE_SIZE - 5));
                             hash = getHash("grass");
                             break;
                         }
@@ -300,6 +309,9 @@ public class LevelMap {
                 break;
             case "bomb":
                 output = 'B';
+                break;
+            case "coin":
+                output = '$';
                 break;
             case "portal":
                 output = 'x';

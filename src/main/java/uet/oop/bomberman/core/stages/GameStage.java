@@ -18,6 +18,8 @@ public class GameStage {
     private final Timer timer;
     private final Scene scene;
 
+    private int totalScore;
+
     private static class SingletonHelper {
         private static final GameStage INSTANCE = new GameStage();
     }
@@ -26,6 +28,7 @@ public class GameStage {
     }
 
     private GameStage() {
+        totalScore = 0;
         sceneManager = SceneManager.getInstance();
         timer = Timer.getInstance();
 
@@ -45,6 +48,14 @@ public class GameStage {
 
     public Scene getScene() {
         return scene;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void plusTotalScore(int plusScore) {
+        totalScore += plusScore;
     }
 
     private void render() {

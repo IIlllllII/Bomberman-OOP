@@ -8,9 +8,9 @@ import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.HashMap;
@@ -21,6 +21,9 @@ public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final int DEFAULT_SPEED = 2;
+
+    private final double initialX;
+    private final double initialY;
     private int lives = 3;
     private int speed = DEFAULT_SPEED;
     private boolean canPassBomb = false;
@@ -37,11 +40,10 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public Bomber(double x, double y, int w, int h) {
         super(x, y, (int) ((1.2 * w * GameConfig.TILE_SIZE) / h), (int) (1.2 * GameConfig.TILE_SIZE));
-        bomberBox = new BoxCollider(0, 0, 20, 20);
-        bomberBox.setLocation(
-                this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + bomberBox.getHeight() - 10
-        );
+        initialX = x;
+        initialY = y;
+        bomberBox = new BoxCollider(0, 0, 18, 20);
+        updateBoxCollider();
     }
 
     public static void init() {
@@ -104,6 +106,10 @@ public class Bomber extends Entity implements Movable, Killable {
     }
 
     public void handleInput(List<KeyCode> inputList) {
+        if (playerStatus == CharacterStatus.DEAD) {
+            return;
+        }
+
         Direction currentDirection = null;
         if (inputList.contains(KeyCode.RIGHT) || inputList.contains(KeyCode.D)) {
             currentDirection = Direction.RIGHT;
@@ -124,19 +130,11 @@ public class Bomber extends Entity implements Movable, Killable {
             inputList.remove(KeyCode.SPACE);
         }
 
-        //Demo "die" status
-        //TODO: remove it later.
-        if (inputList.contains(KeyCode.M)) {
-            playerStatus = CharacterStatus.DEAD;
-        }
-
         if (currentDirection != null) {
             playerStatus = CharacterStatus.MOVING;
             direction = currentDirection;
         } else {
-            if (playerStatus != CharacterStatus.DEAD) {
-                playerStatus = CharacterStatus.IDLE;
-            }
+            playerStatus = CharacterStatus.IDLE;
         }
     }
 
@@ -151,9 +149,9 @@ public class Bomber extends Entity implements Movable, Killable {
                 image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
                 break;
             case DEAD:
-                image = spritesDict.get("dead")[currentSpriteIndex / 4].getFxImage();
-                gc.drawImage(image, this.x - camera.getX(), this.y - camera.getY() - 3,
-                        2 * 22 * 0.8, 2 * 21 * 0.8);
+                image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
+                gc.drawImage(image, this.x - camera.getX() - 3, this.y - camera.getY() + 2,
+                        2 * 22 * 0.9, 2 * 21 * 0.9);
                 break;
         }
         if (playerStatus == CharacterStatus.DEAD) {
@@ -164,6 +162,9 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
+        if (playerStatus == CharacterStatus.IDLE) {
+            return;
+        }
         if (playerStatus == CharacterStatus.MOVING) {
             currentSpriteIndex++;
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
@@ -172,17 +173,28 @@ public class Bomber extends Entity implements Movable, Killable {
             move();
         }
 
-        //Demo "die" status.
         //TODO: change it later.
         if (playerStatus == CharacterStatus.DEAD) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 4 >= spritesDict.get("dead").length) {
+            if (currentSpriteIndex / 6 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
+                lives--;
                 playerStatus = CharacterStatus.IDLE;
+
+                //Return to initial position:
+                this.x = initialX;
+                this.y = initialY;
+                updateBoxCollider();
             }
         }
     }
 
+    private void updateBoxCollider() {
+        bomberBox.setLocation(
+                this.x + (this.width - bomberBox.getWidth()) / 2.0,
+                this.y + bomberBox.getHeight() - 5
+        );
+    }
     public void placeBomb() {
         direction = Direction.DOWN;
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
@@ -322,10 +334,7 @@ public class Bomber extends Entity implements Movable, Killable {
             y -= steps;     //Move back
         }
 
-        bomberBox.setLocation(
-                this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + bomberBox.getHeight() - 2
-        );
+        updateBoxCollider();
 
         int leftCol = (int) bomberBox.getX() / GameConfig.TILE_SIZE;
         int rightCol = (int) (bomberBox.getX() + bomberBox.getWidth()) / GameConfig.TILE_SIZE;

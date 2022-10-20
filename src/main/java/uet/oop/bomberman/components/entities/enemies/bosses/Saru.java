@@ -1,10 +1,13 @@
 package uet.oop.bomberman.components.entities.enemies.bosses;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
+import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +15,9 @@ import java.util.Map;
 public class Saru extends Enemy {
     private final Map<String, Animation> animationDict = new HashMap<>();
 
+    private final int visionRange = 3; //Cell unit.
     private Direction currentDirection;
+    private CharacterStatus saruStatus;
 
     public Saru(double x, double y) {
         super(x, y);
@@ -26,11 +31,11 @@ public class Saru extends Enemy {
 
         animationDict.put("right",
                 new Animation(SpriteSheet.saru, 2, 2, 1000, 3, 71,
-                        21, 18, 21 * 1.5f, 18 * 1.5f, 9f, false));
+                        21, 18, 21 * 1.6f, 18 * 1.6f, 9f, false));
 
         animationDict.put("left",
                 new Animation(SpriteSheet.saru, 2, 2, 1000, 3, 71,
-                        21, 18, 21 * 1.5f, 18 * 1.5f, 9f, true));
+                        21, 18, 21 * 1.6f, 18 * 1.6f, 9f, true));
 
         animationDict.put("idle",
                 new Animation(SpriteSheet.saru, 4, 4, 1000, 3, 3,
@@ -48,16 +53,20 @@ public class Saru extends Enemy {
         animationDict.get("death").setLoop(false);
 
         initDirectionList();
-        currentDirection = Direction.DOWN;
-        //currentDirection = Direction.values()[(new Random()).nextInt(Direction.values().length)];
-        score = 10000;
+        saruStatus = CharacterStatus.IDLE;
+        currentDirection = lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        score = 5000;
+        speed = 4;
     }
 
     @Override
     public void render(GraphicsContext gc) {
         if (!destroyed) {
-            animationDict.get(currentDirection.label)
-                    .render(gc, x - camera.getX(), y - camera.getY());
+            if (saruStatus == CharacterStatus.IDLE) {
+                animationDict.get("idle").render(gc, x - camera.getX(), y - camera.getY());
+            } else {
+                animationDict.get(currentDirection.label).render(gc, x - camera.getX(), y - camera.getY());
+            }
         } else {
             animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
             if (! animationDict.get("death").isDone()) {
@@ -72,12 +81,20 @@ public class Saru extends Enemy {
 
     @Override
     public void update() {
-        if (!destroyed) {
-            move();
-            animationDict.get(currentDirection.label).update();
-        } else {
+        if (destroyed) {
             animationDict.get("death").update();
+            return;
         }
+        if (saruStatus == CharacterStatus.IDLE) {
+            int centerX = (int) this.x + GameConfig.TILE_SIZE / 2;
+            int centerY = (int) this.y + GameConfig.TILE_SIZE / 2;
+            this.x = (double) (centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
+            this.y = (double) (centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
+            animationDict.get("idle").update();
+        } else {
+            animationDict.get(currentDirection.label).update();
+        }
+        move();
     }
 
     @Override
@@ -87,39 +104,111 @@ public class Saru extends Enemy {
 
     @Override
     protected void move() {
-        int j = (int) (x / 32);
-        int i = (int) (y / 32);
-        if (j * 32 == x && i * 32 == y) {
+        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+
+        int centerX = (int) this.x + GameConfig.TILE_SIZE / 2;
+        int centerY = (int) this.y + GameConfig.TILE_SIZE / 2;
+        int cellX = centerX / GameConfig.TILE_SIZE;
+        int cellY = centerY / GameConfig.TILE_SIZE;
+
+        int cellXPlayer = (int) (bomberX / 32);
+        int cellYPlayer = (int) (bomberY / 32);
+
+        canMoveR = checkMapHash(cellY, cellX + 1);
+        canMoveL = checkMapHash(cellY, cellX - 1);
+        canMoveU = checkMapHash(cellY - 1, cellX);
+        canMoveD = checkMapHash(cellY + 1, cellX);
+
+//        System.out.println(cellX + " " + cellY + " " + cellXPlayer  + " " + cellYPlayer + " "
+//                + canMoveR + " " + canMoveL + " " + canMoveU + " " + canMoveD);
+
+        if (Math.abs(cellXPlayer - cellX) <= visionRange && Math.abs(cellYPlayer - cellY) <= visionRange) {
             moveX = 0;
             moveY = 0;
-            canMoveR = checkMapHash(i, j + 1);
-            canMoveL = checkMapHash(i, j - 1);
-            canMoveU = checkMapHash(i - 1, j);
-            canMoveD = checkMapHash(i + 1, j);
+            saruStatus = CharacterStatus.MOVING;
 
-            checkMove();
-            if (moveY == 0 && moveX == 0) {
-                if (directionList.size() != 0) {
-                    int ran = r.nextInt(directionList.size());
-                    if (directionList.get(ran) == Direction.UP) {
+//            if (cellXPlayer == cellX) {
+//                if (cellYPlayer > cellY) {
+//                    //Direction = DOWN;
+//                } else {
+//                    //Direction = UP;
+//                }
+//                //Start suicide;
+//            }
+//            if (cellYPlayer == cellY) {
+//                if (cellXPlayer > cellX) {
+//                    //Direction = right;
+//                } else {
+//                    //Direction = left;
+//                }
+//                //Start suicide;
+//            }
+
+            if (cellXPlayer < cellX && cellYPlayer < cellY) {
+                //move right or down first
+                if (canMoveR) {
+                    lastDirection = Direction.RIGHT;
+                } else if (canMoveD) {
+                    lastDirection = Direction.DOWN;
+                } else {
+                    if (canMoveL) {
+                        lastDirection = Direction.LEFT;
+                    } else if (canMoveU) {
                         lastDirection = Direction.UP;
                     }
-                    if (directionList.get(ran) == Direction.DOWN) {
-                        lastDirection = Direction.DOWN;
-                    }
-                    if (directionList.get(ran) == Direction.RIGHT) {
-                        lastDirection = Direction.RIGHT;
-                        //randomAnimation = false;
-                    }
-                    if (directionList.get(ran) == Direction.LEFT) {
-                        lastDirection = Direction.LEFT;
-                        //randomAnimation = true;
-                    }
-                    currentDirection = lastDirection;
                 }
             }
+            if (cellXPlayer < cellX && cellYPlayer > cellY) {
+                //move right or up first
+                if (canMoveR) {
+                    lastDirection = Direction.RIGHT;
+                } else if (canMoveU) {
+                    lastDirection = Direction.UP;
+                } else {
+                    if (canMoveD) {
+                        lastDirection = Direction.DOWN;
+                    } else if (canMoveL) {
+                        lastDirection = Direction.LEFT;
+                    }
+                }
+            }
+            if (cellXPlayer > cellX && cellYPlayer < cellY) {
+                //move left or down first
+                if (canMoveL) {
+                    lastDirection = Direction.LEFT;
+                } else if (canMoveD) {
+                    lastDirection = Direction.DOWN;
+                } else {
+                    if (canMoveU) {
+                        lastDirection = Direction.UP;
+                    } else if (canMoveR) {
+                        lastDirection = Direction.RIGHT;
+                    }
+                }
+            }
+            if (cellXPlayer > cellX && cellYPlayer > cellY) {
+                //move left or up first
+                if (canMoveL) {
+                    lastDirection = Direction.LEFT;
+                } else if (canMoveU) {
+                    lastDirection = Direction.UP;
+                } else {
+                    if (canMoveD) {
+                        lastDirection = Direction.DOWN;
+                    } else if (canMoveR) {
+                        lastDirection = Direction.RIGHT;
+                    }
+                }
+            }
+
+            checkMove();
+
+            x += moveX;
+            y += moveY;
+            currentDirection = lastDirection;
+        } else {
+            saruStatus = CharacterStatus.IDLE;
         }
-        x += moveX;
-        y += moveY;
     }
 }

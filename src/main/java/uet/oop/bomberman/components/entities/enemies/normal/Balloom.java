@@ -6,6 +6,8 @@ import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 
+import java.util.Random;
+
 public class Balloom extends Enemy {
 
     public Balloom(double x, double y) {
@@ -16,7 +18,9 @@ public class Balloom extends Enemy {
         animationLeft.setLoop(true);
         animationRight.setLoop(true);
         initDirectionList();
-        lastDirection = directionList.get(r.nextInt(directionList.size()));
+
+        lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        randomAnimation = false;
         score = 100;
     }
 

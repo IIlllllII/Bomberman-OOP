@@ -17,6 +17,8 @@ public abstract class Item extends Entity {
     protected static Image bombPass;
     protected static Image flamePass;
     protected static Image invincible;
+    protected static Image coinImage;
+
     protected Image image;
     protected double timeAppear = 10000;
     protected double timePowerUp ;
@@ -25,7 +27,6 @@ public abstract class Item extends Entity {
 
     protected boolean done = false;
     protected double time = 0;
-
 
     public Item(double x, double y, Image image) {
         super(x, y);
@@ -43,6 +44,7 @@ public abstract class Item extends Entity {
             bombPass = new Sprite(16, 5 * 16, 10 * 16, item, 16, 16).getFxImage();
             flamePass = new Sprite(16, 6 * 16, 10 * 16, item, 16, 16).getFxImage();
             invincible = new Sprite(16, 7 * 16, 10 * 16, item, 16, 16).getFxImage();
+            coinImage = SpriteSheet.coin;
             initialized = true;
         }
     }
