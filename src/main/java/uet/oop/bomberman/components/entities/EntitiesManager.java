@@ -5,9 +5,10 @@ import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.items.Item;
+import uet.oop.bomberman.components.entities.items.item_types.Coin;
 import uet.oop.bomberman.components.entities.players.Bomber;
-import uet.oop.bomberman.components.entities.stillobjects.Brick;
-import uet.oop.bomberman.components.entities.stillobjects.Portal;
+import uet.oop.bomberman.components.entities.materials.Brick;
+import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.CharacterStatus;
@@ -27,9 +28,9 @@ public class EntitiesManager {
     public List<Bomb> bombs = new ArrayList<>();
     public List<Brick> bricks = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
+    public List<Coin> coins = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
     public Portal portal = new Portal(0, 0);
-
 
     private EntitiesManager() {
     }
@@ -43,10 +44,11 @@ public class EntitiesManager {
     }
 
     public void render(GraphicsContext gc) {
-        items.forEach(items -> items.render(gc));
+        items.forEach(item -> item.render(gc));
         portal.render(gc);
         bombs.forEach(entity -> entity.render(gc));
         bricks.forEach(entity -> entity.render(gc));
+        coins.forEach(entity -> entity.render(gc));
         enemies.forEach(enemy -> enemy.render(gc));
         players.forEach(player -> player.render(gc));
     }
@@ -58,6 +60,8 @@ public class EntitiesManager {
         bricks.forEach(Brick::update);
         enemies.forEach(Entity::update);
         items.forEach(Entity::update);
+        coins.forEach(Coin::update);
+
         if (enemies.size() == 0) {
             portal.setCanPass(true);
         }
@@ -79,10 +83,20 @@ public class EntitiesManager {
         BoxCollider bomberBox = players.get(0).getBomberBox();
 
         items.forEach(item -> {
-            BoxCollider itemBox = new BoxCollider(item.getX(), item.getY());
-            if (bomberBox.isCollidedWith(itemBox)) {
-                if (item.isAppear()) {
+            if (item.isAppear()) {
+                BoxCollider itemBox = new BoxCollider(item.getX(), item.getY());
+                if (bomberBox.isCollidedWith(itemBox)) {
                     item.setEaten(true);
+                }
+            }
+        });
+
+        coins.forEach(coin -> {
+            if (coin.isAppear()) {
+                BoxCollider coinBox = new BoxCollider(coin.getX(), coin.getY());
+                if (bomberBox.isCollidedWith(coinBox)) {
+                    coin.setEaten(true);
+                    coin.setAppear(false);
                 }
             }
         });
@@ -139,6 +153,7 @@ public class EntitiesManager {
         bombs.clear();
         bricks.clear();
         items.clear();
+        coins.clear();
         enemies.clear();
         portal = new Portal(0, 0);
         portal.setAppear(false);

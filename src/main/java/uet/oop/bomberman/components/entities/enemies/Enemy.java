@@ -10,6 +10,7 @@ import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.stages.GameStage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +28,13 @@ public abstract class Enemy extends Entity {
     protected boolean canMoveL = false;
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
-    Random r = new Random();
+    protected Random r = new Random();
     protected Direction lastDirection;
 
     protected List<Direction> directionList = new ArrayList<>();
     protected boolean randomAnimation = false; // left or right
     protected double speed = 1;
     protected int score;
-    public static int sumScore = 0;
 
     public Enemy(double x, double y) {
         super(x, y);
@@ -81,7 +81,7 @@ public abstract class Enemy extends Entity {
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
-        sumScore += score;
+        GameStage.getInstance().plusTotalScore(score);
     }
 
     public boolean isDone() {

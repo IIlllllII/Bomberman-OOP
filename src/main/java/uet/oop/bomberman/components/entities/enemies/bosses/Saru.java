@@ -54,7 +54,7 @@ public class Saru extends Enemy {
 
         initDirectionList();
         saruStatus = CharacterStatus.IDLE;
-        currentDirection = Direction.DOWN;
+        currentDirection = lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
         score = 5000;
         speed = 4;
     }
@@ -128,22 +128,22 @@ public class Saru extends Enemy {
             moveY = 0;
             saruStatus = CharacterStatus.MOVING;
 
-            if (cellXPlayer == cellX) {
-                if (cellYPlayer > cellY) {
-                    //Direction = DOWN;
-                } else {
-                    //Direction = UP;
-                }
-                //Start suicide;
-            }
-            if (cellYPlayer == cellY) {
-                if (cellXPlayer > cellX) {
-                    //Direction = right;
-                } else {
-                    //Direction = left;
-                }
-                //Start suicide;
-            }
+//            if (cellXPlayer == cellX) {
+//                if (cellYPlayer > cellY) {
+//                    //Direction = DOWN;
+//                } else {
+//                    //Direction = UP;
+//                }
+//                //Start suicide;
+//            }
+//            if (cellYPlayer == cellY) {
+//                if (cellXPlayer > cellX) {
+//                    //Direction = right;
+//                } else {
+//                    //Direction = left;
+//                }
+//                //Start suicide;
+//            }
 
             if (cellXPlayer < cellX && cellYPlayer < cellY) {
                 //move right or down first
@@ -203,9 +203,6 @@ public class Saru extends Enemy {
             }
 
             checkMove();
-
-//            System.out.println(cellX + " " + cellY + " " + cellXPlayer  + " " + cellYPlayer + " "
-//                    + canMoveD + " " + canMoveL + " " + canMoveU + " " + canMoveD);
 
             x += moveX;
             y += moveY;

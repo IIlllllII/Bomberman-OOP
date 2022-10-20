@@ -9,11 +9,11 @@ import java.net.URL;
 
 public class SpriteSheet {
     private static boolean initialized = false;
-    public static Image NES;
     public static Image enemy;
     public static Image normalBanana;
     public static Image deadBanana;
     public static Image saru;
+    public static Image coin;
 
     private final String path;
     public final int SHEET_WIDTH;
@@ -24,11 +24,11 @@ public class SpriteSheet {
     public static void init() {
         if (!initialized) {
             try {
-                NES = new Image(SpriteSheet.class.getResource("/spriteSheet/NES.png").toURI().toString());
                 enemy = new Image(SpriteSheet.class.getResource("/spriteSheet/enemy.png").toURI().toString());
                 normalBanana = new Image(SpriteSheet.class.getResource("/spriteSheet/banana_normal.png").toURI().toString());
                 deadBanana = new Image(SpriteSheet.class.getResource("/spriteSheet/banana_dead.png").toURI().toString());
                 saru = new Image(SpriteSheet.class.getResource("/spriteSheet/Monkey.png").toURI().toString());
+                coin = new Image(SpriteSheet.class.getResource("/spriteSheet/coin.png").toURI().toString());
             } catch (URISyntaxException e) {
                 System.out.println("Sprite Sheet init");
                 throw new RuntimeException(e);

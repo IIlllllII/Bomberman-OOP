@@ -2,6 +2,7 @@ package uet.oop.bomberman.components.entities.enemies.normal;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;

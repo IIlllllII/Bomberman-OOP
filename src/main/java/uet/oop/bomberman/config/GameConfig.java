@@ -3,7 +3,7 @@ package uet.oop.bomberman.config;
 public class GameConfig {
     public static final String NAME = "Bomberman";
     public static double ZOOM = 1.5;
-    public static final double WIDTH = 32 * 20;
+    public static final double WIDTH = 32 * 18;
     public static final double HEIGHT = 32 * 13;
     public static final int TILE_SIZE = 32;
     public static final int SCALED_FACTOR = 2;

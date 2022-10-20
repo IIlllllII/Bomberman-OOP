@@ -1,13 +1,9 @@
 package uet.oop.bomberman.components.entities.enemies.normal;
 
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Dahl extends Enemy {
     public Dahl(double x, double y) {

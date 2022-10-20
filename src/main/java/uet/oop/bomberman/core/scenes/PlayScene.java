@@ -59,13 +59,12 @@ public class PlayScene {
         levelMap.update();
         entitiesManager.players.get(0).handleInput(inputList);
 
-        // update first
         camera.update();
         entitiesManager.update();
     }
 
     public void render() {
-        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.WIDTH);
+        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
         levelMap.render(gc);
 
         entitiesManager.render(gc);

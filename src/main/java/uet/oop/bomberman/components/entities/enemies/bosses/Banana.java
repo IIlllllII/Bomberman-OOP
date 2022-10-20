@@ -51,8 +51,7 @@ public class Banana extends Enemy {
         animationDict.get("death").setLoop(false);
 
         initDirectionList();
-        currentDirection = Direction.DOWN;
-        //currentDirection = Direction.values()[(new Random()).nextInt(Direction.values().length)];
+        currentDirection = lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
         score = 2000;
     }
 
@@ -106,15 +105,6 @@ public class Banana extends Enemy {
     public boolean isDone() {
         return animationDict.get("death").isDone();
     }
-
-//    @Override
-//    protected boolean checkMapHash(int i, int j) {
-//        LevelMap levelMap = LevelMap.getInstance();
-//        if (i < 0 || i > (levelMap.getHeight() / 32) - 1 || j < 0 || j > (levelMap.getWidth() / 32) - 1) {
-//            return false;
-//        }
-//        return levelMap.getHashAt(i, j) == levelMap.getHash("grass");
-//    }
 
     @Override
     protected void move() {
