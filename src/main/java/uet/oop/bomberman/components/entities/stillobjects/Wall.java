@@ -3,6 +3,7 @@ package uet.oop.bomberman.components.entities.stillobjects;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 
@@ -18,11 +19,22 @@ public class Wall extends Entity {
     public static void init() {
         if (!initialized) {
             walls = new ArrayList<>();
-            SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
             try {
-                for (int i = 1; i <= 3; i++) {
-                    walls.add(new Image(LevelMap.class.getResource("/sprites/map/wall/wall" + i + ".png").toURI().toString()));
-                }
+                SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
+                walls.add(new Image(LevelMap.class.getResource("/sprites/map/wall/wall1.png").toURI().toString()));
+                walls.add(new Image(LevelMap.class.getResource("/sprites/map/wall/wall2.png").toURI().toString()));
+                walls.add(new Sprite(16, 2 * 16, 1 * 16, newTiles, 16, 16).getFxImage());
+                walls.add(new Image(LevelMap.class.getResource("/sprites/map/wall/wall3.png").toURI().toString()));
+                walls.add(new Sprite(16, 2 * 16, 2 * 16, newTiles, 16, 16).getFxImage());
+                walls.add(new Sprite(16, 2 * 16, 5 * 16, newTiles, 16, 16).getFxImage());
+                walls.add(new Sprite(16, 4 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
+//                walls.add(new Sprite(16, 2 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
+//                walls.add(new Sprite(16, 2 * 16, 1 * 16, newTiles, 16, 16).getFxImage());
+//                walls.add(new Sprite(16, 2 * 16, 2 * 16, newTiles, 16, 16).getFxImage());
+//                walls.add(new Sprite(16, 2 * 16, 3 * 16, newTiles, 16, 16).getFxImage());
+//                walls.add(new Sprite(16, 2 * 16, 4 * 16, newTiles, 16, 16).getFxImage());
+//                walls.add(new Sprite(16, 2 * 16, 5 * 16, newTiles, 16, 16).getFxImage());
+//                walls.add(new Sprite(16, 4 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
             } catch (URISyntaxException | NullPointerException e) {
                 System.out.println("Wall init");
                 e.printStackTrace();

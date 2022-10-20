@@ -25,7 +25,7 @@ public class Bomb extends Entity {
     private boolean allowPass = true;  // cho phép bomber vượt qua
     private boolean explode = false;
     private static int flameLength = 1;
-    private int timeBeforeExplode = 2000;
+    private double timeBeforeExplode = 2000;
     private final double flameTime = 1000;
     private boolean hasFlame = false;
     private double time = 0;
@@ -72,16 +72,29 @@ public class Bomb extends Entity {
         Bomb.flameLength = flameLength;
     }
 
-    public void setTimeBeforeExplode(int timeBeforeExplode) {
+    public void setTimeBeforeExplode(double timeBeforeExplode) {
         this.timeBeforeExplode = timeBeforeExplode;
     }
 
-    public int getTimeBeforeExplode() {
+    public double getTimeBeforeExplode() {
         return timeBeforeExplode;
+    }
+
+    public double getTime() {
+        return time;
     }
 
     public List<Flame> getFlameList() {
         return flameList;
+    }
+
+    public void setTimeExplodeBomb(double x, double y) {
+        List<Bomb> bombList = EntitiesManager.getInstance().bombs;
+        for(int i = 0; i < bombList.size(); i++){
+            if( bombList.get(i).getX() == x && bombList.get(i).getY() == y){
+                bombList.get(i).setTimeBeforeExplode(bombList.get(i).getTime() + 5);
+            }
+        }
     }
 
     @Override
@@ -131,9 +144,14 @@ public class Bomb extends Entity {
                 levelMap.destroyBrick((int) y / 32, (int) x / 32 - l);
                 break;
             }
+            if (levelMap.getHashAt((int) y / 32, (int) x / 32 - l) == levelMap.getHash("bomb")) {
+                setTimeExplodeBomb(x - 32 * l, y);
+                break;
+            }
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 - l) == levelMap.getHash("wall")) {
                 break;
             }
+
         }
         for (int i = 1; i < l; i++) {
             if (i != (l - 1)) {
@@ -148,6 +166,10 @@ public class Bomb extends Entity {
         for (; r <= flameLength; r++) {
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("brick")) {
                 levelMap.destroyBrick((int) y / 32, (int) x / 32 + r);
+                break;
+            }
+            if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("bomb")) {
+                setTimeExplodeBomb(x + 32 * r, y);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32, (int) x / 32 + r) == levelMap.getHash("wall")) {
@@ -167,6 +189,10 @@ public class Bomb extends Entity {
         for (; u <= flameLength; u++) {
             if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32) == levelMap.getHash("brick")) {
                 levelMap.destroyBrick((int) y / 32 - u, (int) x / 32);
+                break;
+            }
+            if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32) == levelMap.getHash("bomb")) {
+                setTimeExplodeBomb(x, y - 32 * u);
                 break;
             }
             if (levelMap.getHashAt((int) y / 32 - u, (int) x / 32) == levelMap.getHash("wall")) {
@@ -189,6 +215,10 @@ public class Bomb extends Entity {
                 break;
             }
             if (levelMap.getHashAt((int) y / 32 + d, (int) x / 32) == levelMap.getHash("wall")) {
+                setTimeExplodeBomb(x, y + 32 * d);
+                break;
+            }
+            if (levelMap.getHashAt((int) y / 32 + d, (int) x / 32) == levelMap.getHash("wall")) {
                 break;
             }
         }
@@ -199,8 +229,6 @@ public class Bomb extends Entity {
                 flameList.add(new Flame(x, y + 32 * i, width, height, Flame.FlameDirection.DOWN, true));
             }
         }
-        // check vị trí của bomber
-        //check vị trí của monster ....
     }
 
     @Override

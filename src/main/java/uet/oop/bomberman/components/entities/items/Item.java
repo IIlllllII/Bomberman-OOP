@@ -18,8 +18,8 @@ public abstract class Item extends Entity {
     protected static Image flamePass;
     protected static Image invincible;
     protected Image image;
-    protected double timeAppear = 5000;
-    protected double timePowerUp = 30000;
+    protected double timeAppear = 10000;
+    protected double timePowerUp ;
     protected boolean appear = false;
     protected boolean eaten = false;
 
@@ -60,6 +60,10 @@ public abstract class Item extends Entity {
     }
 
     public abstract void changePower();
+
+    public void setTimePowerUp(double timePowerUp) {
+        this.timePowerUp = timePowerUp;
+    }
 
     @Override
     public void update() {

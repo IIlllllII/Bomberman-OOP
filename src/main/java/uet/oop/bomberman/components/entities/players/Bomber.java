@@ -172,7 +172,6 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public void placeBomb() {
         direction = Direction.DOWN;
-
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
 
         double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;
@@ -218,8 +217,12 @@ public class Bomber extends Entity implements Movable, Killable {
         this.bombMax = bombMax;
     }
 
+    public int getBombMax() {
+        return bombMax;
+    }
+
     public void setSpeed(int speed) {
-        this.speed = speed;
+        this.speed= speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
@@ -242,10 +245,6 @@ public class Bomber extends Entity implements Movable, Killable {
         this.canPassBomb = canPassBomb;
     }
 
-    public boolean isCanPassBomb() {
-        return canPassBomb;
-    }
-
     public boolean isInvincible() {
         return invincible;
     }
@@ -262,6 +261,10 @@ public class Bomber extends Entity implements Movable, Killable {
         this.playerStatus = playerStatus;
     }
 
+    public BoxCollider getBomberBox() {
+        return bomberBox;
+    }
+
     @Override
     public Direction getDirection() {
         return direction;
@@ -270,10 +273,6 @@ public class Bomber extends Entity implements Movable, Killable {
     @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
-    }
-
-    public BoxCollider getBomberBox() {
-        return bomberBox;
     }
 
     @Override
@@ -366,6 +365,16 @@ public class Bomber extends Entity implements Movable, Killable {
         if (levelMap.getHashAt(i, j) == levelMap.getHash("brick")) {
             return !canPassBrick;
         }
+
+        if (levelMap.getHashAt(i, j) == levelMap.getHash("portal")) {
+            if (EntitiesManager.getInstance().portal.isCanPass()) {
+                levelMap.prepareNextLevel();
+                return false;
+            } else {
+                return true;
+            }
+        }
+
         return levelMap.getHashAt(i, j) == levelMap.getHash("wall");
     }
 }
