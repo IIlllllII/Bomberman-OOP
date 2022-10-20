@@ -1,36 +1,64 @@
 package uet.oop.bomberman.core.scenes;
 
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Scale;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.Camera;
+import uet.oop.bomberman.core.scenes.game.CountDown;
 
 import java.util.List;
 
 public class PlayScene {
-    private final Group root;
-    private final Canvas canvas;
+    private final StackPane root;
     private final GraphicsContext gc;
+    private final CountDown count;
     private final LevelMap levelMap = LevelMap.getInstance();
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     public PlayScene() {
-        canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
+        root = new StackPane();
+        root.setAlignment(Pos.CENTER);
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setStyle("-fx-background-color: #2A2E37;");
+
+        // center
+        Group center = new Group();
+
+        Canvas canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
-        root = new Group();
-        root.getChildren().addAll(canvas);
+        center.getChildren().addAll(canvas);
+        borderPane.setCenter(center);
+
+        // top
+        HBox top = new HBox(50);
+        top.setMaxHeight(32);
+        top.setAlignment(Pos.CENTER);
+
+        count = new CountDown(20);
+        count.start();
+
+        top.getChildren().add(count);
+        borderPane.setTop(top);
+
+        root.getChildren().add(borderPane);
 
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
     }
 
-    public Group getRoot() {
+    public Parent getRoot() {
         return root;
     }
 
@@ -46,9 +74,8 @@ public class PlayScene {
 
     public void update(List<KeyCode> inputList) {
         if (inputList.contains(KeyCode.ESCAPE)) {
-            MenuScene.gameMusic.stopMusic();
-            MenuScene.menuMusic.playMusic();
             SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
+            inputList.remove(KeyCode.ESCAPE);
         }
 
         if (inputList.contains(KeyCode.N)) {

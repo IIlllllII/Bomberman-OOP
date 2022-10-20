@@ -1,5 +1,7 @@
 package uet.oop.bomberman.core.sound;
 
+import javafx.scene.media.MediaPlayer;
+
 public class Music extends Sound {
     public static final String MENU_MUSIC = "src/main/resources/sound/Title.mp3";
     public static final String GAME_MUSIC = "src/main/resources/sound/inGame.mp3";
@@ -32,7 +34,7 @@ public class Music extends Sound {
     public void playMusic() {
         if (status == MusicStatus.STOP && !muteAll) {
             if(loops){
-                mediaPlayer.setCycleCount(Integer.MAX_VALUE);
+                mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             }
             status = MusicStatus.PLAY;
             mediaPlayer.play();

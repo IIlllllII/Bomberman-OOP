@@ -8,10 +8,10 @@ import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
+import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.CharacterStatus;
-import uet.oop.bomberman.sound.Sound;
+import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.HashMap;
 import java.util.List;
@@ -228,6 +228,10 @@ public class Bomber extends Entity implements Movable, Killable {
 
     public void setBombMax(int bombMax) {
         this.bombMax = bombMax;
+    }
+
+    public int getBombMax() {
+        return bombMax;
     }
 
     public void setSpeed(int speed) {

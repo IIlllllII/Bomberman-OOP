@@ -2,6 +2,7 @@ package uet.oop.bomberman.core.scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import uet.oop.bomberman.core.sound.Music;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class SceneManager {
     private final MenuScene menuScene;
     private final PlayScene playScene;
     private final Scene scene;
+    private Music music;
 
     private final List<KeyCode> inputList = new ArrayList<>();
 
@@ -31,9 +33,10 @@ public class SceneManager {
         playScene = new PlayScene();
 
         scene = new Scene(menuScene.getRoot());
-        zoom();
-
         setCurrentScene(SCENES.MENU);
+
+        music = new Music("src/main/resources/sound/Customs/Supercut-lorde.mp3", true);
+        //music.playMusic();
     }
 
     public SCENES getCurrentScene() {
