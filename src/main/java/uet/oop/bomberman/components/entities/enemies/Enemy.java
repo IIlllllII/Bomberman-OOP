@@ -1,6 +1,10 @@
-package uet.oop.bomberman.components.entities.enemy;
+package uet.oop.bomberman.components.entities.enemies;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -46,7 +50,12 @@ public abstract class Enemy extends Entity {
         } else {
             animationDeath.render(gc, x - camera.getX(), y - camera.getY());
             if (!animationDeath.isDone()) {
-                gc.fillText(" + " + score, x + 16, y + 20 - animationDeath.getCalcTime() / 32);
+                Text text = new Text();
+                gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+                gc.setFill(Color.SNOW);
+                gc.fillText(" + " + score,
+                        x - camera.getX() + 16,
+                        y - camera.getY() + 20 - animationDeath.getCalcTime() / 32);
             } else {
                 done = true;
             }

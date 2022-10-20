@@ -1,5 +1,6 @@
-package uet.oop.bomberman.components.entities.enemy;
+package uet.oop.bomberman.components.entities.enemies.normal;
 
+import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
@@ -7,30 +8,34 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
-public class Pontan extends  Enemy{
-    public Pontan(double x, double y){
+public class Oneal extends Enemy {
+
+    public Oneal(double x, double y) {
         super(x, y);
-        animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0 * 32, 2 * 32, 32, 32);
-        animationRight = new Animation(SpriteSheet.enemy, 3, 3, 1000, 3 * 32, 2 * 32, 32, 32);
-        animationDeath = new Animation(SpriteSheet.enemy, 4, 4, 1000, 6 * 32, 2 * 32, 32, 32);
-        animationLeft.setLoop(true);
+
+        animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 3000, 0, 32, 32, 32);
+        animationRight = new Animation(SpriteSheet.enemy, 3, 3, 3000, 96, 32, 32, 32);
+        animationDeath = new Animation(SpriteSheet.enemy, 3, 3, 1000, 192, 32, 32, 32);
         animationRight.setLoop(true);
+        animationLeft.setLoop(true);
         initDirectionList();
 
-        score = 8000;
-        speed = 4;
+        score = 200;
     }
 
     @Override
     protected void move() {
         int j = (int) (x / GameConfig.TILE_SIZE);
         int i = (int) (y / GameConfig.TILE_SIZE);
+
         if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
+            int temp = r.nextInt(3);
+            speed = (temp == 0) ? 1 : temp;
+
             lastDirection = findWay(i, j);
 
             canMoveR = checkMapHash(i, j + 1);
@@ -43,18 +48,18 @@ public class Pontan extends  Enemy{
         y += moveY;
     }
 
-    @Override
-    protected boolean checkMapHash(int i, int j) {
-        LevelMap levelMap = LevelMap.getInstance();
-        if (i < 0 || i > (levelMap.getHeight() / GameConfig.TILE_SIZE) - 1
-                || j < 0 || j > (levelMap.getWidth() / GameConfig.TILE_SIZE) - 1) {
-            return false;
-        }
-        return levelMap.getHashAt(i, j) == levelMap.getHash("grass")
-                || levelMap.getHashAt(i, j) == levelMap.getHash("brick");
-    }
-
     private Direction findWay(int i, int j) {
+        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+
+        int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
+        int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
+
+        int ran = r.nextInt(directionList.size());
+        if (Math.abs(jBomber - j) > 2 || Math.abs(iBomber - i) > 2){
+            return directionList.get(ran);
+        }
+
         LevelMap levelMap = LevelMap.getInstance();
         boolean[][] checkPass =
                 new boolean[levelMap.getMapHash().length][levelMap.getMapHash()[0].length];
@@ -64,12 +69,6 @@ public class Pontan extends  Enemy{
                 checkPass[m][n] = false;
             }
         }
-
-        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
-        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
-
-        int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
-        int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
 
         canMoveR = checkMapHash(i, j + 1);
         canMoveL = checkMapHash(i, j - 1);
@@ -144,8 +143,8 @@ public class Pontan extends  Enemy{
                 jTile.add(j);
             }
         }
-
-        int ran = r.nextInt(directionList.size());
         return directionList.get(ran);
     }
 }
+
+

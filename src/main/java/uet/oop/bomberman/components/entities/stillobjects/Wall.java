@@ -28,6 +28,9 @@ public class Wall extends Entity {
                 walls.add(new Sprite(16, 2 * 16, 2 * 16, newTiles, 16, 16).getFxImage());
                 walls.add(new Sprite(16, 2 * 16, 5 * 16, newTiles, 16, 16).getFxImage());
                 walls.add(new Sprite(16, 4 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
+                //Map boss
+                walls.add(new Sprite(16, 4 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
+
 //                walls.add(new Sprite(16, 2 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
 //                walls.add(new Sprite(16, 2 * 16, 1 * 16, newTiles, 16, 16).getFxImage());
 //                walls.add(new Sprite(16, 2 * 16, 2 * 16, newTiles, 16, 16).getFxImage());
