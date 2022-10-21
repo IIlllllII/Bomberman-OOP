@@ -35,8 +35,8 @@ public class SceneManager {
         scene = new Scene(menuScene.getRoot());
         setCurrentScene(SCENES.MENU);
 
-        music = new Music("src/main/resources/sound/Customs/Supercut-lorde.mp3", true);
-        //music.playMusic();
+        music = new Music("src/main/resources/sound/Customs/Outside-calvin-harris.mp3", true);
+        music.playMusic();
     }
 
     public SCENES getCurrentScene() {

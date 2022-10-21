@@ -47,7 +47,7 @@ public class PlayScene {
         top.setMaxHeight(32);
         top.setAlignment(Pos.CENTER);
 
-        count = new CountDown(20);
+        count = new CountDown();
         count.start();
 
         top.getChildren().add(count);

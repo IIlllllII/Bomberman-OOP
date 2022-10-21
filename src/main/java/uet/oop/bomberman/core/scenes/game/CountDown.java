@@ -10,16 +10,28 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public class CountDown extends Label {
-    private int count;
+    public static final int DEFAULT_TIME = 180;
+    private int time;
     Timeline timeline;
 
-    /**
-     *
-     * @param time in second
-     */
-    public CountDown(int time) {
-        count = time;
+    public CountDown() {
+        setTime(DEFAULT_TIME);
+    }
 
+    public void start() {
+        timeline.play();
+    }
+
+    public void stop() {
+        timeline.stop();
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
         setText(Integer.toString(time));
         setTextFill(Color.WHITE);
         setFont(Font.font(24));
@@ -31,32 +43,16 @@ public class CountDown extends Label {
         scaleTransition.setAutoReverse(true);
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1),e -> {
-            count--;
-            setText(String.valueOf(count));
-            if (count < 10) {
+            this.time--;
+            setText(String.valueOf(this.time));
+            if (this.time < 10) {
                 setTextFill(Color.RED);
-                if (count < 4 && scaleTransition.getStatus() != Animation.Status.RUNNING) {
+                if (this.time < 4 && scaleTransition.getStatus() != Animation.Status.RUNNING) {
                     scaleTransition.play();
                 }
             }
         }));
 
         timeline.setCycleCount(time);
-    }
-
-    public void start() {
-        timeline.play();
-    }
-
-    public void stop() {
-        timeline.stop();
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 }

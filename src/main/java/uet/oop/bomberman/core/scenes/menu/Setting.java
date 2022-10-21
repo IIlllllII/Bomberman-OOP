@@ -70,7 +70,7 @@ public class Setting extends VBox {
         {
             sliderZoom.setOrientation(Orientation.HORIZONTAL);
             sliderZoom.setValue(GameConfig.ZOOM);
-            sliderZoom.setMin(0.75);
+            sliderZoom.setMin(1);
             sliderZoom.setMax(1.5);
             sliderZoom.setBlockIncrement(0.25);
             sliderZoom.setMajorTickUnit(0.25);
@@ -80,6 +80,9 @@ public class Setting extends VBox {
             sliderZoom.setOnMouseClicked(mouseEvent -> {
                 GameConfig.ZOOM = Math.round(sliderZoom.getValue() * 4) / 4.0;
                 sliderZoom.setValue(GameConfig.ZOOM);
+                if (GameConfig.ZOOM == 1.5) {
+                    GameConfig.ZOOM = 1.4;
+                }
                 Main.zoom();
             });
         }

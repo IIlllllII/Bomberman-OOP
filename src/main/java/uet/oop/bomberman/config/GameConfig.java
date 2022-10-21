@@ -4,9 +4,9 @@ public class GameConfig {
     public static final String NAME = "Bomberman";
     public static double ZOOM = 1.25;
     public static final int SCENE_WIDTH = 32 * 20;
-    public static final int SCENE_HEIGHT = 32 * 13;
+    public static final int SCENE_HEIGHT = 32 * 15;
     public static final int WIDTH = 32 * 18;
-    public static final int HEIGHT = 32 * 11;
+    public static final int HEIGHT = 32 * 13;
     public static final int TILE_SIZE = 32;
     public static final int SCALED_FACTOR = 2;
     public static final String ICON_PATH = "/icon/icon.png";
