@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Doria extends Enemy {
+
     public Doria(double x, double y) {
         super(x, y);
         animationLeft = new Animation(SpriteSheet.enemy, 3, 3, 1000, 0, 160, 32, 32);

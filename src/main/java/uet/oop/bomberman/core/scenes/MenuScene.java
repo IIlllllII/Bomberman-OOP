@@ -1,10 +1,5 @@
 package uet.oop.bomberman.core.scenes;
 
-import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.scenes.buttons.MenuButton;
-import uet.oop.bomberman.core.scenes.menu.Leaderboards;
-import uet.oop.bomberman.core.scenes.menu.Setting;
-import uet.oop.bomberman.core.scenes.menu.SliderShow;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -13,15 +8,22 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import uet.oop.bomberman.core.sound.Music;
+import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.buttons.MenuButton;
+import uet.oop.bomberman.core.scenes.menu.Leaderboards;
+import uet.oop.bomberman.core.scenes.menu.Setting;
+import uet.oop.bomberman.core.scenes.menu.SliderShow;
 
 public class MenuScene {
     private final StackPane root;
-    private static final SliderShow background = new SliderShow(2, 4);
+    private static SliderShow background;
     private final GameMenu gameMenu;
-    public static Music menuMusic = new Music(Music.MENU_MUSIC, true);
-    public static Music gameMusic = new Music(Music.GAME_MUSIC, true);
+
+    public static void init() {
+        SliderShow.init();
+    }
 
     private static class SingletonHelper {
         private static final MenuScene INSTANCE = new MenuScene();
@@ -33,13 +35,12 @@ public class MenuScene {
         root = new StackPane();
         root.setAlignment(Pos.CENTER);
 
-        background.setPrefWidth(GameConfig.WIDTH);
-        background.setPrefHeight(GameConfig.HEIGHT);
+        background = new SliderShow(2, 4);
+        background.setPrefWidth(GameConfig.SCENE_WIDTH);
+        background.setPrefHeight(GameConfig.SCENE_HEIGHT);
 
         gameMenu = new GameMenu();
         gameMenu.setVisible(false);
-
-        menuMusic.playMusic();
 
         root.getChildren().addAll(background, gameMenu);
 
@@ -64,20 +65,22 @@ public class MenuScene {
         public GameMenu() {
             setStyle("-fx-background-color: rgba(128, 128, 128, 0.5)");
             setAlignment(Pos.CENTER);
-            setSpacing(45);
+            setSpacing(50);
 
             ImageView logo = new ImageView(new Image("/Logo1.png"));
+            logo.setFitHeight(79.875);
+            logo.setFitWidth(450);
 
-            VBox menu0 = new VBox(10);
-            VBox menu1 = new VBox(10);
+            VBox menu0 = new VBox(12);
+            VBox menu1 = new VBox(12);
 
             getChildren().add(0, logo);
             getChildren().add(1, menu0);
 
-            Leaderboards leaderboards = new Leaderboards(300, 160);
-            Setting setting = new Setting(300, 180);
+            Leaderboards leaderboards = new Leaderboards(350, 160);
+            Setting setting = new Setting(350, 180);
 
-            MenuButton buttonPlay = new MenuButton("New Game");
+            MenuButton buttonPlay = new MenuButton("New Game", Color.GREEN);
             buttonPlay.setOnMouseClicked(mouseEvent -> {
                 FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
                 ft.setFromValue(1);
@@ -92,14 +95,14 @@ public class MenuScene {
                 ft.play();
             });
 
-            MenuButton btnBack = new MenuButton("Back");
+            MenuButton btnBack = new MenuButton("Back", Color.CRIMSON);
             btnBack.setOnMouseClicked(event -> {
                 menu1.getChildren().clear();
                 getChildren().remove(menu1);
                 getChildren().add(1, menu0);
             });
 
-            MenuButton btnLeaderboards = new MenuButton("Leaderboards");
+            MenuButton btnLeaderboards = new MenuButton("Leaderboards", Color.BLUE);
             btnLeaderboards.setOnMouseClicked(event -> {
                 getChildren().remove(menu0);
                 menu1.getChildren().add(0, leaderboards);
@@ -107,7 +110,7 @@ public class MenuScene {
                 getChildren().add(1, menu1);
             });
 
-            MenuButton btnSetting = new MenuButton("Setting");
+            MenuButton btnSetting = new MenuButton("Setting", Color.BLUE);
             btnSetting.setOnMouseClicked(event -> {
                 getChildren().remove(menu0);
                 menu1.getChildren().add(0, setting);
@@ -115,12 +118,12 @@ public class MenuScene {
                 getChildren().add(1, menu1);
             });
 
-            MenuButton btnAbout = new MenuButton("About");
+            MenuButton btnAbout = new MenuButton("About", Color.BLUE);
             btnAbout.setOnMouseClicked(event -> {
 
             });
 
-            MenuButton btnExit = new MenuButton("Exit");
+            MenuButton btnExit = new MenuButton("Exit", Color.RED);
             btnExit.setOnMouseClicked(event -> {
                 Platform.exit();
                 System.exit(0);
