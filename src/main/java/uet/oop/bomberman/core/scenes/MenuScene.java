@@ -89,7 +89,6 @@ public class MenuScene {
                 {
                     background.stop();
                     this.setVisible(false);
-                    System.out.println("Play button");
                     SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.PLAY);
                 });
                 ft.play();

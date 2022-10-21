@@ -18,6 +18,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.HighScore;
 import uet.oop.bomberman.core.scenes.MenuScene;
+import uet.oop.bomberman.core.sound.BackgroundMusic;
 
 import java.net.URISyntaxException;
 
@@ -94,6 +95,7 @@ public class IntroStage {
         (new Thread(() -> {
             MenuScene.init();
             HighScore.init();
+            BackgroundMusic.init();
             SpriteSheet.init();
             LevelMap.init();
             Bomb.init();

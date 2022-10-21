@@ -15,6 +15,8 @@ import uet.oop.bomberman.components.entities.materials.Grass;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.entities.materials.Wall;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.PlayScene;
+import uet.oop.bomberman.core.scenes.game.Clock;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,6 +41,11 @@ public class LevelMap {
     }
 
     private LevelMap() {
+        reset();
+    }
+
+    public void reset() {
+        levelComplete = false;
         level = 0;
         nextLevel();
     }
@@ -65,14 +72,18 @@ public class LevelMap {
     }
 
     public void update() {
-        if (levelComplete) {
+        if (levelComplete && PlayScene.getClock().isDone()) {
             nextLevel();
             levelComplete = false;
         }
     }
 
+    public void setLevelComplete(boolean levelComplete) {
+        this.levelComplete = levelComplete;
+    }
+
     public void prepareNextLevel() {
-        //levelComplete = true;
+        PlayScene.setClock(15);
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
@@ -83,6 +94,7 @@ public class LevelMap {
         entitiesManager.bricks.clear();
     }
 
+    // Should be private later
     public void nextLevel() {
         level++;
         level = (level > 8) ? 1 : level;
@@ -93,6 +105,10 @@ public class LevelMap {
         List<Item> itemList = entitiesManager.items;
         List<Enemy> enemyList = entitiesManager.enemies;
         Portal portal = entitiesManager.portal;
+
+        if (PlayScene.getClock() != null) {
+            PlayScene.setClock(Clock.DEFAULT_TIME);
+        }
 
         System.out.println("Current: " + brickList.size() + " " + itemList.size()
         + " " + enemyList.size());

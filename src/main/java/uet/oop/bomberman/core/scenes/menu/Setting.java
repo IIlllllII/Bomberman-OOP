@@ -11,7 +11,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.sound.Sound;
+import uet.oop.bomberman.core.sound.BackgroundMusic;
+
+import java.util.Objects;
 
 public class Setting extends VBox {
     public Setting(double prefWidth, double prefHeight) {
@@ -42,20 +44,42 @@ public class Setting extends VBox {
         Text mute = new Text("Mute All");
         CheckBox isMute = new CheckBox();
         isMute.setOnMouseClicked(event -> {
-            System.out.println(isMute.isSelected());
-            Sound.setMuteAll(isMute.isSelected());
+            BackgroundMusic.getInstance().setMute(isMute.isSelected());
         });
         musicContent.add(mute, 0, 0);
         musicContent.add(isMute, 1, 0);
 
         Text volume = new Text("Volume");
         Slider sliderVolume = new Slider();
-        sliderVolume.setOrientation(Orientation.HORIZONTAL);
+        {
+            BackgroundMusic backgroundMusic = BackgroundMusic.getInstance();
+            sliderVolume.setOrientation(Orientation.HORIZONTAL);
+            sliderVolume.setValue(backgroundMusic.getVolumn() * 100);
+            sliderVolume.setMin(0);
+            sliderVolume.setMax(100);
+            sliderVolume.setBlockIncrement(20);
+            sliderVolume.setMajorTickUnit(20);
+            sliderVolume.setMinorTickCount(1);
+            sliderVolume.setShowTickLabels(true);
+            sliderVolume.setShowTickMarks(true);
+            sliderVolume.valueProperty().addListener(observable -> {
+                backgroundMusic.setVolume(sliderVolume.getValue() / 100);
+            });
+        }
         musicContent.add(volume, 0, 1);
         musicContent.add(sliderVolume, 1,1);
 
         Text theme = new Text("Theme Music");
-        ChoiceBox<String> choiceTheme = new ChoiceBox<>();
+        ComboBox<String> choiceTheme = new ComboBox<>();
+        choiceTheme.getItems().addAll("DEFAULT", "CUSTOMS");
+        choiceTheme.setValue("CUSTOMS");
+        choiceTheme.setOnAction(event -> {
+            if (Objects.equals(choiceTheme.getValue(), BackgroundMusic.THEME.CUSTOMS.toString())) {
+                BackgroundMusic.getInstance().setTheme(BackgroundMusic.THEME.CUSTOMS);
+            } else {
+                BackgroundMusic.getInstance().setTheme(BackgroundMusic.THEME.DEFAULT);
+            }
+        });
         musicContent.add(theme, 0, 2);
         musicContent.add(choiceTheme, 1, 2);
 
@@ -77,9 +101,9 @@ public class Setting extends VBox {
             sliderZoom.setMinorTickCount(0);
             sliderZoom.setShowTickLabels(true);
             sliderZoom.setShowTickMarks(true);
-            sliderZoom.setOnMouseClicked(mouseEvent -> {
+            sliderZoom.setSnapToTicks(true);
+            sliderZoom.valueProperty().addListener(observable -> {
                 GameConfig.ZOOM = Math.round(sliderZoom.getValue() * 4) / 4.0;
-                sliderZoom.setValue(GameConfig.ZOOM);
                 if (GameConfig.ZOOM == 1.5) {
                     GameConfig.ZOOM = 1.4;
                 }
