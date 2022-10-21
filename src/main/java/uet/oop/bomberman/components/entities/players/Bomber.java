@@ -42,7 +42,7 @@ public class Bomber extends Entity implements Movable, Killable {
         super(x, y, (int) ((1.2 * w * GameConfig.TILE_SIZE) / h), (int) (1.2 * GameConfig.TILE_SIZE));
         initialX = x;
         initialY = y;
-        bomberBox = new BoxCollider(0, 0, 18, 20);
+        bomberBox = new BoxCollider(0, 0, 15, 20);
         updateBoxCollider();
     }
 
@@ -204,6 +204,11 @@ public class Bomber extends Entity implements Movable, Killable {
         if (bombList.size() < bombMax) {
             int bombX = ((int) centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             int bombY = ((int) centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
+
+            if (LevelMap.getInstance().getHashAt(bombY / GameConfig.TILE_SIZE, bombX / GameConfig.TILE_SIZE)
+                != LevelMap.getInstance().getHash("grass")) {
+                return;
+            }
             boolean hasBomb = false;
             for (Bomb bomb : bombList) {
                 if (bomb.getX() == bombX && bomb.getY() == bombY) {

@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class Flame extends Entity {
 
     @Override
     public void update() {
-        time += Timer.getInstance().getDeltaTime();
+        time += Timers.getInstance().getDeltaTime();
         if (time <= flameTime) {
             switch (flameDirection) {
                 case UP:

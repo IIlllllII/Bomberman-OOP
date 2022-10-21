@@ -76,9 +76,11 @@ public class LevelMap {
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
-            entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-            mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-                    = getHash("coin");
+            if (!brick.isDestroyed()) {
+                entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
+                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
+                        = getHash("coin");
+            }
         });
         entitiesManager.bricks.clear();
     }
@@ -112,9 +114,15 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            entitiesManager.players.add(
-                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
-                            );
+                            if (entitiesManager.players.size() == 0) {
+                                entitiesManager.players.add(
+                                        new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
+                                );
+                            } else {
+                                entitiesManager.players.get(0).setLocation(
+                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5
+                                );
+                            }
                             hash = getHash("grass");
                             break;
                         }

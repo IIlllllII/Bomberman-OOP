@@ -2,7 +2,7 @@ package uet.oop.bomberman.core.stages;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 import uet.oop.bomberman.core.scenes.SceneManager;
 
 /**
@@ -15,7 +15,7 @@ import uet.oop.bomberman.core.scenes.SceneManager;
 
 public class GameStage {
     private final SceneManager sceneManager;
-    private final Timer timer;
+    private final Timers timers;
     private final Scene scene;
 
     private int totalScore;
@@ -30,7 +30,7 @@ public class GameStage {
     private GameStage() {
         totalScore = 0;
         sceneManager = SceneManager.getInstance();
-        timer = Timer.getInstance();
+        timers = Timers.getInstance();
 
         scene = sceneManager.getScene();
     }
@@ -39,7 +39,7 @@ public class GameStage {
         (new AnimationTimer() {
             @Override
             public void handle(long now) {
-                timer.update(now / 1_000_000);
+                timers.update(now / 1_000_000);
                 update();
                 render();
             }

@@ -9,6 +9,7 @@ import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.Camera;
+import uet.oop.bomberman.core.Clock;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class PlayScene {
     private final LevelMap levelMap = LevelMap.getInstance();
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
+    private final Clock clock = Clock.getInstance();
 
     public PlayScene() {
         canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
@@ -28,6 +30,8 @@ public class PlayScene {
         root.getChildren().addAll(canvas);
 
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+        clock.setTimeLeft(180);
+        clock.start();
     }
 
     public Group getRoot() {
@@ -68,5 +72,6 @@ public class PlayScene {
         levelMap.render(gc);
 
         entitiesManager.render(gc);
+        gc.fillText(clock.toString(), 96, 20);
     }
 }

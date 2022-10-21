@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 
 public abstract class Item extends Entity {
     private static boolean initialized = false;
@@ -70,7 +70,7 @@ public abstract class Item extends Entity {
     @Override
     public void update() {
         if (appear) {
-            time += Timer.getInstance().getDeltaTime();
+            time += Timers.getInstance().getDeltaTime();
             if (time >= timeAppear || eaten) {
                 appear = false;
                 time = 0;
@@ -80,7 +80,7 @@ public abstract class Item extends Entity {
             }
         }
         if (eaten && !done) {
-            time += Timer.getInstance().getDeltaTime();
+            time += Timers.getInstance().getDeltaTime();
             changePower();
         }
     }

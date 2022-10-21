@@ -7,7 +7,7 @@ import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-        time += Timer.getInstance().getDeltaTime();
+        time += Timers.getInstance().getDeltaTime();
         if (!explode) {
             if (allowPass) {
                 double subX = EntitiesManager.getInstance().players.get(0).getX() - this.x;

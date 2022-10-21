@@ -128,22 +128,22 @@ public class Saru extends Enemy {
             moveY = 0;
             saruStatus = CharacterStatus.MOVING;
 
-//            if (cellXPlayer == cellX) {
-//                if (cellYPlayer > cellY) {
-//                    //Direction = DOWN;
-//                } else {
-//                    //Direction = UP;
-//                }
-//                //Start suicide;
-//            }
-//            if (cellYPlayer == cellY) {
-//                if (cellXPlayer > cellX) {
-//                    //Direction = right;
-//                } else {
-//                    //Direction = left;
-//                }
-//                //Start suicide;
-//            }
+            if (cellXPlayer == cellX) {
+                if (cellYPlayer > cellY) {
+                    //Direction = DOWN;
+                } else {
+                    //Direction = UP;
+                }
+                //Start suicide;
+            }
+            if (cellYPlayer == cellY) {
+                if (cellXPlayer > cellX) {
+                    //Direction = right;
+                } else {
+                    //Direction = left;
+                }
+                //Start suicide;
+            }
 
             if (cellXPlayer < cellX && cellYPlayer < cellY) {
                 //move right or down first

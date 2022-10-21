@@ -6,7 +6,7 @@ import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -58,6 +58,10 @@ public class Brick extends Entity {
         image = bricks.get(level - 1);
     }
 
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
     }
@@ -70,7 +74,7 @@ public class Brick extends Entity {
     @Override
     public void update() {
         if (destroyed) {
-            time += Timer.getInstance().getDeltaTime();
+            time += Timers.getInstance().getDeltaTime();
             image = Sprite.animation(brickExplodes,time, timeDestroyed);
         }
     }

@@ -151,7 +151,7 @@ public class EntitiesManager {
      * Renew all entities when switching to another level
      */
     public void renewEntities() {
-        players.clear();
+        //players.clear();
         bombs.clear();
         bricks.clear();
         items.clear();
