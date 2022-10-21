@@ -62,6 +62,10 @@ public class Brick extends Entity {
         this.destroyed = destroyed;
     }
 
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
     @Override
     public void render(GraphicsContext gc) {
         gc.drawImage(image, x - camera.getX(), y - camera.getY());

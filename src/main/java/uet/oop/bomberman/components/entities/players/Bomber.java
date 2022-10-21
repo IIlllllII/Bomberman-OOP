@@ -29,6 +29,7 @@ public class Bomber extends Entity implements Movable, Killable {
     private boolean canPassBomb = false;
     private boolean canPassFlame = false;
     private boolean canPassBrick = false;
+    private boolean canResetLocation = false;
     private boolean invincible = false;
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
@@ -42,7 +43,7 @@ public class Bomber extends Entity implements Movable, Killable {
         super(x, y, (int) ((1.2 * w * GameConfig.TILE_SIZE) / h), (int) (1.2 * GameConfig.TILE_SIZE));
         initialX = x;
         initialY = y;
-        bomberBox = new BoxCollider(0, 0, 18, 20);
+        bomberBox = new BoxCollider(0, 0, 12, 20);
         updateBoxCollider();
     }
 
@@ -162,6 +163,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
+        resetLocation();
         if (playerStatus == CharacterStatus.IDLE) {
             return;
         }
@@ -192,9 +194,10 @@ public class Bomber extends Entity implements Movable, Killable {
     private void updateBoxCollider() {
         bomberBox.setLocation(
                 this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + bomberBox.getHeight() - 5
+                this.y + (this.height - bomberBox.getHeight()) + 3
         );
     }
+
     public void placeBomb() {
         direction = Direction.DOWN;
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
@@ -205,6 +208,11 @@ public class Bomber extends Entity implements Movable, Killable {
             int bombX = ((int) centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             int bombY = ((int) centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             boolean hasBomb = false;
+            LevelMap levelMap = LevelMap.getInstance();
+            if (levelMap.getHashAt(bombY / GameConfig.TILE_SIZE, bombX / GameConfig.TILE_SIZE)
+                    != levelMap.getHash("grass")) {
+                return;
+            }
             for (Bomb bomb : bombList) {
                 if (bomb.getX() == bombX && bomb.getY() == bombY) {
                     hasBomb = true;
@@ -212,6 +220,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
             }
             if (!hasBomb) {
+
                 new Sound(Sound.PLACE_BOMB_SOUND).playSound();
                 bombList.add(new Bomb(bombX, bombY, 32, 32));
 
@@ -219,6 +228,66 @@ public class Bomber extends Entity implements Movable, Killable {
                         bombY / GameConfig.TILE_SIZE,
                         bombX / GameConfig.TILE_SIZE,
                         "bomb");
+            }
+        }
+    }
+
+    public void resetLocation() {
+        if (canResetLocation) {
+            LevelMap levelMap = LevelMap.getInstance();
+            double centerX = bomberBox.getX();
+            double centerY = bomberBox.getY();
+            int jBomber = ((int) centerX / GameConfig.TILE_SIZE);
+            int iBomber = ((int) centerY / GameConfig.TILE_SIZE);
+            boolean checkL = true;
+            boolean checkR = true;
+            boolean checkU = true;
+            boolean checkD = true;
+            System.out.println(levelMap.getHashAt(iBomber, jBomber) == levelMap.getHash("brick"));
+            if (levelMap.getHashAt(iBomber, jBomber) == levelMap.getHash("brick")) {
+                int i = 1;
+                while (true) {
+                    if (jBomber - i >= 0) {
+                        if (levelMap.getHashAt(iBomber, jBomber - i) == levelMap.getHash("wall")) {
+                            checkL = false;
+                        }
+                        if (levelMap.getHashAt(iBomber, jBomber - i) == levelMap.getHash("grass") && checkL) {
+                            x -= speed;
+                            break;
+                        }
+                    }
+                    if (jBomber + i < levelMap.getMapHash()[0].length) {
+                        if (levelMap.getHashAt(iBomber, jBomber + i) == levelMap.getHash("wall")) {
+                            checkR = false;
+                        }
+                        if (levelMap.getHashAt(iBomber, jBomber + i) == levelMap.getHash("grass") && checkR) {
+                            x += speed;
+                            break;
+                        }
+                    }
+                    if (iBomber - i >= 0) {
+                        if (levelMap.getHashAt(iBomber - i, jBomber) == levelMap.getHash("wall")) {
+                            checkU = false;
+                        }
+                        if (levelMap.getHashAt(iBomber - i, jBomber) == levelMap.getHash("grass") && checkU) {
+                            y -= speed;
+                            break;
+                        }
+                    }
+                    if (iBomber + i < levelMap.getMapHash().length) {
+                        if (levelMap.getHashAt(iBomber + i, jBomber) == levelMap.getHash("wall")) {
+                            checkD = false;
+                        }
+                        if (levelMap.getHashAt(iBomber + i, jBomber) == levelMap.getHash("grass") && checkD) {
+                            y += speed;
+                            break;
+                        }
+                    }
+                    i++;
+                }
+                updateBoxCollider();
+            }else{
+                canResetLocation = false;
             }
         }
     }
@@ -247,15 +316,15 @@ public class Bomber extends Entity implements Movable, Killable {
     }
 
     public void setSpeed(int speed) {
-        this.speed= speed;
+        this.speed = speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
         this.canPassBrick = canPassBrick;
     }
 
-    public boolean isCanPassBrick() {
-        return canPassBrick;
+    public void setCanResetLocation(boolean canResetLocation) {
+        this.canResetLocation = canResetLocation;
     }
 
     public void setCanPassFlame(boolean canPassFlame) {
@@ -350,6 +419,8 @@ public class Bomber extends Entity implements Movable, Killable {
         boolean bottomLeftCheck = checkBarrier(bottomRow, leftCol);
         boolean bottomRightCheck = checkBarrier(bottomRow, rightCol);
 
+        System.out.println(topLeftCheck + " " + topRightCheck + " " + bottomLeftCheck + " " + bottomRightCheck);
+        System.out.println(direction);
         switch (direction) {
             case UP:
                 if (topLeftCheck || topRightCheck) {
@@ -367,6 +438,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
                 break;
             case LEFT:
+                //System.out.println("Check " + (topLeftCheck || bottomLeftCheck));
                 if (topLeftCheck || bottomLeftCheck) {
                     x -= steps;
                 }

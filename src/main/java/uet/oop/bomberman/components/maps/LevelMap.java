@@ -76,9 +76,11 @@ public class LevelMap {
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
-            entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-            mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-                    = getHash("coin");
+            if(!brick.isDestroyed()){
+                entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
+                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
+                        = getHash("coin");
+            }
         });
         entitiesManager.bricks.clear();
     }
@@ -96,6 +98,9 @@ public class LevelMap {
 
         System.out.println("Current: " + brickList.size() + " " + itemList.size()
         + " " + enemyList.size());
+        entitiesManager.items.add(
+                new BrickPass(32, 32)
+        );
 
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);

@@ -6,6 +6,7 @@ import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.players.Bomber;
 
 public class FlameUp extends Item {
+
     /**
      * Increase the blast radius each bombs can make (Max. 2).
      */
