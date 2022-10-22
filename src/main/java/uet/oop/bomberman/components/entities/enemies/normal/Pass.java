@@ -33,6 +33,7 @@ public class Pass extends Enemy {
         if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
+            lastDirection = findWay(i, j);
 
             canMoveR = checkMapHash(i, j + 1);
             canMoveL = checkMapHash(i, j - 1);
@@ -72,20 +73,20 @@ public class Pass extends Enemy {
 
         // Tránh bomb
         boolean checkBomb = false;
-        for (Bomb bomb : EntitiesManager.getInstance().bombs) {
+        for(Bomb bomb : EntitiesManager.getInstance().bombs){
             int iBomb = (int) bomb.getY() / GameConfig.TILE_SIZE;
             int jBomb = (int) bomb.getX() / GameConfig.TILE_SIZE;
-            if ((i == iBomb && Math.abs(j - jBomb) <= Bomb.getFlameLength() + 1) && j != jBomb) {
-                if (j - jBomb <= Bomb.getFlameLength() + 1) {
+            if((i == iBomb && Math.abs(j - jBomb) <= Bomb.getFlameLength() + 1) && j != jBomb){
+                if(j - jBomb <= Bomb.getFlameLength() + 1){
                     directionList.remove(Direction.LEFT);
-                } else {
+                }else {
                     directionList.remove(Direction.RIGHT);
                 }
             }
-            if (j == jBomb && Math.abs(i - iBomb) <= Bomb.getFlameLength() + 1 && i != iBomb) {
-                if (i - iBomb <= Bomb.getFlameLength() + 1) {
+            if(j == jBomb && Math.abs(i - iBomb) <= Bomb.getFlameLength() + 1 && i != iBomb){
+                if(i - iBomb <= Bomb.getFlameLength() + 1){
                     directionList.remove(Direction.UP);
-                } else {
+                }else {
                     directionList.remove(Direction.DOWN);
                 }
             }
@@ -123,8 +124,8 @@ public class Pass extends Enemy {
             j = jTile.poll();
 
             if (i == iBomber && j == jBomber) {
-                for (int k = 0; k < directionList.size(); k++) {
-                    if (directionList.get(k) == direction) {
+                for(int k = 0; k < directionList.size(); k++){
+                    if(directionList.get(k) == direction){
                         return direction;
                     }
                 }
@@ -160,6 +161,7 @@ public class Pass extends Enemy {
                 jTile.add(j);
             }
         }
+
         int ran = r.nextInt(directionList.size());
         return directionList.get(ran);
     }
