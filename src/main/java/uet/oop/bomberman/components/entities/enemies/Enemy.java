@@ -39,6 +39,7 @@ public abstract class Enemy extends Entity {
 
     public Enemy(double x, double y) {
         super(x, y);
+        lastDirection = Direction.DOWN;
     }
 
     public void render(GraphicsContext gc) {

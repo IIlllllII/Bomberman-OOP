@@ -194,7 +194,7 @@ public class Bomber extends Entity implements Movable, Killable {
     protected void updateBoxCollider() {
         bomberBox.setLocation(
                 this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + bomberBox.getHeight()
+                this.y + bomberBox.getHeight() - 5
         );
     }
 

@@ -3,6 +3,7 @@ package uet.oop.bomberman.components.entities.players;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
+import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.Coin;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -29,7 +30,6 @@ public class AutoPlay extends Bomber {
         initDirectionList();
         iBomber = (int) (y) / GameConfig.TILE_SIZE;
         jBomber = (int) (x) / GameConfig.TILE_SIZE;
-        speed = 4;
     }
 
     @Override
@@ -40,9 +40,11 @@ public class AutoPlay extends Bomber {
                 && playerStatus != CharacterStatus.DEAD) {
             if (EntitiesManager.getInstance().bombs.size() == 0) {
                 playerStatus = CharacterStatus.MOVING;
-                if (EntitiesManager.getInstance().enemies.size() != 0) {
+                if (checkAppearItem()) {
+                    direction = findEntity("item");
+                } else if (EntitiesManager.getInstance().enemies.size() != 0) {
                     direction = findEntity("enemy");
-                    avoidEnemy();
+//                    avoidEnemy();
                 } else if (!EntitiesManager.getInstance().portal.isAppear()) {
                     direction = findEntity("brick");
                 } else if (EntitiesManager.getInstance().coins.size() == 0) {
@@ -51,20 +53,27 @@ public class AutoPlay extends Bomber {
                     direction = findEntity("coin");
                 }
 
-                if (EntitiesManager.getInstance().bombs.size() == 0) {
-                    moveFind();
-                }
-
-            } else {
+            }
+            if (EntitiesManager.getInstance().bombs.size() == 0
+                    && playerStatus == CharacterStatus.MOVING) {
+                avoidEnemy();
+                moveFind();
+            }
+            if (EntitiesManager.getInstance().bombs.size() != 0) {
                 aVoidBomb();
                 if (playerStatus == CharacterStatus.IDLE) {
                     moveX = 0;
                     moveY = 0;
                 }
                 if (playerStatus == CharacterStatus.MOVING) {
+                    avoidEnemy();
                     moveAvoidBomb();
                 }
             }
+        }
+        if (playerStatus == CharacterStatus.DEAD) {
+            moveX = 0;
+            moveY = 0;
         }
         x += moveX;
         y += moveY;
@@ -175,9 +184,25 @@ public class AutoPlay extends Bomber {
         switch (nameEntity) {
             case "enemy": {
                 List<Enemy> enemyList = EntitiesManager.getInstance().enemies;
-                for (int k = 0; k < enemyList.size(); k++) {
-                    int iEnemy = (int) enemyList.get(k).getY() / GameConfig.TILE_SIZE;
-                    int jEnemy = (int) enemyList.get(k).getX() / GameConfig.TILE_SIZE;
+                for (Enemy enemy : enemyList) {
+                    Direction directionEnemy = enemy.getLastDirection();
+                    int iEnemy = (int) enemy.getY() / GameConfig.TILE_SIZE;
+                    int jEnemy = (int) enemy.getX() / GameConfig.TILE_SIZE;
+                    int mapWidth = LevelMap.getInstance().getMapHash()[0].length;
+                    int mapHeight = LevelMap.getInstance().getMapHash().length;
+                    switch (directionEnemy) {
+                        case UP:
+                            iEnemy = iEnemy - 4 > -1 ? iEnemy - 4 : 0;
+                            break;
+                        case DOWN:
+                            iEnemy = iEnemy + 4 < mapHeight ? iEnemy + 4 : mapHeight - 1;
+                            break;
+                        case LEFT:
+                            jEnemy = jEnemy - 4 > -1 ? jEnemy - 4 : 0;
+                            break;
+                        case RIGHT:
+                            jEnemy = jEnemy + 4 < mapWidth ? jEnemy + 4 : mapWidth - 1;
+                    }
                     if (iEnemy == i && jEnemy == j) {
                         return true;
                     }
@@ -208,6 +233,16 @@ public class AutoPlay extends Bomber {
                     int iEnemy = (int) coinList.get(k).getY() / GameConfig.TILE_SIZE;
                     int jEnemy = (int) coinList.get(k).getX() / GameConfig.TILE_SIZE;
                     if (iEnemy == i && jEnemy == j && !coinList.get(k).isEaten()) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            case "item": {
+                for (Item item : EntitiesManager.getInstance().items) {
+                    int iItem = (int) item.getY() / GameConfig.TILE_SIZE;
+                    int jItem = (int) item.getX() / GameConfig.TILE_SIZE;
+                    if (iItem == i && jItem == j && item.isAppear()) {
                         return true;
                     }
                 }
@@ -331,6 +366,12 @@ public class AutoPlay extends Bomber {
         moveX = 0;
         moveY = 0;
         LevelMap levelMap = LevelMap.getInstance();
+        if (checkEntity(iBomber, jBomber, "enemy")) {
+            placeBomb();
+            initDirectionList();
+            directionList.remove(direction);
+            return;
+        }
         switch (direction) {
             case UP: {
                 if (levelMap.getHashAt(iBomber - 1, jBomber) == levelMap.getHash("grass")) {
@@ -391,17 +432,48 @@ public class AutoPlay extends Bomber {
 
     private void avoidEnemy() {
         for (Enemy enemy : EntitiesManager.getInstance().enemies) {
-            int iBomb = (int) enemy.getY() / GameConfig.TILE_SIZE;
-            int jBomb = (int) enemy.getX() / GameConfig.TILE_SIZE;
+            int iEnemy = (int) enemy.getY() / GameConfig.TILE_SIZE;
+            int jEnemy = (int) enemy.getX() / GameConfig.TILE_SIZE;
             playerStatus = CharacterStatus.MOVING;
-
-            if ((Math.abs(jBomber - jBomb) <= 2) && Math.abs(iBomber - iBomb) <= 2){
-                if (enemy.getLastDirection() == direction) {
-                    placeBomb();
-                    initDirectionList();
+            if (iBomber == iEnemy && Math.abs(jBomber - jEnemy) <= 2) {
+                if (jBomber - jEnemy > 0) {
+                    directionList.remove(Direction.LEFT);
+                    if (directionList.size() != 0) {
+                        int ran = r.nextInt(directionList.size());
+                        direction = directionList.get(ran);
+                    } else {
+                        playerStatus = CharacterStatus.IDLE;
+                    }
                 } else {
-                    playerStatus = CharacterStatus.IDLE;
+                    directionList.remove(Direction.RIGHT);
+                    if (directionList.size() != 0) {
+                        int ran = r.nextInt(directionList.size());
+                        direction = directionList.get(ran);
+                    } else {
+                        playerStatus = CharacterStatus.IDLE;
+                    }
                 }
+                break;
+            }
+            if (jBomber == jEnemy && Math.abs(iBomber - iEnemy) <= 2) {
+                if (iBomber - iEnemy > 0) {
+                    directionList.remove(Direction.UP);
+                    if (directionList.size() != 0) {
+                        int ran = r.nextInt(directionList.size());
+                        direction = directionList.get(ran);
+                    } else {
+                        playerStatus = CharacterStatus.IDLE;
+                    }
+                } else {
+                    directionList.remove(Direction.DOWN);
+                    if (directionList.size() != 0) {
+                        int ran = r.nextInt(directionList.size());
+                        direction = directionList.get(ran);
+                    } else {
+                        playerStatus = CharacterStatus.IDLE;
+                    }
+                }
+                break;
             }
         }
     }
@@ -418,5 +490,22 @@ public class AutoPlay extends Bomber {
             }
         }
         return true;
+    }
+
+    private boolean checkAppearItem() {
+        for (Item item : EntitiesManager.getInstance().items) {
+            if (item.isAppear()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void updateBoxCollider() {
+        bomberBox.setLocation(
+                this.x + (this.width - bomberBox.getWidth()) / 2.0,
+                this.y + (this.height - bomberBox.getHeight()) / 2.0
+        );
     }
 }
