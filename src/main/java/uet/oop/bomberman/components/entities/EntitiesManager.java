@@ -9,6 +9,7 @@ import uet.oop.bomberman.components.entities.items.item_types.Coin;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Portal;
+import uet.oop.bomberman.components.entities.players.Player;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.CharacterStatus;

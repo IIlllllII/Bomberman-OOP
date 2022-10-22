@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Scale;
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.players.Player;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.Camera;
@@ -116,7 +117,10 @@ public class PlayScene {
         }
 
         levelMap.update();
-        entitiesManager.players.get(0).handleInput(inputList);
+        if(entitiesManager.players.get(0) instanceof Player){
+            Player player = (Player) entitiesManager.players.get(0);
+            player.handleInput(inputList);
+        }
 
         camera.update();
         entitiesManager.update();

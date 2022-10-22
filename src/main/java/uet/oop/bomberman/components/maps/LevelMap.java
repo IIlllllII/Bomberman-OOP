@@ -1,20 +1,19 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.components.entities.enemies.*;
+import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
 import uet.oop.bomberman.components.entities.enemies.normal.*;
-import uet.oop.bomberman.components.entities.items.*;
-import uet.oop.bomberman.components.entities.EntitiesManager;
-
+import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.*;
-import uet.oop.bomberman.components.entities.players.AutoPlay;
-import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Grass;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.entities.materials.Wall;
+import uet.oop.bomberman.components.entities.players.AutoPlay;
+import uet.oop.bomberman.components.entities.players.Player;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.game.Clock;
@@ -31,6 +30,7 @@ public class LevelMap {
     private Wall wall;
     private int level;
     private boolean levelComplete;
+    private boolean auto = false;
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     private static class SingletonHelper {
@@ -132,9 +132,15 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            entitiesManager.players.add(
-                                    new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
-                            );
+                            if(auto){
+                                entitiesManager.players.add(
+                                        new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                );
+                            }else {
+                                entitiesManager.players.add(
+                                        new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                );
+                            }
                             hash = getHash("grass");
                             break;
                         }
@@ -270,6 +276,10 @@ public class LevelMap {
 
     public int getLevel() {
         return level;
+    }
+
+    public void setAuto(boolean auto) {
+        this.auto = auto;
     }
 
     public int getWidth() {

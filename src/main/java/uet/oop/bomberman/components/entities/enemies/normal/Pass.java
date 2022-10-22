@@ -34,7 +34,6 @@ public class Pass extends Enemy {
             moveX = 0;
             moveY = 0;
 
-
             canMoveR = checkMapHash(i, j + 1);
             canMoveL = checkMapHash(i, j - 1);
             canMoveU = checkMapHash(i - 1, j);
@@ -161,8 +160,10 @@ public class Pass extends Enemy {
                 jTile.add(j);
             }
         }
-
-        int ran = r.nextInt(directionList.size());
-        return directionList.get(ran);
+        if(directionList.size() != 0){
+            int ran = r.nextInt(directionList.size());
+            return directionList.get(ran);
+        }
+        return Direction.DOWN;
     }
 }
