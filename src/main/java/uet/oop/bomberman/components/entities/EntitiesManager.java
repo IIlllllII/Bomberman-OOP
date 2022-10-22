@@ -49,8 +49,17 @@ public class EntitiesManager {
         bombs.forEach(entity -> entity.render(gc));
         bricks.forEach(entity -> entity.render(gc));
         coins.forEach(entity -> entity.render(gc));
-        enemies.forEach(enemy -> enemy.render(gc));
+        enemies.forEach(enemy -> {
+            if (!(enemy instanceof Banana)) {
+                enemy.render(gc);
+            }
+        });
         players.forEach(player -> player.render(gc));
+        enemies.forEach(enemy -> {
+            if (enemy instanceof Banana) {
+                enemy.render(gc);
+            }
+        });
     }
 
     public void update() {
@@ -110,11 +119,11 @@ public class EntitiesManager {
             } else {
                 BoxCollider enemyBox;
                 if (enemy instanceof Banana) {
-                    enemyBox = ((Banana) enemy).getBoxCollider();
+                    enemyBox = ((Banana) enemy).getDeathBox();
                 } else {
                     enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
                 }
-                if ( bomberBox.isCollidedWith(enemyBox) && !players.get(0).isInvincible()) {
+                if (!enemy.isDestroyed() && bomberBox.isCollidedWith(enemyBox) && !players.get(0).isInvincible()) {
                     players.get(0).setPlayerStatus(CharacterStatus.DEAD);
                 }
             }
@@ -132,7 +141,7 @@ public class EntitiesManager {
 
                     enemies.forEach(enemy -> {
                         if (enemy instanceof Banana) {
-                            BoxCollider enemyBox = ((Banana) enemy).getBoxCollider();
+                            BoxCollider enemyBox = ((Banana) enemy).getDeathBox();
                             if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
                                 ((Banana) enemy).decreaseLives();
                             }
@@ -152,7 +161,7 @@ public class EntitiesManager {
      * Renew all entities when switching to another level
      */
     public void renewEntities() {
-        players.clear();
+        //players.clear();
         bombs.clear();
         bricks.clear();
         items.clear();

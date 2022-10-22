@@ -9,6 +9,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.util.concurrent.TimeUnit;
+
 public class Clock extends Label {
     public static final int DEFAULT_TIME = 300;
     private int time;
@@ -35,7 +37,7 @@ public class Clock extends Label {
         done = false;
 
         this.time = time;
-        setText(Integer.toString(time));
+        setText(getClockString());
         setTextFill(Color.WHITE);
         setFont(Font.font(24));
 
@@ -50,7 +52,7 @@ public class Clock extends Label {
         }
         timeline = new Timeline(new KeyFrame(Duration.seconds(1),e -> {
             this.time--;
-            setText(String.valueOf(this.time));
+            setText(getClockString());
             if (this.time < 10) {
                 setTextFill(Color.RED);
                 if (this.time < 4 && scaleTransition.getStatus() != Animation.Status.RUNNING) {
@@ -68,5 +70,18 @@ public class Clock extends Label {
 
     public boolean isDone() {
         return done;
+    }
+
+    private String getClockString() {
+        long min = TimeUnit.SECONDS.toMinutes(time);
+        long sec = time - (min * 60);
+        return format(min) + ":" + format(sec);
+    }
+
+    private String format(long num) {
+        if (num < 10) {
+            return "0" + num;
+        }
+        return "" + num;
     }
 }
