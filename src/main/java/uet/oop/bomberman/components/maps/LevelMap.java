@@ -30,7 +30,7 @@ public class LevelMap {
     private Wall wall;
     private int level;
     private boolean levelComplete;
-    private boolean auto = false;
+    private boolean auto = true;
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     private static class SingletonHelper {

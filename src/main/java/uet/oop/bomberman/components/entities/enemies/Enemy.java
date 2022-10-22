@@ -113,6 +113,7 @@ public abstract class Enemy extends Entity {
         directionList.add(Direction.RIGHT);
         directionList.add(Direction.UP);
         directionList.add(Direction.DOWN);
+        directionList.add(Direction.STAND);
     }
 
     protected void checkMove(){
@@ -153,6 +154,8 @@ public abstract class Enemy extends Entity {
                 }
                 break;
             }
+            case STAND:
+                break;
             default:
                 break;
         }
