@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.SceneManager;
 import uet.oop.bomberman.core.stages.GameStage;
 import uet.oop.bomberman.core.stages.IntroStage;
 
@@ -51,7 +52,7 @@ public class Main extends Application {
         loop = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                //introStage.setLoadDone(true);  // just for debug
+                introStage.setLoadDone(true);  // just for debug
                 if (introStage.isDone()) {
                     loop.stop();
                     gameStage = GameStage.getInstance();
@@ -65,8 +66,9 @@ public class Main extends Application {
     }
 
     public static void zoom() {
-        mainStage.setWidth(GameConfig.WIDTH * GameConfig.ZOOM);
-        mainStage.setHeight(GameConfig.HEIGHT * GameConfig.ZOOM + 37);
+        SceneManager.getInstance().zoom();
+        mainStage.setWidth(GameConfig.SCENE_WIDTH * GameConfig.ZOOM);
+        mainStage.setHeight(GameConfig.SCENE_HEIGHT * GameConfig.ZOOM + 37);
         mainStage.centerOnScreen();
     }
     public static void main(String[] args) {

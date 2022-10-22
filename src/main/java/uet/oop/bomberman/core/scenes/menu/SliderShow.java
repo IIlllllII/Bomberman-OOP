@@ -18,10 +18,39 @@ public class SliderShow extends AnchorPane {
     private final StackPane stackPane = new StackPane();
     private final AnchorPane backPane = new AnchorPane();
     private final AnchorPane frontPane = new AnchorPane();
-    private final ObservableList<Image> backImages = FXCollections.observableArrayList();
-    private final ObservableList<Image> frontImages = FXCollections.observableArrayList();
+    private static boolean initialized = false;
+    private static ObservableList<Image> backImages;
+    private static ObservableList<Image> frontImages;
     private int backIndex = 0;
     private int frontIndex = 0;
+
+    public static void init() {
+        if (!initialized) {
+            frontImages = FXCollections.observableArrayList();
+            backImages = FXCollections.observableArrayList();
+            try {
+                frontImages.add(new Image(SliderShow.class.getResource("/background/b0.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/background/b2.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/background/b4.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/background/b6.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/background/b8.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/background/b10.jpg").toURI().toString()));
+
+
+                backImages.add(new Image(SliderShow.class.getResource("/background/b1.png").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/background/b3.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/background/b5.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/background/b7.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/background/b9.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/background/b11.jpg").toURI().toString()));
+
+            } catch (URISyntaxException e) {
+                System.out.println("slide show");
+                throw new RuntimeException(e);
+            }
+            initialized = true;
+        }
+    }
 
     /**
      * A Slider Show
@@ -30,21 +59,6 @@ public class SliderShow extends AnchorPane {
      */
     public SliderShow(int animationDelay, int visibilityDelay) {
         super();
-
-        try {
-            frontImages.add(new Image(getClass().getResource("/background/b0.jpg").toURI().toString()));
-            frontImages.add(new Image(getClass().getResource("/background/b2.jpg").toURI().toString()));
-            frontImages.add(new Image(getClass().getResource("/background/b4.jpg").toURI().toString()));
-            frontImages.add(new Image(getClass().getResource("/background/b6.jpg").toURI().toString()));
-
-            backImages.add(new Image(getClass().getResource("/background/b1.png").toURI().toString()));
-            backImages.add(new Image(getClass().getResource("/background/b3.jpg").toURI().toString()));
-            backImages.add(new Image(getClass().getResource("/background/b5.jpg").toURI().toString()));
-            backImages.add(new Image(getClass().getResource("/background/b7.jpg").toURI().toString()));
-        } catch (URISyntaxException e) {
-            System.out.println("slide show");
-            throw new RuntimeException(e);
-        }
 
         setBackgroundImage(backPane, backImages.get(0));
         setBackgroundImage(frontPane, frontImages.get(0));

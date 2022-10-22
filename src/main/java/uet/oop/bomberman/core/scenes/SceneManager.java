@@ -2,6 +2,7 @@ package uet.oop.bomberman.core.scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import uet.oop.bomberman.core.sound.BackgroundMusic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,12 @@ public class SceneManager {
     }
 
     private SceneManager() {
+        BackgroundMusic backgroundMusic = BackgroundMusic.getInstance();
+
         menuScene = MenuScene.getInstance();
         playScene = new PlayScene();
 
         scene = new Scene(menuScene.getRoot());
-        zoom();
-
         setCurrentScene(SCENES.MENU);
     }
 
@@ -55,6 +56,7 @@ public class SceneManager {
         if (primaryScene == SCENES.PLAY) {
             currentScene = SCENES.PLAY;
             scene.setRoot(playScene.getRoot());
+            playScene.reset();
 
             scene.setOnKeyPressed(event -> {
                 KeyCode code = event.getCode();
