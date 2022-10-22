@@ -9,7 +9,7 @@ import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
 import uet.oop.bomberman.components.entities.items.item_types.*;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.players.AutoPlay;
 import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Grass;
 import uet.oop.bomberman.components.entities.materials.Portal;
@@ -78,8 +78,8 @@ public class LevelMap {
         entitiesManager.bricks.forEach(brick -> {
             if(!brick.isDestroyed()){
                 entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-                        = getHash("coin");
+//                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
+//                        = getHash("coin");
             }
         });
         entitiesManager.bricks.clear();
@@ -118,7 +118,7 @@ public class LevelMap {
                     switch (hash) {
                         case 'p': {
                             entitiesManager.players.add(
-                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
+                                    new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
                             );
                             hash = getHash("grass");
                             break;
@@ -187,8 +187,8 @@ public class LevelMap {
             Random r = new Random();
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);
-            portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
-
+//            portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
+            portal.setLocation(brickList.get(brickList.size() - 4).getX(), brickList.get(brickList.size() - 4).getY());
             double xItem = 0;
             double yItem = 0;
             String tile = scanner.nextLine();

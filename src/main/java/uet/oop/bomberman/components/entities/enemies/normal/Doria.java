@@ -81,27 +81,6 @@ public class Doria extends Enemy {
         Queue<Integer> iTile = new LinkedList<>();
         Queue<Integer> jTile = new LinkedList<>();
 
-        // Tránh bomb
-        boolean checkBomb = false;
-        for(Bomb bomb : EntitiesManager.getInstance().bombs){
-            int iBomb = (int) bomb.getY() / GameConfig.TILE_SIZE;
-            int jBomb = (int) bomb.getX() / GameConfig.TILE_SIZE;
-            if((i == iBomb && Math.abs(j - jBomb) <= Bomb.getFlameLength() + 1) && j != jBomb){
-                if(j - jBomb <= Bomb.getFlameLength() + 1){
-                    directionList.remove(Direction.LEFT);
-                }else {
-                    directionList.remove(Direction.RIGHT);
-                }
-            }
-            if(j == jBomb && Math.abs(i - iBomb) <= Bomb.getFlameLength() + 1 && i != iBomb){
-                if(i - iBomb <= Bomb.getFlameLength() + 1){
-                    directionList.remove(Direction.UP);
-                }else {
-                    directionList.remove(Direction.DOWN);
-                }
-            }
-        }
-
         checkPass[i][j] = true;
         if (canMoveR && !checkPass[i][j + 1]) {
             checkPass[i][j + 1] = true;

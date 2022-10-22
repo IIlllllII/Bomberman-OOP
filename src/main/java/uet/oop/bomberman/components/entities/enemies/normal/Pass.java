@@ -33,7 +33,7 @@ public class Pass extends Enemy {
         if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
             moveX = 0;
             moveY = 0;
-            lastDirection = findWay(i, j);
+
 
             canMoveR = checkMapHash(i, j + 1);
             canMoveL = checkMapHash(i, j - 1);

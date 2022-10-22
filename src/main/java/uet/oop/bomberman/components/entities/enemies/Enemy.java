@@ -79,6 +79,10 @@ public abstract class Enemy extends Entity {
         return destroyed;
     }
 
+    public Direction getLastDirection() {
+        return lastDirection;
+    }
+
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
         GameStage.getInstance().plusTotalScore(score);
@@ -105,7 +109,6 @@ public abstract class Enemy extends Entity {
         directionList.add(Direction.RIGHT);
         directionList.add(Direction.UP);
         directionList.add(Direction.DOWN);
-        directionList.add(Direction.STAND);
     }
 
     protected void checkMove(){
@@ -146,9 +149,8 @@ public abstract class Enemy extends Entity {
                 }
                 break;
             }
-            case STAND:{
+            default:
                 break;
-            }
         }
     }
 }

@@ -18,32 +18,32 @@ import java.util.List;
 import java.util.Map;
 
 public class Bomber extends Entity implements Movable, Killable {
-    private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
-    private static boolean initialized = false;
+    protected static final Map<String, Sprite[]> spritesDict = new HashMap<>();
+    protected static boolean initialized = false;
     public static final int DEFAULT_SPEED = 2;
 
-    private final double initialX;
-    private final double initialY;
-    private int lives = 3;
-    private int speed = DEFAULT_SPEED;
-    private boolean canPassBomb = false;
-    private boolean canPassFlame = false;
-    private boolean canPassBrick = false;
-    private boolean canResetLocation = false;
-    private boolean invincible = false;
-    private int bombMax = 1;
-    private int currentSpriteIndex = 0;
+    protected final double initialX;
+    protected final double initialY;
+    protected int lives = 3;
+    protected int speed = DEFAULT_SPEED;
+    protected boolean canPassBomb = false;
+    protected boolean canPassFlame = false;
+    protected boolean canPassBrick = false;
+    protected boolean canResetLocation = false;
+    protected boolean invincible = false;
+    protected int bombMax = 1;
+    protected int currentSpriteIndex = 0;
 
-    private CharacterStatus playerStatus = CharacterStatus.IDLE;
-    private Direction direction = Direction.DOWN;
+    protected CharacterStatus playerStatus = CharacterStatus.IDLE;
+    protected Direction direction = Direction.DOWN;
 
-    private final BoxCollider bomberBox;
+    protected final BoxCollider bomberBox;
 
     public Bomber(double x, double y, int w, int h) {
         super(x, y, (int) ((1.2 * w * GameConfig.TILE_SIZE) / h), (int) (1.2 * GameConfig.TILE_SIZE));
         initialX = x;
         initialY = y;
-        bomberBox = new BoxCollider(0, 0, 12, 20);
+        bomberBox = new BoxCollider(0, 0, 18, 20);
         updateBoxCollider();
     }
 
@@ -147,6 +147,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 image = spritesDict.get("idle")[direction.index].getFxImage();
                 break;
             case MOVING:
+                System.out.println(direction.label);
                 image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
                 break;
             case DEAD:
@@ -163,7 +164,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
-        resetLocation();
+        move();
         if (playerStatus == CharacterStatus.IDLE) {
             return;
         }
@@ -172,7 +173,6 @@ public class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move();
         }
 
         //TODO: change it later.
@@ -191,15 +191,14 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
-    private void updateBoxCollider() {
+    protected void updateBoxCollider() {
         bomberBox.setLocation(
                 this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + (this.height - bomberBox.getHeight()) + 3
+                this.y + bomberBox.getHeight()
         );
     }
 
     public void placeBomb() {
-        direction = Direction.DOWN;
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
 
         double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;
@@ -243,7 +242,6 @@ public class Bomber extends Entity implements Movable, Killable {
             boolean checkR = true;
             boolean checkU = true;
             boolean checkD = true;
-            System.out.println(levelMap.getHashAt(iBomber, jBomber) == levelMap.getHash("brick"));
             if (levelMap.getHashAt(iBomber, jBomber) == levelMap.getHash("brick")) {
                 int i = 1;
                 while (true) {
@@ -419,8 +417,6 @@ public class Bomber extends Entity implements Movable, Killable {
         boolean bottomLeftCheck = checkBarrier(bottomRow, leftCol);
         boolean bottomRightCheck = checkBarrier(bottomRow, rightCol);
 
-        System.out.println(topLeftCheck + " " + topRightCheck + " " + bottomLeftCheck + " " + bottomRightCheck);
-        System.out.println(direction);
         switch (direction) {
             case UP:
                 if (topLeftCheck || topRightCheck) {
@@ -438,7 +434,6 @@ public class Bomber extends Entity implements Movable, Killable {
                 }
                 break;
             case LEFT:
-                //System.out.println("Check " + (topLeftCheck || bottomLeftCheck));
                 if (topLeftCheck || bottomLeftCheck) {
                     x -= steps;
                 }
@@ -446,7 +441,7 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
-    private boolean checkBarrier(int i, int j) {
+    protected boolean checkBarrier(int i, int j) {
         LevelMap levelMap = LevelMap.getInstance();
 
         if (levelMap.getHashAt(i, j) == levelMap.getHash("bomb")) {
