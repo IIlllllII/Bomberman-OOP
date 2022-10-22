@@ -61,6 +61,38 @@ public class MenuScene {
         gameMenu.setScaleY(GameConfig.ZOOM);
     }
 
+    public Parent getRoot() {
+        return root;
+    }
+
+    public void reset() {
+        background.reset();
+    }
+
+    public void fadeIn() {
+        if (!gameMenu.isVisible()) {
+            FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            background.setOpacity(0.8);
+            gameMenu.setVisible(true);
+            ft.play();
+        }
+    }
+
+    public void fadeOut() {
+        if (gameMenu.isVisible()) {
+            FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
+            ft.setFromValue(1);
+            ft.setToValue(0);
+            ft.setOnFinished(event -> {
+                background.setOpacity(1);
+                gameMenu.setVisible(false);
+            });
+            ft.play();
+        }
+    }
+
     private static class GameMenu extends VBox {
         public GameMenu() {
             setStyle("-fx-background-color: rgba(128, 128, 128, 0.5)");
@@ -129,38 +161,6 @@ public class MenuScene {
             });
 
             menu0.getChildren().addAll(buttonPlay, btnLeaderboards, btnSetting, btnAbout, btnExit);
-        }
-    }
-
-    public Parent getRoot() {
-        return root;
-    }
-
-    public void reset() {
-        background.reset();
-    }
-
-    public void fadeIn() {
-        if (!gameMenu.isVisible()) {
-            FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
-            ft.setFromValue(0);
-            ft.setToValue(1);
-            background.setOpacity(0.8);
-            gameMenu.setVisible(true);
-            ft.play();
-        }
-    }
-
-    public void fadeOut() {
-        if (gameMenu.isVisible()) {
-            FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
-            ft.setFromValue(1);
-            ft.setToValue(0);
-            ft.setOnFinished(event -> {
-                background.setOpacity(1);
-                gameMenu.setVisible(false);
-            });
-            ft.play();
         }
     }
 }

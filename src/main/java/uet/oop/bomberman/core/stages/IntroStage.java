@@ -40,7 +40,7 @@ public class IntroStage {
 
         Group root = new Group();
         try {
-            Image background = new Image(getClass().getResource("/intro.png").toURI().toString());
+            Image background = new Image(getClass().getResource("/intro.jpg").toURI().toString());
             ImageView imageView = new ImageView(background);
             imageView.setFitWidth(GameConfig.SCENE_WIDTH);
             imageView.setFitHeight(GameConfig.SCENE_HEIGHT);
@@ -65,7 +65,7 @@ public class IntroStage {
         {
             progressBar.setPrefWidth(GameConfig.SCENE_WIDTH + 10);
             progressBar.setLayoutX(-5);
-            progressBar.setLayoutY(GameConfig.SCENE_HEIGHT * 7 / 8.0);
+            progressBar.setLayoutY(GameConfig.SCENE_HEIGHT * 10 / 11.0);
             ColorAdjust colorAdjust = new ColorAdjust();
             colorAdjust.setInput(new Reflection());
             progressBar.setEffect(colorAdjust);

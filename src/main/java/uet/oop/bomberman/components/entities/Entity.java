@@ -2,8 +2,7 @@ package uet.oop.bomberman.components.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.Camera;
-import uet.oop.bomberman.core.stages.GameStage;
+import uet.oop.bomberman.core.scenes.game.Camera;
 
 public abstract class Entity {
     protected double x;

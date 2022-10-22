@@ -14,15 +14,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Scale;
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.Camera;
+import uet.oop.bomberman.core.scenes.game.Camera;
 import uet.oop.bomberman.core.scenes.game.Clock;
+import uet.oop.bomberman.core.scenes.game.filter.NightMode;
 
 import java.util.List;
 
 public class PlayScene {
     private final StackPane root;
+    private Group layout1;
     private final GraphicsContext gc;
     private static Clock clock;
     private static int score;
@@ -30,43 +33,64 @@ public class PlayScene {
     private final LevelMap levelMap = LevelMap.getInstance();
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
+    NightMode filter;
 
     public PlayScene() {
         root = new StackPane();
+        root.setStyle("-fx-background-color: #2A2E37;");
         root.setAlignment(Pos.CENTER);
 
-        BorderPane borderPane = new BorderPane();
-        borderPane.setStyle("-fx-background-color: #2A2E37;");
-
-        // center
-        Group center = new Group();
+        layout1 = new Group();
 
         Canvas canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
-        center.getChildren().addAll(canvas);
-        borderPane.setCenter(center);
+        filter = new NightMode(130);
 
-        // top
-        HBox top = new HBox(50);
-        top.setMaxHeight(32);
-        top.setAlignment(Pos.CENTER);
-        top.setSpacing(200);
+        layout1.getChildren().addAll(canvas);
+        layout1.getChildren().addAll(filter.getFilter());
 
-        clock = new Clock();
-        score = 0;
-        scoreLabel = new Label(String.format("SCORE: %06d", score));
-        scoreLabel.setTextFill(Color.WHITE);
-        scoreLabel.setFont(Font.font(24));
+        BorderPane borderPane = new BorderPane();
+        borderPane.setStyle("-fx-background-color: transparent;");
 
-        top.getChildren().addAll(clock, scoreLabel);
+        // TOP
+        HBox top = createTop();
+
         borderPane.setTop(top);
 
-        root.getChildren().add(borderPane);
+        root.getChildren().addAll(layout1, borderPane);
 
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
 
         reset();
+    }
+
+    public void update(List<KeyCode> inputList) {
+        if (inputList.contains(KeyCode.ESCAPE)) {
+            SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
+            inputList.remove(KeyCode.ESCAPE);
+        }
+
+        if (inputList.contains(KeyCode.N)) {
+            levelMap.nextLevel();
+            inputList.remove(KeyCode.N);
+        }
+
+        levelMap.update();
+        entitiesManager.players.get(0).handleInput(inputList);
+
+        camera.update();
+        entitiesManager.update();
+
+        Bomber player = entitiesManager.players.get(0);
+        filter.update(player.getX() + player.getWidth() / 2.0 - camera.getX(),
+                player.getY() + player.getHeight() / 2.0 - camera.getY());
+    }
+
+    public void render() {
+        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+        levelMap.render(gc);
+        entitiesManager.render(gc);
     }
 
     public Parent getRoot() {
@@ -74,13 +98,15 @@ public class PlayScene {
     }
 
     public void zoom() {
-        Scale scale = new Scale();
-        scale.setPivotX(0);
-        scale.setPivotY(0);
-        scale.setX(GameConfig.ZOOM);
-        scale.setY(GameConfig.ZOOM);
-        gc.getCanvas().getTransforms().clear();
-        gc.getCanvas().getTransforms().add(scale);
+        layout1.setScaleX(GameConfig.ZOOM);
+        layout1.setScaleY(GameConfig.ZOOM);
+//        Scale scale = new Scale();
+//        scale.setPivotX(0);
+//        scale.setPivotY(0);
+//        scale.setX(GameConfig.ZOOM);
+//        scale.setY(GameConfig.ZOOM);
+//        gc.getCanvas().getTransforms().clear();
+//        gc.getCanvas().getTransforms().add(scale);
     }
 
     public void reset() {
@@ -104,28 +130,19 @@ public class PlayScene {
         scoreLabel.setText(String.format("SCORE: %06d", score));
     }
 
-    public void update(List<KeyCode> inputList) {
-        if (inputList.contains(KeyCode.ESCAPE)) {
-            SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
-            inputList.remove(KeyCode.ESCAPE);
-        }
+    private HBox createTop() {
+        HBox top = new HBox(50);
+        top.setMaxHeight(32);
+        top.setAlignment(Pos.CENTER);
+        top.setSpacing(200);
 
-        if (inputList.contains(KeyCode.N)) {
-            levelMap.nextLevel();
-            inputList.remove(KeyCode.N);
-        }
+        clock = new Clock();
+        score = 0;
+        scoreLabel = new Label(String.format("SCORE: %06d", score));
+        scoreLabel.setTextFill(Color.WHITE);
+        scoreLabel.setFont(Font.font(24));
 
-        levelMap.update();
-        entitiesManager.players.get(0).handleInput(inputList);
-
-        camera.update();
-        entitiesManager.update();
-    }
-
-    public void render() {
-        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        levelMap.render(gc);
-
-        entitiesManager.render(gc);
+        top.getChildren().addAll(clock, scoreLabel);
+        return top;
     }
 }

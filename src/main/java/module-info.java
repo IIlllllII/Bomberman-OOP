@@ -14,4 +14,5 @@ module uet.oop.bomberman {
     exports uet.oop.bomberman.components.entities.players;
     exports uet.oop.bomberman.components.entities.enemies;
     exports uet.oop.bomberman.components.entities.enemies.normal;
+    exports uet.oop.bomberman.core.scenes.game;
 }

@@ -1,4 +1,4 @@
-package uet.oop.bomberman.core;
+package uet.oop.bomberman.core.scenes.game;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.EntitiesManager;
@@ -86,6 +86,6 @@ public class Camera {
     }
 
     public void render(GraphicsContext gc) {
-        // hide map
+
     }
 }

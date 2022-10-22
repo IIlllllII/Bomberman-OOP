@@ -25,6 +25,7 @@ public class Setting extends VBox {
         title.setStyle("-fx-font-weight: bold");
         title.setFill(Color.WHITE);
 
+        // TAB PANE
         TabPane tabPane = new TabPane();
         tabPane.setStyle("-fx-background-color: rgba(128, 128, 128, 1); -fx-open-tab-animation: grow");
         tabPane.setMaxWidth(prefWidth);
@@ -32,7 +33,7 @@ public class Setting extends VBox {
         tabPane.setTabMaxWidth(prefWidth / 3);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        // Music Tab
+        // MUSIC TAB
         Tab musicTab = new Tab("Music");
         GridPane musicContent = new GridPane();
         musicContent.setAlignment(Pos.CENTER);
@@ -83,7 +84,7 @@ public class Setting extends VBox {
         musicContent.add(theme, 0, 2);
         musicContent.add(choiceTheme, 1, 2);
 
-        // Graphics Tab
+        // GRAPHICS TAB
         Tab graphicsTab = new Tab("Graphics");
         GridPane graphicsContent = new GridPane();
         graphicsContent.setAlignment(Pos.CENTER);
@@ -113,7 +114,7 @@ public class Setting extends VBox {
         graphicsContent.add(zoom, 0,0);
         graphicsContent.add(sliderZoom, 1, 0);
 
-        // Controls Tab
+        // CONTROLS TAB
         Tab controlsTab = new Tab("Controls");
 
         tabPane.getTabs().addAll(musicTab, graphicsTab, controlsTab);

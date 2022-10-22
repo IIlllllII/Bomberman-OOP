@@ -20,6 +20,8 @@ public class BackgroundMusic {
     private static ArrayList<File> songsDefault;
     private Random random;
     private THEME theme;
+    // from 0.0 - 1.1
+    private double volumn;
 
     private static class SingletonHelper {
         private static final BackgroundMusic INSTANCE = new BackgroundMusic();
@@ -46,6 +48,7 @@ public class BackgroundMusic {
     private BackgroundMusic() {
         random = new Random();
         theme = THEME.CUSTOMS;
+        volumn = 0.5;
         setTheme(theme);
         play();
     }
@@ -77,6 +80,7 @@ public class BackgroundMusic {
         }
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(this::next);
+        mediaPlayer.setVolume(volumn);
         mediaPlayer.play();
     }
 
@@ -89,11 +93,12 @@ public class BackgroundMusic {
      * @param volumn : 0.0 -> 1.0
      */
     public void setVolume(double volumn) {
+        this.volumn = volumn;
         mediaPlayer.setVolume(volumn);
     }
 
     public double getVolumn() {
-        return mediaPlayer.getVolume();
+        return volumn;
     }
 
     public void setMute(boolean mute) {

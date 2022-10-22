@@ -19,10 +19,6 @@ public class Clock extends Label {
         setTime(DEFAULT_TIME);
     }
 
-    public void start() {
-        timeline.play();
-    }
-
     public void stop() {
         timeline.stop();
     }
@@ -31,6 +27,10 @@ public class Clock extends Label {
         return time;
     }
 
+    /**
+     * Set time and play
+     * @param time time in second to count down
+     */
     public void setTime(int time) {
         done = false;
 
