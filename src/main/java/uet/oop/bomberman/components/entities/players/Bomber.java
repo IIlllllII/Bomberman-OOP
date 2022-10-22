@@ -22,8 +22,8 @@ public class Bomber extends Entity implements Movable, Killable {
     private static boolean initialized = false;
     public static final int DEFAULT_SPEED = 2;
 
-    private final double initialX;
-    private final double initialY;
+    private double initialX;        //reset in each level.
+    private double initialY;        //reset in each level.
     private int lives = 3;
     private int speed = DEFAULT_SPEED;
     private boolean canPassBomb = false;
@@ -149,7 +149,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
                 break;
             case DEAD:
-                image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
+                image = spritesDict.get("dead")[currentSpriteIndex / 8].getFxImage();
                 gc.drawImage(image, this.x - camera.getX() - 3, this.y - camera.getY() + 2,
                         2 * 22 * 0.9, 2 * 21 * 0.9);
                 break;
@@ -176,7 +176,7 @@ public class Bomber extends Entity implements Movable, Killable {
         //TODO: change it later.
         if (playerStatus == CharacterStatus.DEAD) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 6 >= spritesDict.get("dead").length) {
+            if (currentSpriteIndex / 8 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
                 lives--;
                 playerStatus = CharacterStatus.IDLE;
@@ -187,6 +187,11 @@ public class Bomber extends Entity implements Movable, Killable {
                 updateBoxCollider();
             }
         }
+    }
+
+    public void setInitialLocation(int x, int y) {
+        this.initialX = x;
+        this.initialY = y;
     }
 
     private void updateBoxCollider() {
@@ -201,6 +206,11 @@ public class Bomber extends Entity implements Movable, Killable {
 
         double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;
         double centerY = bomberBox.getY() + bomberBox.getHeight() / 2;
+
+        if (LevelMap.getInstance().getHashAt((int) centerY / GameConfig.TILE_SIZE, (int) centerX / GameConfig.TILE_SIZE)
+            != LevelMap.getInstance().getHash("grass")) {
+            return;
+        }
         if (bombList.size() < bombMax) {
             int bombX = ((int) centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             int bombY = ((int) centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
@@ -340,9 +350,6 @@ public class Bomber extends Entity implements Movable, Killable {
         int rightCol = (int) (bomberBox.getX() + bomberBox.getWidth()) / GameConfig.TILE_SIZE;
         int topRow = (int) bomberBox.getY() / GameConfig.TILE_SIZE;
         int bottomRow = (int) (bomberBox.getY() + bomberBox.getHeight()) / GameConfig.TILE_SIZE;
-
-        int wallHash = levelMap.getHash("wall");
-        int brickHash = levelMap.getHash("brick");
 
         //Barrier checker.
         boolean topLeftCheck = checkBarrier(topRow, leftCol);

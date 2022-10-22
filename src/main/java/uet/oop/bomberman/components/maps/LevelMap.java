@@ -87,9 +87,11 @@ public class LevelMap {
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
-            entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-            mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-                    = getHash("coin");
+            if (! brick.isDestroyed()) {
+                entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
+                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
+                        = getHash("coin");
+            }
         });
         entitiesManager.bricks.clear();
     }
@@ -128,9 +130,18 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            entitiesManager.players.add(
-                                    new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
-                            );
+                            if (entitiesManager.players.size() == 0) {
+                                entitiesManager.players.add(
+                                        new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
+                                );
+                            } else {
+                                entitiesManager.players.get(0).setLocation(
+                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5
+                                );
+                                entitiesManager.players.get(0).setInitialLocation(
+                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5
+                                );
+                            }
                             hash = getHash("grass");
                             break;
                         }
@@ -175,7 +186,7 @@ public class LevelMap {
                             break;
                         }
                         case '9': {
-                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE + 15, i * GameConfig.TILE_SIZE - 5));
+                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE + 15, i * GameConfig.TILE_SIZE));
                             hash = getHash("grass");
                             break;
                         }
@@ -203,7 +214,7 @@ public class LevelMap {
             double xItem = 0;
             double yItem = 0;
             String tile = scanner.nextLine();
-            for(int i = 0; i < tile.length(); i++){
+            for (int i = 0; i < tile.length(); i++) {
                 char hash = tile.charAt(i);
                 boolean checkItem = false;
                 while (!checkItem) {
@@ -213,13 +224,14 @@ public class LevelMap {
                             && brickList.get(ran).getY() == portal.getY()) {
                         check = true;
                     }
-                    for (int j = 0; j < itemList.size(); j++) {
-                        if (brickList.get(ran).getX() == itemList.get(j).getX()
-                                && brickList.get(ran).getY() == itemList.get(j).getY()) {
+                    for (Item item : itemList) {
+                        if (brickList.get(ran).getX() == item.getX()
+                                && brickList.get(ran).getY() == item.getY()) {
                             check = true;
+                            break;
                         }
                     }
-                    if(!check){
+                    if (!check) {
                         xItem = brickList.get(ran).getX();
                         yItem = brickList.get(ran).getY();
                         checkItem = true;
