@@ -334,7 +334,7 @@ public class AutoPlay extends Bomber {
                     initDirectionList();
                 } else if (checkEntity(iBomber - 1, jBomber, "portal")
                         && EntitiesManager.getInstance().portal.isCanPass()) {
-                    levelMap.nextLevel();
+                    levelMap.prepareNextLevel();
                 }
                 break;
             }
@@ -346,7 +346,7 @@ public class AutoPlay extends Bomber {
                     initDirectionList();
                 } else if (checkEntity(iBomber + 1, jBomber, "portal")
                         && EntitiesManager.getInstance().portal.isCanPass()) {
-                    levelMap.nextLevel();
+                    levelMap.prepareNextLevel();
                 }
                 break;
             }
@@ -358,7 +358,7 @@ public class AutoPlay extends Bomber {
                     initDirectionList();
                 } else if (checkEntity(iBomber, jBomber - 1, "portal")
                         && EntitiesManager.getInstance().portal.isCanPass()) {
-                    levelMap.nextLevel();
+                    levelMap.prepareNextLevel();
                 }
                 break;
             }
@@ -370,7 +370,7 @@ public class AutoPlay extends Bomber {
                     initDirectionList();
                 } else if (checkEntity(iBomber, jBomber + 1, "portal")
                         && EntitiesManager.getInstance().portal.isCanPass()) {
-                    levelMap.nextLevel();
+                    levelMap.prepareNextLevel();
                 }
                 break;
             }

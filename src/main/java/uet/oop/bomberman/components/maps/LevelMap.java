@@ -72,14 +72,14 @@ public class LevelMap {
     }
 
     public void prepareNextLevel() {
-        //levelComplete = true;
+        levelComplete = true;
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
             if(!brick.isDestroyed()){
                 entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-//                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-//                        = getHash("coin");
+                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
+                        = getHash("coin");
             }
         });
         entitiesManager.bricks.clear();
