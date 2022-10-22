@@ -9,6 +9,7 @@ import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 
 import uet.oop.bomberman.components.entities.items.item_types.*;
+import uet.oop.bomberman.components.entities.players.AutoPlay;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Grass;
@@ -83,6 +84,7 @@ public class LevelMap {
     }
 
     public void prepareNextLevel() {
+        levelComplete = true;
         PlayScene.setClock(15);
 
         //Change all bricks left into coins:
@@ -90,7 +92,7 @@ public class LevelMap {
             if(!brick.isDestroyed()){
                 entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
                 mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-                        = getHash("coin");
+                        = getHash("grass");
             }
         });
         entitiesManager.bricks.clear();
@@ -200,8 +202,7 @@ public class LevelMap {
             Random r = new Random();
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);
-//            portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
-            portal.setLocation(brickList.get(brickList.size() - 4).getX(), brickList.get(brickList.size() - 4).getY());
+            portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
             double xItem = 0;
             double yItem = 0;
             String tile = scanner.nextLine();
