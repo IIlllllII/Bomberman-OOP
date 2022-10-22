@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Bomber extends Entity implements Movable, Killable {
-    protected static final Map<String, Sprite[]> spritesDict = new HashMap<>();
-    protected static boolean initialized = false;
+    private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
+    private static boolean initialized = false;
     public static final int DEFAULT_SPEED = 2;
 
     protected final double initialX;
@@ -32,7 +32,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     protected boolean canResetLocation = false;
     protected boolean invincible = false;
     protected int bombMax = 1;
-    protected int currentSpriteIndex = 0;
+    private int currentSpriteIndex = 0;
 
     protected CharacterStatus playerStatus = CharacterStatus.IDLE;
     protected Direction direction = Direction.DOWN;
@@ -110,10 +110,18 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         Image image = null;
         switch (playerStatus) {
             case IDLE:
-                image = spritesDict.get("idle")[direction.index].getFxImage();
+                if(direction == Direction.STAND){
+                    image = spritesDict.get("idle")[Direction.DOWN.index].getFxImage();
+                }else {
+                    image = spritesDict.get("idle")[direction.index].getFxImage();
+                }
                 break;
             case MOVING:
-                image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
+                if(direction == Direction.STAND){
+                    image = spritesDict.get("moving-" + Direction.DOWN.label)[currentSpriteIndex / 4].getFxImage();
+                }else {
+                    image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
+                }
                 break;
             case DEAD:
                 image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
@@ -133,7 +141,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         if (playerStatus == CharacterStatus.IDLE) {
             return;
         }
-        if (playerStatus == CharacterStatus.MOVING) {
+        if (playerStatus == CharacterStatus.MOVING && direction != Direction.STAND) {
             currentSpriteIndex++;
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;

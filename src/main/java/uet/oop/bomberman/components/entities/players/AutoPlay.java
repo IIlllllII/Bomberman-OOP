@@ -60,18 +60,19 @@ public class AutoPlay extends Bomber {
                 moveFind();
             }
             if (EntitiesManager.getInstance().bombs.size() != 0) {
-                aVoidBomb();
-                if (playerStatus == CharacterStatus.IDLE) {
+                if(aVoidBomb() && avoidEnemy()){
+                    playerStatus = CharacterStatus.IDLE;
+                }
+                if(playerStatus == CharacterStatus.IDLE){
                     moveX = 0;
                     moveY = 0;
                 }
                 if (playerStatus == CharacterStatus.MOVING) {
-                    avoidEnemy();
                     moveAvoidBomb();
                 }
             }
         }
-        if (playerStatus == CharacterStatus.DEAD) {
+        if (playerStatus == CharacterStatus.DEAD ) {
             moveX = 0;
             moveY = 0;
         }
@@ -172,7 +173,7 @@ public class AutoPlay extends Bomber {
         return Direction.DOWN;
     }
 
-    protected void initDirectionList() {
+    private void initDirectionList() {
         directionList.clear();
         directionList.add(Direction.LEFT);
         directionList.add(Direction.RIGHT);
@@ -214,9 +215,7 @@ public class AutoPlay extends Bomber {
                 Portal portal = EntitiesManager.getInstance().portal;
                 int iPortal = (int) portal.getY() / GameConfig.TILE_SIZE;
                 int jPortal = (int) portal.getX() / GameConfig.TILE_SIZE;
-                System.out.println(iPortal + " " + jPortal);
                 if (i == iPortal && j == jPortal) {
-                    System.out.println(true);
                     return true;
                 }
                 return false;
@@ -254,7 +253,7 @@ public class AutoPlay extends Bomber {
         }
     }
 
-    private void aVoidBomb() {
+    private boolean aVoidBomb() {
         for (Bomb bomb : EntitiesManager.getInstance().bombs) {
             int iBomb = (int) bomb.getY() / GameConfig.TILE_SIZE;
             int jBomb = (int) bomb.getX() / GameConfig.TILE_SIZE;
@@ -267,7 +266,7 @@ public class AutoPlay extends Bomber {
                 } else {
                     playerStatus = CharacterStatus.IDLE;
                 }
-                break;
+                return false;
             }
             if (iBomber == iBomb && Math.abs(jBomber - jBomb) <= Bomb.getFlameLength()) {
                 if (jBomber - jBomb > 0) {
@@ -287,7 +286,7 @@ public class AutoPlay extends Bomber {
                         playerStatus = CharacterStatus.IDLE;
                     }
                 }
-                break;
+                return false;
             }
             if (jBomber == jBomb && Math.abs(iBomber - iBomb) <= Bomb.getFlameLength()) {
                 if (iBomber - iBomb > 0) {
@@ -307,13 +306,13 @@ public class AutoPlay extends Bomber {
                         playerStatus = CharacterStatus.IDLE;
                     }
                 }
-                break;
+                return false;
             }
-            playerStatus = CharacterStatus.IDLE;
         }
+        return true;
     }
 
-    protected void moveAvoidBomb() {
+    private void moveAvoidBomb() {
         moveX = 0;
         moveY = 0;
         LevelMap levelMap = LevelMap.getInstance();
@@ -431,7 +430,7 @@ public class AutoPlay extends Bomber {
         }
     }
 
-    private void avoidEnemy() {
+    private boolean avoidEnemy() {
         for (Enemy enemy : EntitiesManager.getInstance().enemies) {
             int iEnemy = (int) enemy.getY() / GameConfig.TILE_SIZE;
             int jEnemy = (int) enemy.getX() / GameConfig.TILE_SIZE;
@@ -454,7 +453,7 @@ public class AutoPlay extends Bomber {
                         playerStatus = CharacterStatus.IDLE;
                     }
                 }
-                break;
+                return false;
             }
             if (jBomber == jEnemy && Math.abs(iBomber - iEnemy) <= 2) {
                 if (iBomber - iEnemy > 0) {
@@ -474,12 +473,13 @@ public class AutoPlay extends Bomber {
                         playerStatus = CharacterStatus.IDLE;
                     }
                 }
-                break;
+                return false;
             }
         }
+        return true;
     }
 
-    protected boolean checkFindWay(int i, int j) {
+    private boolean checkFindWay(int i, int j) {
         LevelMap levelMap = LevelMap.getInstance();
         if (levelMap.getHashAt(i, j) == levelMap.getHash("wall")) {
             return false;
