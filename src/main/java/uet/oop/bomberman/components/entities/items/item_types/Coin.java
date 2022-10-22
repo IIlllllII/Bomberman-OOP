@@ -8,6 +8,7 @@ import javafx.scene.text.Text;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.stages.GameStage;
 
 public class Coin extends Item {
@@ -31,7 +32,8 @@ public class Coin extends Item {
         if (appear) {
             animation.update();
             if (eaten) {
-                GameStage.getInstance().plusTotalScore(score);
+                PlayScene.addScore(score);
+                appear = false;
             }
         } else {
             virtualTimer.update();
@@ -50,7 +52,6 @@ public class Coin extends Item {
             gc.fillText(" + " + score,
                     x - camera.getX() + 16,
                     y - camera.getY() + 20 - virtualTimer.getCalcTime() / 32);
-            appear = false;
         }
     }
 

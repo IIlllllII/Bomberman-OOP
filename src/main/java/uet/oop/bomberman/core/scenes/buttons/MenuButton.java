@@ -13,13 +13,18 @@ import javafx.scene.text.Text;
 public class MenuButton extends StackPane {
     private final Text text;
 
-    public MenuButton(String name) {
+    /**
+     * Button for menu.
+     * @param name title for button
+     * @param color color when hover it
+     */
+    public MenuButton(String name, Color color) {
         text = new Text(name);
-        text.setFont(new Font("/font1.ttf", 18));
+        text.setFont(new Font("/font1.ttf", 20));
         text.setStyle("-fx-font-weight: bold");
         text.setFill(Color.WHITE);
 
-        Rectangle bg = new Rectangle(160, 30);
+        Rectangle bg = new Rectangle(180, 35);
         bg.setOpacity(0.6);
         bg.setFill(Color.BLACK);
         bg.setEffect(new GaussianBlur((3.5)));
@@ -38,25 +43,20 @@ public class MenuButton extends StackPane {
             if (name.equals("New Game")) {
                 setScaleX(1.4);
                 setScaleY(1.4);
-                bg.setFill(Color.GREEN);
             } else {
                 setScaleX(1.1);
                 setScaleY(1.1);
-                if (name.equals("Exit")) {
-                    bg.setFill(Color.CRIMSON);
-                } else {
-                    bg.setFill(Color.BLUE);
-                }
             }
+            bg.setFill(color);
         });
 
         setOnMouseExited(mouseEvent -> {
-            if (!name.equals("New Game")) {
-                setScaleX(1);
-                setScaleY(1);
-            } else {
+            if (name.equals("New Game")) {
                 setScaleX(1.2);
                 setScaleY(1.2);
+            } else {
+                setScaleX(1);
+                setScaleY(1);
             }
             bg.setFill(Color.BLACK);
         });

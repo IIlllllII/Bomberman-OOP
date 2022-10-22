@@ -10,6 +10,7 @@ import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.stages.GameStage;
 
 import java.util.ArrayList;
@@ -81,7 +82,9 @@ public abstract class Enemy extends Entity {
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
-        GameStage.getInstance().plusTotalScore(score);
+        if (destroyed) {
+            PlayScene.addScore(score);
+        }
     }
 
     public boolean isDone() {

@@ -17,10 +17,10 @@ public class Leaderboards extends VBox {
         setAlignment(Pos.CENTER);
         setSpacing(8);
 
-        Text title = new Text("Leaderboards (better UI coming soon)");
-        title.setFont(new Font("/font1.ttf", 18));
+        Text title = new Text("Leaderboards");
+        title.setFont(new Font("/font1.ttf", 22));
         title.setStyle("-fx-font-weight: bold");
-        title.setFill(Color.HOTPINK);
+        title.setFill(Color.WHITE);
 
         TableView<HighScore> table = new TableView<>();
         table.setMaxWidth(prefWidth);
