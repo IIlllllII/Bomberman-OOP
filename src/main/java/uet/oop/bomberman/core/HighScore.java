@@ -7,7 +7,7 @@ import java.util.List;
 public class HighScore {
     private static List<HighScore> HIGH_SCORE = null;
     private static int minScore = Integer.MAX_VALUE;
-    private static final String fileName = "src/main/resources/highScore.txt";
+    private static final String fileName = "src/main/resources/data/highScore.txt";
     private String name;
     private String highScore;
     private String level;

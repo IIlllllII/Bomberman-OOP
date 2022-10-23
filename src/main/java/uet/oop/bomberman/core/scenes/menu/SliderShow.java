@@ -29,20 +29,20 @@ public class SliderShow extends AnchorPane {
             frontImages = FXCollections.observableArrayList();
             backImages = FXCollections.observableArrayList();
             try {
-                frontImages.add(new Image(SliderShow.class.getResource("/background/b0.jpg").toURI().toString()));
-                frontImages.add(new Image(SliderShow.class.getResource("/background/b2.jpg").toURI().toString()));
-                frontImages.add(new Image(SliderShow.class.getResource("/background/b4.jpg").toURI().toString()));
-                frontImages.add(new Image(SliderShow.class.getResource("/background/b6.jpg").toURI().toString()));
-                frontImages.add(new Image(SliderShow.class.getResource("/background/b8.jpg").toURI().toString()));
-                frontImages.add(new Image(SliderShow.class.getResource("/background/b10.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/UI/background/b0.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/UI/background/b2.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/UI/background/b4.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/UI/background/b6.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/UI/background/b8.jpg").toURI().toString()));
+                frontImages.add(new Image(SliderShow.class.getResource("/UI/background/b10.jpg").toURI().toString()));
 
 
-                backImages.add(new Image(SliderShow.class.getResource("/background/b1.png").toURI().toString()));
-                backImages.add(new Image(SliderShow.class.getResource("/background/b3.jpg").toURI().toString()));
-                backImages.add(new Image(SliderShow.class.getResource("/background/b5.jpg").toURI().toString()));
-                backImages.add(new Image(SliderShow.class.getResource("/background/b7.jpg").toURI().toString()));
-                backImages.add(new Image(SliderShow.class.getResource("/background/b9.jpg").toURI().toString()));
-                backImages.add(new Image(SliderShow.class.getResource("/background/b11.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/UI/background/b1.png").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/UI/background/b3.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/UI/background/b5.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/UI/background/b7.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/UI/background/b9.jpg").toURI().toString()));
+                backImages.add(new Image(SliderShow.class.getResource("/UI/background/b11.jpg").toURI().toString()));
 
             } catch (URISyntaxException e) {
                 System.out.println("slide show");

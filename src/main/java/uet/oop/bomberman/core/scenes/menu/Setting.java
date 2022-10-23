@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.Main;
 import uet.oop.bomberman.config.GameConfig;
@@ -16,21 +17,29 @@ import uet.oop.bomberman.core.sound.BackgroundMusic;
 import java.util.Objects;
 
 public class Setting extends VBox {
-    public Setting(double prefWidth, double prefHeight) {
+    private final double DEFAULT_WIDTH = 400;
+    private final double DEFAULT_HEIGHT = 200;
+
+    private static class SingletonHelper {
+        private static final Setting INSTANCE = new Setting();
+    }
+    public static Setting getInstance() {
+        return Setting.SingletonHelper.INSTANCE;
+    }
+    private Setting() {
         setAlignment(Pos.CENTER);
         setSpacing(8);
 
         Text title = new Text("Setting");
-        title.setFont(new Font("/font1.ttf", 22));
-        title.setStyle("-fx-font-weight: bold");
+        title.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
         title.setFill(Color.WHITE);
 
         // TAB PANE
         TabPane tabPane = new TabPane();
         tabPane.setStyle("-fx-background-color: rgba(128, 128, 128, 1); -fx-open-tab-animation: grow");
-        tabPane.setMaxWidth(prefWidth);
-        tabPane.setMaxHeight(prefHeight);
-        tabPane.setTabMaxWidth(prefWidth / 3);
+        tabPane.setMaxWidth(DEFAULT_WIDTH);
+        tabPane.setMaxHeight(DEFAULT_HEIGHT);
+        tabPane.setTabMaxWidth(DEFAULT_WIDTH / 3);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         // MUSIC TAB

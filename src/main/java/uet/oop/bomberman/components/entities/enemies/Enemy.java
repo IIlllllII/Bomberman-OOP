@@ -11,7 +11,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.PlayScene;
-import uet.oop.bomberman.core.stages.GameStage;
+import uet.oop.bomberman.core.scenes.game.TopBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public abstract class Enemy extends Entity {
         } else {
             animationDeath.render(gc, x - camera.getX(), y - camera.getY());
             if (!animationDeath.isDone()) {
-                Text text = new Text();
+                //Text text = new Text();
                 gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
                 gc.setFill(Color.SNOW);
                 gc.fillText(" + " + score,
@@ -83,7 +83,7 @@ public abstract class Enemy extends Entity {
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
         if (destroyed) {
-            PlayScene.addScore(score);
+            TopBar.getInstance().addScore(score);
         }
     }
 

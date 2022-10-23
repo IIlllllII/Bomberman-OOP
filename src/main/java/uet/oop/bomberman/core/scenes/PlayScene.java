@@ -5,92 +5,101 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.transform.Scale;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.game.Camera;
-import uet.oop.bomberman.core.scenes.game.Clock;
+import uet.oop.bomberman.core.scenes.game.IntroLevel;
+import uet.oop.bomberman.core.scenes.game.TopBar;
 import uet.oop.bomberman.core.scenes.game.filter.NightMode;
 
 import java.util.List;
 
 public class PlayScene {
+    private boolean initialized = false;
     private final StackPane root;
-    private Group layout1;
+    private final Group layout1;
     private final GraphicsContext gc;
-    private static Clock clock;
-    private static int score;
-    private static Label scoreLabel;
+    private final TopBar topBar;
+    private final IntroLevel introLevel;
     private final LevelMap levelMap = LevelMap.getInstance();
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
-    NightMode filter;
 
     public PlayScene() {
         root = new StackPane();
         root.setStyle("-fx-background-color: #2A2E37;");
         root.setAlignment(Pos.CENTER);
 
+        // LAYOUT 1
         layout1 = new Group();
 
         Canvas canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
-        filter = new NightMode(130);
-
         layout1.getChildren().addAll(canvas);
-        layout1.getChildren().addAll(filter.getFilter());
 
-        BorderPane borderPane = new BorderPane();
-        borderPane.setStyle("-fx-background-color: transparent;");
+        // LAYOUT 2
+        BorderPane layout2 = new BorderPane();
+        layout2.setStyle("-fx-background-color: transparent;");
 
-        // TOP
-        HBox top = createTop();
+        // TOP OF LAYOUT 2
+        topBar = TopBar.getInstance();
+        layout2.setTop(topBar);
 
-        borderPane.setTop(top);
+        // LAYOUT 3
+        introLevel = IntroLevel.getInstance();
 
-        root.getChildren().addAll(layout1, borderPane);
+        root.getChildren().addAll(layout1, layout2, introLevel);
 
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
 
         reset();
+        initialized = true;
+    }
+
+    public void reset() {
+        if (initialized) {
+            introLevel.reset(1);
+            levelMap.reset();
+        }
+        topBar.reset();
     }
 
     public void update(List<KeyCode> inputList) {
-        if (inputList.contains(KeyCode.ESCAPE)) {
-            SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
-            inputList.remove(KeyCode.ESCAPE);
+        if (introLevel.isDone()) {
+            if (inputList.contains(KeyCode.ESCAPE)) {
+                SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
+                inputList.remove(KeyCode.ESCAPE);
+            }
+
+            if (inputList.contains(KeyCode.N)) {
+                levelMap.nextLevel();
+                inputList.remove(KeyCode.N);
+            }
+
+            levelMap.update();
+            entitiesManager.players.get(0).handleInput(inputList);
+
+            camera.update();
+            entitiesManager.update();
+
+//            Bomber player = entitiesManager.players.get(0);
+////        filter.update(player.getX() + player.getWidth() / 2.0 - camera.getX(),
+////                player.getY() + player.getHeight() / 2.0 - camera.getY());
         }
-
-        if (inputList.contains(KeyCode.N)) {
-            levelMap.nextLevel();
-            inputList.remove(KeyCode.N);
-        }
-
-        levelMap.update();
-        entitiesManager.players.get(0).handleInput(inputList);
-
-        camera.update();
-        entitiesManager.update();
-
-        Bomber player = entitiesManager.players.get(0);
-        filter.update(player.getX() + player.getWidth() / 2.0 - camera.getX(),
-                player.getY() + player.getHeight() / 2.0 - camera.getY());
     }
 
     public void render() {
-        gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
-        levelMap.render(gc);
-        entitiesManager.render(gc);
+        if (introLevel.isDone()) {
+            gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+            levelMap.render(gc);
+            entitiesManager.render(gc);
+        }
     }
 
     public Parent getRoot() {
@@ -100,49 +109,7 @@ public class PlayScene {
     public void zoom() {
         layout1.setScaleX(GameConfig.ZOOM);
         layout1.setScaleY(GameConfig.ZOOM);
-//        Scale scale = new Scale();
-//        scale.setPivotX(0);
-//        scale.setPivotY(0);
-//        scale.setX(GameConfig.ZOOM);
-//        scale.setY(GameConfig.ZOOM);
-//        gc.getCanvas().getTransforms().clear();
-//        gc.getCanvas().getTransforms().add(scale);
-    }
-
-    public void reset() {
-        score = 0;
-        clock.setTime(Clock.DEFAULT_TIME);
-        if (levelMap.getLevel() > 1) {
-            levelMap.reset();
-        }
-    }
-
-    public static void setClock(int time) {
-        PlayScene.clock.setTime(time);
-    }
-
-    public static Clock getClock() {
-        return clock;
-    }
-
-    public static void addScore(int amount) {
-        score += amount;
-        scoreLabel.setText(String.format("SCORE: %06d", score));
-    }
-
-    private HBox createTop() {
-        HBox top = new HBox(50);
-        top.setMaxHeight(32);
-        top.setAlignment(Pos.CENTER);
-        top.setSpacing(200);
-
-        clock = new Clock();
-        score = 0;
-        scoreLabel = new Label(String.format("SCORE: %06d", score));
-        scoreLabel.setTextFill(Color.WHITE);
-        scoreLabel.setFont(Font.font(24));
-
-        top.getChildren().addAll(clock, scoreLabel);
-        return top;
+        introLevel.setScaleX(GameConfig.ZOOM);
+        introLevel.setScaleY(GameConfig.ZOOM);
     }
 }
