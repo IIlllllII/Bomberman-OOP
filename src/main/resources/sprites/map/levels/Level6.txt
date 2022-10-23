@@ -12,7 +12,7 @@
 #*## #*###* # #*#*#*#*# # # #*#
 #p            ***        3  **#
 ###############################
-B f F b W s s l l l
+B f F b W s s l l l I
 
 Mô tả cấu trúc tệp cấu hình màn chơi:
 1/ Dòng đầu tiên bao gồm 2 số nguyên R, C:
@@ -44,5 +44,6 @@ s - Speed Item
 B - Bomb Pass Item
 F - Flame Pass Item
 W - Brick Pass Item
+I - Initialized
 l - Plus 1 live
 Kí tự khác các kí tự trên - Grass

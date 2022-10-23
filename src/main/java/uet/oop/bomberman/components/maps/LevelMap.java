@@ -264,6 +264,10 @@ public class LevelMap {
                         itemList.add(new BrickPass(xItem, yItem));
                         break;
                     }
+                    case 'I': {
+                        itemList.add(new Initialized(xItem, yItem));
+                        break;
+                    }
                     case 'l': {
                         itemList.add(new LivesUp(xItem, yItem));
                         break;
