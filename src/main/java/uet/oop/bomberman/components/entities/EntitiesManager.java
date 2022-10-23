@@ -11,7 +11,7 @@ import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.CharacterStatus;
+import uet.oop.bomberman.config.Action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +124,7 @@ public class EntitiesManager {
                     enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
                 }
                 if (!enemy.isDestroyed() && bomberBox.isCollidedWith(enemyBox) && !players.get(0).isInvincible()) {
-                    players.get(0).setPlayerStatus(CharacterStatus.DEAD);
+                    players.get(0).setPlayerAction(Action.DEAD);
                 }
             }
         }
@@ -136,7 +136,7 @@ public class EntitiesManager {
 
                     if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
                             && !players.get(0).isInvincible()) {
-                        players.get(0).setPlayerStatus(CharacterStatus.DEAD);
+                        players.get(0).setPlayerAction(Action.DEAD);
                     }
 
                     enemies.forEach(enemy -> {

@@ -32,17 +32,17 @@ public class Brick extends Entity {
             try {
                 bricks.add(new Image(LevelMap.class.getResource("/sprites/map/brick/brick1.png").toURI().toString()));
                 bricks.add(new Image(LevelMap.class.getResource("/sprites/map/brick/brick2.png").toURI().toString()));
-                bricks.add(new Sprite(16, 16, 1 * 16, newTiles, 16, 16).getFxImage());
+                bricks.add(new Sprite(16, 16, 1 * 16, newTiles).getFxImage());
                 bricks.add(new Image(LevelMap.class.getResource("/sprites/map/brick/brick3.png").toURI().toString()));
-                bricks.add(new Sprite(16, 16, 3 * 16, newTiles, 16, 16).getFxImage());
-                bricks.add(new Sprite(16, 16, 5 * 16, newTiles, 16, 16).getFxImage());
-                bricks.add(new Sprite(16, 5 * 16, 0, newTiles, 16, 16).getFxImage());
+                bricks.add(new Sprite(16, 16, 3 * 16, newTiles).getFxImage());
+                bricks.add(new Sprite(16, 16, 5 * 16, newTiles).getFxImage());
+                bricks.add(new Sprite(16, 5 * 16, 0, newTiles).getFxImage());
                 //Map boss
-                bricks.add(new Sprite(16, 4 * 16, 0, newTiles, 16, 16).getFxImage());
+                bricks.add(new Sprite(16, 4 * 16, 0, newTiles).getFxImage());
 
-                brickExplodes.add(new Sprite(16, 7 * 16, 1 * 16, tiles, 16, 16).getFxImage());
-                brickExplodes.add(new Sprite(16, 7 * 16, 2 * 16, tiles, 16, 16).getFxImage());
-                brickExplodes.add(new Sprite(16, 7 * 16, 3 * 16, tiles, 16, 16).getFxImage());
+                brickExplodes.add(new Sprite(16, 7 * 16, 1 * 16, tiles).getFxImage());
+                brickExplodes.add(new Sprite(16, 7 * 16, 2 * 16, tiles).getFxImage());
+                brickExplodes.add(new Sprite(16, 7 * 16, 3 * 16, tiles).getFxImage());
 
             } catch (URISyntaxException | NullPointerException e) {
                 System.out.println("brick init");

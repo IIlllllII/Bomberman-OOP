@@ -23,13 +23,13 @@ public class Wall extends Entity {
                 SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
                 walls.add(new Image(LevelMap.class.getResource("/sprites/map/wall/wall1.png").toURI().toString()));
                 walls.add(new Image(LevelMap.class.getResource("/sprites/map/wall/wall2.png").toURI().toString()));
-                walls.add(new Sprite(16, 2 * 16, 1 * 16, newTiles, 16, 16).getFxImage());
+                walls.add(new Sprite(16, 2 * 16, 1 * 16, newTiles).getFxImage());
                 walls.add(new Image(LevelMap.class.getResource("/sprites/map/wall/wall3.png").toURI().toString()));
-                walls.add(new Sprite(16, 2 * 16, 2 * 16, newTiles, 16, 16).getFxImage());
-                walls.add(new Sprite(16, 2 * 16, 5 * 16, newTiles, 16, 16).getFxImage());
-                walls.add(new Sprite(16, 4 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
+                walls.add(new Sprite(16, 2 * 16, 2 * 16, newTiles).getFxImage());
+                walls.add(new Sprite(16, 2 * 16, 5 * 16, newTiles).getFxImage());
+                walls.add(new Sprite(16, 4 * 16, 0 * 16, newTiles).getFxImage());
                 //Map boss
-                walls.add(new Sprite(16, 4 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
+                walls.add(new Sprite(16, 4 * 16, 0 * 16, newTiles).getFxImage());
 
 //                walls.add(new Sprite(16, 2 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
 //                walls.add(new Sprite(16, 2 * 16, 1 * 16, newTiles, 16, 16).getFxImage());

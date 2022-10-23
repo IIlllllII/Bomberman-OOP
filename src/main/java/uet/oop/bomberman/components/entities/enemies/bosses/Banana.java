@@ -45,7 +45,7 @@ public class Banana extends Enemy {
                 new Animation(SpriteSheet.normalBanana, 8, 8, 1000, 3, 247,
                 47, 74, 47 * 1.5f, 74 * 1.5f, 4f, false));
 
-        animationDict.put("death",
+        animationDict.put("dead",
                 new Animation(SpriteSheet.deadBanana, 12, 12, 1200, 0, 0,
                 76, 89, 76 * 1.5f, 89 * 1.5f, 3.3f, false));
 
@@ -53,7 +53,7 @@ public class Banana extends Enemy {
         animationDict.get("up").setLoop(true);
         animationDict.get("left").setLoop(true);
         animationDict.get("right").setLoop(true);
-        animationDict.get("death").setLoop(false);
+        animationDict.get("dead").setLoop(false);
 
         initDirectionList();
         lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
@@ -81,14 +81,14 @@ public class Banana extends Enemy {
             animationDict.get(lastDirection.label)
                     .render(gc, x - camera.getX(), y - camera.getY());
         } else {
-            animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
-            if (! animationDict.get("death").isDone()) {
+            animationDict.get("dead").render(gc, x - camera.getX(), y - camera.getY());
+            if (! animationDict.get("dead").isDone()) {
                 Text text = new Text();
                 gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
                 gc.setFill(Color.SNOW);
                 gc.fillText(" + " + score,
                         x - camera.getX() + 16,
-                        y - camera.getY() + 20 - animationDict.get("death").getCalcTime() / 64);
+                        y - camera.getY() + 20 - animationDict.get("dead").getCalcTime() / 64);
             } else {
                 done = true;
             }
@@ -105,7 +105,7 @@ public class Banana extends Enemy {
             animationDict.get(lastDirection.label).update();
             updateBoxCollider();
         } else {
-            animationDict.get("death").update();
+            animationDict.get("dead").update();
         }
     }
 
@@ -123,7 +123,7 @@ public class Banana extends Enemy {
 
     @Override
     public boolean isDone() {
-        return animationDict.get("death").isDone();
+        return animationDict.get("dead").isDone();
     }
 
     @Override

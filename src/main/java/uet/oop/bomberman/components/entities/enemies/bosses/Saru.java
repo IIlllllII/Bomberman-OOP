@@ -9,7 +9,7 @@ import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.config.CharacterStatus;
+import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 
@@ -22,7 +22,7 @@ public class Saru extends Enemy {
     private final int visionRange = 3; //Cell unit.
 
     private int lives;
-    private CharacterStatus saruStatus;
+    private Action saruStatus;
 
     private boolean suicide;
 
@@ -48,7 +48,7 @@ public class Saru extends Enemy {
                 new Animation(SpriteSheet.saru, 4, 4, 1000, 3, 3,
                         24, 19, 24 * 1.5f, 19 * 1.5f, 3f, false));
 
-        animationDict.put("death",
+        animationDict.put("dead",
                 new Animation(SpriteSheet.saru, 4, 4, 1000, 57, 71,
                         23, 19, 23 * 1.5f, 19 * 1.5f, 4f, false));
 
@@ -57,10 +57,10 @@ public class Saru extends Enemy {
         animationDict.get("left").setLoop(true);
         animationDict.get("right").setLoop(true);
         animationDict.get("idle").setLoop(true);
-        animationDict.get("death").setLoop(false);
+        animationDict.get("dead").setLoop(false);
 
         initDirectionList();
-        saruStatus = CharacterStatus.IDLE;
+        saruStatus = Action.IDLE;
         lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
         score = 3000;
         speed = 4;
@@ -71,20 +71,20 @@ public class Saru extends Enemy {
     @Override
     public void render(GraphicsContext gc) {
         if (!destroyed) {
-            if (saruStatus == CharacterStatus.IDLE) {
+            if (saruStatus == Action.IDLE) {
                 animationDict.get("idle").render(gc, x - camera.getX(), y - camera.getY());
             } else {
                 animationDict.get(lastDirection.label).render(gc, x - camera.getX(), y - camera.getY());
             }
         } else {
-            animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
-            if (! animationDict.get("death").isDone()) {
+            animationDict.get("dead").render(gc, x - camera.getX(), y - camera.getY());
+            if (! animationDict.get("dead").isDone()) {
                 Text text = new Text();
                 gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
                 gc.setFill(Color.SNOW);
                 gc.fillText(" + " + score,
                         x - camera.getX() + 16,
-                        y - camera.getY() + 20 - animationDict.get("death").getCalcTime() / 32);
+                        y - camera.getY() + 20 - animationDict.get("dead").getCalcTime() / 32);
             } else {
                 done = true;
             }
@@ -94,10 +94,10 @@ public class Saru extends Enemy {
     @Override
     public void update() {
         if (destroyed) {
-            animationDict.get("death").update();
+            animationDict.get("dead").update();
             return;
         }
-        if (saruStatus == CharacterStatus.IDLE) {
+        if (saruStatus == Action.IDLE) {
             int centerX = (int) this.x + GameConfig.TILE_SIZE / 2;
             int centerY = (int) this.y + GameConfig.TILE_SIZE / 2;
             this.x = (double) (centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
@@ -111,7 +111,7 @@ public class Saru extends Enemy {
 
     @Override
     public boolean isDone() {
-        return animationDict.get("death").isDone();
+        return animationDict.get("dead").isDone();
     }
 
     @Override
@@ -136,19 +136,19 @@ public class Saru extends Enemy {
 
 
         if (suicide) {
-            saruStatus = CharacterStatus.MOVING;
+            saruStatus = Action.MOVING;
             checkMove();
             x += moveX;
             y += moveY;
             if (cellX == cellXPlayer && cellY == cellYPlayer) {
                 suicide = false;
-                saruStatus = CharacterStatus.IDLE;
+                saruStatus = Action.IDLE;
             }
             return;
         }
 
         if (Math.abs(cellXPlayer - cellX) <= visionRange && Math.abs(cellYPlayer - cellY) <= visionRange
-            && EntitiesManager.getInstance().players.get(0).getPlayerStatus() != CharacterStatus.DEAD) {
+            && EntitiesManager.getInstance().players.get(0).getPlayerAction() != Action.DEAD) {
             moveX = 0;
             moveY = 0;
 
@@ -159,10 +159,10 @@ public class Saru extends Enemy {
                     lastDirection = Direction.UP;
                 }
                 suicide = true;
-                saruStatus = CharacterStatus.MOVING;
+                saruStatus = Action.MOVING;
                 if (lastDirection == Direction.UP && !canMoveU || lastDirection == Direction.DOWN && !canMoveD) {
                     suicide = false;
-                    saruStatus = CharacterStatus.IDLE;
+                    saruStatus = Action.IDLE;
                 }
 
             }
@@ -173,15 +173,15 @@ public class Saru extends Enemy {
                     lastDirection = Direction.LEFT;
                 }
                 suicide = true;
-                saruStatus = CharacterStatus.MOVING;
+                saruStatus = Action.MOVING;
                 if (lastDirection == Direction.RIGHT && !canMoveR || lastDirection == Direction.LEFT && !canMoveL) {
                     suicide = false;
-                    saruStatus = CharacterStatus.IDLE;
+                    saruStatus = Action.IDLE;
                 }
             }
             //System.out.println("In dangerous range: suicide: " + suicide + ", direction: " + lastDirection);
         } else {
-            saruStatus = CharacterStatus.IDLE;
+            saruStatus = Action.IDLE;
         }
     }
 }
