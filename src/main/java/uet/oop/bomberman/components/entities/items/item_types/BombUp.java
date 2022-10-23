@@ -15,7 +15,9 @@ public class BombUp extends Item {
     @Override
     public void changePower() {
         Bomber bomber = EntitiesManager.getInstance().players.get(0);
-        bomber.setBombMax(bomber.getBombMax() + 1);
+        if(bomber.getBombMax() < 10){
+            bomber.setBombMax(bomber.getBombMax() + 1);
+        }
         eaten = false;
         done = true;
     }

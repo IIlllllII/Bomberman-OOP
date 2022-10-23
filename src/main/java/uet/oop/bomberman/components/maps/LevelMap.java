@@ -132,14 +132,18 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            if(auto){
-                                entitiesManager.players.add(
-                                        new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
-                                );
+                            if(level == 1){
+                                if(auto){
+                                    entitiesManager.players.add(
+                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                    );
+                                }else {
+                                    entitiesManager.players.add(
+                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                    );
+                                }
                             }else {
-                                entitiesManager.players.add(
-                                        new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
-                                );
+                                entitiesManager.players.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE);
                             }
                             hash = getHash("grass");
                             break;

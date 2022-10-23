@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.*;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.items.Item;
+import uet.oop.bomberman.components.entities.items.item_types.Initialized;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -137,6 +139,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
+        resetLocation();
         move();
         if (playerStatus == CharacterStatus.IDLE) {
             return;
@@ -159,6 +162,10 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                 //Return to initial position:
                 this.x = initialX;
                 this.y = initialY;
+                Initialized initialized = new Initialized(x, y);
+                initialized.setTimePowerUp(5000);
+                initialized.setAppear(true);
+                EntitiesManager.getInstance().items.add(initialized);
                 updateBoxCollider();
             }
         }

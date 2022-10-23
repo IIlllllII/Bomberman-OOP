@@ -8,7 +8,7 @@ import uet.oop.bomberman.components.entities.players.Bomber;
 public class FlameUp extends Item {
 
     /**
-     * Increase the blast radius each bombs can make (Max. 2).
+     * Increase the blast radius each bombs can make (Max. 6).
      */
 
     public FlameUp(double x, double y){
@@ -17,7 +17,9 @@ public class FlameUp extends Item {
 
     @Override
     public void changePower() {
-        Bomb.setFlameLength(Bomb.getFlameLength() + 1);
+        if(Bomb.getFlameLength() < 6){
+            Bomb.setFlameLength(Bomb.getFlameLength() + 1);
+        }
         eaten = false;
         done = true;
     }

@@ -22,7 +22,7 @@ public class Pontan extends Enemy {
         initDirectionList();
 
         score = 8000;
-        speed = 4;
+        speed = 16 / 5;
     }
 
     @Override
