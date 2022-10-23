@@ -179,7 +179,6 @@ public class AutoPlay extends Bomber {
         directionList.add(Direction.RIGHT);
         directionList.add(Direction.UP);
         directionList.add(Direction.DOWN);
-        directionList.add(Direction.STAND);
     }
 
     private boolean checkEntity(int i, int j, String nameEntity) {

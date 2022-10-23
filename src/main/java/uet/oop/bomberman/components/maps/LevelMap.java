@@ -132,7 +132,7 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            if(level == 1){
+                            if(entitiesManager.players.size() == 0){
                                 if(auto){
                                     entitiesManager.players.add(
                                             new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
