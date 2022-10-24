@@ -9,6 +9,7 @@ import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.PlayScene;
+import uet.oop.bomberman.core.scenes.game.TopBar;
 import uet.oop.bomberman.core.stages.GameStage;
 
 public class Coin extends Item {
@@ -32,7 +33,7 @@ public class Coin extends Item {
         if (appear) {
             animation.update();
             if (eaten) {
-                PlayScene.addScore(score);
+                TopBar.getInstance().addScore(score);
                 appear = false;
             }
         } else {

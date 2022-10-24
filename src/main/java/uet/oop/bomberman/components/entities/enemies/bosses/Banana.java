@@ -1,6 +1,10 @@
 package uet.oop.bomberman.components.entities.enemies.bosses;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import uet.oop.bomberman.components.entities.BoxCollider;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
@@ -12,7 +16,10 @@ import java.util.Map;
 
 public class Banana extends Enemy {
     private final Map<String, Animation> animationDict = new HashMap<>();
-    private final BoxCollider boxCollider;
+
+    private final BoxCollider movingBox;
+
+    private final BoxCollider deathBox;
 
     private int lives;
 
@@ -21,7 +28,8 @@ public class Banana extends Enemy {
         this.setWidth((int) (47 * 1.5));
         this.setHeight((int) (74 * 1.5));
 
-        boxCollider = new BoxCollider(0, 0,15, 20);
+        movingBox = new BoxCollider(0, 0,15, 20);
+        deathBox = new BoxCollider(0, 0, getWidth() - 20, 25);
         updateBoxCollider();
 
         animationDict.put("down",
@@ -38,7 +46,7 @@ public class Banana extends Enemy {
                 47, 74, 47 * 1.5f, 74 * 1.5f, 4f, false));
 
         animationDict.put("death",
-                new Animation(SpriteSheet.deadBanana, 24, 24, 3000, 0, 0,
+                new Animation(SpriteSheet.deadBanana, 12, 12, 1200, 0, 0,
                 76, 89, 76 * 1.5f, 89 * 1.5f, 3.3f, false));
 
         animationDict.get("down").setLoop(true);
@@ -52,8 +60,12 @@ public class Banana extends Enemy {
         score = 2000;
     }
 
-    public BoxCollider getBoxCollider() {
-        return boxCollider;
+    public BoxCollider getMovingBox() {
+        return movingBox;
+    }
+
+    public BoxCollider getDeathBox() {
+        return deathBox;
     }
 
     public void decreaseLives() {
@@ -71,9 +83,12 @@ public class Banana extends Enemy {
         } else {
             animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
             if (! animationDict.get("death").isDone()) {
+                Text text = new Text();
+                gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+                gc.setFill(Color.SNOW);
                 gc.fillText(" + " + score,
                         x - camera.getX() + 16,
-                        y - camera.getY() + 20 - animationDict.get("death").getCalcTime() / 32);
+                        y - camera.getY() + 20 - animationDict.get("death").getCalcTime() / 64);
             } else {
                 done = true;
             }
@@ -84,7 +99,10 @@ public class Banana extends Enemy {
     public void update() {
         if (!destroyed) {
             move();
-            animationDict.get(currentDirection.label).update();
+            if (animationDict.get(lastDirection.label) == null) {
+                return;
+            }
+            animationDict.get(lastDirection.label).update();
             updateBoxCollider();
         } else {
             animationDict.get("death").update();
@@ -92,9 +110,14 @@ public class Banana extends Enemy {
     }
 
     private void updateBoxCollider() {
-        boxCollider.setLocation(
-                this.x + (this.width - boxCollider.getWidth()) / 2.0,
-                this.y + (this.height - boxCollider.getHeight()) / 2.0 + 10
+        movingBox.setLocation(
+                this.x + (this.width - movingBox.getWidth()) / 2.0,
+                this.y + (this.height - movingBox.getHeight())
+        );
+
+        deathBox.setLocation(
+                this.x + (this.width - deathBox.getWidth()) / 2.0,
+                this.y + (this.height - deathBox.getHeight()) + 5
         );
     }
 
@@ -105,20 +128,15 @@ public class Banana extends Enemy {
 
     @Override
     protected void move() {
-        int j = (int) (boxCollider.getX() / 32);
-        int i = (int) (boxCollider.getY() / 32);
+        int j = (int) (movingBox.getX() / 32);
+        int i = (int) (movingBox.getY() / 32);
 
-//        System.out.println("i & j: " + i + " " + j);
-//        System.out.println(j * GameConfig.TILE_SIZE);
-//        System.out.println(boxCollider.getX());
-
-        //if (j * 32 == boxCollider.getX() && i * 32 == boxCollider.getY()) {
-            moveX = 0;
-            moveY = 0;
-            canMoveR = checkMapHash(i, j + 1);
-            canMoveL = checkMapHash(i, j - 1);
-            canMoveU = checkMapHash(i - 1, j);
-            canMoveD = checkMapHash(i + 1, j);
+        moveX = 0;
+        moveY = 0;
+        canMoveR = checkMapHash(i, j + 1);
+        canMoveL = checkMapHash(i, j - 1);
+        canMoveU = checkMapHash(i - 1, j);
+        canMoveD = checkMapHash(i + 1, j);
 
             checkMove();
             if (moveY == 0 && moveX == 0) {

@@ -1,6 +1,10 @@
 package uet.oop.bomberman.components.entities.enemies.bosses;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
@@ -16,7 +20,11 @@ public class Saru extends Enemy {
     private final Map<String, Animation> animationDict = new HashMap<>();
 
     private final int visionRange = 3; //Cell unit.
+
+    private int lives;
     private CharacterStatus saruStatus;
+
+    private boolean suicide;
 
     public Saru(double x, double y) {
         super(x, y);
@@ -41,8 +49,8 @@ public class Saru extends Enemy {
                         24, 19, 24 * 1.5f, 19 * 1.5f, 3f, false));
 
         animationDict.put("death",
-                new Animation(SpriteSheet.saru, 4, 4, 1000, 3, 3,
-                        24, 19, 24 * 1.5f, 19 * 1.5f, 3f, false));
+                new Animation(SpriteSheet.saru, 4, 4, 1000, 57, 71,
+                        23, 19, 23 * 1.5f, 19 * 1.5f, 4f, false));
 
         animationDict.get("down").setLoop(true);
         animationDict.get("up").setLoop(true);
@@ -53,9 +61,11 @@ public class Saru extends Enemy {
 
         initDirectionList();
         saruStatus = CharacterStatus.IDLE;
-        currentDirection = currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
-        score = 5000;
+        lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        score = 3000;
         speed = 4;
+        lives = 3;
+        suicide = false;
     }
 
     @Override
@@ -64,11 +74,14 @@ public class Saru extends Enemy {
             if (saruStatus == CharacterStatus.IDLE) {
                 animationDict.get("idle").render(gc, x - camera.getX(), y - camera.getY());
             } else {
-                animationDict.get(currentDirection.label).render(gc, x - camera.getX(), y - camera.getY());
+                animationDict.get(lastDirection.label).render(gc, x - camera.getX(), y - camera.getY());
             }
         } else {
             animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
             if (! animationDict.get("death").isDone()) {
+                Text text = new Text();
+                gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+                gc.setFill(Color.SNOW);
                 gc.fillText(" + " + score,
                         x - camera.getX() + 16,
                         y - camera.getY() + 20 - animationDict.get("death").getCalcTime() / 32);
@@ -91,7 +104,7 @@ public class Saru extends Enemy {
             this.y = (double) (centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             animationDict.get("idle").update();
         } else {
-            animationDict.get(currentDirection.label).update();
+            animationDict.get(lastDirection.label).update();
         }
         move();
     }
@@ -105,107 +118,68 @@ public class Saru extends Enemy {
     protected void move() {
         double bomberX = EntitiesManager.getInstance().players.get(0).getX();
         double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+        int bomberWidth = EntitiesManager.getInstance().players.get(0).getWidth();
+        int bomberHeight = EntitiesManager.getInstance().players.get(0).getHeight();
+        int cellXPlayer = (int) ((bomberX + bomberWidth / 2) / GameConfig.TILE_SIZE);
+        int cellYPlayer = (int) ((bomberY + bomberHeight / 2) / GameConfig.TILE_SIZE);
 
         int centerX = (int) this.x + GameConfig.TILE_SIZE / 2;
         int centerY = (int) this.y + GameConfig.TILE_SIZE / 2;
         int cellX = centerX / GameConfig.TILE_SIZE;
         int cellY = centerY / GameConfig.TILE_SIZE;
 
-        int cellXPlayer = (int) (bomberX / 32);
-        int cellYPlayer = (int) (bomberY / 32);
 
         canMoveR = checkMapHash(cellY, cellX + 1);
         canMoveL = checkMapHash(cellY, cellX - 1);
         canMoveU = checkMapHash(cellY - 1, cellX);
         canMoveD = checkMapHash(cellY + 1, cellX);
 
-//        System.out.println(cellX + " " + cellY + " " + cellXPlayer  + " " + cellYPlayer + " "
-//                + canMoveR + " " + canMoveL + " " + canMoveU + " " + canMoveD);
 
-        if (Math.abs(cellXPlayer - cellX) <= visionRange && Math.abs(cellYPlayer - cellY) <= visionRange) {
-            moveX = 0;
-            moveY = 0;
+        if (suicide) {
             saruStatus = CharacterStatus.MOVING;
-
-//            if (cellXPlayer == cellX) {
-//                if (cellYPlayer > cellY) {
-//                    //Direction = DOWN;
-//                } else {
-//                    //Direction = UP;
-//                }
-//                //Start suicide;
-//            }
-//            if (cellYPlayer == cellY) {
-//                if (cellXPlayer > cellX) {
-//                    //Direction = right;
-//                } else {
-//                    //Direction = left;
-//                }
-//                //Start suicide;
-//            }
-
-            if (cellXPlayer < cellX && cellYPlayer < cellY) {
-                //move right or down first
-                if (canMoveR) {
-                    currentDirection = Direction.RIGHT;
-                } else if (canMoveD) {
-                    currentDirection = Direction.DOWN;
-                } else {
-                    if (canMoveL) {
-                        currentDirection = Direction.LEFT;
-                    } else if (canMoveU) {
-                        currentDirection = Direction.UP;
-                    }
-                }
-            }
-            if (cellXPlayer < cellX && cellYPlayer > cellY) {
-                //move right or up first
-                if (canMoveR) {
-                    currentDirection = Direction.RIGHT;
-                } else if (canMoveU) {
-                    currentDirection = Direction.UP;
-                } else {
-                    if (canMoveD) {
-                        currentDirection = Direction.DOWN;
-                    } else if (canMoveL) {
-                        currentDirection = Direction.LEFT;
-                    }
-                }
-            }
-            if (cellXPlayer > cellX && cellYPlayer < cellY) {
-                //move left or down first
-                if (canMoveL) {
-                    currentDirection = Direction.LEFT;
-                } else if (canMoveD) {
-                    currentDirection = Direction.DOWN;
-                } else {
-                    if (canMoveU) {
-                        currentDirection = Direction.UP;
-                    } else if (canMoveR) {
-                        currentDirection = Direction.RIGHT;
-                    }
-                }
-            }
-            if (cellXPlayer > cellX && cellYPlayer > cellY) {
-                //move left or up first
-                if (canMoveL) {
-                    currentDirection = Direction.LEFT;
-                } else if (canMoveU) {
-                    currentDirection = Direction.UP;
-                } else {
-                    if (canMoveD) {
-                        currentDirection = Direction.DOWN;
-                    } else if (canMoveR) {
-                        currentDirection = Direction.RIGHT;
-                    }
-                }
-            }
-
             checkMove();
-
             x += moveX;
             y += moveY;
-            currentDirection = currentDirection;
+            if (cellX == cellXPlayer && cellY == cellYPlayer) {
+                suicide = false;
+                saruStatus = CharacterStatus.IDLE;
+            }
+            return;
+        }
+
+        if (Math.abs(cellXPlayer - cellX) <= visionRange && Math.abs(cellYPlayer - cellY) <= visionRange
+            && EntitiesManager.getInstance().players.get(0).getPlayerStatus() != CharacterStatus.DEAD) {
+            moveX = 0;
+            moveY = 0;
+
+            if (cellXPlayer == cellX) {
+                if (cellYPlayer > cellY) {
+                    lastDirection = Direction.DOWN;
+                } else {
+                    lastDirection = Direction.UP;
+                }
+                suicide = true;
+                saruStatus = CharacterStatus.MOVING;
+                if (lastDirection == Direction.UP && !canMoveU || lastDirection == Direction.DOWN && !canMoveD) {
+                    suicide = false;
+                    saruStatus = CharacterStatus.IDLE;
+                }
+
+            }
+            if (cellYPlayer == cellY) {
+                if (cellXPlayer > cellX) {
+                    lastDirection = Direction.RIGHT;
+                } else {
+                    lastDirection = Direction.LEFT;
+                }
+                suicide = true;
+                saruStatus = CharacterStatus.MOVING;
+                if (lastDirection == Direction.RIGHT && !canMoveR || lastDirection == Direction.LEFT && !canMoveL) {
+                    suicide = false;
+                    saruStatus = CharacterStatus.IDLE;
+                }
+            }
+            //System.out.println("In dangerous range: suicide: " + suicide + ", direction: " + lastDirection);
         } else {
             saruStatus = CharacterStatus.IDLE;
         }

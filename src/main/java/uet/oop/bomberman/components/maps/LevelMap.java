@@ -17,6 +17,8 @@ import uet.oop.bomberman.components.entities.players.Player;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.game.Clock;
+import uet.oop.bomberman.core.scenes.game.IntroLevel;
+import uet.oop.bomberman.core.scenes.game.TopBar;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,7 +75,7 @@ public class LevelMap {
     }
 
     public void update() {
-        if (levelComplete && PlayScene.getClock().isDone()) {
+        if (levelComplete && TopBar.getInstance().getClock().isDone()) {
             nextLevel();
             levelComplete = false;
         }
@@ -84,8 +86,9 @@ public class LevelMap {
     }
 
     public void prepareNextLevel() {
-        levelComplete = true;
-        PlayScene.setClock(15);
+        TopBar.getInstance().setClock(15);
+//        levelComplete = true;
+//        PlayScene.setClock(15);
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
@@ -104,14 +107,19 @@ public class LevelMap {
         level = (level > 8) ? 1 : level;
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
+
         entitiesManager.renewEntities();
         List<Brick> brickList = entitiesManager.bricks;
         List<Item> itemList = entitiesManager.items;
         List<Enemy> enemyList = entitiesManager.enemies;
         Portal portal = entitiesManager.portal;
 
-        if (PlayScene.getClock() != null) {
-            PlayScene.setClock(Clock.DEFAULT_TIME);
+        if (TopBar.getInstance().getClock() != null) {
+            TopBar.getInstance().setClock(Clock.DEFAULT_TIME);
+        }
+
+        if (level > 1) {
+            IntroLevel.getInstance().reset(level);
         }
 
         System.out.println("Current: " + brickList.size() + " " + itemList.size()
@@ -190,7 +198,7 @@ public class LevelMap {
                             break;
                         }
                         case '9': {
-                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE + 15, i * GameConfig.TILE_SIZE - 5));
+                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE + 15, i * GameConfig.TILE_SIZE));
                             hash = getHash("grass");
                             break;
                         }
@@ -217,7 +225,7 @@ public class LevelMap {
             double xItem = 0;
             double yItem = 0;
             String tile = scanner.nextLine();
-            for(int i = 0; i < tile.length(); i++){
+            for (int i = 0; i < tile.length(); i++) {
                 char hash = tile.charAt(i);
                 boolean checkItem = false;
                 while (!checkItem) {
@@ -227,13 +235,13 @@ public class LevelMap {
                             && brickList.get(ran).getY() == portal.getY()) {
                         check = true;
                     }
-                    for (int j = 0; j < itemList.size(); j++) {
-                        if (brickList.get(ran).getX() == itemList.get(j).getX()
-                                && brickList.get(ran).getY() == itemList.get(j).getY()) {
+                    for (Item item : itemList) {
+                        if (brickList.get(ran).getX() == item.getX()
+                                && brickList.get(ran).getY() == item.getY()) {
                             check = true;
                         }
                     }
-                    if(!check){
+                    if (!check) {
                         xItem = brickList.get(ran).getX();
                         yItem = brickList.get(ran).getY();
                         checkItem = true;

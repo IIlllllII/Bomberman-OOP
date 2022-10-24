@@ -58,6 +58,10 @@ public class Brick extends Entity {
         image = bricks.get(level - 1);
     }
 
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
     }

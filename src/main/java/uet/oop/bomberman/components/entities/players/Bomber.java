@@ -5,8 +5,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.*;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
-import uet.oop.bomberman.components.entities.items.Item;
-import uet.oop.bomberman.components.entities.items.item_types.Initialized;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -19,21 +17,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Bomber extends Entity implements Movable, Killable {
+public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
-    public static final double DEFAULT_SPEED = 2;
+    public static final int DEFAULT_SPEED = 2;
 
-    protected final double initialX;
-    protected final double initialY;
-    protected int lives = 3;
-    protected double speed = DEFAULT_SPEED;
-    protected boolean canPassBomb = false;
-    protected boolean canPassFlame = false;
-    protected boolean canPassBrick = false;
-    protected boolean canResetLocation = false;
-    protected boolean invincible = false;
-    protected int bombMax = 1;
+    private final double initialX;
+    private final double initialY;
+    private int lives = 3;
+    private int speed = DEFAULT_SPEED;
+    private boolean canPassBomb = false;
+    private boolean canPassFlame = false;
+    private boolean canPassBrick = false;
+    private boolean invincible = false;
+    private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
     protected CharacterStatus playerStatus = CharacterStatus.IDLE;
@@ -46,6 +43,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         initialX = x;
         initialY = y;
         bomberBox = new BoxCollider(0, 0, 18, 20);
+        updateBoxCollider();
     }
 
     public static void init() {
@@ -94,6 +92,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                     new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
             });
+
             spritesDict.put("dead", new Sprite[]{
                     new Sprite(22, 21, 4, 71, bombermanSheet, 16, 22),
                     new Sprite(22, 21, 26, 71, bombermanSheet, 16, 22),
@@ -102,7 +101,6 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                     new Sprite(22, 21, 92, 71, bombermanSheet, 16, 22),
                     new Sprite(22, 21, 114, 71, bombermanSheet, 16, 22),
             });
-
             initialized = true;
         }
     }
@@ -131,8 +129,6 @@ public abstract class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
-        resetLocation();
-        move();
         if (playerStatus == CharacterStatus.IDLE) {
             return;
         }
@@ -141,12 +137,13 @@ public abstract class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
+            move();
         }
 
         //TODO: change it later.
         if (playerStatus == CharacterStatus.DEAD) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 6 >= spritesDict.get("dead").length) {
+            if (currentSpriteIndex / 8 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
                 lives--;
                 playerStatus = CharacterStatus.IDLE;
@@ -164,6 +161,11 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     }
 
     protected abstract void updateBoxCollider();
+
+    public void setInitialLocation(int x, int y) {
+        this.initialX = x;
+        this.initialY = y;
+    }
 
     public void placeBomb() {
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
@@ -186,7 +188,6 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                 }
             }
             if (!hasBomb) {
-
                 new Sound(Sound.PLACE_BOMB_SOUND).playSound();
                 bombList.add(new Bomb(bombX, bombY, 32, 32));
 
@@ -197,7 +198,6 @@ public abstract class Bomber extends Entity implements Movable, Killable {
             }
         }
     }
-
 
     @Override
     public boolean isKilled() {
@@ -347,6 +347,4 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         canPassBomb = false;
         canPassFlame = false;
     }
-
-
 }

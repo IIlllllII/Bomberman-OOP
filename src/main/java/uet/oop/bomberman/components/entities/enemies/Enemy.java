@@ -38,7 +38,7 @@ public abstract class Enemy extends Entity {
 
     public Enemy(double x, double y) {
         super(x, y);
-        currentDirection = Direction.DOWN;
+//        currentDirection = Direction.DOWN;
     }
 
     public void render(GraphicsContext gc) {
@@ -51,7 +51,7 @@ public abstract class Enemy extends Entity {
         } else {
             animationDeath.render(gc, x - camera.getX(), y - camera.getY());
             if (!animationDeath.isDone()) {
-                Text text = new Text();
+                //Text text = new Text();
                 gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
                 gc.setFill(Color.SNOW);
                 gc.fillText(" + " + score,
@@ -87,7 +87,7 @@ public abstract class Enemy extends Entity {
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
         if (destroyed) {
-            PlayScene.addScore(score);
+            TopBar.getInstance().addScore(score);
         }
     }
 
