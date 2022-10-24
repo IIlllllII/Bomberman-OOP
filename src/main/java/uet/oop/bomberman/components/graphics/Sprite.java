@@ -4,7 +4,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.*;
 import uet.oop.bomberman.config.GameConfig;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Sprite {
@@ -115,5 +114,10 @@ public class Sprite {
             }
         }
         return output;
+    }
+
+    public void setSheet(SpriteSheet sheet) {
+        this.sheet = sheet;
+        loadPixelFromSheet();
     }
 }

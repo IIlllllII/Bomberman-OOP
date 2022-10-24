@@ -16,6 +16,9 @@ public class SpriteSheet {
     public static Image shadow;
     public static Image coin;
 
+    public static SpriteSheet komoriSheet;
+    public static SpriteSheet komoriFlashSheet;
+
     private final String path;
     public final int SHEET_WIDTH;
     public final int SHEET_HEIGHT;
@@ -35,6 +38,10 @@ public class SpriteSheet {
                 System.out.println("Sprite Sheet init");
                 throw new RuntimeException(e);
             }
+
+            komoriSheet = new SpriteSheet("/spriteSheet/komori.png", 996, 102);
+            komoriFlashSheet = new SpriteSheet("/spriteSheet/komori_flash_1.png", 996, 102);
+
             initialized = true;
         }
     }

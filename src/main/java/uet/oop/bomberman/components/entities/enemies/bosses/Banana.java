@@ -10,6 +10,7 @@ import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -128,8 +129,8 @@ public class Banana extends Enemy {
 
     @Override
     protected void move() {
-        int j = (int) (movingBox.getX() / 32);
-        int i = (int) (movingBox.getY() / 32);
+        int j = (int) (movingBox.getX() / GameConfig.TILE_SIZE);
+        int i = (int) (movingBox.getY() / GameConfig.TILE_SIZE);
 
         moveX = 0;
         moveY = 0;
@@ -142,18 +143,7 @@ public class Banana extends Enemy {
         if (moveY == 0 && moveX == 0) {
             if (directionList.size() != 0) {
                 int ran = r.nextInt(directionList.size());
-                if (directionList.get(ran) == Direction.UP) {
-                    lastDirection = Direction.UP;
-                }
-                if (directionList.get(ran) == Direction.DOWN) {
-                    lastDirection = Direction.DOWN;
-                }
-                if (directionList.get(ran) == Direction.RIGHT) {
-                    lastDirection = Direction.RIGHT;
-                }
-                if (directionList.get(ran) == Direction.LEFT) {
-                    lastDirection = Direction.LEFT;
-                }
+                lastDirection = directionList.get(ran);
             }
         }
         x += moveX;

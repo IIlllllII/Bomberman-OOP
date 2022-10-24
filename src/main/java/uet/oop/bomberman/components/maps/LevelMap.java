@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.enemies.*;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
-import uet.oop.bomberman.components.entities.enemies.bosses.komori.Komori;
+import uet.oop.bomberman.components.entities.enemies.bosses.Komori;
 import uet.oop.bomberman.components.entities.enemies.normal.*;
 import uet.oop.bomberman.components.entities.items.*;
 import uet.oop.bomberman.components.entities.EntitiesManager;
@@ -197,7 +197,7 @@ public class LevelMap {
                             break;
                         }
                         case 'K': {
-                            enemyList.add(new Komori(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE));
+                            enemyList.add(new Komori(j * GameConfig.TILE_SIZE + 10, i * GameConfig.TILE_SIZE + 15));
                             hash = getHash("grass");
                             break;
                         }

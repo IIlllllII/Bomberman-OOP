@@ -108,10 +108,13 @@ public abstract class Enemy extends Entity {
         directionList.add(Direction.RIGHT);
         directionList.add(Direction.UP);
         directionList.add(Direction.DOWN);
-        //directionList.add(Direction.STAND);
     }
 
-    protected void checkMove(){
+    protected void checkMove() {
+        if (lastDirection == null) {
+            initDirectionList();
+            return;
+        }
         switch (lastDirection) {
             case UP: {
                 if (canMoveU) {
@@ -147,9 +150,6 @@ public abstract class Enemy extends Entity {
                 } else {
                     directionList.remove(Direction.RIGHT);
                 }
-                break;
-            }
-            case STAND:{
                 break;
             }
         }

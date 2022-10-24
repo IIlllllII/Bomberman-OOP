@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
+import uet.oop.bomberman.components.entities.enemies.bosses.Komori;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.Coin;
 import uet.oop.bomberman.components.entities.players.Bomber;
@@ -50,13 +51,13 @@ public class EntitiesManager {
         bricks.forEach(entity -> entity.render(gc));
         coins.forEach(entity -> entity.render(gc));
         enemies.forEach(enemy -> {
-            if (!(enemy instanceof Banana)) {
+            if (!(enemy instanceof Banana || enemy instanceof Komori)) {
                 enemy.render(gc);
             }
         });
         players.forEach(player -> player.render(gc));
         enemies.forEach(enemy -> {
-            if (enemy instanceof Banana) {
+            if (enemy instanceof Banana || enemy instanceof Komori) {
                 enemy.render(gc);
             }
         });
@@ -117,13 +118,20 @@ public class EntitiesManager {
                 enemies.remove(i);
                 i--;
             } else {
-                BoxCollider enemyBox;
+                BoxCollider enemyBox = null;
                 if (enemy instanceof Banana) {
                     enemyBox = ((Banana) enemy).getDeathBox();
+                } else if (enemy instanceof Komori) {
+                    enemyBox = ((Komori) enemy).getShadowBox();
+                    ((Komori) enemy).checkWeaponCollision(bomberBox);
                 } else {
                     enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
                 }
                 if (!enemy.isDestroyed() && bomberBox.isCollidedWith(enemyBox) && !players.get(0).isInvincible()) {
+                    if (enemy instanceof Komori) {
+                        ((Komori) enemy).setAction(Action.IDLE);
+                        ((Komori) enemy).setFlying(false);
+                    }
                     players.get(0).setPlayerAction(Action.DEAD);
                 }
             }
@@ -143,8 +151,12 @@ public class EntitiesManager {
                         if (enemy instanceof Banana) {
                             BoxCollider enemyBox = ((Banana) enemy).getDeathBox();
                             if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
+                                //TODO:
                                 ((Banana) enemy).decreaseLives();
                             }
+                        } else if (enemy instanceof Komori) {
+                            BoxCollider enemyBox = ((Komori) enemy).getShadowBox();
+                            ((Komori) enemy).setHurt(((Komori) enemy).isHurt(enemyBox.isCollidedWith(flameBox)));
                         } else {
                             BoxCollider enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
                             if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {

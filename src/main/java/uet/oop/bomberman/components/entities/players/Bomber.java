@@ -191,6 +191,7 @@ public class Bomber extends Entity implements Movable, Killable {
     public void setInitialLocation(int x, int y) {
         this.initialX = x;
         this.initialY = y;
+        updateBoxCollider();
     }
 
     private void updateBoxCollider() {
