@@ -1,21 +1,19 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.components.entities.enemies.*;
+import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
 import uet.oop.bomberman.components.entities.enemies.normal.*;
-import uet.oop.bomberman.components.entities.items.*;
-import uet.oop.bomberman.components.entities.EntitiesManager;
-
+import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.*;
-import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Grass;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.entities.materials.Wall;
+import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.game.Clock;
 import uet.oop.bomberman.core.scenes.game.IntroLevel;
 import uet.oop.bomberman.core.scenes.game.TopBar;
@@ -80,11 +78,8 @@ public class LevelMap {
         }
     }
 
-    public void setLevelComplete(boolean levelComplete) {
-        this.levelComplete = levelComplete;
-    }
-
     public void prepareNextLevel() {
+        levelComplete = true;
         TopBar.getInstance().setClock(15);
 
         //Change all bricks left into coins:
@@ -102,6 +97,7 @@ public class LevelMap {
     public void nextLevel() {
         level++;
         level = (level > 8) ? 1 : level;
+
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
 
@@ -111,12 +107,9 @@ public class LevelMap {
         List<Enemy> enemyList = entitiesManager.enemies;
         Portal portal = entitiesManager.portal;
 
-        if (TopBar.getInstance().getClock() != null) {
-            TopBar.getInstance().setClock(Clock.DEFAULT_TIME);
-        }
-
         if (level > 1) {
             IntroLevel.getInstance().reset(level);
+            TopBar.getInstance().setClock(Clock.DEFAULT_TIME);
         }
 
         System.out.println("Current: " + brickList.size() + " " + itemList.size()
@@ -226,11 +219,8 @@ public class LevelMap {
                 boolean checkItem = false;
                 while (!checkItem) {
                     int ran = r.nextInt(brickList.size());
-                    boolean check = false;
-                    if (brickList.get(ran).getX() == portal.getX()
-                            && brickList.get(ran).getY() == portal.getY()) {
-                        check = true;
-                    }
+                    boolean check = brickList.get(ran).getX() == portal.getX()
+                            && brickList.get(ran).getY() == portal.getY();
                     for (Item item : itemList) {
                         if (brickList.get(ran).getX() == item.getX()
                                 && brickList.get(ran).getY() == item.getY()) {

@@ -21,7 +21,6 @@ public class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final int DEFAULT_SPEED = 2;
-
     private double initialX;        //reset in each level.
     private double initialY;        //reset in each level.
     private int lives = 3;
@@ -235,7 +234,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public boolean isKilled() {
-        return lives < 0;
+        return lives <= 0;
     }
 
     @Override

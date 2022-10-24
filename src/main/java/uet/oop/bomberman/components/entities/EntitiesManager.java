@@ -73,7 +73,6 @@ public class EntitiesManager {
 
         if (enemies.size() == 0) {
             portal.setCanPass(true);
-            LevelMap.getInstance().setLevelComplete(true);
         }
         for (int i = 0; i < bombs.size(); i++) {
             if (!bombs.get(i).isDone()) {

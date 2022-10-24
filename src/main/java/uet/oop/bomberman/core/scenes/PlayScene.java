@@ -9,18 +9,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import uet.oop.bomberman.components.entities.EntitiesManager;
-import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.game.Camera;
 import uet.oop.bomberman.core.scenes.game.IntroLevel;
 import uet.oop.bomberman.core.scenes.game.TopBar;
-import uet.oop.bomberman.core.scenes.game.filter.NightMode;
 
 import java.util.List;
 
 public class PlayScene {
-    private boolean initialized = false;
+    private boolean initialized;
     private final StackPane root;
     private final Group layout1;
     private final GraphicsContext gc;
@@ -31,6 +29,8 @@ public class PlayScene {
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     public PlayScene() {
+        initialized = false;
+
         root = new StackPane();
         root.setStyle("-fx-background-color: #2A2E37;");
         root.setAlignment(Pos.CENTER);
@@ -66,8 +66,8 @@ public class PlayScene {
         if (initialized) {
             introLevel.reset(1);
             levelMap.reset();
+            topBar.reset();
         }
-        topBar.reset();
     }
 
     public void update(List<KeyCode> inputList) {
@@ -82,11 +82,13 @@ public class PlayScene {
                 inputList.remove(KeyCode.N);
             }
 
-            levelMap.update();
             entitiesManager.players.get(0).handleInput(inputList);
 
             camera.update();
             entitiesManager.update();
+
+            // Handle next level
+            levelMap.update();
 
 //            Bomber player = entitiesManager.players.get(0);
 ////        filter.update(player.getX() + player.getWidth() / 2.0 - camera.getX(),
