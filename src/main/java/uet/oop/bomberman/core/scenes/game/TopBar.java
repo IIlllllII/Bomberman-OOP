@@ -51,4 +51,8 @@ public class TopBar extends HBox {
         score += amount;
         scoreLabel.setText(String.format("SCORE: %06d", score));
     }
+
+    public int getScore() {
+        return score;
+    }
 }

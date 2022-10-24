@@ -129,5 +129,4 @@ public class Setting extends VBox {
         tabPane.getTabs().addAll(musicTab, graphicsTab, controlsTab);
         getChildren().addAll(title, tabPane);
     }
-
 }

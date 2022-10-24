@@ -11,7 +11,6 @@ public class HighScore {
     private String name;
     private String highScore;
     private String level;
-    private String timeFinish;
     private String date;
 
     public static void init() {
@@ -33,7 +32,7 @@ public class HighScore {
                         break;
                     }
                     String[] data = line.split(";");
-                    HIGH_SCORE.add(new HighScore(data[0], data[1], data[2], data[3], data[4]));
+                    HIGH_SCORE.add(new HighScore(data[0], Integer.parseInt(data[1]), Integer.parseInt(data[2]), data[3]));
                     if (Integer.parseInt(data[1]) < minScore) {
                         minScore = Integer.parseInt(data[1]);
                     }
@@ -45,11 +44,10 @@ public class HighScore {
         }
     }
 
-    public HighScore(String name, String highScore, String level, String timeFinish, String date) {
+    public HighScore(String name, int highScore, int level, String date) {
         this.name = name.trim();
-        this.highScore = highScore.trim();
-        this.level = level;
-        this.timeFinish = timeFinish.trim();
+        this.highScore = String.valueOf(highScore);
+        this.level = String.valueOf(level);
         this.date = date.trim();
     }
 
@@ -57,12 +55,12 @@ public class HighScore {
         StringBuilder res = new StringBuilder();
         for (HighScore it : HIGH_SCORE) {
             res.append(it.name).append(";").append(it.highScore).append(";").append(it.level)
-                    .append(";").append(it.timeFinish).append(";").append(it.date).append("\n");
+                    .append(";").append(it.date).append("\n");
         }
         return res.toString();
     }
 
-    public void add(HighScore score) {
+    public static void add(HighScore score) {
         if (HIGH_SCORE.size() < 5) {
             HIGH_SCORE.add(score);
         } else {
@@ -108,14 +106,6 @@ public class HighScore {
 
     public String getHighScore() {
         return highScore;
-    }
-
-    public String getTimeFinish() {
-        return timeFinish;
-    }
-
-    public void setTimeFinish(String timeFinish) {
-        this.timeFinish = timeFinish;
     }
 
     public String getDate() {

@@ -31,7 +31,7 @@ public class LevelMap {
     private Wall wall;
     private int level;
     private boolean levelComplete;
-    private boolean auto = true;
+    private boolean auto = false;
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     private static class SingletonHelper {
@@ -58,6 +58,10 @@ public class LevelMap {
         Brick.init();
         Portal.init();
         Item.init();
+    }
+
+    public boolean isLevelComplete() {
+        return levelComplete;
     }
 
     public void render(GraphicsContext gc) {
@@ -88,10 +92,10 @@ public class LevelMap {
         entitiesManager.bricks.forEach(brick -> {
             if (!brick.isDestroyed()) {
                 entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-                        = getHash("coin");
-//                mapHash[(int) brick.getY() / GameConfig.TILE_SIZE][(int) brick.getX() / GameConfig.TILE_SIZE]
-//                        = getHash("grass");
+//                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
+//                        = getHash("coin");
+                mapHash[(int) brick.getY() / GameConfig.TILE_SIZE][(int) brick.getX() / GameConfig.TILE_SIZE]
+                        = getHash("grass");
             }
         });
         entitiesManager.bricks.clear();
@@ -113,7 +117,7 @@ public class LevelMap {
 
         if (level > 1) {
             IntroLevel.getInstance().reset(level);
-            TopBar.getInstance().setClock(Clock.DEFAULT_TIME);
+            TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
         }
 
         System.out.println("Current: " + brickList.size() + " " + itemList.size()
@@ -140,16 +144,17 @@ public class LevelMap {
                             if (entitiesManager.bombers.size() == 0) {
                                 if (auto) {
                                     entitiesManager.bombers.add(
-                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
                                     );
                                 } else {
                                     entitiesManager.bombers.add(
-                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
                                     );
                                 }
                             } else {
-                                entitiesManager.bombers.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE);
+                                entitiesManager.bombers.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5);
                                 entitiesManager.bombers.get(0).reset();
+                                entitiesManager.bombers.get(0).setInitialLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5);
                                 entitiesManager.bombers.get(0).updateBoxCollider();
                             }
                             hash = getHash("grass");
@@ -234,6 +239,7 @@ public class LevelMap {
                         if (brickList.get(ran).getX() == item.getX()
                                 && brickList.get(ran).getY() == item.getY()) {
                             check = true;
+                            break;
                         }
                     }
                     if (!check) {

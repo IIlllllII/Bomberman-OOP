@@ -12,13 +12,15 @@ import javafx.util.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class Clocks extends Label {
-    public static final int DEFAULT_TIME = 305;
+    public static final int DEFAULT_TIME = 300;
     private int time;
-    Timeline timeline;
+    private Timeline timeline;
     private boolean done;
 
     public Clocks() {
+        time = DEFAULT_TIME;
         setTime(DEFAULT_TIME);
+        stop();
     }
 
     public void stop() {

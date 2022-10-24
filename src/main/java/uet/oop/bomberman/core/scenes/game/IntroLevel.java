@@ -64,7 +64,7 @@ public class IntroLevel extends Group {
         );
         animation.setOnFinished(event -> {
             done = true;
-            setOpacity(0);
+            setVisible(false);
         });
 
         getChildren().addAll(background, title, loading);
@@ -75,7 +75,7 @@ public class IntroLevel extends Group {
         done = false;
         animation.setCycleCount(1);
         animation.play();
-        setOpacity(1);
+        setVisible(true);
         title.setText("Stage " + level);
     }
 

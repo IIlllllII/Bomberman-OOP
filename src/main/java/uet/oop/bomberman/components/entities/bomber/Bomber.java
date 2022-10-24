@@ -30,7 +30,6 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     protected boolean canPassFlame = false;
     protected boolean canPassBrick = false;
     private boolean invincible = false;
-
     private boolean canResetLocation = false;
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
@@ -131,6 +130,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
+        resetLocation();
         move();
         if (playerStatus == CharacterStatus.IDLE) {
             return;

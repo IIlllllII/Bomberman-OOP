@@ -59,7 +59,7 @@ public class Player extends Bomber{
     public void move() {
         //Note: `steps` is always positive at first.
         double steps = speed;
-        if (playerStatus == CharacterStatus.IDLE) {
+        if (playerStatus == CharacterStatus.IDLE || playerStatus == CharacterStatus.DEAD) {
             return;
         }
 

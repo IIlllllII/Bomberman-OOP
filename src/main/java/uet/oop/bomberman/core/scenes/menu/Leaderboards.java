@@ -44,16 +44,13 @@ public class Leaderboards extends VBox {
         TableColumn<HighScore, String> levelColumn = new TableColumn<>("Level");
         levelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
 
-        TableColumn<HighScore, String> timeFinishColumn = new TableColumn<>("Time Finish");
-        timeFinishColumn.setCellValueFactory(new PropertyValueFactory<>("timeFinish"));
-
         TableColumn<HighScore, String> dateColumn = new TableColumn<>("Date");
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
         ObservableList<HighScore> highScoresList = FXCollections.observableArrayList(HighScore.getHIGH_SCORE());
 
         table.setItems(highScoresList);
-        table.getColumns().addAll(nameColumn, highScoreColumn, levelColumn, timeFinishColumn, dateColumn);
+        table.getColumns().addAll(nameColumn, highScoreColumn, levelColumn, dateColumn);
 
         getChildren().addAll(title,table);
     }

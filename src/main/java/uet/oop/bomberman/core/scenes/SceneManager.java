@@ -37,11 +37,7 @@ public class SceneManager {
         setCurrentScene(SCENES.MENU);
     }
 
-    public SCENES getCurrentScene() {
-        return currentScene;
-    }
-
-    void setCurrentScene(SCENES primaryScene) {
+    public void setCurrentScene(SCENES primaryScene) {
         if (primaryScene == SCENES.MENU) {
             currentScene = SCENES.MENU;
             scene.setRoot(menuScene.getRoot());
