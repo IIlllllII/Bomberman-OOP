@@ -15,9 +15,9 @@ public class BombPass extends Item {
 
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setCanPassBomb(true);
+        EntitiesManager.getInstance().bombers.get(0).setCanPassBomb(true);
         if (time >= timePowerUp) {
-            EntitiesManager.getInstance().players.get(0).setCanPassBomb(false);
+            EntitiesManager.getInstance().bombers.get(0).setCanPassBomb(false);
             done = true;
         }
     }

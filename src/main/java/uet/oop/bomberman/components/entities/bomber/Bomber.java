@@ -1,35 +1,37 @@
-package uet.oop.bomberman.components.entities.players;
+package uet.oop.bomberman.components.entities.bomber;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.*;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.items.item_types.Invincible;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
+import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Bomber extends Entity implements Movable, Killable {
+public abstract class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
-    public static final int DEFAULT_SPEED = 2;
+    public static final double DEFAULT_SPEED = 2;
 
-    private final double initialX;
-    private final double initialY;
+    protected double initialX;
+    protected double initialY;
     private int lives = 3;
-    private int speed = DEFAULT_SPEED;
-    private boolean canPassBomb = false;
-    private boolean canPassFlame = false;
-    private boolean canPassBrick = false;
+    protected double speed = DEFAULT_SPEED;
+    protected boolean canPassBomb = false;
+    protected boolean canPassFlame = false;
+    protected boolean canPassBrick = false;
     private boolean invincible = false;
+
+    private boolean canResetLocation = false;
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
@@ -129,6 +131,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
+        move();
         if (playerStatus == CharacterStatus.IDLE) {
             return;
         }
@@ -137,13 +140,12 @@ public class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move();
         }
 
         //TODO: change it later.
         if (playerStatus == CharacterStatus.DEAD) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 8 >= spritesDict.get("dead").length) {
+            if (currentSpriteIndex / 6 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
                 lives--;
                 playerStatus = CharacterStatus.IDLE;
@@ -151,7 +153,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 //Return to initial position:
                 this.x = initialX;
                 this.y = initialY;
-                Initialized initialized = new Initialized(x, y);
+                Invincible initialized = new Invincible(x, y);
                 initialized.setTimePowerUp(5000);
                 initialized.setAppear(true);
                 EntitiesManager.getInstance().items.add(initialized);
@@ -160,9 +162,9 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
-    protected abstract void updateBoxCollider();
+    public abstract void updateBoxCollider();
 
-    public void setInitialLocation(int x, int y) {
+    public void setInitialLocation(double x, double y) {
         this.initialX = x;
         this.initialY = y;
     }

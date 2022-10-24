@@ -12,11 +12,10 @@ import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Grass;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.entities.materials.Wall;
-import uet.oop.bomberman.components.entities.players.AutoPlay;
-import uet.oop.bomberman.components.entities.players.Player;
+import uet.oop.bomberman.components.entities.bomber.AutoPlay;
+import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.scenes.PlayScene;
-import uet.oop.bomberman.core.scenes.game.Clock;
+import uet.oop.bomberman.core.scenes.game.Clocks;
 import uet.oop.bomberman.core.scenes.game.IntroLevel;
 import uet.oop.bomberman.core.scenes.game.TopBar;
 
@@ -92,9 +91,9 @@ public class LevelMap {
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
-            if(!brick.isDestroyed()){
+            if (!brick.isDestroyed()) {
                 entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
+                mapHash[(int) brick.getY() / GameConfig.TILE_SIZE][(int) brick.getX() / GameConfig.TILE_SIZE]
                         = getHash("grass");
             }
         });
@@ -115,7 +114,7 @@ public class LevelMap {
         Portal portal = entitiesManager.portal;
 
         if (TopBar.getInstance().getClock() != null) {
-            TopBar.getInstance().setClock(Clock.DEFAULT_TIME);
+            TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
         }
 
         if (level > 1) {
@@ -123,7 +122,7 @@ public class LevelMap {
         }
 
         System.out.println("Current: " + brickList.size() + " " + itemList.size()
-        + " " + enemyList.size());
+                + " " + enemyList.size());
 
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
@@ -140,19 +139,23 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            if(entitiesManager.players.size() == 0){
-                                if(auto){
-                                    entitiesManager.players.add(
+                            if(level == 1){
+                                entitiesManager.bombers.clear();
+                            }
+                            if (entitiesManager.bombers.size() == 0) {
+                                if (auto) {
+                                    entitiesManager.bombers.add(
                                             new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
                                     );
-                                }else {
-                                    entitiesManager.players.add(
+                                } else {
+                                    entitiesManager.bombers.add(
                                             new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
                                     );
                                 }
-                            }else {
-                                entitiesManager.players.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE);
-                                entitiesManager.players.get(0).reset();
+                            } else {
+                                entitiesManager.bombers.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE);
+                                entitiesManager.bombers.get(0).reset();
+                                entitiesManager.bombers.get(0).updateBoxCollider();
                             }
                             hash = getHash("grass");
                             break;
@@ -274,7 +277,7 @@ public class LevelMap {
                         break;
                     }
                     case 'I': {
-                        itemList.add(new Initialized(xItem, yItem));
+                        itemList.add(new Invincible(xItem, yItem));
                         break;
                     }
                     case 'l': {

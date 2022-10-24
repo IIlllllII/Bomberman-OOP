@@ -98,9 +98,9 @@ public class Bomb extends Entity {
         time += Timer.getInstance().getDeltaTime();
         if (!explode) {
             if (allowPass) {
-                double subX = EntitiesManager.getInstance().players.get(0).getX() - this.x;
+                double subX = EntitiesManager.getInstance().bombers.get(0).getX() - this.x;
                 subX = Math.abs(subX);
-                double subY = EntitiesManager.getInstance().players.get(0).getY() - this.y;
+                double subY = EntitiesManager.getInstance().bombers.get(0).getY() - this.y;
                 subY = Math.abs(subY);
                 if (subX > 20 || subY > 20) {
                     allowPass = false;

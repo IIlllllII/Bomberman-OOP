@@ -15,9 +15,9 @@ public class FlamePass extends Item {
 
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setCanPassFlame(true);
+        EntitiesManager.getInstance().bombers.get(0).setCanPassFlame(true);
         if(time >= timePowerUp){
-            EntitiesManager.getInstance().players.get(0).setCanPassFlame(false);
+            EntitiesManager.getInstance().bombers.get(0).setCanPassFlame(false);
             done = true;
         }
     }

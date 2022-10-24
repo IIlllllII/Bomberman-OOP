@@ -11,13 +11,13 @@ import javafx.util.Duration;
 
 import java.util.concurrent.TimeUnit;
 
-public class Clock extends Label {
+public class Clocks extends Label {
     public static final int DEFAULT_TIME = 305;
     private int time;
     Timeline timeline;
     private boolean done;
 
-    public Clock() {
+    public Clocks() {
         setTime(DEFAULT_TIME);
     }
 

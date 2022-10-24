@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class TopBar extends HBox {
-    private final Clock clock;
+    private final Clocks clock;
     private int score;
     private final Label scoreLabel;
 
@@ -25,7 +25,7 @@ public class TopBar extends HBox {
         setAlignment(Pos.CENTER);
         setSpacing(200);
 
-        clock = new Clock();
+        clock = new Clocks();
         score = 0;
         scoreLabel = new Label(String.format("SCORE: %06d", score));
         scoreLabel.setTextFill(Color.WHITE);
@@ -36,14 +36,14 @@ public class TopBar extends HBox {
 
     public void reset() {
         score = 0;
-        clock.setTime(Clock.DEFAULT_TIME);
+        clock.setTime(Clocks.DEFAULT_TIME);
     }
 
     public void setClock(int time) {
         clock.setTime(time);
     }
 
-    public Clock getClock() {
+    public Clocks getClock() {
         return clock;
     }
 

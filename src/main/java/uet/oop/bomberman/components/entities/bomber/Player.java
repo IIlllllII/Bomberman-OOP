@@ -1,4 +1,4 @@
-package uet.oop.bomberman.components.entities.players;
+package uet.oop.bomberman.components.entities.bomber;
 
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.EntitiesManager;
@@ -13,7 +13,6 @@ public class Player extends Bomber{
     public Player(double x, double y, int w, int h){
         super(x, y, w, h);
         updateBoxCollider();
-        speed = 3.2;
     }
     public void handleInput(List<KeyCode> inputList) {
         if (playerStatus == CharacterStatus.DEAD) {
@@ -49,7 +48,7 @@ public class Player extends Bomber{
     }
 
     @Override
-    protected void updateBoxCollider() {
+    public void updateBoxCollider() {
         bomberBox.setLocation(
                 this.x + (this.width - bomberBox.getWidth()) / 2.0,
                 this.y + bomberBox.getHeight() - 5

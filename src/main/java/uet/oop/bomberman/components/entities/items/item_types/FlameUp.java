@@ -1,9 +1,7 @@
 package uet.oop.bomberman.components.entities.items.item_types;
 
-import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.items.Item;
-import uet.oop.bomberman.components.entities.players.Bomber;
 
 public class FlameUp extends Item {
 

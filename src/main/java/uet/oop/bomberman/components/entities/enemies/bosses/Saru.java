@@ -61,7 +61,7 @@ public class Saru extends Enemy {
 
         initDirectionList();
         saruStatus = CharacterStatus.IDLE;
-        lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
         score = 3000;
         speed = 4;
         lives = 3;
@@ -74,7 +74,7 @@ public class Saru extends Enemy {
             if (saruStatus == CharacterStatus.IDLE) {
                 animationDict.get("idle").render(gc, x - camera.getX(), y - camera.getY());
             } else {
-                animationDict.get(lastDirection.label).render(gc, x - camera.getX(), y - camera.getY());
+                animationDict.get(currentDirection.label).render(gc, x - camera.getX(), y - camera.getY());
             }
         } else {
             animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
@@ -104,7 +104,7 @@ public class Saru extends Enemy {
             this.y = (double) (centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             animationDict.get("idle").update();
         } else {
-            animationDict.get(lastDirection.label).update();
+            animationDict.get(currentDirection.label).update();
         }
         move();
     }
@@ -116,10 +116,10 @@ public class Saru extends Enemy {
 
     @Override
     protected void move() {
-        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
-        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
-        int bomberWidth = EntitiesManager.getInstance().players.get(0).getWidth();
-        int bomberHeight = EntitiesManager.getInstance().players.get(0).getHeight();
+        double bomberX = EntitiesManager.getInstance().bombers.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().bombers.get(0).getY();
+        int bomberWidth = EntitiesManager.getInstance().bombers.get(0).getWidth();
+        int bomberHeight = EntitiesManager.getInstance().bombers.get(0).getHeight();
         int cellXPlayer = (int) ((bomberX + bomberWidth / 2) / GameConfig.TILE_SIZE);
         int cellYPlayer = (int) ((bomberY + bomberHeight / 2) / GameConfig.TILE_SIZE);
 
@@ -148,19 +148,19 @@ public class Saru extends Enemy {
         }
 
         if (Math.abs(cellXPlayer - cellX) <= visionRange && Math.abs(cellYPlayer - cellY) <= visionRange
-            && EntitiesManager.getInstance().players.get(0).getPlayerStatus() != CharacterStatus.DEAD) {
+            && EntitiesManager.getInstance().bombers.get(0).getPlayerStatus() != CharacterStatus.DEAD) {
             moveX = 0;
             moveY = 0;
 
             if (cellXPlayer == cellX) {
                 if (cellYPlayer > cellY) {
-                    lastDirection = Direction.DOWN;
+                    currentDirection = Direction.DOWN;
                 } else {
-                    lastDirection = Direction.UP;
+                    currentDirection = Direction.UP;
                 }
                 suicide = true;
                 saruStatus = CharacterStatus.MOVING;
-                if (lastDirection == Direction.UP && !canMoveU || lastDirection == Direction.DOWN && !canMoveD) {
+                if (currentDirection == Direction.UP && !canMoveU || currentDirection == Direction.DOWN && !canMoveD) {
                     suicide = false;
                     saruStatus = CharacterStatus.IDLE;
                 }
@@ -168,13 +168,13 @@ public class Saru extends Enemy {
             }
             if (cellYPlayer == cellY) {
                 if (cellXPlayer > cellX) {
-                    lastDirection = Direction.RIGHT;
+                    currentDirection = Direction.RIGHT;
                 } else {
-                    lastDirection = Direction.LEFT;
+                    currentDirection = Direction.LEFT;
                 }
                 suicide = true;
                 saruStatus = CharacterStatus.MOVING;
-                if (lastDirection == Direction.RIGHT && !canMoveR || lastDirection == Direction.LEFT && !canMoveL) {
+                if (currentDirection == Direction.RIGHT && !canMoveR || currentDirection == Direction.LEFT && !canMoveL) {
                     suicide = false;
                     saruStatus = CharacterStatus.IDLE;
                 }

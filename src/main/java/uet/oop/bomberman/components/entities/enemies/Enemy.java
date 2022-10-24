@@ -4,13 +4,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.scenes.PlayScene;
+import uet.oop.bomberman.core.scenes.game.TopBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public abstract class Enemy extends Entity {
 
     public Enemy(double x, double y) {
         super(x, y);
-//        currentDirection = Direction.DOWN;
+        currentDirection = Direction.DOWN;
     }
 
     public void render(GraphicsContext gc) {

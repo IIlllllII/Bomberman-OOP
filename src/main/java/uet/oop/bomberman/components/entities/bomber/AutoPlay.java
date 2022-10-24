@@ -1,4 +1,4 @@
-package uet.oop.bomberman.components.entities.players;
+package uet.oop.bomberman.components.entities.bomber;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
@@ -203,6 +203,8 @@ public class AutoPlay extends Bomber {
                             break;
                         case RIGHT:
                             jEnemy = jEnemy + 4 < mapWidth - 1 ? jEnemy + 4 : mapWidth - 2;
+                        default:
+                            break;
                     }
                     if (iEnemy == i && jEnemy == j) {
                         return true;
@@ -502,7 +504,7 @@ public class AutoPlay extends Bomber {
     }
 
     @Override
-    protected void updateBoxCollider() {
+    public void updateBoxCollider() {
         bomberBox.setLocation(
                 this.x + (this.width - bomberBox.getWidth()) / 2.0,
                 this.y + (this.height - bomberBox.getHeight()) / 2.0

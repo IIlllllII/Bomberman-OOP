@@ -45,8 +45,8 @@ public class Minvo extends Enemy {
     }
 
     private Direction findWay(int i, int j) {
-        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
-        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+        double bomberX = EntitiesManager.getInstance().bombers.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().bombers.get(0).getY();
 
         int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
         int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;

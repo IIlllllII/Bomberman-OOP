@@ -57,8 +57,8 @@ public class Pass extends Enemy {
             }
         }
 
-        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
-        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+        double bomberX = EntitiesManager.getInstance().bombers.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().bombers.get(0).getY();
 
         int jBomber = (int) (bomberX + 16) / 32;
         int iBomber = (int) (bomberY + 16) / 32;

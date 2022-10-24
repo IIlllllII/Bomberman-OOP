@@ -99,10 +99,10 @@ public class Banana extends Enemy {
     public void update() {
         if (!destroyed) {
             move();
-            if (animationDict.get(lastDirection.label) == null) {
+            if (animationDict.get(currentDirection.label) == null) {
                 return;
             }
-            animationDict.get(lastDirection.label).update();
+            animationDict.get(currentDirection.label).update();
             updateBoxCollider();
         } else {
             animationDict.get("death").update();
