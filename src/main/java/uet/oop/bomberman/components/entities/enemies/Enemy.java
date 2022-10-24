@@ -11,7 +11,6 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.PlayScene;
-import uet.oop.bomberman.core.stages.GameStage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public abstract class Enemy extends Entity {
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
     protected Random r = new Random();
-    protected Direction lastDirection;
+    protected Direction currentDirection;
 
     protected List<Direction> directionList = new ArrayList<>();
     protected boolean randomAnimation = false; // left or right
@@ -39,7 +38,7 @@ public abstract class Enemy extends Entity {
 
     public Enemy(double x, double y) {
         super(x, y);
-        lastDirection = Direction.DOWN;
+        currentDirection = Direction.DOWN;
     }
 
     public void render(GraphicsContext gc) {
@@ -81,8 +80,8 @@ public abstract class Enemy extends Entity {
         return destroyed;
     }
 
-    public Direction getLastDirection() {
-        return lastDirection;
+    public Direction getCurrentDirection() {
+        return currentDirection;
     }
 
     public void setDestroyed(boolean destroyed) {
@@ -109,14 +108,18 @@ public abstract class Enemy extends Entity {
 
     protected void initDirectionList(){
         directionList.clear();
-        directionList.add(Direction.LEFT);
-        directionList.add(Direction.RIGHT);
         directionList.add(Direction.UP);
         directionList.add(Direction.DOWN);
+        directionList.add(Direction.LEFT);
+        directionList.add(Direction.RIGHT);
     }
 
     protected void checkMove(){
-        switch (lastDirection) {
+        if(currentDirection == null){
+            initDirectionList();
+            return;
+        }
+        switch (currentDirection) {
             case UP: {
                 if (canMoveU) {
                     moveY = -speed;
@@ -153,8 +156,6 @@ public abstract class Enemy extends Entity {
                 }
                 break;
             }
-            case STAND:
-                break;
             default:
                 break;
         }

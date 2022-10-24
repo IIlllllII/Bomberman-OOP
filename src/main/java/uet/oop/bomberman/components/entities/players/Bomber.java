@@ -22,12 +22,12 @@ import java.util.Map;
 public abstract class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
-    public static final int DEFAULT_SPEED = 2;
+    public static final double DEFAULT_SPEED = 2;
 
     protected final double initialX;
     protected final double initialY;
     protected int lives = 3;
-    protected int speed = DEFAULT_SPEED;
+    protected double speed = DEFAULT_SPEED;
     protected boolean canPassBomb = false;
     protected boolean canPassFlame = false;
     protected boolean canPassBrick = false;
@@ -94,7 +94,6 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                     new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
                     new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
             });
-
             spritesDict.put("dead", new Sprite[]{
                     new Sprite(22, 21, 4, 71, bombermanSheet, 16, 22),
                     new Sprite(22, 21, 26, 71, bombermanSheet, 16, 22),
@@ -103,6 +102,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                     new Sprite(22, 21, 92, 71, bombermanSheet, 16, 22),
                     new Sprite(22, 21, 114, 71, bombermanSheet, 16, 22),
             });
+
             initialized = true;
         }
     }
@@ -112,18 +112,10 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         Image image = null;
         switch (playerStatus) {
             case IDLE:
-                if(direction == Direction.STAND){
-                    image = spritesDict.get("idle")[Direction.DOWN.index].getFxImage();
-                }else {
-                    image = spritesDict.get("idle")[direction.index].getFxImage();
-                }
+                image = spritesDict.get("idle")[direction.index].getFxImage();
                 break;
             case MOVING:
-                if(direction == Direction.STAND){
-                    image = spritesDict.get("moving-" + Direction.DOWN.label)[currentSpriteIndex / 4].getFxImage();
-                }else {
-                    image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
-                }
+                image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
                 break;
             case DEAD:
                 image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
@@ -144,7 +136,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         if (playerStatus == CharacterStatus.IDLE) {
             return;
         }
-        if (playerStatus == CharacterStatus.MOVING && direction != Direction.STAND) {
+        if (playerStatus == CharacterStatus.MOVING) {
             currentSpriteIndex++;
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
@@ -230,8 +222,12 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         return bombMax;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
@@ -341,10 +337,16 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                     i++;
                 }
                 updateBoxCollider();
-            }else{
+            } else {
                 canResetLocation = false;
             }
         }
     }
+    public void reset(){
+        canPassBrick = false;
+        canPassBomb = false;
+        canPassFlame = false;
+    }
+
 
 }

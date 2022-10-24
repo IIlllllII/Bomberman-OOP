@@ -9,7 +9,7 @@ public class SpeedUp extends Item {
      * Slightly increases Bomberman speed.
      */
     private static int numberEaten = 0;
-    private int numberEatenMax = 6;
+    private final static int numberEatenMax = 5;
 
     public SpeedUp(double x, double y){
         super(x, y, speedUp);
@@ -20,7 +20,7 @@ public class SpeedUp extends Item {
         Bomber bomber = EntitiesManager.getInstance().players.get(0);
         numberEaten ++;
         if(numberEaten <= numberEatenMax){
-            bomber.setSpeed(16/(8 - numberEaten));
+            bomber.setSpeed(16.0/(8 - numberEaten));
         }
         eaten = false;
         done = true;

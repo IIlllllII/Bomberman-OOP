@@ -13,7 +13,7 @@ public class Player extends Bomber{
     public Player(double x, double y, int w, int h){
         super(x, y, w, h);
         updateBoxCollider();
-        speed = 2;
+        speed = 3.2;
     }
     public void handleInput(List<KeyCode> inputList) {
         if (playerStatus == CharacterStatus.DEAD) {
@@ -59,7 +59,7 @@ public class Player extends Bomber{
     @Override
     public void move() {
         //Note: `steps` is always positive at first.
-        int steps = speed;
+        double steps = speed;
         if (playerStatus == CharacterStatus.IDLE) {
             return;
         }

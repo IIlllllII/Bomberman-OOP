@@ -36,7 +36,7 @@ public class AutoPlay extends Bomber {
     public void move() {
         iBomber = (int) (y) / GameConfig.TILE_SIZE;
         jBomber = (int) (x) / GameConfig.TILE_SIZE;
-        if (jBomber * GameConfig.TILE_SIZE == x && iBomber * GameConfig.TILE_SIZE == y
+        if (Math.abs((double) jBomber * GameConfig.TILE_SIZE - x) < speed && Math.abs((double) iBomber * GameConfig.TILE_SIZE - y) < speed
                 && playerStatus != CharacterStatus.DEAD) {
             if (EntitiesManager.getInstance().bombs.size() == 0) {
                 playerStatus = CharacterStatus.MOVING;
@@ -186,23 +186,23 @@ public class AutoPlay extends Bomber {
             case "enemy": {
                 List<Enemy> enemyList = EntitiesManager.getInstance().enemies;
                 for (Enemy enemy : enemyList) {
-                    Direction directionEnemy = enemy.getLastDirection();
+                    Direction directionEnemy = enemy.getCurrentDirection();
                     int iEnemy = (int) enemy.getY() / GameConfig.TILE_SIZE;
                     int jEnemy = (int) enemy.getX() / GameConfig.TILE_SIZE;
                     int mapWidth = LevelMap.getInstance().getMapHash()[0].length;
                     int mapHeight = LevelMap.getInstance().getMapHash().length;
                     switch (directionEnemy) {
                         case UP:
-                            iEnemy = iEnemy - 4 > -1 ? iEnemy - 4 : 0;
+                            iEnemy = iEnemy - 4 > 0 ? iEnemy - 4 : 1;
                             break;
                         case DOWN:
-                            iEnemy = iEnemy + 4 < mapHeight ? iEnemy + 4 : mapHeight - 1;
+                            iEnemy = iEnemy + 4 < mapHeight - 1 ? iEnemy + 4 : mapHeight - 2;
                             break;
                         case LEFT:
-                            jEnemy = jEnemy - 4 > -1 ? jEnemy - 4 : 0;
+                            jEnemy = jEnemy - 4 > 0 ? jEnemy - 4 : 1;
                             break;
                         case RIGHT:
-                            jEnemy = jEnemy + 4 < mapWidth ? jEnemy + 4 : mapWidth - 1;
+                            jEnemy = jEnemy + 4 < mapWidth - 1 ? jEnemy + 4 : mapWidth - 2;
                     }
                     if (iEnemy == i && jEnemy == j) {
                         return true;

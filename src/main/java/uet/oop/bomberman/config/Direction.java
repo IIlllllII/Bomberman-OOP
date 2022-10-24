@@ -4,8 +4,7 @@ public enum Direction {
     DOWN("down", 0),
     UP("up", 1),
     LEFT("left", 2),
-    RIGHT("right", 3),
-    STAND("stand", 4);
+    RIGHT("right", 3);
 
 
     public final String label;

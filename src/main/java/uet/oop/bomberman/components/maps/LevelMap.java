@@ -144,6 +144,7 @@ public class LevelMap {
                                 }
                             }else {
                                 entitiesManager.players.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE);
+                                entitiesManager.players.get(0).reset();
                             }
                             hash = getHash("grass");
                             break;

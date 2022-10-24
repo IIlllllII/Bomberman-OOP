@@ -1,7 +1,6 @@
 package uet.oop.bomberman.components.entities.enemies.normal;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
-import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
@@ -30,10 +29,10 @@ public class Doria extends Enemy {
     protected void move() {
         int j = (int) (x / GameConfig.TILE_SIZE);
         int i = (int) (y / GameConfig.TILE_SIZE);
-        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
+        if (Math.abs((double) j * GameConfig.TILE_SIZE - x) < speed && Math.abs((double) i * GameConfig.TILE_SIZE - y) < speed) {
             moveX = 0;
             moveY = 0;
-            lastDirection = findWay(i, j);
+            currentDirection = findWay(i, j);
 
             canMoveR = checkMapHash(i, j + 1);
             canMoveL = checkMapHash(i, j - 1);

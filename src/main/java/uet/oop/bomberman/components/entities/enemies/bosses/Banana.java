@@ -12,9 +12,6 @@ import java.util.Map;
 
 public class Banana extends Enemy {
     private final Map<String, Animation> animationDict = new HashMap<>();
-
-    private Direction currentDirection;
-
     private final BoxCollider boxCollider;
 
     private int lives;
@@ -51,7 +48,7 @@ public class Banana extends Enemy {
         animationDict.get("death").setLoop(false);
 
         initDirectionList();
-        currentDirection = lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        currentDirection = currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
         score = 2000;
     }
 
@@ -128,20 +125,20 @@ public class Banana extends Enemy {
                 if (directionList.size() != 0) {
                     int ran = r.nextInt(directionList.size());
                     if (directionList.get(ran) == Direction.UP) {
-                        lastDirection = Direction.UP;
+                        currentDirection = Direction.UP;
                     }
                     if (directionList.get(ran) == Direction.DOWN) {
-                        lastDirection = Direction.DOWN;
+                        currentDirection = Direction.DOWN;
                     }
                     if (directionList.get(ran) == Direction.RIGHT) {
-                        lastDirection = Direction.RIGHT;
+                        currentDirection = Direction.RIGHT;
                         //randomAnimation = false;
                     }
                     if (directionList.get(ran) == Direction.LEFT) {
-                        lastDirection = Direction.LEFT;
+                        currentDirection = Direction.LEFT;
                         //randomAnimation = true;
                     }
-                    currentDirection = lastDirection;
+                    currentDirection = currentDirection;
                 }
             }
         //}

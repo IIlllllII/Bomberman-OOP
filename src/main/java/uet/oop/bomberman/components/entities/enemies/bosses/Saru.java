@@ -16,7 +16,6 @@ public class Saru extends Enemy {
     private final Map<String, Animation> animationDict = new HashMap<>();
 
     private final int visionRange = 3; //Cell unit.
-    private Direction currentDirection;
     private CharacterStatus saruStatus;
 
     public Saru(double x, double y) {
@@ -54,7 +53,7 @@ public class Saru extends Enemy {
 
         initDirectionList();
         saruStatus = CharacterStatus.IDLE;
-        currentDirection = lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        currentDirection = currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
         score = 5000;
         speed = 4;
     }
@@ -148,56 +147,56 @@ public class Saru extends Enemy {
             if (cellXPlayer < cellX && cellYPlayer < cellY) {
                 //move right or down first
                 if (canMoveR) {
-                    lastDirection = Direction.RIGHT;
+                    currentDirection = Direction.RIGHT;
                 } else if (canMoveD) {
-                    lastDirection = Direction.DOWN;
+                    currentDirection = Direction.DOWN;
                 } else {
                     if (canMoveL) {
-                        lastDirection = Direction.LEFT;
+                        currentDirection = Direction.LEFT;
                     } else if (canMoveU) {
-                        lastDirection = Direction.UP;
+                        currentDirection = Direction.UP;
                     }
                 }
             }
             if (cellXPlayer < cellX && cellYPlayer > cellY) {
                 //move right or up first
                 if (canMoveR) {
-                    lastDirection = Direction.RIGHT;
+                    currentDirection = Direction.RIGHT;
                 } else if (canMoveU) {
-                    lastDirection = Direction.UP;
+                    currentDirection = Direction.UP;
                 } else {
                     if (canMoveD) {
-                        lastDirection = Direction.DOWN;
+                        currentDirection = Direction.DOWN;
                     } else if (canMoveL) {
-                        lastDirection = Direction.LEFT;
+                        currentDirection = Direction.LEFT;
                     }
                 }
             }
             if (cellXPlayer > cellX && cellYPlayer < cellY) {
                 //move left or down first
                 if (canMoveL) {
-                    lastDirection = Direction.LEFT;
+                    currentDirection = Direction.LEFT;
                 } else if (canMoveD) {
-                    lastDirection = Direction.DOWN;
+                    currentDirection = Direction.DOWN;
                 } else {
                     if (canMoveU) {
-                        lastDirection = Direction.UP;
+                        currentDirection = Direction.UP;
                     } else if (canMoveR) {
-                        lastDirection = Direction.RIGHT;
+                        currentDirection = Direction.RIGHT;
                     }
                 }
             }
             if (cellXPlayer > cellX && cellYPlayer > cellY) {
                 //move left or up first
                 if (canMoveL) {
-                    lastDirection = Direction.LEFT;
+                    currentDirection = Direction.LEFT;
                 } else if (canMoveU) {
-                    lastDirection = Direction.UP;
+                    currentDirection = Direction.UP;
                 } else {
                     if (canMoveD) {
-                        lastDirection = Direction.DOWN;
+                        currentDirection = Direction.DOWN;
                     } else if (canMoveR) {
-                        lastDirection = Direction.RIGHT;
+                        currentDirection = Direction.RIGHT;
                     }
                 }
             }
@@ -206,7 +205,7 @@ public class Saru extends Enemy {
 
             x += moveX;
             y += moveY;
-            currentDirection = lastDirection;
+            currentDirection = currentDirection;
         } else {
             saruStatus = CharacterStatus.IDLE;
         }
