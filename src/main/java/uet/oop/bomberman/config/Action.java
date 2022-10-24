@@ -1,12 +1,14 @@
 package uet.oop.bomberman.config;
 
-public enum CharacterStatus {
+public enum Action {
+    APPEAR("appear"),
     IDLE("idle"),
     MOVING("moving"),
+    ATTACK("attack"),
     DEAD("dead");
 
     public final String label;
-    CharacterStatus(String label) {
+    Action(String label) {
         this.label = label;
     }
 }

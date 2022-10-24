@@ -76,6 +76,10 @@ public class Bomb extends Entity {
         this.timeBeforeExplode = timeBeforeExplode;
     }
 
+    public double getTimeBeforeExplode() {
+        return timeBeforeExplode;
+    }
+
     public double getTime() {
         return time;
     }

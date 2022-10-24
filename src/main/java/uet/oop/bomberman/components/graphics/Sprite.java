@@ -4,29 +4,28 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.*;
 import uet.oop.bomberman.config.GameConfig;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Sprite {
     private static final int TRANSPARENT_COLOR = 0xffff00ff;
-    public final int SPRITE_WIDTH;
-    public final int SPRITE_HEIGHT;
+    private final int SPRITE_WIDTH;
+    private final int SPRITE_HEIGHT;
 
     private Point2D posFromSheet;
     public int[] pixels;
     private SpriteSheet sheet;
 
-    public Sprite(int width, int height, int color) {
-        SPRITE_WIDTH = width;
-        SPRITE_HEIGHT = height;
-        pixels = new int[SPRITE_WIDTH * SPRITE_HEIGHT];
-        Arrays.fill(pixels, color);
-    }
+//    public Sprite(int width, int height, int color) {
+//        SPRITE_WIDTH = width;
+//        SPRITE_HEIGHT = height;
+//        pixels = new int[SPRITE_WIDTH * SPRITE_HEIGHT];
+//        Arrays.fill(pixels, color);
+//    }
 
-    public Sprite(int side, int x, int y, SpriteSheet sheet, int aw, int ah) {
-        this(side, side, x, y, sheet, aw, ah);
+    public Sprite(int side, int x, int y, SpriteSheet sheet) {
+        this(side, side, x, y, sheet);
     }
-    public Sprite(int width, int height, int x, int y, SpriteSheet sheet, int aw, int ah) {
+    public Sprite(int width, int height, int x, int y, SpriteSheet sheet) {
         SPRITE_WIDTH = width;
         SPRITE_HEIGHT = height;
         pixels = new int[SPRITE_WIDTH * SPRITE_HEIGHT];
@@ -115,5 +114,10 @@ public class Sprite {
             }
         }
         return output;
+    }
+
+    public void setSheet(SpriteSheet sheet) {
+        this.sheet = sheet;
+        loadPixelFromSheet();
     }
 }

@@ -44,6 +44,10 @@ public class BoxCollider {
     }
 
     public boolean isCollidedWith(BoxCollider other) {
+        if (other == null) {
+            return false;
+        }
+
         double left_1 = this.x;
         double right_1 = this.x + this.width;
         double top_1 = this.y;

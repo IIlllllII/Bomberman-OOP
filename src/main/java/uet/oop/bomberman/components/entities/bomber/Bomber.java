@@ -11,6 +11,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.HashMap;
@@ -22,8 +23,8 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     private static boolean initialized = false;
     public static final double DEFAULT_SPEED = 2;
 
-    protected double initialX;
-    protected double initialY;
+    private double initialX;        //reset in each level.
+    private double initialY;        //reset in each level.
     private int lives = 3;
     protected double speed = DEFAULT_SPEED;
     protected boolean canPassBomb = false;
@@ -35,8 +36,8 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
-    protected CharacterStatus playerStatus = CharacterStatus.IDLE;
-    protected Direction direction = Direction.DOWN;
+    private Action playerAction = Action.IDLE;
+    private Direction direction = Direction.DOWN;
 
     protected final BoxCollider bomberBox;
 
@@ -53,55 +54,55 @@ public abstract class Bomber extends Entity implements Movable, Killable {
             SpriteSheet bombermanSheet = new SpriteSheet("/spriteSheet/bomberman_sheet.png", 256, 128);
 
             spritesDict.put("idle", new Sprite[]{
-                    new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 65, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 17, 2, bombermanSheet),
+                    new Sprite(16, 22, 65, 2, bombermanSheet),
+                    new Sprite(16, 22, 17, 26, bombermanSheet),
+                    new Sprite(16, 22, 65, 26, bombermanSheet),
             });
 
             spritesDict.put("moving-down", new Sprite[]{
-                    new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 0, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 0, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 17, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33, 2, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 17, 2, bombermanSheet),
+                    new Sprite(16, 22, 0, 2, bombermanSheet),
+                    new Sprite(16, 22, 0, 2, bombermanSheet),
+                    new Sprite(16, 22, 17, 2, bombermanSheet),
+                    new Sprite(16, 22, 33, 2, bombermanSheet),
+                    new Sprite(16, 22, 33, 2, bombermanSheet),
             });
 
             spritesDict.put("moving-up", new Sprite[]{
-                    new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 49, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 49, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 65, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 81, 2, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 81, 2, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 65, 2, bombermanSheet),
+                    new Sprite(16, 22, 49, 2, bombermanSheet),
+                    new Sprite(16, 22, 49, 2, bombermanSheet),
+                    new Sprite(16, 22, 65, 2, bombermanSheet),
+                    new Sprite(16, 22, 81, 2, bombermanSheet),
+                    new Sprite(16, 22, 81, 2, bombermanSheet),
             });
 
             spritesDict.put("moving-left", new Sprite[]{
-                    new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 0, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 0, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 17, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 17, 26, bombermanSheet),
+                    new Sprite(16, 22, 0, 26, bombermanSheet),
+                    new Sprite(16, 22, 0, 26, bombermanSheet),
+                    new Sprite(16, 22, 17, 26, bombermanSheet),
+                    new Sprite(16, 22, 33, 26, bombermanSheet),
+                    new Sprite(16, 22, 33, 26, bombermanSheet),
             });
 
             spritesDict.put("moving-right", new Sprite[]{
-                    new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33 + 16, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33 + 16, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33 + 32, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
-                    new Sprite(16, 22, 33 + 48, 26, bombermanSheet, 16, 22),
+                    new Sprite(16, 22, 33 + 32, 26, bombermanSheet),
+                    new Sprite(16, 22, 33 + 16, 26, bombermanSheet),
+                    new Sprite(16, 22, 33 + 16, 26, bombermanSheet),
+                    new Sprite(16, 22, 33 + 32, 26, bombermanSheet),
+                    new Sprite(16, 22, 33 + 48, 26, bombermanSheet),
+                    new Sprite(16, 22, 33 + 48, 26, bombermanSheet),
             });
 
             spritesDict.put("dead", new Sprite[]{
-                    new Sprite(22, 21, 4, 71, bombermanSheet, 16, 22),
-                    new Sprite(22, 21, 26, 71, bombermanSheet, 16, 22),
-                    new Sprite(22, 21, 48, 71, bombermanSheet, 16, 22),
-                    new Sprite(22, 21, 70, 71, bombermanSheet, 16, 22),
-                    new Sprite(22, 21, 92, 71, bombermanSheet, 16, 22),
-                    new Sprite(22, 21, 114, 71, bombermanSheet, 16, 22),
+                    new Sprite(22, 21, 4, 71, bombermanSheet),
+                    new Sprite(22, 21, 26, 71, bombermanSheet),
+                    new Sprite(22, 21, 48, 71, bombermanSheet),
+                    new Sprite(22, 21, 70, 71, bombermanSheet),
+                    new Sprite(22, 21, 92, 71, bombermanSheet),
+                    new Sprite(22, 21, 114, 71, bombermanSheet),
             });
             initialized = true;
         }
@@ -110,7 +111,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     @Override
     public void render(GraphicsContext gc) {
         Image image = null;
-        switch (playerStatus) {
+        switch (playerAction) {
             case IDLE:
                 image = spritesDict.get("idle")[direction.index].getFxImage();
                 break;
@@ -118,12 +119,12 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                 image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
                 break;
             case DEAD:
-                image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
+                image = spritesDict.get("dead")[currentSpriteIndex / 8].getFxImage();
                 gc.drawImage(image, this.x - camera.getX() - 3, this.y - camera.getY() + 2,
                         2 * 22 * 0.9, 2 * 21 * 0.9);
                 break;
         }
-        if (playerStatus == CharacterStatus.DEAD) {
+        if (playerAction == Action.DEAD) {
             return;
         }
         gc.drawImage(image, this.x - camera.getX(), this.y - camera.getY(), this.width, this.height);
@@ -132,23 +133,23 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     @Override
     public void update() {
         move();
-        if (playerStatus == CharacterStatus.IDLE) {
+        if (playerAction == Action.IDLE) {
             return;
         }
-        if (playerStatus == CharacterStatus.MOVING) {
+        if (playerAction == Action.MOVING) {
             currentSpriteIndex++;
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
+            //move();
         }
 
-        //TODO: change it later.
-        if (playerStatus == CharacterStatus.DEAD) {
+        if (playerAction == Action.DEAD) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 6 >= spritesDict.get("dead").length) {
+            if (currentSpriteIndex / 8 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
                 lives--;
-                playerStatus = CharacterStatus.IDLE;
+                playerAction = Action.IDLE;
 
                 //Return to initial position:
                 this.x = initialX;
@@ -167,6 +168,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     public void setInitialLocation(double x, double y) {
         this.initialX = x;
         this.initialY = y;
+        updateBoxCollider();
     }
 
     public void placeBomb() {
@@ -174,6 +176,11 @@ public abstract class Bomber extends Entity implements Movable, Killable {
 
         double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;
         double centerY = bomberBox.getY() + bomberBox.getHeight() / 2;
+
+//        if (LevelMap.getInstance().getHashAt((int) centerY / GameConfig.TILE_SIZE, (int) centerX / GameConfig.TILE_SIZE)
+//            != LevelMap.getInstance().getHash("grass")) {
+//            return;
+//        }
         if (bombList.size() < bombMax) {
             int bombX = ((int) centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             int bombY = ((int) centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
@@ -265,12 +272,12 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         this.invincible = invincible;
     }
 
-    public CharacterStatus getPlayerStatus() {
-        return playerStatus;
+    public Action getPlayerAction() {
+        return playerAction;
     }
 
-    public void setPlayerStatus(CharacterStatus playerStatus) {
-        this.playerStatus = playerStatus;
+    public void setPlayerAction(Action playerAction) {
+        this.playerAction = playerAction;
     }
 
     public BoxCollider getBomberBox() {
