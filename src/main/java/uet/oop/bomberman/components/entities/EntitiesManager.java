@@ -54,6 +54,9 @@ public class EntitiesManager {
             if (!(enemy instanceof Banana || enemy instanceof Komori)) {
                 enemy.render(gc);
             }
+            if (enemy instanceof Komori) {
+                ((Komori) enemy).renderShadow(gc);
+            }
         });
         players.forEach(player -> player.render(gc));
         enemies.forEach(enemy -> {
@@ -156,7 +159,9 @@ public class EntitiesManager {
                             }
                         } else if (enemy instanceof Komori) {
                             BoxCollider enemyBox = ((Komori) enemy).getShadowBox();
-                            ((Komori) enemy).setHurt(((Komori) enemy).isHurt(enemyBox.isCollidedWith(flameBox)));
+                            if (((Komori) enemy).isHurt(enemyBox.isCollidedWith(flameBox))) {
+                                ((Komori) enemy).decreaseBlood();
+                            }
                         } else {
                             BoxCollider enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
                             if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {

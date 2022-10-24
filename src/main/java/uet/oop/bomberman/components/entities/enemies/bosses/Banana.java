@@ -22,7 +22,7 @@ public class Banana extends Enemy {
 
     private final BoxCollider deathBox;
 
-    private int lives;
+    private int lives = 1;
 
     public Banana(double x, double y) {
         super(x, y);

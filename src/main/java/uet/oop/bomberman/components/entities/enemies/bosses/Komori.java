@@ -19,9 +19,8 @@ public class Komori extends Enemy {
     private double centerX;
     private double topY;
     private Action action;
-    private int lives = 5;
-    private boolean isHurt = false;
-    private boolean needDecreaseLives = false;
+    private int blood = 250;
+    //private boolean isHurt = false;
     private final Image shadow;
     private final BoxCollider shadowBox;
     private final List<Weapon> weaponList = new ArrayList<>();
@@ -52,7 +51,7 @@ public class Komori extends Enemy {
 
         action = Action.APPEAR;
         shadow = SpriteSheet.shadow;
-        shadowBox = new BoxCollider(0, 0, 32 * 1.5f, 12 * 1.5f);
+        shadowBox = new BoxCollider(0, 0, 26 * 1.5f, 12 * 1.5f);
         updateShadowBox();
         speed = 1;
 
@@ -201,15 +200,11 @@ public class Komori extends Enemy {
             imageY -= 30;
         }
 
-        //Render shadow
-        gc.drawImage(shadow, shadowBox.getX() - camera.getX(), shadowBox.getY() - camera.getY(),
-                shadowBox.getWidth(), shadowBox.getHeight());
-
-        if (isHurt) {
-            sprite.setSheet(SpriteSheet.komoriFlashSheet);
-        } else {
-            sprite.setSheet(SpriteSheet.komoriSheet);
-        }
+//        if (isHurt) {
+//            sprite.setSheet(SpriteSheet.komoriFlashSheet);
+//        } else {
+//            sprite.setSheet(SpriteSheet.komoriSheet);
+//        }
         //Render komori
         gc.drawImage(sprite.getFxImage(), imageX - camera.getX(), imageY - camera.getY(),
                 imageWidth * 1.8f, imageHeight * 1.8f);
@@ -222,19 +217,16 @@ public class Komori extends Enemy {
         });
     }
 
+    public void renderShadow(GraphicsContext gc) {
+        //Render shadow
+        gc.drawImage(shadow, shadowBox.getX() - camera.getX(), shadowBox.getY() - camera.getY(),
+                32 * 1.5f, 12 * 1.5f);
+    }
+
     @Override
     public void update() {
         currentSpriteIndex++;
         updateShadowBox();
-
-        if (isHurt) {
-            needDecreaseLives = true;
-        } else {
-            if (needDecreaseLives) {
-                decreaseLives();
-                needDecreaseLives = false;
-            }
-        }
 
         if (action != Action.MOVING && action != Action.ATTACK) {
             deltaMovingTime++;
@@ -253,13 +245,14 @@ public class Komori extends Enemy {
         }
 
         switch (action) {
-            case APPEAR:    //Non-loop animation
+            case APPEAR:            //Non-loop animation
                 if (currentSpriteIndex / 8 >= spritesDict.get(action.label).length) {
-                    //setAction(Action.ATTACK);
-                    setAction(Action.IDLE);
+                    setAction(Action.ATTACK);
+                    attackSides = AttackSides.BOTH;
+                    //setAction(Action.IDLE);
                 }
                 break;
-            case IDLE:      //Loop animation
+            case IDLE:              //Loop animation
                 if (isFlying) {
                     if (currentSpriteIndex / 8 >= spritesDict.get("flying").length) {
                         currentSpriteIndex = 0;
@@ -284,7 +277,7 @@ public class Komori extends Enemy {
                     }
                 }
                 break;
-            case MOVING:    //Loop animation
+            case MOVING:            //Loop animation
                 if (currentSpriteIndex / 8 >= spritesDict.get("flying").length) {
                     currentSpriteIndex = 0;
                 }
@@ -298,9 +291,8 @@ public class Komori extends Enemy {
                 isFlying = true;
                 move();
                 break;
-            case ATTACK:    //Non-loop animation
+            case ATTACK:            //Non-loop animation
                 isFlying = false;
-                //System.out.println("Attack types: " + attackTypes);
                 if (currentSpriteIndex / 20 >= spritesDict.get(action.label + "-" + attackSides.label).length) {
                     setAction(Action.IDLE);
                 }
@@ -331,32 +323,31 @@ public class Komori extends Enemy {
                     }
 
                     if (attackSides == AttackSides.RIGHT || attackSides == AttackSides.BOTH) {
-                        weaponList.add(new Weapon(centerX + 30, topY + 70, 20, 20,
+                        weaponList.add(new Weapon(centerX + 40, topY + 70, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.WHITE, Weapon.Type.NEAREST, 20));
-                        weaponList.add(new Weapon(centerX + 60, topY + 70 - 5, 20, 20,
+                        weaponList.add(new Weapon(centerX + 70, topY + 70 - 5, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.WHITE, Weapon.Type.MIDDLE, 30));
-                        weaponList.add(new Weapon(centerX + 80, topY + 70 - 10, 20, 20,
+                        weaponList.add(new Weapon(centerX + 90, topY + 70 - 10, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.WHITE, Weapon.Type.FARTHEST, 40));
 
-                        weaponList.add(new Weapon(centerX + 20, topY + 70, 20, 20,
+                        weaponList.add(new Weapon(centerX + 40, topY + 70, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.CYAN, Weapon.Type.NEAREST, 45));
-                        weaponList.add(new Weapon(centerX + 35, topY + 70 - 5, 20, 20,
+                        weaponList.add(new Weapon(centerX + 48, topY + 70 - 5, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.CYAN, Weapon.Type.MIDDLE, 55));
-                        weaponList.add(new Weapon(centerX + 60, topY + 70 - 10, 20, 20,
+                        weaponList.add(new Weapon(centerX + 70, topY + 70 - 10, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.CYAN, Weapon.Type.FARTHEST, 65));
 
-                        weaponList.add(new Weapon(centerX + 5, topY + 70, 20, 20,
+                        weaponList.add(new Weapon(centerX + 40, topY + 70, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.BLUE, Weapon.Type.NEAREST, 70));
-                        weaponList.add(new Weapon(centerX + 30, topY + 70 - 5, 20, 20,
+                        weaponList.add(new Weapon(centerX + 45, topY + 70 - 5, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.BLUE, Weapon.Type.MIDDLE, 75));
-                        weaponList.add(new Weapon(centerX + 50, topY + 70 - 10, 20, 20,
+                        weaponList.add(new Weapon(centerX + 60, topY + 70 - 10, 20, 20,
                                 Weapon.Side.RIGHT, Weapon.Color.BLUE, Weapon.Type.FARTHEST, 80));
-                        addWeapon = true;
                     }
+                    addWeapon = true;
                 }
-                //System.out.println("Weapon size: " + weaponList.size());
                 break;
-            case DEAD:      //Non-loop animation
+            case DEAD:              //Non-loop animation
                 if (currentSpriteIndex / 30 >= spritesDict.get(action.label).length) {
                     currentSpriteIndex = 0;
                     setDestroyed(true);
@@ -389,7 +380,9 @@ public class Komori extends Enemy {
         canMoveL = checkMapHash(i, j - 1);
         canMoveU = checkMapHash(i - 1, j);
         canMoveD = checkMapHash(i + 1, j);
-        //System.out.printf("%b %b %b %b\n", canMoveR, canMoveL, canMoveU, canMoveD);
+        if ((i - 1) == 1) {
+            canMoveU = false;
+        }
         checkMove();
         if (moveY == 0 && moveX == 0 && directionList.size() != 0) {
             int ran = r.nextInt(directionList.size());
@@ -409,15 +402,6 @@ public class Komori extends Enemy {
         currentSpriteIndex = 0;
     }
 
-    private void decreaseLives() {
-        lives--;
-        if (lives <= 0) {
-            setDestroyed(true);
-            action = Action.DEAD;
-        }
-        System.out.println("Lives: " + lives);
-    }
-
     public BoxCollider getShadowBox() {
         return shadowBox;
     }
@@ -426,17 +410,17 @@ public class Komori extends Enemy {
         isFlying = flying;
     }
 
-    public boolean isFlying() {
-        return isFlying;
-    }
-
     public boolean isHurt(boolean collide) {
         return (!isDestroyed()) && collide && (action != Action.DEAD) && !isFlying;
     }
 
-    public void setHurt(boolean hurt) {
-        this.isHurt = hurt;
-        System.out.println("Is hurt: " + isHurt);
+    public void decreaseBlood() {
+        blood -= 1;
+        System.out.println("Blood: " + blood + " (" + String.format("%.2f", blood / 2.5) + "%)");
+        if (blood <= 0) {
+            //setDestroyed(true);
+            action = Action.DEAD;
+        }
     }
 
     public void checkWeaponCollision(BoxCollider bomberBox) {
