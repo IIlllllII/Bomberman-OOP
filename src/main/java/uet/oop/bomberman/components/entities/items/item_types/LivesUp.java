@@ -16,7 +16,6 @@ public class LivesUp extends Item {
     public void changePower() {
         Bomber bomber = EntitiesManager.getInstance().players.get(0);
         bomber.setLives(bomber.getLives() + 1);
-        eaten = false;
         done = true;
     }
 }

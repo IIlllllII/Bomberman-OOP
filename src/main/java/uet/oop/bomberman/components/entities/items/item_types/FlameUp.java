@@ -20,7 +20,6 @@ public class FlameUp extends Item {
         if(Bomb.getFlameLength() < 6){
             Bomb.setFlameLength(Bomb.getFlameLength() + 1);
         }
-        eaten = false;
         done = true;
     }
 }

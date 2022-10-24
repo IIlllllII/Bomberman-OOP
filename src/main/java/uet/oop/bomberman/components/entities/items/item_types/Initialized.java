@@ -17,7 +17,6 @@ public class Initialized extends Item {
         EntitiesManager.getInstance().players.get(0).setInvincible(true);
         if (time >= timePowerUp) {
             EntitiesManager.getInstance().players.get(0).setInvincible(false);
-            eaten = false;
             done = true;
         }
     }

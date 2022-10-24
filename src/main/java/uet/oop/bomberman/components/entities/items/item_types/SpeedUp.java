@@ -22,7 +22,6 @@ public class SpeedUp extends Item {
         if(numberEaten <= numberEatenMax){
             bomber.setSpeed(16.0/(8 - numberEaten));
         }
-        eaten = false;
         done = true;
     }
 

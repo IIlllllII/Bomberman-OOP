@@ -18,7 +18,6 @@ public class BombPass extends Item {
         EntitiesManager.getInstance().players.get(0).setCanPassBomb(true);
         if (time >= timePowerUp) {
             EntitiesManager.getInstance().players.get(0).setCanPassBomb(false);
-            eaten = false;
             done = true;
         }
     }

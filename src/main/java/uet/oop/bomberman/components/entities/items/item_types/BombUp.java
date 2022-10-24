@@ -18,7 +18,6 @@ public class BombUp extends Item {
         if(bomber.getBombMax() < 10){
             bomber.setBombMax(bomber.getBombMax() + 1);
         }
-        eaten = false;
         done = true;
     }
 }

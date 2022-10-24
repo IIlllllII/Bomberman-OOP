@@ -19,7 +19,6 @@ public class BrickPass extends Item {
         EntitiesManager.getInstance().players.get(0).setCanPassBrick(true);
         if(time >= timePowerUp){
             EntitiesManager.getInstance().players.get(0).setCanPassBrick(false);
-            eaten = false;
             done = true;
             EntitiesManager.getInstance().players.get(0).setCanResetLocation(true);
         }

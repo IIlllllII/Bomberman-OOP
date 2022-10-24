@@ -18,7 +18,6 @@ public class FlamePass extends Item {
         EntitiesManager.getInstance().players.get(0).setCanPassFlame(true);
         if(time >= timePowerUp){
             EntitiesManager.getInstance().players.get(0).setCanPassFlame(false);
-            eaten = false;
             done = true;
         }
     }
