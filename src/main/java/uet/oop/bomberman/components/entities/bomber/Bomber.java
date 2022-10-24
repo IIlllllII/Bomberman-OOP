@@ -1,41 +1,44 @@
-package uet.oop.bomberman.components.entities.players;
+package uet.oop.bomberman.components.entities.bomber;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.*;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.items.item_types.Invincible;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
+import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Bomber extends Entity implements Movable, Killable {
+public abstract class Bomber extends Entity implements Movable, Killable {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
-    public static final int DEFAULT_SPEED = 2;
-    private double initialX;        //reset in each level.
-    private double initialY;        //reset in each level.
+    public static final double DEFAULT_SPEED = 2;
+
+    protected double initialX;
+    protected double initialY;
     private int lives = 3;
-    private int speed = DEFAULT_SPEED;
-    private boolean canPassBomb = false;
-    private boolean canPassFlame = false;
-    private boolean canPassBrick = false;
+    protected double speed = DEFAULT_SPEED;
+    protected boolean canPassBomb = false;
+    protected boolean canPassFlame = false;
+    protected boolean canPassBrick = false;
     private boolean invincible = false;
+
+    private boolean canResetLocation = false;
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
-    private CharacterStatus playerStatus = CharacterStatus.IDLE;
-    private Direction direction = Direction.DOWN;
+    protected CharacterStatus playerStatus = CharacterStatus.IDLE;
+    protected Direction direction = Direction.DOWN;
 
-    private final BoxCollider bomberBox;
+    protected final BoxCollider bomberBox;
 
     public Bomber(double x, double y, int w, int h) {
         super(x, y, (int) ((1.2 * w * GameConfig.TILE_SIZE) / h), (int) (1.2 * GameConfig.TILE_SIZE));
@@ -104,39 +107,6 @@ public class Bomber extends Entity implements Movable, Killable {
         }
     }
 
-    public void handleInput(List<KeyCode> inputList) {
-        if (playerStatus == CharacterStatus.DEAD) {
-            return;
-        }
-
-        Direction currentDirection = null;
-        if (inputList.contains(KeyCode.RIGHT) || inputList.contains(KeyCode.D)) {
-            currentDirection = Direction.RIGHT;
-        }
-        if (inputList.contains(KeyCode.LEFT) || inputList.contains(KeyCode.A)) {
-            currentDirection = Direction.LEFT;
-        }
-        if (inputList.contains(KeyCode.UP) || inputList.contains(KeyCode.W)) {
-            currentDirection = Direction.UP;
-        }
-
-        if (inputList.contains(KeyCode.DOWN) || inputList.contains(KeyCode.S)) {
-            currentDirection = Direction.DOWN;
-        }
-
-        if (inputList.contains(KeyCode.SPACE)) {
-            placeBomb();
-            inputList.remove(KeyCode.SPACE);
-        }
-
-        if (currentDirection != null) {
-            playerStatus = CharacterStatus.MOVING;
-            direction = currentDirection;
-        } else {
-            playerStatus = CharacterStatus.IDLE;
-        }
-    }
-
     @Override
     public void render(GraphicsContext gc) {
         Image image = null;
@@ -148,7 +118,7 @@ public class Bomber extends Entity implements Movable, Killable {
                 image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
                 break;
             case DEAD:
-                image = spritesDict.get("dead")[currentSpriteIndex / 8].getFxImage();
+                image = spritesDict.get("dead")[currentSpriteIndex / 6].getFxImage();
                 gc.drawImage(image, this.x - camera.getX() - 3, this.y - camera.getY() + 2,
                         2 * 22 * 0.9, 2 * 21 * 0.9);
                 break;
@@ -161,6 +131,7 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
+        move();
         if (playerStatus == CharacterStatus.IDLE) {
             return;
         }
@@ -169,13 +140,12 @@ public class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            move();
         }
 
         //TODO: change it later.
         if (playerStatus == CharacterStatus.DEAD) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 8 >= spritesDict.get("dead").length) {
+            if (currentSpriteIndex / 6 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
                 lives--;
                 playerStatus = CharacterStatus.IDLE;
@@ -183,37 +153,36 @@ public class Bomber extends Entity implements Movable, Killable {
                 //Return to initial position:
                 this.x = initialX;
                 this.y = initialY;
+                Invincible initialized = new Invincible(x, y);
+                initialized.setTimePowerUp(5000);
+                initialized.setAppear(true);
+                EntitiesManager.getInstance().items.add(initialized);
                 updateBoxCollider();
             }
         }
     }
 
-    public void setInitialLocation(int x, int y) {
+    public abstract void updateBoxCollider();
+
+    public void setInitialLocation(double x, double y) {
         this.initialX = x;
         this.initialY = y;
     }
 
-    private void updateBoxCollider() {
-        bomberBox.setLocation(
-                this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + bomberBox.getHeight() - 5
-        );
-    }
     public void placeBomb() {
-        direction = Direction.DOWN;
         List<Bomb> bombList = EntitiesManager.getInstance().bombs;
 
         double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;
         double centerY = bomberBox.getY() + bomberBox.getHeight() / 2;
-
-        if (LevelMap.getInstance().getHashAt((int) centerY / GameConfig.TILE_SIZE, (int) centerX / GameConfig.TILE_SIZE)
-            != LevelMap.getInstance().getHash("grass")) {
-            return;
-        }
         if (bombList.size() < bombMax) {
             int bombX = ((int) centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             int bombY = ((int) centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             boolean hasBomb = false;
+            LevelMap levelMap = LevelMap.getInstance();
+            if (levelMap.getHashAt(bombY / GameConfig.TILE_SIZE, bombX / GameConfig.TILE_SIZE)
+                    != levelMap.getHash("grass")) {
+                return;
+            }
             for (Bomb bomb : bombList) {
                 if (bomb.getX() == bombX && bomb.getY() == bombY) {
                     hasBomb = true;
@@ -255,16 +224,20 @@ public class Bomber extends Entity implements Movable, Killable {
         return bombMax;
     }
 
-    public void setSpeed(int speed) {
-        this.speed= speed;
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
         this.canPassBrick = canPassBrick;
     }
 
-    public boolean isCanPassBrick() {
-        return canPassBrick;
+    public void setCanResetLocation(boolean canResetLocation) {
+        this.canResetLocation = canResetLocation;
     }
 
     public void setCanPassFlame(boolean canPassFlame) {
@@ -311,99 +284,69 @@ public class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void move() {
-        //Note: `steps` is always positive at first.
-        int steps = speed;
-        if (playerStatus == CharacterStatus.IDLE) {
-            return;
-        }
-
-        switch (direction) {
-            case DOWN:
-                y += steps;
-                break;
-            case UP:
-                steps = -steps;
-                y += steps;
-                break;
-            case RIGHT:
-                x += steps;
-                break;
-            case LEFT:
-                steps = -steps;
-                x += steps;
-                break;
-        }
-
-        LevelMap levelMap = LevelMap.getInstance();
-        if ((x < 0) || (x + width > levelMap.getWidth())) {
-            x -= steps;     //Move back
-        }
-
-        if ((y < 0) || (y + height > levelMap.getHeight())) {
-            y -= steps;     //Move back
-        }
-
-        updateBoxCollider();
-
-        int leftCol = (int) bomberBox.getX() / GameConfig.TILE_SIZE;
-        int rightCol = (int) (bomberBox.getX() + bomberBox.getWidth()) / GameConfig.TILE_SIZE;
-        int topRow = (int) bomberBox.getY() / GameConfig.TILE_SIZE;
-        int bottomRow = (int) (bomberBox.getY() + bomberBox.getHeight()) / GameConfig.TILE_SIZE;
-
-        //Barrier checker.
-        boolean topLeftCheck = checkBarrier(topRow, leftCol);
-        boolean topRightCheck = checkBarrier(topRow, rightCol);
-        boolean bottomLeftCheck = checkBarrier(bottomRow, leftCol);
-        boolean bottomRightCheck = checkBarrier(bottomRow, rightCol);
-
-        switch (direction) {
-            case UP:
-                if (topLeftCheck || topRightCheck) {
-                    y -= steps;
-                }
-                break;
-            case DOWN:
-                if (bottomLeftCheck || bottomRightCheck) {
-                    y -= steps;
-                }
-                break;
-            case RIGHT:
-                if (topRightCheck || bottomRightCheck) {
-                    x -= steps;
-                }
-                break;
-            case LEFT:
-                if (topLeftCheck || bottomLeftCheck) {
-                    x -= steps;
-                }
-                break;
-        }
     }
 
-    private boolean checkBarrier(int i, int j) {
-        LevelMap levelMap = LevelMap.getInstance();
-
-        if (levelMap.getHashAt(i, j) == levelMap.getHash("bomb")) {
-            if (EntitiesManager.getInstance().bombs.
-                    get(EntitiesManager.getInstance().bombs.size() - 1).isAllowPass()) {
-                return false;
-            }
-            return !canPassBomb;
-        }
-        if (levelMap.getHashAt(i, j) == levelMap.getHash("brick")) {
-            return !canPassBrick;
-        }
-
-        if (levelMap.getHashAt(i, j) == levelMap.getHash("portal")) {
-            if (EntitiesManager.getInstance().portal.isCanPass()) {
-                levelMap.prepareNextLevel();
-                // set portal.setCanPass = fault
-                return false;
+    public void resetLocation() {
+        if (canResetLocation) {
+            LevelMap levelMap = LevelMap.getInstance();
+            double centerX = bomberBox.getX();
+            double centerY = bomberBox.getY();
+            int jBomber = ((int) centerX / GameConfig.TILE_SIZE);
+            int iBomber = ((int) centerY / GameConfig.TILE_SIZE);
+            boolean checkL = true;
+            boolean checkR = true;
+            boolean checkU = true;
+            boolean checkD = true;
+            if (levelMap.getHashAt(iBomber, jBomber) == levelMap.getHash("brick")) {
+                int i = 1;
+                while (true) {
+                    if (jBomber - i >= 0) {
+                        if (levelMap.getHashAt(iBomber, jBomber - i) == levelMap.getHash("wall")) {
+                            checkL = false;
+                        }
+                        if (levelMap.getHashAt(iBomber, jBomber - i) == levelMap.getHash("grass") && checkL) {
+                            x -= speed;
+                            break;
+                        }
+                    }
+                    if (jBomber + i < levelMap.getMapHash()[0].length) {
+                        if (levelMap.getHashAt(iBomber, jBomber + i) == levelMap.getHash("wall")) {
+                            checkR = false;
+                        }
+                        if (levelMap.getHashAt(iBomber, jBomber + i) == levelMap.getHash("grass") && checkR) {
+                            x += speed;
+                            break;
+                        }
+                    }
+                    if (iBomber - i >= 0) {
+                        if (levelMap.getHashAt(iBomber - i, jBomber) == levelMap.getHash("wall")) {
+                            checkU = false;
+                        }
+                        if (levelMap.getHashAt(iBomber - i, jBomber) == levelMap.getHash("grass") && checkU) {
+                            y -= speed;
+                            break;
+                        }
+                    }
+                    if (iBomber + i < levelMap.getMapHash().length) {
+                        if (levelMap.getHashAt(iBomber + i, jBomber) == levelMap.getHash("wall")) {
+                            checkD = false;
+                        }
+                        if (levelMap.getHashAt(iBomber + i, jBomber) == levelMap.getHash("grass") && checkD) {
+                            y += speed;
+                            break;
+                        }
+                    }
+                    i++;
+                }
+                updateBoxCollider();
             } else {
-                return true;
+                canResetLocation = false;
             }
         }
-
-        return levelMap.getHashAt(i, j) == levelMap.getHash("wall");
+    }
+    public void reset(){
+        canPassBrick = false;
+        canPassBomb = false;
+        canPassFlame = false;
     }
 }

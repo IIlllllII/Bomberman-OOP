@@ -56,7 +56,7 @@ public class Banana extends Enemy {
         animationDict.get("death").setLoop(false);
 
         initDirectionList();
-        lastDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        currentDirection = currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
         score = 2000;
     }
 
@@ -78,7 +78,7 @@ public class Banana extends Enemy {
     @Override
     public void render(GraphicsContext gc) {
         if (!destroyed) {
-            animationDict.get(lastDirection.label)
+            animationDict.get(currentDirection.label)
                     .render(gc, x - camera.getX(), y - camera.getY());
         } else {
             animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
@@ -99,10 +99,10 @@ public class Banana extends Enemy {
     public void update() {
         if (!destroyed) {
             move();
-            if (animationDict.get(lastDirection.label) == null) {
+            if (animationDict.get(currentDirection.label) == null) {
                 return;
             }
-            animationDict.get(lastDirection.label).update();
+            animationDict.get(currentDirection.label).update();
             updateBoxCollider();
         } else {
             animationDict.get("death").update();
@@ -138,24 +138,28 @@ public class Banana extends Enemy {
         canMoveU = checkMapHash(i - 1, j);
         canMoveD = checkMapHash(i + 1, j);
 
-        checkMove();
-        if (moveY == 0 && moveX == 0) {
-            if (directionList.size() != 0) {
-                int ran = r.nextInt(directionList.size());
-                if (directionList.get(ran) == Direction.UP) {
-                    lastDirection = Direction.UP;
-                }
-                if (directionList.get(ran) == Direction.DOWN) {
-                    lastDirection = Direction.DOWN;
-                }
-                if (directionList.get(ran) == Direction.RIGHT) {
-                    lastDirection = Direction.RIGHT;
-                }
-                if (directionList.get(ran) == Direction.LEFT) {
-                    lastDirection = Direction.LEFT;
+            checkMove();
+            if (moveY == 0 && moveX == 0) {
+                if (directionList.size() != 0) {
+                    int ran = r.nextInt(directionList.size());
+                    if (directionList.get(ran) == Direction.UP) {
+                        currentDirection = Direction.UP;
+                    }
+                    if (directionList.get(ran) == Direction.DOWN) {
+                        currentDirection = Direction.DOWN;
+                    }
+                    if (directionList.get(ran) == Direction.RIGHT) {
+                        currentDirection = Direction.RIGHT;
+                        //randomAnimation = false;
+                    }
+                    if (directionList.get(ran) == Direction.LEFT) {
+                        currentDirection = Direction.LEFT;
+                        //randomAnimation = true;
+                    }
+                    currentDirection = currentDirection;
                 }
             }
-        }
+        //}
         x += moveX;
         y += moveY;
     }

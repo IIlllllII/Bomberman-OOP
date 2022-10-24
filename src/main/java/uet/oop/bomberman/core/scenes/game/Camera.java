@@ -2,7 +2,7 @@ package uet.oop.bomberman.core.scenes.game;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.EntitiesManager;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 
@@ -62,7 +62,7 @@ public class Camera {
     }
 
     public void update() {
-        Bomber bomber = EntitiesManager.getInstance().players.get(0);
+        Bomber bomber = EntitiesManager.getInstance().bombers.get(0);
 
         this.x = (bomber.getX() + bomber.getWidth() / 2.0) - GameConfig.WIDTH / 2.0;
         this.y = (bomber.getY() + bomber.getHeight() / 2.0) - GameConfig.HEIGHT / 2.0;

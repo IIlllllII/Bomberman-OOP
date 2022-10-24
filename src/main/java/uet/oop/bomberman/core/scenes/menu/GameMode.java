@@ -9,6 +9,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.maps.LevelMap;
 
 import java.net.URISyntaxException;
 
@@ -44,18 +46,21 @@ public class GameMode extends VBox {
         classic.setOnClick();
 
         classic.setOnMouseClicked(mouseEvent -> {
+            LevelMap.getInstance().setAuto(false);
             classic.setOnClick();
             autoPlay.reset();
             training.reset();
         });
 
         autoPlay.setOnMouseClicked(mouseEvent -> {
+            LevelMap.getInstance().setAuto(true);
             autoPlay.setOnClick();
             classic.reset();
             training.reset();
         });
 
         training.setOnMouseClicked(mouseEvent -> {
+            LevelMap.getInstance().setAuto(false);
             training.setOnClick();
             classic.reset();
             autoPlay.reset();

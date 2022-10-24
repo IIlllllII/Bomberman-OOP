@@ -6,7 +6,7 @@ import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.Coin;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -24,7 +24,7 @@ import java.util.List;
  * https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
  */
 public class EntitiesManager {
-    public List<Bomber> players = new ArrayList<>();
+    public List<Bomber> bombers = new ArrayList<>();
     public List<Bomb> bombs = new ArrayList<>();
     public List<Brick> bricks = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
@@ -54,7 +54,7 @@ public class EntitiesManager {
                 enemy.render(gc);
             }
         });
-        players.forEach(player -> player.render(gc));
+        bombers.forEach(player -> player.render(gc));
         enemies.forEach(enemy -> {
             if (enemy instanceof Banana) {
                 enemy.render(gc);
@@ -63,7 +63,7 @@ public class EntitiesManager {
     }
 
     public void update() {
-        players.forEach(Entity::update);
+        bombers.forEach(Entity::update);
         checkCollision();
 
         bricks.forEach(Brick::update);
@@ -89,7 +89,7 @@ public class EntitiesManager {
     }
 
     private void checkCollision() {
-        BoxCollider bomberBox = players.get(0).getBomberBox();
+        BoxCollider bomberBox = bombers.get(0).getBomberBox();
 
         items.forEach(item -> {
             if (item.isAppear()) {
@@ -122,8 +122,8 @@ public class EntitiesManager {
                 } else {
                     enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
                 }
-                if (!enemy.isDestroyed() && bomberBox.isCollidedWith(enemyBox) && !players.get(0).isInvincible()) {
-                    players.get(0).setPlayerStatus(CharacterStatus.DEAD);
+                if (!enemy.isDestroyed() && bomberBox.isCollidedWith(enemyBox) && !bombers.get(0).isInvincible()) {
+                    bombers.get(0).setPlayerStatus(CharacterStatus.DEAD);
                 }
             }
         }
@@ -133,9 +133,9 @@ public class EntitiesManager {
                 if (! flame.isDone()) {
                     BoxCollider flameBox = new BoxCollider(flame.getX(), flame.getY());
 
-                    if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
-                            && !players.get(0).isInvincible()) {
-                        players.get(0).setPlayerStatus(CharacterStatus.DEAD);
+                    if (bomberBox.isCollidedWith(flameBox) && !bombers.get(0).isCanPassFlame()
+                            && !bombers.get(0).isInvincible()) {
+                        bombers.get(0).setPlayerStatus(CharacterStatus.DEAD);
                     }
 
                     enemies.forEach(enemy -> {
@@ -160,7 +160,7 @@ public class EntitiesManager {
      * Renew all entities when switching to another level
      */
     public void renewEntities() {
-        //players.clear();
+//        players.clear();
         bombs.clear();
         bricks.clear();
         items.clear();

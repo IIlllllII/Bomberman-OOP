@@ -4,13 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.game.TopBar;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public abstract class Enemy extends Entity {
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
     protected Random r = new Random();
-    protected Direction lastDirection;
+    protected Direction currentDirection;
 
     protected List<Direction> directionList = new ArrayList<>();
     protected boolean randomAnimation = false; // left or right
@@ -39,6 +37,7 @@ public abstract class Enemy extends Entity {
 
     public Enemy(double x, double y) {
         super(x, y);
+        currentDirection = Direction.DOWN;
     }
 
     public void render(GraphicsContext gc) {
@@ -80,6 +79,10 @@ public abstract class Enemy extends Entity {
         return destroyed;
     }
 
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
         if (destroyed) {
@@ -104,15 +107,18 @@ public abstract class Enemy extends Entity {
 
     protected void initDirectionList(){
         directionList.clear();
-        directionList.add(Direction.LEFT);
-        directionList.add(Direction.RIGHT);
         directionList.add(Direction.UP);
         directionList.add(Direction.DOWN);
-        directionList.add(Direction.STAND);
+        directionList.add(Direction.LEFT);
+        directionList.add(Direction.RIGHT);
     }
 
     protected void checkMove(){
-        switch (lastDirection) {
+        if(currentDirection == null){
+            initDirectionList();
+            return;
+        }
+        switch (currentDirection) {
             case UP: {
                 if (canMoveU) {
                     moveY = -speed;
@@ -149,9 +155,8 @@ public abstract class Enemy extends Entity {
                 }
                 break;
             }
-            case STAND:{
+            default:
                 break;
-            }
         }
     }
 }

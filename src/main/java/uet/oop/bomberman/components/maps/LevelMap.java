@@ -12,9 +12,10 @@ import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Grass;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.entities.materials.Wall;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.bomber.AutoPlay;
+import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.scenes.game.Clock;
+import uet.oop.bomberman.core.scenes.game.Clocks;
 import uet.oop.bomberman.core.scenes.game.IntroLevel;
 import uet.oop.bomberman.core.scenes.game.TopBar;
 
@@ -30,6 +31,7 @@ public class LevelMap {
     private Wall wall;
     private int level;
     private boolean levelComplete;
+    private boolean auto = true;
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     private static class SingletonHelper {
@@ -84,10 +86,12 @@ public class LevelMap {
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
-            if (! brick.isDestroyed()) {
+            if (!brick.isDestroyed()) {
                 entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
                 mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
                         = getHash("coin");
+//                mapHash[(int) brick.getY() / GameConfig.TILE_SIZE][(int) brick.getX() / GameConfig.TILE_SIZE]
+//                        = getHash("grass");
             }
         });
         entitiesManager.bricks.clear();
@@ -113,7 +117,7 @@ public class LevelMap {
         }
 
         System.out.println("Current: " + brickList.size() + " " + itemList.size()
-        + " " + enemyList.size());
+                + " " + enemyList.size());
 
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
@@ -130,17 +134,23 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            if (entitiesManager.players.size() == 0) {
-                                entitiesManager.players.add(
-                                        new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
-                                );
+                            if(level == 1){
+                                entitiesManager.bombers.clear();
+                            }
+                            if (entitiesManager.bombers.size() == 0) {
+                                if (auto) {
+                                    entitiesManager.bombers.add(
+                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                    );
+                                } else {
+                                    entitiesManager.bombers.add(
+                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                    );
+                                }
                             } else {
-                                entitiesManager.players.get(0).setLocation(
-                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5
-                                );
-                                entitiesManager.players.get(0).setInitialLocation(
-                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5
-                                );
+                                entitiesManager.bombers.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE);
+                                entitiesManager.bombers.get(0).reset();
+                                entitiesManager.bombers.get(0).updateBoxCollider();
                             }
                             hash = getHash("grass");
                             break;
@@ -210,7 +220,6 @@ public class LevelMap {
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);
             portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
-
             double xItem = 0;
             double yItem = 0;
             String tile = scanner.nextLine();
@@ -225,7 +234,6 @@ public class LevelMap {
                         if (brickList.get(ran).getX() == item.getX()
                                 && brickList.get(ran).getY() == item.getY()) {
                             check = true;
-                            break;
                         }
                     }
                     if (!check) {
@@ -260,6 +268,10 @@ public class LevelMap {
                         itemList.add(new BrickPass(xItem, yItem));
                         break;
                     }
+                    case 'I': {
+                        itemList.add(new Invincible(xItem, yItem));
+                        break;
+                    }
                     case 'l': {
                         itemList.add(new LivesUp(xItem, yItem));
                         break;
@@ -276,6 +288,10 @@ public class LevelMap {
 
     public int getLevel() {
         return level;
+    }
+
+    public void setAuto(boolean auto) {
+        this.auto = auto;
     }
 
     public int getWidth() {
