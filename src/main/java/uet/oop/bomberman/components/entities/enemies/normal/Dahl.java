@@ -16,7 +16,7 @@ public class Dahl extends Enemy {
         animationRight.setLoop(true);
         randomAnimation = false;
         initDirectionList();
-        lastDirection = directionList.get(r.nextInt(directionList.size()));
+        currentDirection = directionList.get(r.nextInt(directionList.size()));
         speed = 2;
         score = 400;
     }
@@ -25,7 +25,7 @@ public class Dahl extends Enemy {
     protected void move() {
         int j = (int) (x / GameConfig.TILE_SIZE);
         int i = (int) (y / GameConfig.TILE_SIZE);
-        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
+        if (Math.abs((double) j * GameConfig.TILE_SIZE - x) < speed && Math.abs((double) i * GameConfig.TILE_SIZE - y) < speed) {
             moveX = 0;
             moveY = 0;
             canMoveR = checkMapHash(i, j + 1);
@@ -36,7 +36,7 @@ public class Dahl extends Enemy {
             checkMove();
             if (moveY == 0 && moveX == 0 && directionList.size() != 0) {
                 int ran = r.nextInt(directionList.size());
-                lastDirection = directionList.get(ran);
+                currentDirection = directionList.get(ran);
             }
         }
         x += moveX;

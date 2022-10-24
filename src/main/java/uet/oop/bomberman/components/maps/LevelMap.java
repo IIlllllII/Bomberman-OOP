@@ -1,20 +1,23 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.components.entities.enemies.*;
+import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
 import uet.oop.bomberman.components.entities.enemies.normal.*;
-import uet.oop.bomberman.components.entities.items.*;
-import uet.oop.bomberman.components.entities.EntitiesManager;
-
+import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.*;
-import uet.oop.bomberman.components.entities.players.Bomber;
 import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Grass;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.entities.materials.Wall;
+import uet.oop.bomberman.components.entities.bomber.AutoPlay;
+import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.game.Clocks;
+import uet.oop.bomberman.core.scenes.game.IntroLevel;
+import uet.oop.bomberman.core.scenes.game.TopBar;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,6 +31,7 @@ public class LevelMap {
     private Wall wall;
     private int level;
     private boolean levelComplete;
+    private boolean auto = true;
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
     private static class SingletonHelper {
@@ -39,6 +43,11 @@ public class LevelMap {
     }
 
     private LevelMap() {
+        reset();
+    }
+
+    public void reset() {
+        levelComplete = false;
         level = 0;
         nextLevel();
     }
@@ -65,39 +74,55 @@ public class LevelMap {
     }
 
     public void update() {
-        if (levelComplete) {
+        if (levelComplete && TopBar.getInstance().getClock().isDone()) {
             nextLevel();
             levelComplete = false;
         }
     }
 
+    public void setLevelComplete(boolean levelComplete) {
+        this.levelComplete = levelComplete;
+    }
+
     public void prepareNextLevel() {
-        //levelComplete = true;
+        TopBar.getInstance().setClock(15);
+//        levelComplete = true;
+//        PlayScene.setClock(15);
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
             if (!brick.isDestroyed()) {
                 entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-                        = getHash("coin");
+                mapHash[(int) brick.getY() / GameConfig.TILE_SIZE][(int) brick.getX() / GameConfig.TILE_SIZE]
+                        = getHash("grass");
             }
         });
         entitiesManager.bricks.clear();
     }
 
+    // Should be private later
     public void nextLevel() {
         level++;
         level = (level > 8) ? 1 : level;
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
+
         entitiesManager.renewEntities();
         List<Brick> brickList = entitiesManager.bricks;
         List<Item> itemList = entitiesManager.items;
         List<Enemy> enemyList = entitiesManager.enemies;
         Portal portal = entitiesManager.portal;
 
+        if (TopBar.getInstance().getClock() != null) {
+            TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
+        }
+
+        if (level > 1) {
+            IntroLevel.getInstance().reset(level);
+        }
+
         System.out.println("Current: " + brickList.size() + " " + itemList.size()
-        + " " + enemyList.size());
+                + " " + enemyList.size());
 
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
@@ -114,14 +139,23 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            if (entitiesManager.players.size() == 0) {
-                                entitiesManager.players.add(
-                                        new Bomber(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
-                                );
+                            if (level == 1) {
+                                entitiesManager.bombers.clear();
+                            }
+                            if (entitiesManager.bombers.size() == 0) {
+                                if (auto) {
+                                    entitiesManager.bombers.add(
+                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                    );
+                                } else {
+                                    entitiesManager.bombers.add(
+                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                    );
+                                }
                             } else {
-                                entitiesManager.players.get(0).setLocation(
-                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5
-                                );
+                                entitiesManager.bombers.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE);
+                                entitiesManager.bombers.get(0).reset();
+                                entitiesManager.bombers.get(0).updateBoxCollider();
                             }
                             hash = getHash("grass");
                             break;
@@ -167,7 +201,7 @@ public class LevelMap {
                             break;
                         }
                         case '9': {
-                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE + 15, i * GameConfig.TILE_SIZE - 5));
+                            enemyList.add(new Banana(j * GameConfig.TILE_SIZE + 15, i * GameConfig.TILE_SIZE));
                             hash = getHash("grass");
                             break;
                         }
@@ -195,7 +229,7 @@ public class LevelMap {
             double xItem = 0;
             double yItem = 0;
             String tile = scanner.nextLine();
-            for(int i = 0; i < tile.length(); i++){
+            for (int i = 0; i < tile.length(); i++) {
                 char hash = tile.charAt(i);
                 boolean checkItem = false;
                 while (!checkItem) {
@@ -205,13 +239,13 @@ public class LevelMap {
                             && brickList.get(ran).getY() == portal.getY()) {
                         check = true;
                     }
-                    for (int j = 0; j < itemList.size(); j++) {
-                        if (brickList.get(ran).getX() == itemList.get(j).getX()
-                                && brickList.get(ran).getY() == itemList.get(j).getY()) {
+                    for (Item item : itemList) {
+                        if (brickList.get(ran).getX() == item.getX()
+                                && brickList.get(ran).getY() == item.getY()) {
                             check = true;
                         }
                     }
-                    if(!check){
+                    if (!check) {
                         xItem = brickList.get(ran).getX();
                         yItem = brickList.get(ran).getY();
                         checkItem = true;
@@ -243,6 +277,10 @@ public class LevelMap {
                         itemList.add(new BrickPass(xItem, yItem));
                         break;
                     }
+                    case 'I': {
+                        itemList.add(new Invincible(xItem, yItem));
+                        break;
+                    }
                     case 'l': {
                         itemList.add(new LivesUp(xItem, yItem));
                         break;
@@ -259,6 +297,10 @@ public class LevelMap {
 
     public int getLevel() {
         return level;
+    }
+
+    public void setAuto(boolean auto) {
+        this.auto = auto;
     }
 
     public int getWidth() {

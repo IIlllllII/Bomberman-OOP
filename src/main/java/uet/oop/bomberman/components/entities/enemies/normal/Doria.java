@@ -1,7 +1,6 @@
 package uet.oop.bomberman.components.entities.enemies.normal;
 
 import uet.oop.bomberman.components.entities.EntitiesManager;
-import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
@@ -30,10 +29,10 @@ public class Doria extends Enemy {
     protected void move() {
         int j = (int) (x / GameConfig.TILE_SIZE);
         int i = (int) (y / GameConfig.TILE_SIZE);
-        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
+        if (Math.abs((double) j * GameConfig.TILE_SIZE - x) < speed && Math.abs((double) i * GameConfig.TILE_SIZE - y) < speed) {
             moveX = 0;
             moveY = 0;
-            lastDirection = findWay(i, j);
+            currentDirection = findWay(i, j);
 
             canMoveR = checkMapHash(i, j + 1);
             canMoveL = checkMapHash(i, j - 1);
@@ -67,8 +66,8 @@ public class Doria extends Enemy {
             }
         }
 
-        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
-        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+        double bomberX = EntitiesManager.getInstance().bombers.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().bombers.get(0).getY();
 
         int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
         int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
@@ -81,27 +80,6 @@ public class Doria extends Enemy {
         Queue<Direction> direc = new LinkedList<>();
         Queue<Integer> iTile = new LinkedList<>();
         Queue<Integer> jTile = new LinkedList<>();
-
-        // Tránh bomb
-        boolean checkBomb = false;
-        for(Bomb bomb : EntitiesManager.getInstance().bombs){
-            int iBomb = (int) bomb.getY() / GameConfig.TILE_SIZE;
-            int jBomb = (int) bomb.getX() / GameConfig.TILE_SIZE;
-            if((i == iBomb && Math.abs(j - jBomb) <= Bomb.getFlameLength() + 1) && j != jBomb){
-                if(j - jBomb <= Bomb.getFlameLength() + 1){
-                    directionList.remove(Direction.LEFT);
-                }else {
-                    directionList.remove(Direction.RIGHT);
-                }
-            }
-            if(j == jBomb && Math.abs(i - iBomb) <= Bomb.getFlameLength() + 1 && i != iBomb){
-                if(i - iBomb <= Bomb.getFlameLength() + 1){
-                    directionList.remove(Direction.UP);
-                }else {
-                    directionList.remove(Direction.DOWN);
-                }
-            }
-        }
 
         checkPass[i][j] = true;
         if (canMoveR && !checkPass[i][j + 1]) {

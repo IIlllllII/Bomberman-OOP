@@ -14,10 +14,9 @@ public class Invincible extends Item {
     }
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setInvincible(true);
+        EntitiesManager.getInstance().bombers.get(0).setInvincible(true);
         if (time >= timePowerUp) {
-            EntitiesManager.getInstance().players.get(0).setInvincible(false);
-            eaten = false;
+            EntitiesManager.getInstance().bombers.get(0).setInvincible(false);
             done = true;
         }
     }

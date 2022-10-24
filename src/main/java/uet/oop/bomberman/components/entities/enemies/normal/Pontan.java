@@ -22,17 +22,17 @@ public class Pontan extends Enemy {
         initDirectionList();
 
         score = 8000;
-        speed = 4;
+        speed = 16/5.0;
     }
 
     @Override
     protected void move() {
         int j = (int) (x / GameConfig.TILE_SIZE);
         int i = (int) (y / GameConfig.TILE_SIZE);
-        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
+        if (Math.abs((double) j * GameConfig.TILE_SIZE - x) < speed && Math.abs((double) i * GameConfig.TILE_SIZE - y) < speed) {
             moveX = 0;
             moveY = 0;
-            lastDirection = findWay(i, j);
+            currentDirection = findWay(i, j);
 
             canMoveR = checkMapHash(i, j + 1);
             canMoveL = checkMapHash(i, j - 1);
@@ -66,8 +66,8 @@ public class Pontan extends Enemy {
             }
         }
 
-        double bomberX = EntitiesManager.getInstance().players.get(0).getX();
-        double bomberY = EntitiesManager.getInstance().players.get(0).getY();
+        double bomberX = EntitiesManager.getInstance().bombers.get(0).getX();
+        double bomberY = EntitiesManager.getInstance().bombers.get(0).getY();
 
         int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
         int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;

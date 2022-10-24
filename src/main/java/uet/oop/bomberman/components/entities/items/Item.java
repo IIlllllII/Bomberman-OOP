@@ -61,6 +61,10 @@ public abstract class Item extends Entity {
         this.eaten = eaten;
     }
 
+    public boolean isEaten() {
+        return eaten;
+    }
+
     public abstract void changePower();
 
     public void setTimePowerUp(double timePowerUp) {

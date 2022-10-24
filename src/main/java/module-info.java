@@ -10,8 +10,10 @@ module uet.oop.bomberman {
     exports uet.oop.bomberman.config;
     exports uet.oop.bomberman.core;
     exports uet.oop.bomberman.core.stages;
+    exports uet.oop.bomberman.components.graphics;
     exports uet.oop.bomberman.components.entities;
-    exports uet.oop.bomberman.components.entities.players;
+    exports uet.oop.bomberman.components.entities.bomber;
     exports uet.oop.bomberman.components.entities.enemies;
     exports uet.oop.bomberman.components.entities.enemies.normal;
+    exports uet.oop.bomberman.core.scenes.game;
 }

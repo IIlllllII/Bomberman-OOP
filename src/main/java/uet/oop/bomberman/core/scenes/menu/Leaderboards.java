@@ -1,6 +1,5 @@
 package uet.oop.bomberman.core.scenes.menu;
 
-import uet.oop.bomberman.core.HighScore;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -10,27 +9,36 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import uet.oop.bomberman.core.HighScore;
 
 public class Leaderboards extends VBox {
-    public Leaderboards(double prefWidth, double prefHeight) {
+    private final double DEFAULT_WIDTH = 400;
+    private final double DEFAULT_HEIGHT = 200;
+
+    private static class SingletonHelper {
+        private static final Leaderboards INSTANCE = new Leaderboards();
+    }
+    public static Leaderboards getInstance() {
+        return Leaderboards.SingletonHelper.INSTANCE;
+    }
+    private Leaderboards() {
         setAlignment(Pos.CENTER);
         setSpacing(8);
 
         Text title = new Text("Leaderboards");
-        title.setFont(new Font("/font1.ttf", 22));
-        title.setStyle("-fx-font-weight: bold");
+        title.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
         title.setFill(Color.WHITE);
 
         TableView<HighScore> table = new TableView<>();
-        table.setMaxWidth(prefWidth);
-        table.setMaxHeight(prefHeight);
+        table.setMaxWidth(DEFAULT_WIDTH);
+        table.setMaxHeight(DEFAULT_HEIGHT);
 
         TableColumn<HighScore, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn<HighScore, String> highScoreColumn = new TableColumn<>("High Score");
-        highScoreColumn.setSortType(TableColumn.SortType.ASCENDING);
         highScoreColumn.setCellValueFactory(new PropertyValueFactory<>("highScore"));
 
         TableColumn<HighScore, String> levelColumn = new TableColumn<>("Level");
