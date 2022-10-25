@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.SceneManager;
+import uet.oop.bomberman.core.scenes.menu.Leaderboards;
 import uet.oop.bomberman.core.stages.GameStage;
 import uet.oop.bomberman.core.stages.IntroStage;
 

@@ -16,6 +16,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.core.HighScore;
 import uet.oop.bomberman.core.scenes.SceneManager;
 import uet.oop.bomberman.core.scenes.buttons.ButtonCustom;
+import uet.oop.bomberman.core.scenes.menu.Leaderboards;
 
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
@@ -65,9 +66,8 @@ public class GameOver extends HBox {
         save.setPadding(new Insets(20, 0, 0, 0));
         save.setOnMouseClicked(mouseEvent -> {
             Date date = new Date();
-            HighScore.add(new HighScore(textField.getText(), TopBar.getInstance().getScore(),
+            Leaderboards.add(new HighScore(textField.getText(), TopBar.getInstance().getScore(),
                     LevelMap.getInstance().getLevel(), format.format(date)));
-            HighScore.update();
             SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
         });
 

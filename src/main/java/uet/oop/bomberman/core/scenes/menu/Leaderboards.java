@@ -13,9 +13,46 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.core.HighScore;
 
+import java.io.*;
+
+
 public class Leaderboards extends VBox {
+    private static int minScore = Integer.MAX_VALUE;
+    private static final String fileName = "src/main/resources/data/highScore.txt";
+    private static ObservableList<HighScore> highScoresList = null;
     private final double DEFAULT_WIDTH = 400;
     private final double DEFAULT_HEIGHT = 200;
+
+    public static void init() {
+        if (highScoresList == null) {
+            highScoresList = FXCollections.observableArrayList();
+            try {
+                File file = new File(fileName);
+                if (!file.exists()) {
+                    if (!file.createNewFile()) {
+                        System.out.println("can't creat file high score");
+                    };
+                }
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String line = "";
+                while (true) {
+                    line = br.readLine();
+                    if (line == null) {
+                        break;
+                    }
+                    String[] data = line.split(";");
+                    highScoresList.add(new HighScore(data[0], Integer.parseInt(data[1]), Integer.parseInt(data[2]), data[3]));
+                    if (Integer.parseInt(data[1]) < minScore) {
+                        minScore = Integer.parseInt(data[1]);
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("High score");
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     private static class SingletonHelper {
         private static final Leaderboards INSTANCE = new Leaderboards();
@@ -47,11 +84,39 @@ public class Leaderboards extends VBox {
         TableColumn<HighScore, String> dateColumn = new TableColumn<>("Date");
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        ObservableList<HighScore> highScoresList = FXCollections.observableArrayList(HighScore.getHIGH_SCORE());
-
-        table.setItems(highScoresList);
         table.getColumns().addAll(nameColumn, highScoreColumn, levelColumn, dateColumn);
+        table.setItems(highScoresList);
 
         getChildren().addAll(title,table);
+    }
+
+    public static String to_String() {
+        StringBuilder res = new StringBuilder();
+        for (HighScore it : highScoresList) {
+            res.append(it.getName()).append(";").append(it.getHighScore()).append(";")
+                    .append(it.getLevel()).append(";").append(it.getDate()).append("\n");
+        }
+        return res.toString();
+    }
+
+    public static void add(HighScore score) {
+        highScoresList.add(score);
+        update();
+    }
+
+    /**
+     * Write to file
+     */
+    public static void update() {
+        try {
+            // clear file and write again
+            FileWriter fw = new FileWriter(fileName);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(to_String());
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
