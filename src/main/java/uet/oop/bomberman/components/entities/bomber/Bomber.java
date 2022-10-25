@@ -1,41 +1,48 @@
 package uet.oop.bomberman.components.entities.bomber;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import uet.oop.bomberman.components.entities.*;
+import uet.oop.bomberman.components.entities.BoxCollider;
+import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.LivingEntity;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.Invincible;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
+import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.core.sound.Sound;
 
+import java.awt.event.ItemEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Bomber extends Entity {
+public abstract class Bomber extends LivingEntity {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final double DEFAULT_SPEED = 2;
 
+    private final List<Item> eatenItems = new ArrayList<>();
+
+    private static SpriteSheet bombermanSheet;
+    private static SpriteSheet bombermanFlashSheet;
+
     private double initialX;        //reset in each level.
     private double initialY;        //reset in each level.
-    private int lives = 3;
-    protected double speed = DEFAULT_SPEED;
     protected boolean canPassBomb = false;
     protected boolean canPassFlame = false;
     protected boolean canPassBrick = false;
     private boolean invincible = false;
+    private int frameCounter;
     private boolean canResetLocation = false;
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
     protected Action playerAction = Action.IDLE;
-    protected Direction direction = Direction.DOWN;
 
     protected final BoxCollider bomberBox;
 
@@ -43,13 +50,24 @@ public abstract class Bomber extends Entity {
         super(x, y, (int) ((1.2 * w * GameConfig.TILE_SIZE) / h), (int) (1.2 * GameConfig.TILE_SIZE));
         initialX = x;
         initialY = y;
+        speed = DEFAULT_SPEED;
+        currentDirection = Direction.DOWN;
+        lives = 3;
         bomberBox = new BoxCollider(0, 0, 15, 20);
         updateBoxCollider();
     }
 
+    public void updateBoxCollider() {
+        bomberBox.setLocation(
+                this.x + (this.width - bomberBox.getWidth()) / 2.0,
+                this.y + bomberBox.getHeight() - 5
+        );
+    }
+
     public static void init() {
         if (!initialized) {
-            SpriteSheet bombermanSheet = new SpriteSheet("/spriteSheet/bomberman_sheet.png", 256, 128);
+            bombermanSheet = new SpriteSheet("/spriteSheet/bomberman_sheet.png", 256, 128);
+            bombermanFlashSheet = new SpriteSheet("/spriteSheet/bomberman_flash.png", 256, 128);
 
             spritesDict.put("idle", new Sprite[]{
                     new Sprite(16, 22, 17, 2, bombermanSheet),
@@ -108,24 +126,36 @@ public abstract class Bomber extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        Image image = null;
+        Sprite sprite = null;
         switch (playerAction) {
             case IDLE:
-                image = spritesDict.get("idle")[direction.index].getFxImage();
+                sprite = spritesDict.get("idle")[currentDirection.index];
                 break;
             case MOVING:
-                image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
+                sprite = spritesDict.get("moving-" + currentDirection.label)[currentSpriteIndex / 4];
                 break;
             case DEAD:
-                image = spritesDict.get("dead")[currentSpriteIndex / 8].getFxImage();
-                gc.drawImage(image, this.x - camera.getX() - 3, this.y - camera.getY() + 2,
+                sprite = spritesDict.get("dead")[currentSpriteIndex / 8];
+                gc.drawImage(sprite.getFxImage(), this.x - camera.getX() - 3, this.y - camera.getY() + 2,
                         2 * 22 * 0.9, 2 * 21 * 0.9);
                 break;
         }
         if (playerAction == Action.DEAD) {
             return;
         }
-        gc.drawImage(image, this.x - camera.getX(), this.y - camera.getY(), this.width, this.height);
+        if (invincible) {
+            assert sprite != null;
+            if ((frameCounter / 5) % 2 == 0) {
+                sprite.setSheet(bombermanFlashSheet);
+            } else {
+                sprite.setSheet(bombermanSheet);
+            }
+            frameCounter++;
+        } else {
+            frameCounter = 0;
+            sprite.setSheet(bombermanSheet);
+        }
+        gc.drawImage(sprite.getFxImage(), this.x - camera.getX(), this.y - camera.getY(), this.width, this.height);
     }
 
     @Override
@@ -137,7 +167,7 @@ public abstract class Bomber extends Entity {
         }
         if (playerAction == Action.MOVING) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
+            if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + currentDirection.label).length) {
                 currentSpriteIndex = 0;
             }
         }
@@ -156,17 +186,21 @@ public abstract class Bomber extends Entity {
                 invincibleItem.setTimePowerUp(3000);
                 invincibleItem.setAppear(true);
                 EntitiesManager.getInstance().items.add(invincibleItem);
+                frameCounter = 1;
                 updateBoxCollider();
             }
         }
     }
 
-    public abstract void updateBoxCollider();
-
     public void setInitialLocation(double x, double y) {
         this.initialX = x;
         this.initialY = y;
         updateBoxCollider();
+    }
+
+    public void addItem(Item item) {
+        eatenItems.add(item);
+        //System.out.println("Item list: " + eatenItems.size());
     }
 
     public void placeBomb() {
@@ -202,32 +236,12 @@ public abstract class Bomber extends Entity {
         }
     }
 
-    public boolean isKilled() {
-        return lives <= 0;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
     public void setBombMax(int bombMax) {
         this.bombMax = bombMax;
     }
 
     public int getBombMax() {
         return bombMax;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    public double getSpeed() {
-        return speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
@@ -268,17 +282,6 @@ public abstract class Bomber extends Entity {
 
     public BoxCollider getBomberBox() {
         return bomberBox;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public void move() {
     }
 
     public void resetLocation() {
@@ -339,7 +342,7 @@ public abstract class Bomber extends Entity {
             }
         }
     }
-    public void reset(){
+    public void reset() {
         canPassBrick = false;
         canPassBomb = false;
         canPassFlame = false;
