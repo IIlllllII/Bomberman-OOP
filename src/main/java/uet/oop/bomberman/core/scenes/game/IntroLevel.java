@@ -15,10 +15,10 @@ import uet.oop.bomberman.config.GameConfig;
 import java.net.URISyntaxException;
 
 public class IntroLevel extends Group {
+    private static final int DEFAULT_TIME = 4000;
     private boolean done = false;
-    private Animation animation;
-    private int level = 1;
-    private Text title;
+    private final Animation animation;
+    private final Text title;
 
     private static class SingletonHelper {
         private static final IntroLevel INSTANCE = new IntroLevel();
@@ -57,30 +57,36 @@ public class IntroLevel extends Group {
         loading.setLayoutY(350);
 
         animation = new SpriteAnimation(
-                loading, Duration.millis(5000),
+                loading, Duration.millis(DEFAULT_TIME),
                 18, 6,
                 0, 0,
                 74, 74
         );
         animation.setOnFinished(event -> {
             done = true;
-            setOpacity(0);
+            setVisible(false);
         });
 
         getChildren().addAll(background, title, loading);
     }
 
     public void reset(int level) {
-        System.out.println("call reset");
+        System.out.println("call reset intro level");
         done = false;
         animation.setCycleCount(1);
         animation.play();
-        setOpacity(1);
-        this.level = level;
+        setVisible(true);
         title.setText("Stage " + level);
     }
 
     public boolean isDone() {
         return done;
+    }
+
+    /**
+     * @return time in second.
+     */
+    public static int getDefaultTime() {
+        return DEFAULT_TIME / 1000;
     }
 }

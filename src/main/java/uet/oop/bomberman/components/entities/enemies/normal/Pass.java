@@ -162,7 +162,9 @@ public class Pass extends Enemy {
                 jTile.add(j);
             }
         }
-
+        if (directionList.size() == 0) {
+            return null;
+        }
         int ran = r.nextInt(directionList.size());
         return directionList.get(ran);
     }

@@ -87,4 +87,8 @@ public class ButtonCustom extends StackPane {
         setOnMousePressed(mouseEvent -> setEffect(drop));
         setOnMouseReleased(mouseEvent -> setEffect(null));
     }
+
+    public void setFont(int size) {
+        text.setFont(Font.font(size));
+    }
 }

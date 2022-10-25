@@ -87,6 +87,9 @@ public class BackgroundMusic {
     public void pause() {
         mediaPlayer.pause();
     }
+    public void unpause() {
+        mediaPlayer.play();
+    }
 
     /**
      *

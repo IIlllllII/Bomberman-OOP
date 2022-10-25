@@ -18,6 +18,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.HighScore;
 import uet.oop.bomberman.core.scenes.MenuScene;
+import uet.oop.bomberman.core.scenes.game.RightSideBar;
 import uet.oop.bomberman.core.sound.BackgroundMusic;
 
 import java.net.URISyntaxException;
@@ -40,7 +41,7 @@ public class IntroStage {
 
         Group root = new Group();
         try {
-            Image background = new Image(getClass().getResource("/intro.jpg").toURI().toString());
+            Image background = new Image(getClass().getResource("/UI/intro.jpg").toURI().toString());
             ImageView imageView = new ImageView(background);
             imageView.setFitWidth(GameConfig.SCENE_WIDTH);
             imageView.setFitHeight(GameConfig.SCENE_HEIGHT);
@@ -96,6 +97,7 @@ public class IntroStage {
             MenuScene.init();
             HighScore.init();
             BackgroundMusic.init();
+            RightSideBar.init();
             SpriteSheet.init();
             LevelMap.init();
             Bomb.init();

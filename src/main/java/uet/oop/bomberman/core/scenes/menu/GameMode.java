@@ -4,12 +4,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.maps.LevelMap;
 
 import java.net.URISyntaxException;
@@ -84,6 +84,8 @@ public class GameMode extends VBox {
             Label title = new Label(name);
             title.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
             title.setTextFill(Color.LIGHTSKYBLUE);
+
+            reset();
 
             getChildren().addAll(imageView, description, title);
         }

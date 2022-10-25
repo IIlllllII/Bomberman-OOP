@@ -30,7 +30,6 @@ public abstract class Bomber extends Entity {
     protected boolean canPassFlame = false;
     protected boolean canPassBrick = false;
     private boolean invincible = false;
-
     private boolean canResetLocation = false;
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
@@ -204,7 +203,7 @@ public abstract class Bomber extends Entity {
     }
 
     public boolean isKilled() {
-        return lives < 0;
+        return lives <= 0;
     }
 
     public void setLives(int lives) {

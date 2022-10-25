@@ -62,6 +62,10 @@ public class LevelMap {
         Item.init();
     }
 
+    public boolean isLevelComplete() {
+        return levelComplete;
+    }
+
     public void render(GraphicsContext gc) {
         for (int i = 0; i < mapHash.length; ++i) {
             for (int j = 0; j < mapHash[i].length; ++j) {
@@ -87,6 +91,7 @@ public class LevelMap {
     }
 
     public void prepareNextLevel() {
+        //levelComplete = true;
         TopBar.getInstance().setClock(15);
 
         //Change all bricks left into coins:
@@ -113,12 +118,9 @@ public class LevelMap {
         List<Enemy> enemyList = entitiesManager.enemies;
         Portal portal = entitiesManager.portal;
 
-        if (TopBar.getInstance().getClock() != null) {
-            TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
-        }
-
         if (level > 1) {
             IntroLevel.getInstance().reset(level);
+            TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
         }
 
         System.out.println("Level: " + level);
@@ -237,11 +239,8 @@ public class LevelMap {
                 boolean checkItem = false;
                 while (!checkItem) {
                     int ran = r.nextInt(brickList.size());
-                    boolean check = false;
-                    if (brickList.get(ran).getX() == portal.getX()
-                            && brickList.get(ran).getY() == portal.getY()) {
-                        check = true;
-                    }
+                    boolean check = brickList.get(ran).getX() == portal.getX()
+                            && brickList.get(ran).getY() == portal.getY();
                     for (Item item : itemList) {
                         if (brickList.get(ran).getX() == item.getX()
                                 && brickList.get(ran).getY() == item.getY()) {

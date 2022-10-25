@@ -12,19 +12,17 @@ import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.scenes.game.Camera;
-import uet.oop.bomberman.core.scenes.game.IntroLevel;
-import uet.oop.bomberman.core.scenes.game.TopBar;
+import uet.oop.bomberman.core.scenes.game.*;
 
 import java.util.List;
 
 public class PlayScene {
-    private boolean initialized = false;
     private final StackPane root;
     private final Group layout1;
     private final GraphicsContext gc;
     private final TopBar topBar;
     private final IntroLevel introLevel;
+    private final GameOver gameOver;
     private final LevelMap levelMap = LevelMap.getInstance();
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
@@ -50,27 +48,32 @@ public class PlayScene {
         topBar = TopBar.getInstance();
         layout2.setTop(topBar);
 
+        // RiGHT OF LAYOUT 2
+        RightSideBar rightSideBar = RightSideBar.getInstance();
+        layout2.setRight(rightSideBar);
+
         // LAYOUT 3
         introLevel = IntroLevel.getInstance();
 
-        root.getChildren().addAll(layout1, layout2, introLevel);
+        // LAYOUT 4
+        gameOver = new GameOver();
+
+        root.getChildren().addAll(layout1, layout2, introLevel, gameOver);
 
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
 
-        reset();
-        initialized = true;
+        // Don't call reset
     }
 
     public void reset() {
-        if (initialized) {
-            introLevel.reset(1);
-            levelMap.reset();
-        }
+        introLevel.reset(1);
+        levelMap.reset();
         topBar.reset();
+        gameOver.reset();
     }
 
     public void update(List<KeyCode> inputList) {
-        if (introLevel.isDone()) {
+        if (introLevel.isDone() && !gameOver.isLose()) {
             if (inputList.contains(KeyCode.ESCAPE)) {
                 SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
                 inputList.remove(KeyCode.ESCAPE);
@@ -81,7 +84,6 @@ public class PlayScene {
                 inputList.remove(KeyCode.N);
             }
 
-            levelMap.update();
             if(entitiesManager.bombers.get(0) instanceof Player){
                 Player player = (Player) entitiesManager.bombers.get(0);
                 player.handleInput(inputList);
@@ -89,6 +91,14 @@ public class PlayScene {
 
             camera.update();
             entitiesManager.update();
+            if (entitiesManager.bombers.get(0).isKilled() ||
+                    (topBar.getClock().isDone() && !levelMap.isLevelComplete())) {
+                gameOver.setLose(true);
+                topBar.getClock().stop();
+            }
+
+            // Handle next level
+            levelMap.update();
 
 //            Bomber player = entitiesManager.players.get(0);
 ////        filter.update(player.getX() + player.getWidth() / 2.0 - camera.getX(),

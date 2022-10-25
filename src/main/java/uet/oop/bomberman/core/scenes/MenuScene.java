@@ -18,6 +18,8 @@ import uet.oop.bomberman.core.scenes.menu.Leaderboards;
 import uet.oop.bomberman.core.scenes.menu.Setting;
 import uet.oop.bomberman.core.scenes.menu.SliderShow;
 
+import java.net.URISyntaxException;
+
 public class MenuScene {
     private final StackPane root;
     private static SliderShow background;
@@ -50,12 +52,6 @@ public class MenuScene {
             System.out.println("click from menu");
             fadeIn();
         });
-
-//        root.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ESCAPE) {
-//                fadeOut();
-//            }
-//        });
     }
 
     public void zoom() {
@@ -102,7 +98,12 @@ public class MenuScene {
             setAlignment(Pos.CENTER);
             setSpacing(40);
 
-            ImageView logo = new ImageView(new Image("/Logo1.png"));
+            ImageView logo;
+            try {
+                logo = new ImageView(new Image(getClass().getResource("/UI/Logo1.png").toURI().toString()));
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
             logo.setFitHeight(79);
             logo.setFitWidth(450);
 
