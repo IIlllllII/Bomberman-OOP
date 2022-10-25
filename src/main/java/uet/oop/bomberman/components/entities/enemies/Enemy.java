@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.entities.LivingEntity;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Direction;
@@ -15,11 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Enemy extends Entity {
+public abstract class Enemy extends LivingEntity {
     protected Animation animationLeft;
     protected Animation animationRight;
     protected Animation animationDeath;
-    protected boolean destroyed = false;
     protected boolean done = false;
     protected double moveX = 0;
     protected double moveY = 0;
@@ -28,16 +27,14 @@ public abstract class Enemy extends Entity {
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
     protected Random r = new Random();
-    protected Direction currentDirection;
 
     protected List<Direction> directionList = new ArrayList<>();
     protected boolean randomAnimation = false; // left or right
-    protected double speed = 1;
     protected int score;
 
     public Enemy(double x, double y) {
         super(x, y);
-        //currentDirection = Direction.DOWN;
+        speed = 1;
     }
 
     public void render(GraphicsContext gc) {
@@ -78,10 +75,6 @@ public abstract class Enemy extends Entity {
         return destroyed;
     }
 
-    public Direction getCurrentDirection() {
-        return currentDirection;
-    }
-
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
         if (destroyed) {
@@ -92,8 +85,6 @@ public abstract class Enemy extends Entity {
     public boolean isDone() {
         return animationDeath.isDone();
     }
-
-    protected abstract void move();
 
     protected boolean checkMapHash(int i, int j) {
         LevelMap levelMap = LevelMap.getInstance();
@@ -112,7 +103,7 @@ public abstract class Enemy extends Entity {
         directionList.add(Direction.RIGHT);
     }
 
-    protected void checkMove(){
+    protected void checkMove() {
         if (currentDirection == null) {
             initDirectionList();
             return;

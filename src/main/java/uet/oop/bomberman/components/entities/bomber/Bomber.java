@@ -17,15 +17,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Bomber extends Entity {
+public abstract class Bomber extends LivingEntity {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final double DEFAULT_SPEED = 2;
 
     private double initialX;        //reset in each level.
     private double initialY;        //reset in each level.
-    private int lives = 3;
-    protected double speed = DEFAULT_SPEED;
     protected boolean canPassBomb = false;
     protected boolean canPassFlame = false;
     protected boolean canPassBrick = false;
@@ -35,7 +33,6 @@ public abstract class Bomber extends Entity {
     private int currentSpriteIndex = 0;
 
     protected Action playerAction = Action.IDLE;
-    protected Direction direction = Direction.DOWN;
 
     protected final BoxCollider bomberBox;
 
@@ -43,8 +40,18 @@ public abstract class Bomber extends Entity {
         super(x, y, (int) ((1.2 * w * GameConfig.TILE_SIZE) / h), (int) (1.2 * GameConfig.TILE_SIZE));
         initialX = x;
         initialY = y;
+        speed = DEFAULT_SPEED;
+        currentDirection = Direction.DOWN;
+        lives = 3;
         bomberBox = new BoxCollider(0, 0, 15, 20);
         updateBoxCollider();
+    }
+
+    public void updateBoxCollider() {
+        bomberBox.setLocation(
+                this.x + (this.width - bomberBox.getWidth()) / 2.0,
+                this.y + bomberBox.getHeight() - 5
+        );
     }
 
     public static void init() {
@@ -111,10 +118,10 @@ public abstract class Bomber extends Entity {
         Image image = null;
         switch (playerAction) {
             case IDLE:
-                image = spritesDict.get("idle")[direction.index].getFxImage();
+                image = spritesDict.get("idle")[currentDirection.index].getFxImage();
                 break;
             case MOVING:
-                image = spritesDict.get("moving-" + direction.label)[currentSpriteIndex / 4].getFxImage();
+                image = spritesDict.get("moving-" + currentDirection.label)[currentSpriteIndex / 4].getFxImage();
                 break;
             case DEAD:
                 image = spritesDict.get("dead")[currentSpriteIndex / 8].getFxImage();
@@ -137,7 +144,7 @@ public abstract class Bomber extends Entity {
         }
         if (playerAction == Action.MOVING) {
             currentSpriteIndex++;
-            if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
+            if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + currentDirection.label).length) {
                 currentSpriteIndex = 0;
             }
         }
@@ -160,8 +167,6 @@ public abstract class Bomber extends Entity {
             }
         }
     }
-
-    public abstract void updateBoxCollider();
 
     public void setInitialLocation(double x, double y) {
         this.initialX = x;
@@ -202,32 +207,12 @@ public abstract class Bomber extends Entity {
         }
     }
 
-    public boolean isKilled() {
-        return lives <= 0;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
     public void setBombMax(int bombMax) {
         this.bombMax = bombMax;
     }
 
     public int getBombMax() {
         return bombMax;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    public double getSpeed() {
-        return speed;
     }
 
     public void setCanPassBrick(boolean canPassBrick) {
@@ -268,17 +253,6 @@ public abstract class Bomber extends Entity {
 
     public BoxCollider getBomberBox() {
         return bomberBox;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public void move() {
     }
 
     public void resetLocation() {
