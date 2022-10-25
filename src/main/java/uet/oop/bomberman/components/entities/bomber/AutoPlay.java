@@ -441,42 +441,33 @@ public class AutoPlay extends Bomber {
             if (iBomber == iEnemy && Math.abs(jBomber - jEnemy) <= 2) {
                 if (jBomber - jEnemy > 0) {
                     directionList.remove(Direction.LEFT);
-                    if (directionList.size() != 0) {
-                        int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
-                    } else {
-                        playerAction = Action.IDLE;
-                    }
-                } else {
+                } else if (jBomber - jEnemy < 0) {
                     directionList.remove(Direction.RIGHT);
-                    if (directionList.size() != 0) {
-                        int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
-                    } else {
-                        playerAction = Action.IDLE;
-                    }
+                }
+                if (directionList.size() != 0) {
+                    int ran = r.nextInt(directionList.size());
+                    direction = directionList.get(ran);
+                } else {
+                    playerAction = Action.IDLE;
                 }
                 return false;
             }
             if (jBomber == jEnemy && Math.abs(iBomber - iEnemy) <= 2) {
                 if (iBomber - iEnemy > 0) {
                     directionList.remove(Direction.UP);
-                    if (directionList.size() != 0) {
-                        int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
-                    } else {
-                        playerAction = Action.IDLE;
-                    }
-                } else {
+                } else if (iBomber - iEnemy < 0) {
                     directionList.remove(Direction.DOWN);
-                    if (directionList.size() != 0) {
-                        int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
-                    } else {
-                        playerAction = Action.IDLE;
-                    }
+                }
+                if (directionList.size() != 0) {
+                    int ran = r.nextInt(directionList.size());
+                    direction = directionList.get(ran);
+                } else {
+                    playerAction = Action.IDLE;
                 }
                 return false;
+            }
+            if (Math.abs(iBomber - iEnemy) == 1 && Math.abs(jBomber - jEnemy) == 1) {
+                playerAction = Action.IDLE;
             }
         }
         return true;
