@@ -10,6 +10,7 @@ import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.config.Direction;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class Banana extends Enemy {
 
     private final BoxCollider deathBox;
 
-    private int lives;
+    private int lives = 1;
 
     public Banana(double x, double y) {
         super(x, y);
@@ -45,7 +46,7 @@ public class Banana extends Enemy {
                 new Animation(SpriteSheet.normalBanana, 8, 8, 1000, 3, 247,
                 47, 74, 47 * 1.5f, 74 * 1.5f, 4f, false));
 
-        animationDict.put("death",
+        animationDict.put("dead",
                 new Animation(SpriteSheet.deadBanana, 12, 12, 1200, 0, 0,
                 76, 89, 76 * 1.5f, 89 * 1.5f, 3.3f, false));
 
@@ -53,10 +54,10 @@ public class Banana extends Enemy {
         animationDict.get("up").setLoop(true);
         animationDict.get("left").setLoop(true);
         animationDict.get("right").setLoop(true);
-        animationDict.get("death").setLoop(false);
+        animationDict.get("dead").setLoop(false);
 
         initDirectionList();
-        currentDirection = currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
         score = 2000;
     }
 
@@ -81,14 +82,14 @@ public class Banana extends Enemy {
             animationDict.get(currentDirection.label)
                     .render(gc, x - camera.getX(), y - camera.getY());
         } else {
-            animationDict.get("death").render(gc, x - camera.getX(), y - camera.getY());
-            if (! animationDict.get("death").isDone()) {
+            animationDict.get("dead").render(gc, x - camera.getX(), y - camera.getY());
+            if (! animationDict.get("dead").isDone()) {
                 Text text = new Text();
                 gc.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
                 gc.setFill(Color.SNOW);
                 gc.fillText(" + " + score,
                         x - camera.getX() + 16,
-                        y - camera.getY() + 20 - animationDict.get("death").getCalcTime() / 64);
+                        y - camera.getY() + 20 - animationDict.get("dead").getCalcTime() / 64);
             } else {
                 done = true;
             }
@@ -105,7 +106,7 @@ public class Banana extends Enemy {
             animationDict.get(currentDirection.label).update();
             updateBoxCollider();
         } else {
-            animationDict.get("death").update();
+            animationDict.get("dead").update();
         }
     }
 
@@ -123,13 +124,13 @@ public class Banana extends Enemy {
 
     @Override
     public boolean isDone() {
-        return animationDict.get("death").isDone();
+        return animationDict.get("dead").isDone();
     }
 
     @Override
     protected void move() {
-        int j = (int) (movingBox.getX() / 32);
-        int i = (int) (movingBox.getY() / 32);
+        int j = (int) (movingBox.getX() / GameConfig.TILE_SIZE);
+        int i = (int) (movingBox.getY() / GameConfig.TILE_SIZE);
 
         moveX = 0;
         moveY = 0;
@@ -138,28 +139,13 @@ public class Banana extends Enemy {
         canMoveU = checkMapHash(i - 1, j);
         canMoveD = checkMapHash(i + 1, j);
 
-            checkMove();
-            if (moveY == 0 && moveX == 0) {
-                if (directionList.size() != 0) {
-                    int ran = r.nextInt(directionList.size());
-                    if (directionList.get(ran) == Direction.UP) {
-                        currentDirection = Direction.UP;
-                    }
-                    if (directionList.get(ran) == Direction.DOWN) {
-                        currentDirection = Direction.DOWN;
-                    }
-                    if (directionList.get(ran) == Direction.RIGHT) {
-                        currentDirection = Direction.RIGHT;
-                        //randomAnimation = false;
-                    }
-                    if (directionList.get(ran) == Direction.LEFT) {
-                        currentDirection = Direction.LEFT;
-                        //randomAnimation = true;
-                    }
-                    currentDirection = currentDirection;
-                }
+        checkMove();
+        if (moveY == 0 && moveX == 0) {
+            if (directionList.size() != 0) {
+                int ran = r.nextInt(directionList.size());
+                currentDirection = directionList.get(ran);
             }
-        //}
+        }
         x += moveX;
         y += moveY;
     }

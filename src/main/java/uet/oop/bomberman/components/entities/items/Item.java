@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 
 public abstract class Item extends Entity {
     private static boolean initialized = false;
@@ -36,14 +36,14 @@ public abstract class Item extends Entity {
     public static void init() {
         if (!initialized) {
             SpriteSheet item = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            bombUp = new Sprite(16, 0 * 16, 10 * 16, item, 16, 16).getFxImage();
-            fireUp = new Sprite(16, 1 * 16, 10 * 16, item, 16, 16).getFxImage();
-            speedUp = new Sprite(16, 2 * 16, 10 * 16, item, 16, 16).getFxImage();
-            brickPass = new Sprite(16, 3 * 16, 10 * 16, item, 16, 16).getFxImage();
-            livesUp = new Sprite(16, 4 * 16, 10 * 16, item, 16, 16).getFxImage();
-            bombPass = new Sprite(16, 5 * 16, 10 * 16, item, 16, 16).getFxImage();
-            flamePass = new Sprite(16, 6 * 16, 10 * 16, item, 16, 16).getFxImage();
-            invincible = new Sprite(16, 7 * 16, 10 * 16, item, 16, 16).getFxImage();
+            bombUp = new Sprite(16, 0 * 16, 10 * 16, item).getFxImage();
+            fireUp = new Sprite(16, 1 * 16, 10 * 16, item).getFxImage();
+            speedUp = new Sprite(16, 2 * 16, 10 * 16, item).getFxImage();
+            brickPass = new Sprite(16, 3 * 16, 10 * 16, item).getFxImage();
+            livesUp = new Sprite(16, 4 * 16, 10 * 16, item).getFxImage();
+            bombPass = new Sprite(16, 5 * 16, 10 * 16, item).getFxImage();
+            flamePass = new Sprite(16, 6 * 16, 10 * 16, item).getFxImage();
+            invincible = new Sprite(16, 7 * 16, 10 * 16, item).getFxImage();
             coinImage = SpriteSheet.coin;
             initialized = true;
         }
@@ -74,7 +74,7 @@ public abstract class Item extends Entity {
     @Override
     public void update() {
         if (appear) {
-            time += Timer.getInstance().getDeltaTime();
+            time += Timers.getInstance().getDeltaTime();
             if (time >= timeAppear || eaten) {
                 appear = false;
                 time = 0;
@@ -84,7 +84,7 @@ public abstract class Item extends Entity {
             }
         }
         if (eaten && !done) {
-            time += Timer.getInstance().getDeltaTime();
+            time += Timers.getInstance().getDeltaTime();
             changePower();
         }
     }

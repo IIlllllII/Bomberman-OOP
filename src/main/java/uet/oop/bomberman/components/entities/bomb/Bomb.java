@@ -7,7 +7,7 @@ import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.ArrayList;
@@ -35,11 +35,11 @@ public class Bomb extends Entity {
         if (!initialized) {
             bombs = new ArrayList<>();
             SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            bombs.add(new Sprite(16, 0, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 16, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 32, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 16, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 0, 3 * 16, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(16, 0, 3 * 16, tiles).getFxImage());
+            bombs.add(new Sprite(16, 16, 3 * 16, tiles).getFxImage());
+            bombs.add(new Sprite(16, 32, 3 * 16, tiles).getFxImage());
+            bombs.add(new Sprite(16, 16, 3 * 16, tiles).getFxImage());
+            bombs.add(new Sprite(16, 0, 3 * 16, tiles).getFxImage());
 
             initialized = true;
         }
@@ -76,6 +76,10 @@ public class Bomb extends Entity {
         this.timeBeforeExplode = timeBeforeExplode;
     }
 
+    public double getTimeBeforeExplode() {
+        return timeBeforeExplode;
+    }
+
     public double getTime() {
         return time;
     }
@@ -95,7 +99,7 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-        time += Timer.getInstance().getDeltaTime();
+        time += Timers.getInstance().getDeltaTime();
         if (!explode) {
             if (allowPass) {
                 double subX = EntitiesManager.getInstance().bombers.get(0).getX() - this.x;

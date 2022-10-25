@@ -5,6 +5,7 @@ import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
+import uet.oop.bomberman.components.entities.enemies.bosses.Komori;
 import uet.oop.bomberman.components.entities.enemies.normal.*;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.*;
@@ -43,7 +44,8 @@ public class LevelMap {
     }
 
     private LevelMap() {
-        reset();
+        levelComplete = false;
+        level = 0;
     }
 
     public void reset() {
@@ -92,8 +94,6 @@ public class LevelMap {
         entitiesManager.bricks.forEach(brick -> {
             if (!brick.isDestroyed()) {
                 entitiesManager.coins.add(new Coin(brick.getX(), brick.getY()));
-//                mapHash[(int)brick.getY() / GameConfig.TILE_SIZE][(int)brick.getX() / GameConfig.TILE_SIZE]
-//                        = getHash("coin");
                 mapHash[(int) brick.getY() / GameConfig.TILE_SIZE][(int) brick.getX() / GameConfig.TILE_SIZE]
                         = getHash("grass");
             }
@@ -105,7 +105,6 @@ public class LevelMap {
     public void nextLevel() {
         level++;
         level = (level > 8) ? 1 : level;
-
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
 
@@ -120,9 +119,7 @@ public class LevelMap {
             TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
         }
 
-        System.out.println("Current: " + brickList.size() + " " + itemList.size()
-                + " " + enemyList.size());
-
+        System.out.println("Level: " + level);
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
             Scanner scanner = new Scanner(file);
@@ -138,23 +135,22 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            if(level == 1){
-                                entitiesManager.bombers.clear();
-                            }
                             if (entitiesManager.bombers.size() == 0) {
                                 if (auto) {
                                     entitiesManager.bombers.add(
-                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10, 16, 22)
                                     );
                                 } else {
                                     entitiesManager.bombers.add(
-                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10, 16, 22)
                                     );
                                 }
                             } else {
-                                entitiesManager.bombers.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5);
+                                entitiesManager.bombers.get(0).setLocation(
+                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10);
+                                entitiesManager.bombers.get(0).setInitialLocation(
+                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10);
                                 entitiesManager.bombers.get(0).reset();
-                                entitiesManager.bombers.get(0).setInitialLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5);
                                 entitiesManager.bombers.get(0).updateBoxCollider();
                             }
                             hash = getHash("grass");
@@ -210,6 +206,11 @@ public class LevelMap {
                             hash = getHash("grass");
                             break;
                         }
+                        case 'K': {
+                            enemyList.add(new Komori(j * GameConfig.TILE_SIZE + 10, i * GameConfig.TILE_SIZE + 15));
+                            hash = getHash("grass");
+                            break;
+                        }
                         case '*': {
                             brickList.add(new Brick(GameConfig.TILE_SIZE * j, GameConfig.TILE_SIZE * i, level));
                             break;
@@ -225,6 +226,7 @@ public class LevelMap {
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);
             portal.setLocation(brickList.get(index).getX(), brickList.get(index).getY());
+
             double xItem = 0;
             double yItem = 0;
             String tile = scanner.nextLine();
@@ -298,6 +300,7 @@ public class LevelMap {
 
     public void setAuto(boolean auto) {
         this.auto = auto;
+        EntitiesManager.getInstance().bombers.clear();
     }
 
     public int getWidth() {

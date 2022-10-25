@@ -13,7 +13,11 @@ public class SpriteSheet {
     public static Image normalBanana;
     public static Image deadBanana;
     public static Image saru;
+    public static Image shadow;
     public static Image coin;
+
+    public static SpriteSheet komoriSheet;
+    public static SpriteSheet komoriFlashSheet;
 
     private final String path;
     public final int SHEET_WIDTH;
@@ -27,12 +31,17 @@ public class SpriteSheet {
                 enemy = new Image(SpriteSheet.class.getResource("/spriteSheet/enemy.png").toURI().toString());
                 normalBanana = new Image(SpriteSheet.class.getResource("/spriteSheet/banana_normal.png").toURI().toString());
                 deadBanana = new Image(SpriteSheet.class.getResource("/spriteSheet/banana_dead.png").toURI().toString());
-                saru = new Image(SpriteSheet.class.getResource("/spriteSheet/Monkey.png").toURI().toString());
+                saru = new Image(SpriteSheet.class.getResource("/spriteSheet/monkey.png").toURI().toString());
+                shadow = new Image(SpriteSheet.class.getResource("/spriteSheet/shadow.png").toURI().toString());
                 coin = new Image(SpriteSheet.class.getResource("/spriteSheet/coin.png").toURI().toString());
             } catch (URISyntaxException e) {
                 System.out.println("Sprite Sheet init");
                 throw new RuntimeException(e);
             }
+
+            komoriSheet = new SpriteSheet("/spriteSheet/komori.png", 996, 102);
+            komoriFlashSheet = new SpriteSheet("/spriteSheet/komori_flash_1.png", 996, 102);
+
             initialized = true;
         }
     }

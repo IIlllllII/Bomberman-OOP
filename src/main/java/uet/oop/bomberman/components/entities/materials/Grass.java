@@ -22,13 +22,13 @@ public class Grass extends Entity {
                 SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
                 grasses.add(new Image(LevelMap.class.getResource("/sprites/map/grass/grass" +  1 + ".png").toURI().toString()));
                 grasses.add(new Image(LevelMap.class.getResource("/sprites/map/grass/grass" +  2 + ".png").toURI().toString()));
-                grasses.add(new Sprite(16, 0, 1 * 16, newTiles, 16, 16).getFxImage());
+                grasses.add(new Sprite(16, 0, 1 * 16, newTiles).getFxImage());
                 grasses.add(new Image(LevelMap.class.getResource("/sprites/map/grass/grass" +  3 + ".png").toURI().toString()));
-                grasses.add(new Sprite(16, 0, 3 * 16, newTiles, 16, 16).getFxImage());
-                grasses.add(new Sprite(16, 0, 5 * 16, newTiles, 16, 16).getFxImage());
-                grasses.add(new Sprite(16, 3 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
+                grasses.add(new Sprite(16, 0, 3 * 16, newTiles).getFxImage());
+                grasses.add(new Sprite(16, 0, 5 * 16, newTiles).getFxImage());
+                grasses.add(new Sprite(16, 3 * 16, 0 * 16, newTiles).getFxImage());
                 //Map boss
-                grasses.add(new Sprite(16, 3 * 16, 0 * 16, newTiles, 16, 16).getFxImage());
+                grasses.add(new Sprite(16, 3 * 16, 0 * 16, newTiles).getFxImage());
 
 //                SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
 //                grasses.add(new Sprite(16, 0, 0 * 16, newTiles, 16, 16).getFxImage());

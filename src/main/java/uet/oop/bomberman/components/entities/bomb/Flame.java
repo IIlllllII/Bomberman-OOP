@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,48 +34,47 @@ public class Flame extends Entity {
     public static void init() {
         if (!initialized) {
             SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            bombExploded.add(new Sprite(16, 0, 4 * 16, tiles, 16, 16).getFxImage());
-            bombExploded.add(new Sprite(16, 0, 5 * 16, tiles, 16, 16).getFxImage());
-            bombExploded.add(new Sprite(16, 0, 6 * 16, tiles, 16, 16).getFxImage());
-            bombExploded.add(new Sprite(16, 0, 5 * 16, tiles, 16, 16).getFxImage());
-            bombExploded.add(new Sprite(16, 0, 4 * 16, tiles, 16, 16).getFxImage());
+            bombExploded.add(new Sprite(16, 0, 4 * 16, tiles).getFxImage());
+            bombExploded.add(new Sprite(16, 0, 5 * 16, tiles).getFxImage());
+            bombExploded.add(new Sprite(16, 0, 6 * 16, tiles).getFxImage());
+            bombExploded.add(new Sprite(16, 0, 5 * 16, tiles).getFxImage());
+            bombExploded.add(new Sprite(16, 0, 4 * 16, tiles).getFxImage());
 
-            explosionVertical.add(new Sprite(16, 1 * 16, 5 * 16, tiles, 16, 16).getFxImage());
-            explosionVertical.add(new Sprite(16, 2 * 16, 5 * 16, tiles, 16, 16).getFxImage());
-            explosionVertical.add(new Sprite(16, 3 * 16, 5 * 16, tiles, 16, 16).getFxImage());
-            explosionVertical.add(new Sprite(16, 2 * 16, 5 * 16, tiles, 16, 16).getFxImage());
-            explosionVertical.add(new Sprite(16, 1 * 16, 5 * 16, tiles, 16, 16).getFxImage());
+            explosionVertical.add(new Sprite(16, 1 * 16, 5 * 16, tiles).getFxImage());
+            explosionVertical.add(new Sprite(16, 2 * 16, 5 * 16, tiles).getFxImage());
+            explosionVertical.add(new Sprite(16, 3 * 16, 5 * 16, tiles).getFxImage());
+            explosionVertical.add(new Sprite(16, 2 * 16, 5 * 16, tiles).getFxImage());
+            explosionVertical.add(new Sprite(16, 1 * 16, 5 * 16, tiles).getFxImage());
 
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 7 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 9 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 7 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontal.add(new Sprite(16, 1 * 16, 7 * 16, tiles).getFxImage());
+            explosionHorizontal.add(new Sprite(16, 1 * 16, 8 * 16, tiles).getFxImage());
+            explosionHorizontal.add(new Sprite(16, 1 * 16, 9 * 16, tiles).getFxImage());
+            explosionHorizontal.add(new Sprite(16, 1 * 16, 8 * 16, tiles).getFxImage());
+            explosionHorizontal.add(new Sprite(16, 1 * 16, 7 * 16, tiles).getFxImage());
 
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 7 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 9 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 7 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(16, 0, 7 * 16, tiles).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(16, 0, 8 * 16, tiles).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(16, 0, 9 * 16, tiles).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(16, 0, 8 * 16, tiles).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(16, 0, 7 * 16, tiles).getFxImage());
 
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 7 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 9 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 7 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 7 * 16, tiles).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 8 * 16, tiles).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 9 * 16, tiles).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 8 * 16, tiles).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 7 * 16, tiles).getFxImage());
 
-            explosionVerticalTopLast.add(new Sprite(16, 1* 16, 4 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalTopLast.add(new Sprite(16, 2 * 16, 4 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalTopLast.add(new Sprite(16, 3 * 16, 4 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalTopLast.add(new Sprite(16, 2 * 16, 4 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalTopLast.add(new Sprite(16, 1* 16, 4 * 16, tiles, 16, 16).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(16, 1* 16, 4 * 16, tiles).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(16, 2 * 16, 4 * 16, tiles).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(16, 3 * 16, 4 * 16, tiles).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(16, 2 * 16, 4 * 16, tiles).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(16, 1* 16, 4 * 16, tiles).getFxImage());
 
-            explosionVerticalDownLast.add(new Sprite(16, 1* 16, 6 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalDownLast.add(new Sprite(16, 2 * 16, 6 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalDownLast.add(new Sprite(16, 3 * 16, 6 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalDownLast.add(new Sprite(16, 2 * 16, 6 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalDownLast.add(new Sprite(16, 1* 16, 6 * 16, tiles, 16, 16).getFxImage());
-
+            explosionVerticalDownLast.add(new Sprite(16, 1* 16, 6 * 16, tiles).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(16, 2 * 16, 6 * 16, tiles).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(16, 3 * 16, 6 * 16, tiles).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(16, 2 * 16, 6 * 16, tiles).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(16, 1* 16, 6 * 16, tiles).getFxImage());
             initialized = true;
         }
     }
@@ -90,7 +89,7 @@ public class Flame extends Entity {
 
     @Override
     public void update() {
-        time += Timer.getInstance().getDeltaTime();
+        time += Timers.getInstance().getDeltaTime();
         if (time <= flameTime) {
             switch (flameDirection) {
                 case UP:

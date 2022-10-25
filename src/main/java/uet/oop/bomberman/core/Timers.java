@@ -5,21 +5,21 @@ package uet.oop.bomberman.core;
  * Used to keep track of the time
  */
 
-public class Timer {
+public class Timers {
     // Needed to make Timer a singleton class
-    private static Timer instance = null;
+    private static Timers instance = null;
     // Now
     private long ticks;
     private double deltaTime;
 
-    public static Timer getInstance() {
+    public static Timers getInstance() {
         if (instance == null) {
-            instance = new Timer();
+            instance = new Timers();
         }
         return instance;
     }
 
-    private Timer() {
+    private Timers() {
         deltaTime = 0.0;
         ticks = 0;
     }
