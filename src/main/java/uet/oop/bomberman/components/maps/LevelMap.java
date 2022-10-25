@@ -19,6 +19,7 @@ import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.game.Clocks;
 import uet.oop.bomberman.core.scenes.game.IntroLevel;
 import uet.oop.bomberman.core.scenes.game.TopBar;
+import uet.oop.bomberman.core.sound.Sound;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,6 +90,7 @@ public class LevelMap {
     public void prepareNextLevel() {
         levelComplete = true;
         TopBar.getInstance().setClock(15);
+        new Sound(Sound.LEVEL_COMPLETE).play();
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {

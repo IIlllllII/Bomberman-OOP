@@ -3,9 +3,12 @@ package uet.oop.bomberman.components.entities.items;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
+import uet.oop.bomberman.components.entities.items.item_types.Coin;
+import uet.oop.bomberman.components.entities.items.item_types.Invincible;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.core.Timers;
+import uet.oop.bomberman.core.sound.Sound;
 
 public abstract class Item extends Entity {
     private static boolean initialized = false;
@@ -59,6 +62,9 @@ public abstract class Item extends Entity {
 
     public void setEaten(boolean eaten) {
         this.eaten = eaten;
+        if (eaten && !(this instanceof Coin) && !(this instanceof Invincible)) {
+            new Sound(Sound.EAT_ITEM).play();
+        }
     }
 
     public boolean isEaten() {

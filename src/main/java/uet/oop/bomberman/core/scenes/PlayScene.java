@@ -21,6 +21,7 @@ public class PlayScene {
     private final Group layout1;
     private final GraphicsContext gc;
     private final TopBar topBar;
+    private final BottomBar bottomBar;
     private final IntroLevel introLevel;
     private final GameOver gameOver;
     private final LevelMap levelMap = LevelMap.getInstance();
@@ -51,6 +52,10 @@ public class PlayScene {
         // RiGHT OF LAYOUT 2
         RightSideBar rightSideBar = RightSideBar.getInstance();
         layout2.setRight(rightSideBar);
+
+        // BOTTOM OF LAYOUT 2
+        bottomBar = BottomBar.getInstance();
+        layout2.setBottom(bottomBar);
 
         // LAYOUT 3
         introLevel = IntroLevel.getInstance();

@@ -35,13 +35,16 @@ public class Leaderboards extends VBox {
                 }
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
-                String line = "";
+                String line = null;
                 while (true) {
                     line = br.readLine();
                     if (line == null) {
                         break;
                     }
                     String[] data = line.split(";");
+                    if (data.length < 4) {
+                        break;
+                    }
                     highScoresList.add(new HighScore(data[0], Integer.parseInt(data[1]), Integer.parseInt(data[2]), data[3]));
                     if (Integer.parseInt(data[1]) < minScore) {
                         minScore = Integer.parseInt(data[1]);

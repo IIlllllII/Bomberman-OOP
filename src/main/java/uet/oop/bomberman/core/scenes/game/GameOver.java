@@ -17,6 +17,7 @@ import uet.oop.bomberman.core.HighScore;
 import uet.oop.bomberman.core.scenes.SceneManager;
 import uet.oop.bomberman.core.scenes.buttons.ButtonCustom;
 import uet.oop.bomberman.core.scenes.menu.Leaderboards;
+import uet.oop.bomberman.core.sound.Sound;
 
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
@@ -36,7 +37,7 @@ public class GameOver extends HBox {
         setMaxWidth(480);
         setSpacing(20);
 
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 
         VBox vBox = new VBox(10);
         vBox.setAlignment(Pos.CENTER);
@@ -103,6 +104,7 @@ public class GameOver extends HBox {
     public void setLose(boolean lose) {
         this.lose = lose;
         if (lose) {
+            new Sound(Sound.LOSE_GAME).play();
             setVisible(true);
             textField.setDisable(false);
             highScore.setText("Your Score: " + TopBar.getInstance().getScore());

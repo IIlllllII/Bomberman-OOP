@@ -191,7 +191,7 @@ public abstract class Bomber extends Entity {
                 }
             }
             if (!hasBomb) {
-                new Sound(Sound.PLACE_BOMB_SOUND).playSound();
+                new Sound(Sound.PLACE_BOMB).play();
                 bombList.add(new Bomb(bombX, bombY, 32, 32));
 
                 LevelMap.getInstance().setHashAt(
@@ -339,7 +339,9 @@ public abstract class Bomber extends Entity {
             }
         }
     }
-    public void reset(){
+    public void reset() {
+        System.out.println("call reset bomber");
+        lives = 3;
         canPassBrick = false;
         canPassBomb = false;
         canPassFlame = false;
