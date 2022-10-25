@@ -160,7 +160,7 @@ public class Saru extends Enemy {
                 }
                 suicide = true;
                 saruStatus = Action.MOVING;
-                if (currentDirection == Direction.UP && !canMoveU || lastDirection == Direction.DOWN && !canMoveD) {
+                if (currentDirection == Direction.UP && !canMoveU || currentDirection == Direction.DOWN && !canMoveD) {
                     suicide = false;
                     saruStatus = Action.IDLE;
                 }

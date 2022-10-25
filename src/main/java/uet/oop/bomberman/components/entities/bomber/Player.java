@@ -3,19 +3,19 @@ package uet.oop.bomberman.components.entities.bomber;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.config.CharacterStatus;
+import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 
 import java.util.List;
 
-public class Player extends Bomber{
+public class Player extends Bomber {
     public Player(double x, double y, int w, int h){
         super(x, y, w, h);
         updateBoxCollider();
     }
     public void handleInput(List<KeyCode> inputList) {
-        if (playerStatus == CharacterStatus.DEAD) {
+        if (getPlayerAction() == Action.DEAD) {
             return;
         }
 
@@ -40,10 +40,10 @@ public class Player extends Bomber{
         }
 
         if (currentDirection != null) {
-            playerStatus = CharacterStatus.MOVING;
+            playerAction = Action.MOVING;
             direction = currentDirection;
         } else {
-            playerStatus = CharacterStatus.IDLE;
+            playerAction = Action.IDLE;
         }
     }
 
@@ -59,7 +59,7 @@ public class Player extends Bomber{
     public void move() {
         //Note: `steps` is always positive at first.
         double steps = speed;
-        if (playerStatus == CharacterStatus.IDLE) {
+        if (playerAction == Action.IDLE || playerAction == Action.DEAD) {
             return;
         }
 

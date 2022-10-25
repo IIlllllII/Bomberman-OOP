@@ -386,7 +386,7 @@ public class Komori extends Enemy {
         checkMove();
         if (moveY == 0 && moveX == 0 && directionList.size() != 0) {
             int ran = r.nextInt(directionList.size());
-            lastDirection = directionList.get(ran);
+            currentDirection = directionList.get(ran);
         }
         centerX += moveX;
         topY += moveY;
@@ -427,7 +427,7 @@ public class Komori extends Enemy {
         for (Weapon weapon : weaponList) {
             if (!weapon.isDone() && bomberBox.isCollidedWith(
                     new BoxCollider(weapon.getX(), weapon.getY(), 30, 30))) {
-                EntitiesManager.getInstance().players.get(0).setPlayerAction(Action.DEAD);
+                EntitiesManager.getInstance().bombers.get(0).setPlayerAction(Action.DEAD);
             }
         }
     }

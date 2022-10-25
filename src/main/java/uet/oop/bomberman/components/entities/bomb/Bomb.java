@@ -35,11 +35,11 @@ public class Bomb extends Entity {
         if (!initialized) {
             bombs = new ArrayList<>();
             SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            bombs.add(new Sprite(16, 0, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 16, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 32, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 16, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 0, 3 * 16, tiles, 15, 15).getFxImage());
+            bombs.add(new Sprite(16, 0, 3 * 16, tiles).getFxImage());
+            bombs.add(new Sprite(16, 16, 3 * 16, tiles).getFxImage());
+            bombs.add(new Sprite(16, 32, 3 * 16, tiles).getFxImage());
+            bombs.add(new Sprite(16, 16, 3 * 16, tiles).getFxImage());
+            bombs.add(new Sprite(16, 0, 3 * 16, tiles).getFxImage());
 
             initialized = true;
         }

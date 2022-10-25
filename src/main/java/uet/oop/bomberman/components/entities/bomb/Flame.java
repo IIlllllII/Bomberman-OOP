@@ -43,38 +43,38 @@ public class Flame extends Entity {
             explosionVertical.add(new Sprite(16, 1 * 16, 5 * 16, tiles).getFxImage());
             explosionVertical.add(new Sprite(16, 2 * 16, 5 * 16, tiles).getFxImage());
             explosionVertical.add(new Sprite(16, 3 * 16, 5 * 16, tiles).getFxImage());
-            explosionVertical.add(new Sprite(16, 2 * 16, 5 * 16, tiles, 16, 16).getFxImage());
-            explosionVertical.add(new Sprite(16, 1 * 16, 5 * 16, tiles, 16, 16).getFxImage());
+            explosionVertical.add(new Sprite(16, 2 * 16, 5 * 16, tiles).getFxImage());
+            explosionVertical.add(new Sprite(16, 1 * 16, 5 * 16, tiles).getFxImage());
 
             explosionHorizontal.add(new Sprite(16, 1 * 16, 7 * 16, tiles).getFxImage());
             explosionHorizontal.add(new Sprite(16, 1 * 16, 8 * 16, tiles).getFxImage());
             explosionHorizontal.add(new Sprite(16, 1 * 16, 9 * 16, tiles).getFxImage());
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 7 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontal.add(new Sprite(16, 1 * 16, 8 * 16, tiles).getFxImage());
+            explosionHorizontal.add(new Sprite(16, 1 * 16, 7 * 16, tiles).getFxImage());
 
             explosionHorizontalLeftLast.add(new Sprite(16, 0, 7 * 16, tiles).getFxImage());
             explosionHorizontalLeftLast.add(new Sprite(16, 0, 8 * 16, tiles).getFxImage());
             explosionHorizontalLeftLast.add(new Sprite(16, 0, 9 * 16, tiles).getFxImage());
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 7 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(16, 0, 8 * 16, tiles).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(16, 0, 7 * 16, tiles).getFxImage());
 
             explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 7 * 16, tiles).getFxImage());
             explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 8 * 16, tiles).getFxImage());
             explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 9 * 16, tiles).getFxImage());
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 7 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 8 * 16, tiles).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 7 * 16, tiles).getFxImage());
 
             explosionVerticalTopLast.add(new Sprite(16, 1* 16, 4 * 16, tiles).getFxImage());
             explosionVerticalTopLast.add(new Sprite(16, 2 * 16, 4 * 16, tiles).getFxImage());
             explosionVerticalTopLast.add(new Sprite(16, 3 * 16, 4 * 16, tiles).getFxImage());
-            explosionVerticalTopLast.add(new Sprite(16, 2 * 16, 4 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalTopLast.add(new Sprite(16, 1* 16, 4 * 16, tiles, 16, 16).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(16, 2 * 16, 4 * 16, tiles).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(16, 1* 16, 4 * 16, tiles).getFxImage());
 
             explosionVerticalDownLast.add(new Sprite(16, 1* 16, 6 * 16, tiles).getFxImage());
             explosionVerticalDownLast.add(new Sprite(16, 2 * 16, 6 * 16, tiles).getFxImage());
             explosionVerticalDownLast.add(new Sprite(16, 3 * 16, 6 * 16, tiles).getFxImage());
-            explosionVerticalDownLast.add(new Sprite(16, 2 * 16, 6 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalDownLast.add(new Sprite(16, 1* 16, 6 * 16, tiles, 16, 16).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(16, 2 * 16, 6 * 16, tiles).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(16, 1* 16, 6 * 16, tiles).getFxImage());
             initialized = true;
         }
     }

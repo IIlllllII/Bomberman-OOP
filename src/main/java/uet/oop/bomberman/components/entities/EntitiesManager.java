@@ -130,12 +130,12 @@ public class EntitiesManager {
                 } else {
                     enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
                 }
-                if (!enemy.isDestroyed() && bomberBox.isCollidedWith(enemyBox) && !players.get(0).isInvincible()) {
+                if (!enemy.isDestroyed() && bomberBox.isCollidedWith(enemyBox) && !bombers.get(0).isInvincible()) {
                     if (enemy instanceof Komori) {
                         ((Komori) enemy).setAction(Action.IDLE);
                         ((Komori) enemy).setFlying(false);
                     }
-                    players.get(0).setPlayerAction(Action.DEAD);
+                    bombers.get(0).setPlayerAction(Action.DEAD);
                 }
             }
         }
@@ -145,9 +145,9 @@ public class EntitiesManager {
                 if (! flame.isDone()) {
                     BoxCollider flameBox = new BoxCollider(flame.getX(), flame.getY());
 
-                    if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
-                            && !players.get(0).isInvincible()) {
-                        players.get(0).setPlayerAction(Action.DEAD);
+                    if (bomberBox.isCollidedWith(flameBox) && !bombers.get(0).isCanPassFlame()
+                            && !bombers.get(0).isInvincible()) {
+                        bombers.get(0).setPlayerAction(Action.DEAD);
                     }
 
                     enemies.forEach(enemy -> {

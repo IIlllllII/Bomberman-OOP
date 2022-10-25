@@ -44,7 +44,8 @@ public class LevelMap {
     }
 
     private LevelMap() {
-        reset();
+        levelComplete = false;
+        level = 0;
     }
 
     public void reset() {
@@ -87,8 +88,6 @@ public class LevelMap {
 
     public void prepareNextLevel() {
         TopBar.getInstance().setClock(15);
-//        levelComplete = true;
-//        PlayScene.setClock(15);
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {
@@ -122,9 +121,7 @@ public class LevelMap {
             IntroLevel.getInstance().reset(level);
         }
 
-        System.out.println("Current: " + brickList.size() + " " + itemList.size()
-                + " " + enemyList.size());
-
+        System.out.println("Level: " + level);
         try {
             File file = new File(GameConfig.LEVEL_DATA[level - 1]);
             Scanner scanner = new Scanner(file);
@@ -140,21 +137,21 @@ public class LevelMap {
 
                     switch (hash) {
                         case 'p': {
-                            if (level == 1) {
-                                entitiesManager.bombers.clear();
-                            }
                             if (entitiesManager.bombers.size() == 0) {
                                 if (auto) {
                                     entitiesManager.bombers.add(
-                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10, 16, 22)
                                     );
                                 } else {
                                     entitiesManager.bombers.add(
-                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
+                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10, 16, 22)
                                     );
                                 }
                             } else {
-                                entitiesManager.bombers.get(0).setLocation(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE);
+                                entitiesManager.bombers.get(0).setLocation(
+                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10);
+                                entitiesManager.bombers.get(0).setInitialLocation(
+                                        j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10);
                                 entitiesManager.bombers.get(0).reset();
                                 entitiesManager.bombers.get(0).updateBoxCollider();
                             }
@@ -249,6 +246,7 @@ public class LevelMap {
                         if (brickList.get(ran).getX() == item.getX()
                                 && brickList.get(ran).getY() == item.getY()) {
                             check = true;
+                            break;
                         }
                     }
                     if (!check) {

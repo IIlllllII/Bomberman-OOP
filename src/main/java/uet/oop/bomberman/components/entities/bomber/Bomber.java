@@ -8,7 +8,6 @@ import uet.oop.bomberman.components.entities.items.item_types.Invincible;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.config.CharacterStatus;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.Action;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Bomber extends Entity implements Movable, Killable {
+public abstract class Bomber extends Entity {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final double DEFAULT_SPEED = 2;
@@ -36,8 +35,8 @@ public abstract class Bomber extends Entity implements Movable, Killable {
     private int bombMax = 1;
     private int currentSpriteIndex = 0;
 
-    private Action playerAction = Action.IDLE;
-    private Direction direction = Direction.DOWN;
+    protected Action playerAction = Action.IDLE;
+    protected Direction direction = Direction.DOWN;
 
     protected final BoxCollider bomberBox;
 
@@ -132,6 +131,7 @@ public abstract class Bomber extends Entity implements Movable, Killable {
 
     @Override
     public void update() {
+        resetLocation();
         move();
         if (playerAction == Action.IDLE) {
             return;
@@ -141,7 +141,6 @@ public abstract class Bomber extends Entity implements Movable, Killable {
             if (currentSpriteIndex / 4 >= spritesDict.get("moving-" + direction.label).length) {
                 currentSpriteIndex = 0;
             }
-            //move();
         }
 
         if (playerAction == Action.DEAD) {
@@ -154,10 +153,10 @@ public abstract class Bomber extends Entity implements Movable, Killable {
                 //Return to initial position:
                 this.x = initialX;
                 this.y = initialY;
-                Invincible initialized = new Invincible(x, y);
-                initialized.setTimePowerUp(5000);
-                initialized.setAppear(true);
-                EntitiesManager.getInstance().items.add(initialized);
+                Invincible invincibleItem = new Invincible(x, y);
+                invincibleItem.setTimePowerUp(3000);
+                invincibleItem.setAppear(true);
+                EntitiesManager.getInstance().items.add(invincibleItem);
                 updateBoxCollider();
             }
         }
@@ -177,24 +176,15 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         double centerX = bomberBox.getX() + bomberBox.getWidth() / 2;
         double centerY = bomberBox.getY() + bomberBox.getHeight() / 2;
 
-//        if (LevelMap.getInstance().getHashAt((int) centerY / GameConfig.TILE_SIZE, (int) centerX / GameConfig.TILE_SIZE)
-//            != LevelMap.getInstance().getHash("grass")) {
-//            return;
-//        }
+        if (LevelMap.getInstance().getHashAt((int) centerY / GameConfig.TILE_SIZE, (int) centerX / GameConfig.TILE_SIZE)
+            != LevelMap.getInstance().getHash("grass")) {
+            return;
+        }
         if (bombList.size() < bombMax) {
             int bombX = ((int) centerX / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
             int bombY = ((int) centerY / GameConfig.TILE_SIZE) * GameConfig.TILE_SIZE;
 
-            if (LevelMap.getInstance().getHashAt(bombY / GameConfig.TILE_SIZE, bombX / GameConfig.TILE_SIZE)
-                != LevelMap.getInstance().getHash("grass")) {
-                return;
-            }
             boolean hasBomb = false;
-            LevelMap levelMap = LevelMap.getInstance();
-            if (levelMap.getHashAt(bombY / GameConfig.TILE_SIZE, bombX / GameConfig.TILE_SIZE)
-                    != levelMap.getHash("grass")) {
-                return;
-            }
             for (Bomb bomb : bombList) {
                 if (bomb.getX() == bombX && bomb.getY() == bombY) {
                     hasBomb = true;
@@ -213,17 +203,14 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         }
     }
 
-    @Override
     public boolean isKilled() {
         return lives < 0;
     }
 
-    @Override
     public void setLives(int lives) {
         this.lives = lives;
     }
 
-    @Override
     public int getLives() {
         return lives;
     }
@@ -284,17 +271,14 @@ public abstract class Bomber extends Entity implements Movable, Killable {
         return bomberBox;
     }
 
-    @Override
     public Direction getDirection() {
         return direction;
     }
 
-    @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
-    @Override
     public void move() {
     }
 
