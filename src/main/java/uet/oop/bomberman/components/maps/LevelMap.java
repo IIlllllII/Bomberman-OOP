@@ -2,6 +2,7 @@ package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
 import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
@@ -303,6 +304,7 @@ public class LevelMap {
     public void setAuto(boolean auto) {
         this.auto = auto;
         EntitiesManager.getInstance().bombers.clear();
+        Bomb.setFlameLength(1);
     }
 
     public int getWidth() {

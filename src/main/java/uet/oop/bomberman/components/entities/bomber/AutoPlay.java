@@ -44,16 +44,16 @@ public class AutoPlay extends Bomber {
             if (EntitiesManager.getInstance().bombs.size() == 0) {
                 playerAction = Action.MOVING;
                 if (checkAppearItem()) {
-                    direction = findEntity("item");
+                    currentDirection = findEntity("item");
                 } else if (EntitiesManager.getInstance().enemies.size() != 0) {
-                    direction = findEntity("enemy");
+                    currentDirection = findEntity("enemy");
 //                    avoidEnemy();
                 } else if (!EntitiesManager.getInstance().portal.isAppear()) {
-                    direction = findEntity("brick");
+                    currentDirection = findEntity("brick");
                 } else if (EntitiesManager.getInstance().coins.size() == 0) {
-                    direction = findEntity("portal");
+                    currentDirection = findEntity("portal");
                 } else {
-                    direction = findEntity("coin");
+                    currentDirection = findEntity("coin");
                 }
 
             }
@@ -262,10 +262,10 @@ public class AutoPlay extends Bomber {
             int jBomb = (int) bomb.getX() / GameConfig.TILE_SIZE;
             playerAction = Action.MOVING;
             if (jBomber == jBomb && iBomber == iBomb) {
-                directionList.remove(direction);
+                directionList.remove(currentDirection);
                 if (directionList.size() != 0) {
                     int ran = r.nextInt(directionList.size());
-                    direction = directionList.get(ran);
+                    currentDirection = directionList.get(ran);
                 } else {
                     playerAction = Action.IDLE;
                 }
@@ -276,7 +276,7 @@ public class AutoPlay extends Bomber {
                     directionList.remove(Direction.LEFT);
                     if (directionList.size() != 0) {
                         int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
+                        currentDirection = directionList.get(ran);
                     } else {
                         playerAction = Action.IDLE;
                     }
@@ -284,7 +284,7 @@ public class AutoPlay extends Bomber {
                     directionList.remove(Direction.RIGHT);
                     if (directionList.size() != 0) {
                         int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
+                        currentDirection = directionList.get(ran);
                     } else {
                         playerAction = Action.IDLE;
                     }
@@ -296,7 +296,7 @@ public class AutoPlay extends Bomber {
                     directionList.remove(Direction.UP);
                     if (directionList.size() != 0) {
                         int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
+                        currentDirection = directionList.get(ran);
                     } else {
                         playerAction = Action.IDLE;
                     }
@@ -304,7 +304,7 @@ public class AutoPlay extends Bomber {
                     directionList.remove(Direction.DOWN);
                     if (directionList.size() != 0) {
                         int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
+                        currentDirection = directionList.get(ran);
                     } else {
                         playerAction = Action.IDLE;
                     }
@@ -323,13 +323,13 @@ public class AutoPlay extends Bomber {
         canMoveL = levelMap.getHashAt(iBomber, jBomber - 1) == levelMap.getHash("grass");
         canMoveU = levelMap.getHashAt(iBomber - 1, jBomber) == levelMap.getHash("grass");
         canMoveD = levelMap.getHashAt(iBomber + 1, jBomber) == levelMap.getHash("grass");
-        switch (direction) {
+        switch (currentDirection) {
             case UP: {
                 if (canMoveU) {
                     moveY = -speed;
                     initDirectionList();
                 } else {
-                    directionList.remove(direction);
+                    directionList.remove(currentDirection);
                 }
                 break;
             }
@@ -338,7 +338,7 @@ public class AutoPlay extends Bomber {
                     moveY = speed;
                     initDirectionList();
                 } else {
-                    directionList.remove(direction);
+                    directionList.remove(currentDirection);
                 }
                 break;
             }
@@ -347,7 +347,7 @@ public class AutoPlay extends Bomber {
                     moveX = -speed;
                     initDirectionList();
                 } else {
-                    directionList.remove(direction);
+                    directionList.remove(currentDirection);
                 }
                 break;
             }
@@ -356,7 +356,7 @@ public class AutoPlay extends Bomber {
                     moveX = speed;
                     initDirectionList();
                 } else {
-                    directionList.remove(direction);
+                    directionList.remove(currentDirection);
                 }
                 break;
             }
@@ -372,10 +372,10 @@ public class AutoPlay extends Bomber {
         if (checkEntity(iBomber, jBomber, "enemy")) {
             placeBomb();
             initDirectionList();
-            directionList.remove(direction);
+            directionList.remove(currentDirection);
             return;
         }
-        switch (direction) {
+        switch (currentDirection) {
             case UP: {
                 if (levelMap.getHashAt(iBomber - 1, jBomber) == levelMap.getHash("grass")) {
                     moveY = -speed;
@@ -443,7 +443,7 @@ public class AutoPlay extends Bomber {
                     directionList.remove(Direction.LEFT);
                     if (directionList.size() != 0) {
                         int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
+                        currentDirection = directionList.get(ran);
                     } else {
                         playerAction = Action.IDLE;
                     }
@@ -451,7 +451,7 @@ public class AutoPlay extends Bomber {
                     directionList.remove(Direction.RIGHT);
                     if (directionList.size() != 0) {
                         int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
+                        currentDirection = directionList.get(ran);
                     } else {
                         playerAction = Action.IDLE;
                     }
@@ -463,7 +463,7 @@ public class AutoPlay extends Bomber {
                     directionList.remove(Direction.UP);
                     if (directionList.size() != 0) {
                         int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
+                        currentDirection = directionList.get(ran);
                     } else {
                         playerAction = Action.IDLE;
                     }
@@ -471,7 +471,7 @@ public class AutoPlay extends Bomber {
                     directionList.remove(Direction.DOWN);
                     if (directionList.size() != 0) {
                         int ran = r.nextInt(directionList.size());
-                        direction = directionList.get(ran);
+                        currentDirection = directionList.get(ran);
                     } else {
                         playerAction = Action.IDLE;
                     }
@@ -501,13 +501,5 @@ public class AutoPlay extends Bomber {
             }
         }
         return false;
-    }
-
-    @Override
-    public void updateBoxCollider() {
-        bomberBox.setLocation(
-                this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + bomberBox.getHeight() - 5
-        );
     }
 }

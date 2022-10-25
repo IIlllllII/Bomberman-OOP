@@ -19,19 +19,19 @@ public class Player extends Bomber {
             return;
         }
 
-        Direction currentDirection = null;
+        Direction direction = null;
         if (inputList.contains(KeyCode.RIGHT) || inputList.contains(KeyCode.D)) {
-            currentDirection = Direction.RIGHT;
+            direction = Direction.RIGHT;
         }
         if (inputList.contains(KeyCode.LEFT) || inputList.contains(KeyCode.A)) {
-            currentDirection = Direction.LEFT;
+            direction = Direction.LEFT;
         }
         if (inputList.contains(KeyCode.UP) || inputList.contains(KeyCode.W)) {
-            currentDirection = Direction.UP;
+            direction = Direction.UP;
         }
 
         if (inputList.contains(KeyCode.DOWN) || inputList.contains(KeyCode.S)) {
-            currentDirection = Direction.DOWN;
+            direction = Direction.DOWN;
         }
 
         if (inputList.contains(KeyCode.SPACE)) {
@@ -39,20 +39,12 @@ public class Player extends Bomber {
             inputList.remove(KeyCode.SPACE);
         }
 
-        if (currentDirection != null) {
+        if (direction != null) {
             playerAction = Action.MOVING;
-            direction = currentDirection;
+            currentDirection = direction;
         } else {
             playerAction = Action.IDLE;
         }
-    }
-
-    @Override
-    public void updateBoxCollider() {
-        bomberBox.setLocation(
-                this.x + (this.width - bomberBox.getWidth()) / 2.0,
-                this.y + bomberBox.getHeight() - 5
-        );
     }
 
     @Override
@@ -63,7 +55,7 @@ public class Player extends Bomber {
             return;
         }
 
-        switch (direction) {
+        switch (currentDirection) {
             case DOWN:
                 y += steps;
                 break;
@@ -102,7 +94,7 @@ public class Player extends Bomber {
         boolean bottomLeftCheck = checkBarrier(bottomRow, leftCol);
         boolean bottomRightCheck = checkBarrier(bottomRow, rightCol);
 
-        switch (direction) {
+        switch (currentDirection) {
             case UP:
                 if (topLeftCheck || topRightCheck) {
                     y -= steps;
