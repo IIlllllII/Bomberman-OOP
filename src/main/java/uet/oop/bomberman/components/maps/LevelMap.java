@@ -304,6 +304,7 @@ public class LevelMap {
 
     public void setAuto(boolean auto) {
         this.auto = auto;
+        EntitiesManager.getInstance().bombers.clear();
     }
 
     public int getWidth() {
