@@ -15,7 +15,7 @@ import uet.oop.bomberman.config.GameConfig;
 import java.net.URISyntaxException;
 
 public class IntroLevel extends Group {
-    private static final int DEFAULT_TIME = 4000;
+    private static final int DEFAULT_TIME = 500;
     private boolean done = false;
     private final Animation animation;
     private final Text title;

@@ -101,6 +101,7 @@ public class EntitiesManager {
                 BoxCollider itemBox = new BoxCollider(item.getX(), item.getY());
                 if (bomberBox.isCollidedWith(itemBox)) {
                     item.setEaten(true);
+                    bombers.get(0).addItem(item);
                 }
             }
         });

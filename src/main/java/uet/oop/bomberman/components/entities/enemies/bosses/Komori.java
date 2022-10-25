@@ -20,7 +20,7 @@ public class Komori extends Enemy {
     private double topY;
     private Action action;
     private int blood = 250;
-    //private boolean isHurt = false;
+    private boolean hurt = false;
     private final Image shadow;
     private final BoxCollider shadowBox;
     private final List<Weapon> weaponList = new ArrayList<>();
@@ -30,6 +30,7 @@ public class Komori extends Enemy {
     private int movingTime = 0;
     private int deltaMovingTime = 0;
     private int deltaAttackTime = 0;
+    private int frameCounter = 0;
 
     private boolean addWeapon = false;
 
@@ -200,11 +201,20 @@ public class Komori extends Enemy {
             imageY -= 30;
         }
 
-//        if (isHurt) {
-//            sprite.setSheet(SpriteSheet.komoriFlashSheet);
-//        } else {
-//            sprite.setSheet(SpriteSheet.komoriSheet);
-//        }
+        if (hurt) {
+            if ((frameCounter / 8) % 2 == 0) {
+                sprite.setSheet(SpriteSheet.komoriFlashSheet);
+            } else {
+                sprite.setSheet(SpriteSheet.komoriSheet);
+            }
+            frameCounter++;
+            if (frameCounter >= 200) {
+                hurt = false;
+                frameCounter = 0;
+            }
+        } else {
+            sprite.setSheet(SpriteSheet.komoriSheet);
+        }
         //Render komori
         gc.drawImage(sprite.getFxImage(), imageX - camera.getX(), imageY - camera.getY(),
                 imageWidth * 1.8f, imageHeight * 1.8f);
@@ -415,6 +425,7 @@ public class Komori extends Enemy {
     }
 
     public void decreaseBlood() {
+        hurt = true;
         blood -= 1;
         System.out.println("Blood: " + blood + " (" + String.format("%.2f", blood / 2.5) + "%)");
         if (blood <= 0) {
