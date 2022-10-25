@@ -144,11 +144,11 @@ public class LevelMap {
                             if (entitiesManager.bombers.size() == 0) {
                                 if (auto) {
                                     entitiesManager.bombers.add(
-                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
+                                            new AutoPlay(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
                                     );
                                 } else {
                                     entitiesManager.bombers.add(
-                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 5, 16, 22)
+                                            new Player(j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE, 16, 22)
                                     );
                                 }
                             } else {
