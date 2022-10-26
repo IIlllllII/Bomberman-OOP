@@ -125,8 +125,10 @@ public class BackgroundMusic {
     public void pause() {
         mediaPlayer.pause();
     }
-    public void unpause() {
-        mediaPlayer.play();
+    public static void unpause() {
+        if (mediaPlayer != null) {
+            mediaPlayer.play();
+        }
     }
 
     /**
@@ -143,6 +145,9 @@ public class BackgroundMusic {
     }
 
     public static void setMute(boolean mute) {
+        if (!mute) {
+            unpause();
+        }
         BackgroundMusic.mute = mute;
         Setting.getInstance().setMute(mute);
         RightSideBar.getInstance().setMute(mute);

@@ -18,7 +18,6 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.MenuScene;
 import uet.oop.bomberman.core.scenes.game.RightSideBar;
-import uet.oop.bomberman.core.scenes.menu.Leaderboards;
 import uet.oop.bomberman.core.sound.BackgroundMusic;
 
 import java.net.URISyntaxException;
@@ -77,9 +76,9 @@ public class IntroStage {
                 }
 
                 @Override
-                protected void interpolate(double frac) {
-                    colorAdjust.setHue(0.25 - frac / 2);
-                    progressBar.setProgress(frac);
+                protected void interpolate(double frag) {
+                    colorAdjust.setHue(0.25 - frag / 2);
+                    progressBar.setProgress(frag);
                 }
             };
             progressAnimation.play();

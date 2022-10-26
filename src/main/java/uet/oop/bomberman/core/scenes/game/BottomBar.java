@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.*;
@@ -21,6 +22,7 @@ public class BottomBar extends HBox {
     private int bomb = 1;
     private int flame = 1;
     private int speed = 1;
+    private final Text contain;
     private final LabelItem liveLabel;
     private final LabelItem bombLabel;
     private final LabelItem flameLabel;
@@ -36,21 +38,32 @@ public class BottomBar extends HBox {
 
     private BottomBar() {
         setAlignment(Pos.CENTER);
-        setSpacing(10);
+        setSpacing(180);
 
-        try {
-            ImageView imageView = new ImageView(new Image(getClass().getResource("/UI/avatar.png").toURI().toString()));
-            imageView.setFitWidth(64);
-            imageView.setFitHeight(64);
-            getChildren().add(imageView);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        contain = new Text("ENEMY: " + EntitiesManager.getInstance().enemies.size());
+        contain.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+        contain.setFill(Color.SNOW);
+
+        Text fps = new Text("      ");
+        fps.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        fps.setFill(Color.SNOW);
+
+        HBox playerInfo = new HBox(7);
+        playerInfo.setAlignment(Pos.CENTER);
 
         itemLayout = new HBox(10);
         itemLayout.setAlignment(Pos.CENTER);
         itemLayout.setMaxHeight(32);
         itemLayout.setStyle("-fx-background-color: black; -fx-border-color: blue;");
+
+        try {
+            ImageView imageView = new ImageView(new Image(getClass().getResource("/UI/Image.jpg").toURI().toString()));
+            imageView.setFitWidth(60);
+            imageView.setFitHeight(60);
+            playerInfo.getChildren().add(imageView);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
         liveLabel = new LabelItem(Item.livesUp, live);
         bombLabel = new LabelItem(Item.bombUp, bomb);
@@ -58,8 +71,13 @@ public class BottomBar extends HBox {
         speedLabel = new LabelItem(Item.speedUp, speed);
 
         itemLayout.getChildren().addAll(liveLabel, bombLabel, flameLabel, speedLabel);
+        playerInfo.getChildren().add(itemLayout);
 
-        getChildren().add(itemLayout);
+        getChildren().addAll(contain, playerInfo, fps);
+    }
+
+    public void updateEnemy() {
+        contain.setText("ENEMY: " + EntitiesManager.getInstance().enemies.size());
     }
 
     public void add(Item item) {
@@ -94,10 +112,10 @@ public class BottomBar extends HBox {
         bomb = 1;
         flame = 1;
         speed = 1;
-        liveLabel.setNumber(3);
-        bombLabel.setNumber(1);
-        flameLabel.setNumber(1);
-        speedLabel.setNumber(1);
+        liveLabel.setNumber(live);
+        bombLabel.setNumber(bomb);
+        flameLabel.setNumber(flame);
+        speedLabel.setNumber(speed);
 
         itemLayout.getChildren().clear();
         itemLayout.getChildren().addAll(liveLabel, bombLabel, flameLabel, speedLabel);
@@ -127,9 +145,9 @@ public class BottomBar extends HBox {
 
         public LabelItem(Image image, int count, double timeLeft) {
             setAlignment(Pos.CENTER);
-            setMaxSize(32, 32);
+            setMaxSize(35, 35);
 
-            Clocks clocks = new Clocks((int) timeLeft, 12);
+            Clocks clocks = new Clocks((int) timeLeft, Color.SNOW);
             clocks.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
 
             this.image = image;

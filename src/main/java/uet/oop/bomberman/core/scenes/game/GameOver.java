@@ -28,7 +28,6 @@ public class GameOver extends HBox {
     private final Text highScore;
     private final TextField textField;
     private ImageView imageView;
-    private boolean lose;
 
     public GameOver() {
         setAlignment(Pos.CENTER);
@@ -70,18 +69,20 @@ public class GameOver extends HBox {
             Leaderboards.add(new HighScore(textField.getText(), TopBar.getInstance().getScore(),
                     LevelMap.getInstance().getLevel(), format.format(date)));
             SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
+            reset();
         });
 
         ButtonCustom back = new ButtonCustom("Back to Menu", Color.CRIMSON, 150, 25);
         back.setFont(18);
         back.setOnMouseClicked(mouseEvent -> {
             SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
+            reset();
         });
 
         vBox.getChildren().addAll(title, highScore, label, textField, save, back);
 
         try {
-            imageView = new ImageView(new Image(getClass().getResource("/UI/gameover2.jpg").toURI().toString()));
+            imageView = new ImageView(new Image(getClass().getResource("/UI/gameOver2.jpg").toURI().toString()));
         } catch (URISyntaxException e) {
             System.out.println("game over image");
         }
@@ -93,25 +94,17 @@ public class GameOver extends HBox {
         reset();
     }
 
-    public void reset() {
-        lose = false;
+    private void reset() {
         highScore.setText("Your Score: ");
-        setVisible(false);
         textField.setText("");
+        setVisible(false);
         textField.setDisable(true);
     }
 
-    public void setLose(boolean lose) {
-        this.lose = lose;
-        if (lose) {
-            new Sound(Sound.LOSE_GAME).play();
-            setVisible(true);
-            textField.setDisable(false);
-            highScore.setText("Your Score: " + TopBar.getInstance().getScore());
-        }
-    }
-
-    public boolean isLose() {
-        return lose;
+    public void setEnable() {
+        new Sound(Sound.LOSE_GAME).play();
+        highScore.setText("Your Score: " + TopBar.getInstance().getScore());
+        setVisible(true);
+        textField.setDisable(false);
     }
 }

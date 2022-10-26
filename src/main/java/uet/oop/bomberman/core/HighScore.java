@@ -1,10 +1,10 @@
 package uet.oop.bomberman.core;
 
 public class HighScore {
-    private String name;
-    private String highScore;
-    private String level;
-    private String date;
+    private final String name;
+    private final String highScore;
+    private final String level;
+    private final String date;
 
     public HighScore(String name, int highScore, int level, String date) {
         this.name = name.trim();
@@ -30,8 +30,4 @@ public class HighScore {
     public String getLevel() {
         return level;
     }
-
-//    public void setLevel(String level) {
-//        this.level = level;
-//    }
 }
