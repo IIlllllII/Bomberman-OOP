@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import uet.oop.bomberman.core.sound.Sound;
 
 public class ButtonCustom extends StackPane {
     private final Text text;
@@ -39,6 +40,7 @@ public class ButtonCustom extends StackPane {
         getChildren().addAll(bg, text);
 
         setOnMouseEntered(mouseEvent -> {
+            new Sound(Sound.HOVER_BUTTON).play();
             setScaleX(1.2);
             setScaleY(1.2);
             bg.setFill(color);
@@ -70,6 +72,7 @@ public class ButtonCustom extends StackPane {
         getChildren().addAll(bg, text);
 
         setOnMouseEntered(mouseEvent -> {
+            new Sound(Sound.HOVER_BUTTON).play();
             setScaleX(1.2);
             setScaleY(1.2);
             bg.setFill(after);

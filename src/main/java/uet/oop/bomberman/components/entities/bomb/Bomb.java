@@ -119,9 +119,9 @@ public class Bomb extends Entity {
         } else {
             if (!hasFlame) {
                 explosion();
-                new Sound(Sound.EXPLODE_SOUND).playSound();
+                new Sound(Sound.EXPLODE, flameLength / 6.0).play();
             }
-            flameList.forEach(flame -> flame.update());
+            flameList.forEach(Flame::update);
         }
     }
 

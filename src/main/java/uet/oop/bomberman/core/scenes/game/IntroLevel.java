@@ -29,7 +29,6 @@ public class IntroLevel extends Group {
     }
 
     private IntroLevel() {
-        setOpacity(1);
         Image bkgImage = null;
         Image loadImage = null;
         try {
@@ -71,7 +70,6 @@ public class IntroLevel extends Group {
     }
 
     public void reset(int level) {
-        System.out.println("call reset intro level");
         done = false;
         animation.setCycleCount(1);
         animation.play();

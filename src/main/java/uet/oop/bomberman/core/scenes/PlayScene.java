@@ -21,6 +21,7 @@ public class PlayScene {
     private final Group layout1;
     private final GraphicsContext gc;
     private final TopBar topBar;
+    private final BottomBar bottomBar;
     private final IntroLevel introLevel;
     private final GameOver gameOver;
     private final LevelMap levelMap = LevelMap.getInstance();
@@ -52,6 +53,10 @@ public class PlayScene {
         RightSideBar rightSideBar = RightSideBar.getInstance();
         layout2.setRight(rightSideBar);
 
+        // BOTTOM OF LAYOUT 2
+        bottomBar = BottomBar.getInstance();
+        layout2.setBottom(bottomBar);
+
         // LAYOUT 3
         introLevel = IntroLevel.getInstance();
 
@@ -66,10 +71,11 @@ public class PlayScene {
     }
 
     public void reset() {
-        introLevel.reset(1);
-        levelMap.reset();
-        topBar.reset();
-        gameOver.reset();
+        System.out.println("call reset");
+        levelMap.reset();   // level = 0 & bomber.clear() create new bomber
+        topBar.reset();     // reset score
+        gameOver.reset();   // lose = false
+        bottomBar.reset();  // reset default item
     }
 
     public void update(List<KeyCode> inputList) {
@@ -91,8 +97,10 @@ public class PlayScene {
 
             camera.update();
             entitiesManager.update();
+
             if (entitiesManager.bombers.get(0).isKilled() ||
                     (topBar.getClock().isDone() && !levelMap.isLevelComplete())) {
+                System.out.println("loser");
                 gameOver.setLose(true);
                 topBar.getClock().stop();
             }

@@ -19,6 +19,7 @@ import java.util.Objects;
 public class Setting extends VBox {
     private final double DEFAULT_WIDTH = 400;
     private final double DEFAULT_HEIGHT = 200;
+    private final CheckBox isMute;
 
     private static class SingletonHelper {
         private static final Setting INSTANCE = new Setting();
@@ -52,10 +53,8 @@ public class Setting extends VBox {
         musicTab.setContent(musicContent);
 
         Text mute = new Text("Mute All");
-        CheckBox isMute = new CheckBox();
-        isMute.setOnMouseClicked(event -> {
-            BackgroundMusic.getInstance().setMute(isMute.isSelected());
-        });
+        isMute = new CheckBox();
+        isMute.setOnMouseClicked(event -> BackgroundMusic.setMute(isMute.isSelected()));
         musicContent.add(mute, 0, 0);
         musicContent.add(isMute, 1, 0);
 
@@ -64,7 +63,7 @@ public class Setting extends VBox {
         {
             BackgroundMusic backgroundMusic = BackgroundMusic.getInstance();
             sliderVolume.setOrientation(Orientation.HORIZONTAL);
-            sliderVolume.setValue(backgroundMusic.getVolumn() * 100);
+            sliderVolume.setValue(backgroundMusic.getVolume() * 100);
             sliderVolume.setMin(0);
             sliderVolume.setMax(100);
             sliderVolume.setBlockIncrement(20);
@@ -72,9 +71,7 @@ public class Setting extends VBox {
             sliderVolume.setMinorTickCount(1);
             sliderVolume.setShowTickLabels(true);
             sliderVolume.setShowTickMarks(true);
-            sliderVolume.valueProperty().addListener(observable -> {
-                backgroundMusic.setVolume(sliderVolume.getValue() / 100);
-            });
+            sliderVolume.valueProperty().addListener(observable -> backgroundMusic.setVolume(sliderVolume.getValue() / 100));
         }
         musicContent.add(volume, 0, 1);
         musicContent.add(sliderVolume, 1,1);
@@ -128,5 +125,9 @@ public class Setting extends VBox {
 
         tabPane.getTabs().addAll(musicTab, graphicsTab, controlsTab);
         getChildren().addAll(title, tabPane);
+    }
+
+    public void setMute(boolean mute) {
+        isMute.setSelected(mute);
     }
 }
