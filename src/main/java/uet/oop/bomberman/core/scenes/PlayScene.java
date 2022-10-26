@@ -17,21 +17,38 @@ import uet.oop.bomberman.core.scenes.game.*;
 import java.util.List;
 
 public class PlayScene {
+    public enum STATUS {
+        INTRO, PLAYING, PAUSE, LOSE, WIN
+    }
+
+    private STATUS status;
     private final StackPane root;
-    private final Group layout1;
+    private final Group layout1;            // LAYOUT 1
     private final GraphicsContext gc;
+    private final BorderPane layout2;      // LAYOUT 2
     private final TopBar topBar;
     private final BottomBar bottomBar;
-    private final IntroLevel introLevel;
-    private final GameOver gameOver;
+    private final IntroLevel introLevel;    // LAYOUT 3
+    private final PauseMenu pauseMenu;      // LAYOUT 4
+    private final GameOver gameOver;        // LAYOUT 5
     private final LevelMap levelMap = LevelMap.getInstance();
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
 
-    public PlayScene() {
+    private static class SingletonHelper {
+        private static final PlayScene INSTANCE = new PlayScene();
+    }
+
+    public static PlayScene getInstance() {
+        return PlayScene.SingletonHelper.INSTANCE;
+    }
+
+    private PlayScene() {
         root = new StackPane();
-        root.setStyle("-fx-background-color: #2A2E37;");
+        root.setStyle("-fx-background-color: linear-gradient(#4F917CFF, #00140EFF);");
         root.setAlignment(Pos.CENTER);
+
+        status = STATUS.INTRO;
 
         // LAYOUT 1
         layout1 = new Group();
@@ -42,7 +59,7 @@ public class PlayScene {
         layout1.getChildren().addAll(canvas);
 
         // LAYOUT 2
-        BorderPane layout2 = new BorderPane();
+        layout2 = new BorderPane();
         layout2.setStyle("-fx-background-color: transparent;");
 
         // TOP OF LAYOUT 2
@@ -61,9 +78,12 @@ public class PlayScene {
         introLevel = IntroLevel.getInstance();
 
         // LAYOUT 4
+        pauseMenu = PauseMenu.getInstance();
+
+        // LAYOUT 5
         gameOver = new GameOver();
 
-        root.getChildren().addAll(layout1, layout2, introLevel, gameOver);
+        root.getChildren().addAll(layout1, layout2, introLevel, pauseMenu, gameOver);
 
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
 
@@ -74,12 +94,46 @@ public class PlayScene {
         System.out.println("call reset");
         levelMap.reset();   // level = 0 & bomber.clear() create new bomber
         topBar.reset();     // reset score
-        gameOver.reset();   // lose = false
         bottomBar.reset();  // reset default item
     }
 
+    public void setStatus(STATUS status) {
+        this.status = status;
+        switch (status) {
+            case INTRO: {
+                IntroLevel.getInstance().reset(levelMap.getLevel());
+                layout2.setDisable(true);
+                topBar.getClock().pause();
+                break;
+            }
+            case PLAYING: {
+                layout1.setDisable(false);
+                layout2.setDisable(false);
+                topBar.getClock().play();
+                break;
+            }
+            case PAUSE: {
+                pauseMenu.setEnable();
+                layout2.setDisable(true);
+                topBar.getClock().pause();
+                break;
+            }
+            case LOSE: {
+                gameOver.setEnable();
+                layout2.setDisable(true);
+                topBar.getClock().pause();
+                break;
+            }
+            case WIN: {
+                layout2.setDisable(true);
+                topBar.getClock().pause();
+                break;
+            }
+        }
+    }
+
     public void update(List<KeyCode> inputList) {
-        if (introLevel.isDone() && !gameOver.isLose()) {
+        if (status == STATUS.PLAYING) {
             if (inputList.contains(KeyCode.ESCAPE)) {
                 SceneManager.getInstance().setCurrentScene(SceneManager.SCENES.MENU);
                 inputList.remove(KeyCode.ESCAPE);
@@ -100,9 +154,7 @@ public class PlayScene {
 
             if (entitiesManager.bombers.get(0).isKilled() ||
                     (topBar.getClock().isDone() && !levelMap.isLevelComplete())) {
-                System.out.println("loser");
-                gameOver.setLose(true);
-                topBar.getClock().stop();
+                setStatus(STATUS.LOSE);
             }
 
             // Handle next level
@@ -115,7 +167,7 @@ public class PlayScene {
     }
 
     public void render() {
-        if (introLevel.isDone()) {
+        if (status == STATUS.PLAYING) {
             gc.clearRect(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
             levelMap.render(gc);
             entitiesManager.render(gc);
@@ -131,5 +183,6 @@ public class PlayScene {
         layout1.setScaleY(GameConfig.ZOOM);
         introLevel.setScaleX(GameConfig.ZOOM);
         introLevel.setScaleY(GameConfig.ZOOM);
+        pauseMenu.zoom();
     }
 }
