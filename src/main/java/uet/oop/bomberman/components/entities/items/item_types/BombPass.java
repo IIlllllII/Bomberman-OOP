@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.entities.items.item_types;
 
+import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.items.Item;
 
@@ -20,5 +21,10 @@ public class BombPass extends Item {
             EntitiesManager.getInstance().bombers.get(0).setCanPassBomb(false);
             done = true;
         }
+    }
+
+    @Override
+    public Image getImage() {
+        return bombPass;
     }
 }

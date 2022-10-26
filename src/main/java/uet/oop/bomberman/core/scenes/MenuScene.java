@@ -27,6 +27,7 @@ public class MenuScene {
 
     public static void init() {
         SliderShow.init();
+        Leaderboards.init();
     }
 
     private static class SingletonHelper {
@@ -49,7 +50,6 @@ public class MenuScene {
         root.getChildren().addAll(background, gameMenu);
 
         root.setOnMouseClicked(event -> {
-            System.out.println("click from menu");
             fadeIn();
         });
     }
@@ -68,7 +68,7 @@ public class MenuScene {
         gameMenu.setVisible(false);
     }
 
-    public void fadeIn() {
+    private void fadeIn() {
         if (!gameMenu.isVisible()) {
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
             ft.setFromValue(0);

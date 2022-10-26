@@ -30,12 +30,12 @@ public class Leaderboards extends VBox {
                 File file = new File(fileName);
                 if (!file.exists()) {
                     if (!file.createNewFile()) {
-                        System.out.println("can't creat file high score");
-                    };
+                        System.out.println("can't create file high score");
+                    }
                 }
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
-                String line = null;
+                String line;
                 while (true) {
                     line = br.readLine();
                     if (line == null) {

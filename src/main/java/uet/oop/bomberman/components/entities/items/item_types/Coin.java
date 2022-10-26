@@ -1,6 +1,7 @@
 package uet.oop.bomberman.components.entities.items.item_types;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -59,5 +60,10 @@ public class Coin extends Item {
     @Override
     public void changePower() {
         //Nothing to do
+    }
+
+    @Override
+    public Image getImage() {
+        return coinImage;
     }
 }

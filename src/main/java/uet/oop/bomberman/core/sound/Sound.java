@@ -20,7 +20,6 @@ public class Sound {
     private Media media;
     private MediaPlayer mediaPlayer;
     private static boolean mute = true;
-    //private String path;
 
     /**
      * Constructor for creating sound from path.

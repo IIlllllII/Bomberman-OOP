@@ -13,18 +13,16 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.game.BottomBar;
 import uet.oop.bomberman.core.sound.Sound;
 
-import java.awt.event.ItemEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Bomber extends LivingEntity {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final double DEFAULT_SPEED = 2;
+    public static final int DEFAULT_LIVES = 3;
 
     private final List<Item> eatenItems = new ArrayList<>();
 
@@ -52,7 +50,7 @@ public abstract class Bomber extends LivingEntity {
         initialY = y;
         speed = DEFAULT_SPEED;
         currentDirection = Direction.DOWN;
-        lives = 3;
+        lives = DEFAULT_LIVES;
         bomberBox = new BoxCollider(0, 0, 15, 20);
         updateBoxCollider();
     }
@@ -177,6 +175,7 @@ public abstract class Bomber extends LivingEntity {
             if (currentSpriteIndex / 8 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
                 lives--;
+                BottomBar.getInstance().setLive(lives);
                 playerAction = Action.IDLE;
 
                 //Return to initial position:
@@ -190,6 +189,15 @@ public abstract class Bomber extends LivingEntity {
                 updateBoxCollider();
             }
         }
+
+        // Remove Pass item when it's done variable == true
+        for(Iterator<Item> i = eatenItems.iterator(); i.hasNext();) {
+            Item temp = i.next();
+            if (temp.isDone() && temp.getTimePowerUp() > 0) {
+                BottomBar.getInstance().remove(temp);
+                i.remove();
+            }
+        }
     }
 
     public void setInitialLocation(double x, double y) {
@@ -200,7 +208,7 @@ public abstract class Bomber extends LivingEntity {
 
     public void addItem(Item item) {
         eatenItems.add(item);
-        //System.out.println("Item list: " + eatenItems.size());
+        BottomBar.getInstance().add(item);
     }
 
     public void placeBomb() {
@@ -343,6 +351,7 @@ public abstract class Bomber extends LivingEntity {
         }
     }
     public void reset() {
+        eatenItems.clear();
         canPassBrick = false;
         canPassBomb = false;
         canPassFlame = false;

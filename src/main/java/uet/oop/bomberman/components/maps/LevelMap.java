@@ -17,6 +17,7 @@ import uet.oop.bomberman.components.entities.materials.Wall;
 import uet.oop.bomberman.components.entities.bomber.AutoPlay;
 import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.game.BottomBar;
 import uet.oop.bomberman.core.scenes.game.Clocks;
 import uet.oop.bomberman.core.scenes.game.IntroLevel;
 import uet.oop.bomberman.core.scenes.game.TopBar;
@@ -53,6 +54,7 @@ public class LevelMap {
     public void reset() {
         levelComplete = false;
         level = 0;
+        EntitiesManager.getInstance().bombers.clear();
         nextLevel();
     }
 
@@ -117,9 +119,10 @@ public class LevelMap {
         List<Enemy> enemyList = entitiesManager.enemies;
         Portal portal = entitiesManager.portal;
 
+        IntroLevel.getInstance().reset(level);
         if (level > 1) {
-            IntroLevel.getInstance().reset(level);
             TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
+            BottomBar.getInstance().resetNextLevel();  // remove item type pass
         }
 
         System.out.println("Level: " + level);
@@ -303,7 +306,6 @@ public class LevelMap {
 
     public void setAuto(boolean auto) {
         this.auto = auto;
-        EntitiesManager.getInstance().bombers.clear();
         Bomb.setFlameLength(1);
     }
 

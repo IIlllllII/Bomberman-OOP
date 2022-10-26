@@ -12,11 +12,11 @@ import uet.oop.bomberman.core.sound.Sound;
 
 public abstract class Item extends Entity {
     private static boolean initialized = false;
-    protected static Image bombUp;
-    protected static Image fireUp;
-    protected static Image speedUp;
+    public static Image bombUp;
+    public static Image fireUp;
+    public static Image speedUp;
+    public static Image livesUp;
     protected static Image brickPass;
-    protected static Image livesUp;
     protected static Image bombPass;
     protected static Image flamePass;
     protected static Image invincible;
@@ -24,7 +24,7 @@ public abstract class Item extends Entity {
 
     protected Image image;
     protected double timeAppear = 10000;
-    protected double timePowerUp ;
+    protected double timePowerUp = 0.0;
     protected boolean appear = false;
     protected boolean eaten = false;
 
@@ -72,9 +72,22 @@ public abstract class Item extends Entity {
     }
 
     public abstract void changePower();
+    public abstract Image getImage();
 
     public void setTimePowerUp(double timePowerUp) {
         this.timePowerUp = timePowerUp;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    /**
+     *
+     * @return time in millis.
+     */
+    public double getTimePowerUp() {
+        return timePowerUp;
     }
 
     @Override

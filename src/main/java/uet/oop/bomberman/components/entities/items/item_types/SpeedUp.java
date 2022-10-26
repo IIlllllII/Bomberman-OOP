@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.entities.items.item_types;
 
+import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.bomber.Bomber;
@@ -23,6 +24,11 @@ public class SpeedUp extends Item {
             bomber.setSpeed(16.0/(8 - numberEaten));
         }
         done = true;
+    }
+
+    @Override
+    public Image getImage() {
+        return speedUp;
     }
 
 }

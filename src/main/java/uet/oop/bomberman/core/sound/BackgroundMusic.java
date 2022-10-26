@@ -20,7 +20,6 @@ public class BackgroundMusic {
     private static boolean initialized = false;
     private static ArrayList<File> songsCustoms;
     private static ArrayList<File> songsDefault;
-    private Random random;
     private THEME theme;
     // from 0.0 - 1.1
     private double volume;
@@ -51,7 +50,7 @@ public class BackgroundMusic {
     }
 
     private BackgroundMusic() {
-        random = new Random();
+        Random random = new Random();
         theme = THEME.CUSTOMS;
         volume = 0.5;
         indexCustoms = random.nextInt(songsCustoms.size());
@@ -132,11 +131,11 @@ public class BackgroundMusic {
 
     /**
      *
-     * @param volumn : 0.0 -> 1.0
+     * @param volume : 0.0 -> 1.0
      */
-    public void setVolume(double volumn) {
-        this.volume = volumn;
-        mediaPlayer.setVolume(volumn);
+    public void setVolume(double volume) {
+        this.volume = volume;
+        mediaPlayer.setVolume(volume);
     }
 
     public double getVolume() {

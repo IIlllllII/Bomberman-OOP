@@ -19,14 +19,6 @@ public class HighScore {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setHighScore(String highScore) {
-        this.highScore = highScore;
-    }
-
     public String getHighScore() {
         return highScore;
     }
@@ -35,15 +27,11 @@ public class HighScore {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
-    }
+//    public void setLevel(String level) {
+//        this.level = level;
+//    }
 }
