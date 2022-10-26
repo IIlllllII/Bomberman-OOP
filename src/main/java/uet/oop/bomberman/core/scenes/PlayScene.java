@@ -15,7 +15,6 @@ import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.algo.AStar;
 import uet.oop.bomberman.core.scenes.game.*;
 import uet.oop.bomberman.core.scenes.game.filter.LightFilter;
 
