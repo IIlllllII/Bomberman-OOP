@@ -2,6 +2,7 @@ package uet.oop.bomberman.components.entities.items.item_types;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.bomb.Flame;
 import uet.oop.bomberman.components.entities.items.Item;
 
 public class FlameUp extends Item {
@@ -16,7 +17,7 @@ public class FlameUp extends Item {
 
     @Override
     public void changePower() {
-        if(Bomb.getFlameLength() < 6){
+        if (Bomb.getFlameLength() < Flame.MAX_LENGTH) {
             Bomb.setFlameLength(Bomb.getFlameLength() + 1);
         }
         done = true;

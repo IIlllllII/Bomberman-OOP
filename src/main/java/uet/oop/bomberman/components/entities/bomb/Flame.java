@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Flame extends Entity {
+    public static final int MAX_LENGTH = 6;
     private static boolean initialized = false;
     private static final List<Image> bombExploded = new ArrayList<>();
     private static final List<Image> explosionVertical = new ArrayList<>();

@@ -15,6 +15,7 @@ import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.algo.AStar;
 import uet.oop.bomberman.core.scenes.game.*;
 import uet.oop.bomberman.core.scenes.game.filter.LightFilter;
 
@@ -108,7 +109,6 @@ public class PlayScene {
         levelMap.reset();   // level = 0 & bomber.clear() create new bomber
         topBar.reset();     // reset score
         bottomBar.reset();  // reset default item
-        filter.reset();
     }
 
     public void setStatus(STATUS status) {
