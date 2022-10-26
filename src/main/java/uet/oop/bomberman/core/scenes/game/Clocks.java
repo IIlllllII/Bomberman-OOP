@@ -23,6 +23,10 @@ public class Clocks extends Label {
         stop();
     }
 
+    public Clocks(int time, int fontSize) {
+        setTime(time, fontSize);
+    }
+
     public void stop() {
         timeline.stop();
     }
@@ -74,6 +78,31 @@ public class Clocks extends Label {
             });
             timeline.play();
         }
+    }
+
+    /**
+     *
+     * @param time time in second.
+     * @param fontSize font of label
+     */
+    public void setTime(int time, int fontSize) {
+        this.time = time;
+        done = false;
+
+        setText(String.format("%d", time));
+        setTextFill(Color.WHITE);
+        setFont(Font.font(fontSize));
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+            this.time -= 1;
+            setText(String.format("%d", this.time));
+        }));
+
+        timeline.setCycleCount(time);
+        timeline.setOnFinished(event -> {
+            done = true;
+        });
+        timeline.play();
     }
 
     public boolean isDone() {

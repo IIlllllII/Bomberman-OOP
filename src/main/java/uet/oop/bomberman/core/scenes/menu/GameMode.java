@@ -71,7 +71,7 @@ public class GameMode extends VBox {
 
     private class Mode extends VBox {
         public Mode(Image image, String name) {
-            setStyle("-fx-background-color: darkslategray");
+            reset();
             setAlignment(Pos.CENTER);
             setSpacing(5);
 

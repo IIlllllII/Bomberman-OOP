@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.entities.items.item_types;
 
+import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.items.Item;
 
@@ -19,5 +20,10 @@ public class FlameUp extends Item {
             Bomb.setFlameLength(Bomb.getFlameLength() + 1);
         }
         done = true;
+    }
+
+    @Override
+    public Image getImage() {
+        return fireUp;
     }
 }

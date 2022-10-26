@@ -18,7 +18,7 @@ public class RightSideBar extends VBox {
     private static Image muteImage;
     private boolean pause = false;
     private boolean mute = false;
-
+    private final ImageView buttonMute;
 
     public static void init() {
         if (!initialized) {
@@ -52,15 +52,10 @@ public class RightSideBar extends VBox {
         BackgroundMusic music = BackgroundMusic.getInstance();
 
         ImageView buttonUp = new ImageView(upImage);
-        buttonUp.setOnMouseClicked(mouseEvent -> {
-            music.next();
-        });
+        buttonUp.setOnMouseClicked(mouseEvent -> music.before());
 
         ImageView buttonDown = new ImageView(downImage);
-        buttonDown.setOnMouseClicked(mouseEvent -> {
-            System.out.println("down click");
-            music.next();
-        });
+        buttonDown.setOnMouseClicked(mouseEvent -> music.next());
 
         ImageView buttonPlay = new ImageView(playImage);
         buttonPlay.setOnMouseClicked(mouseEvent -> {
@@ -74,19 +69,22 @@ public class RightSideBar extends VBox {
                 music.unpause();
             }
         });
-        ImageView buttonMute = new ImageView(volumeImage);
+
+        buttonMute = new ImageView(volumeImage);
         buttonMute.setFitWidth(30);
         buttonMute.setOnMouseClicked(mouseEvent -> {
-            if (!mute) {
-                mute = true;
-                buttonMute.setImage(muteImage);
-            } else {
-                mute = false;
-                buttonMute.setImage(volumeImage);
-            }
-            music.setMute(mute);
+            mute = !mute;
+            BackgroundMusic.setMute(mute);
         });
 
         getChildren().addAll(buttonUp, buttonPlay, buttonDown, buttonMute);
+    }
+
+    public void setMute(boolean mute) {
+        if (mute) {
+            buttonMute.setImage(muteImage);
+        } else {
+            buttonMute.setImage(volumeImage);
+        }
     }
 }

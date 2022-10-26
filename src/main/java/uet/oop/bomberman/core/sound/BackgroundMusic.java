@@ -2,6 +2,8 @@ package uet.oop.bomberman.core.sound;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.core.scenes.game.RightSideBar;
+import uet.oop.bomberman.core.scenes.menu.Setting;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,14 +16,16 @@ public class BackgroundMusic {
         CUSTOMS, DEFAULT
     }
     private Media media;
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private static boolean initialized = false;
     private static ArrayList<File> songsCustoms;
     private static ArrayList<File> songsDefault;
-    private Random random;
     private THEME theme;
     // from 0.0 - 1.1
-    private double volumn;
+    private double volume;
+    private int indexCustoms;
+    private int indexDefault;
+    private static boolean mute;
 
     private static class SingletonHelper {
         private static final BackgroundMusic INSTANCE = new BackgroundMusic();
@@ -46,9 +50,11 @@ public class BackgroundMusic {
     }
 
     private BackgroundMusic() {
-        random = new Random();
+        Random random = new Random();
         theme = THEME.CUSTOMS;
-        volumn = 0.5;
+        volume = 0.5;
+        indexCustoms = random.nextInt(songsCustoms.size());
+        indexDefault = random.nextInt(songsDefault.size());
         setTheme(theme);
         play();
     }
@@ -61,11 +67,19 @@ public class BackgroundMusic {
     public void next() {
         switch (theme) {
             case CUSTOMS: {
-                media = new Media(songsCustoms.get(random.nextInt(songsCustoms.size())).toURI().toString());
+                indexCustoms++;
+                if (indexCustoms >= songsCustoms.size()) {
+                    indexCustoms = 0;
+                }
+                media = new Media(songsCustoms.get(indexCustoms).toURI().toString());
                 break;
             }
             case DEFAULT: {
-                media = new Media(songsDefault.get(random.nextInt(songsDefault.size())).toURI().toString());
+                indexDefault++;
+                if (indexDefault >= songsDefault.size()) {
+                    indexDefault = 0;
+                }
+                media = new Media(songsDefault.get(indexDefault).toURI().toString());
                 break;
             }
         }
@@ -74,13 +88,37 @@ public class BackgroundMusic {
         }
     }
 
-    public void play() {
+    public void before() {
+        switch (theme) {
+            case CUSTOMS: {
+                indexCustoms--;
+                if (indexCustoms < 0) {
+                    indexCustoms = songsCustoms.size() - 1;
+                }
+                media = new Media(songsCustoms.get(indexCustoms).toURI().toString());
+                break;
+            }
+            case DEFAULT: {
+                indexDefault--;
+                if (indexDefault < 0) {
+                    indexDefault = songsDefault.size() - 1;
+                }
+                media = new Media(songsDefault.get(indexDefault).toURI().toString());
+                break;
+            }
+        }
+        if (mediaPlayer != null) {
+            play();
+        }
+    }
+
+    private void play() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(this::next);
-        mediaPlayer.setVolume(volumn);
+        mediaPlayer.setVolume(volume);
         mediaPlayer.play();
     }
 
@@ -93,18 +131,25 @@ public class BackgroundMusic {
 
     /**
      *
-     * @param volumn : 0.0 -> 1.0
+     * @param volume : 0.0 -> 1.0
      */
-    public void setVolume(double volumn) {
-        this.volumn = volumn;
-        mediaPlayer.setVolume(volumn);
+    public void setVolume(double volume) {
+        this.volume = volume;
+        mediaPlayer.setVolume(volume);
     }
 
-    public double getVolumn() {
-        return volumn;
+    public double getVolume() {
+        return volume;
     }
 
-    public void setMute(boolean mute) {
+    public static void setMute(boolean mute) {
+        BackgroundMusic.mute = mute;
+        Setting.getInstance().setMute(mute);
+        RightSideBar.getInstance().setMute(mute);
         mediaPlayer.setMute(mute);
+    }
+
+    public static boolean isMute() {
+        return mute;
     }
 }
