@@ -5,45 +5,19 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import java.util.*;
 
 public class AStar {
-    public static Node[][] gameMap = null;
-    private final Set<Node> closedList;
-    private final PriorityQueue<Node> openList;
+    public AStar() {}
 
-    public AStar() {
-        this.closedList = new HashSet<>();
-        this.openList = new PriorityQueue<>(Comparator.comparing(Node::getF));
-        if (gameMap == null) {
-            initMap();
+    public LinkedList<Node> findPath(Node start, Node target) {
+        if (!isValidNode(start) || !isValidNode(target)) {
+            System.out.println(isValidNode(start) + " & " + isValidNode(target));
+            return null;
         }
-    }
-
-    public static void initMap() {
-        LevelMap levelMap = LevelMap.getInstance();
-        char[][] mapHash = levelMap.getMapHash();
-        int row = mapHash.length;
-        int col = mapHash[0].length;
-        gameMap = new Node[row][col];
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (mapHash[i][j] != levelMap.getHash("wall")
-                    && mapHash[i][j] != levelMap.getHash("brick")) {
-                    gameMap[i][j] = new Node(i, j);
-                } else {
-                    gameMap[i][j] = null;
-                }
-            }
-        }
-    }
-
-    public List<Node> findPath(Node start, Node target) {
-//        System.out.println("start: " + target.getRow() + " " + target.getCol());
-//        System.out.println(LevelMap.getInstance().getHashAt(target.getRow(), target.getCol())
-//        == LevelMap.getInstance().getHash("grass"));
-//        if (start != null) {
-//            return null;
-//        }
+        Set<Node> closedList = new HashSet<>();
+        PriorityQueue<Node> openList = new PriorityQueue<>(Comparator.comparing(Node::getF));
         openList.add(start);
         start.setF(start.getF() + start.getH());
+
+        LevelMap levelMap = LevelMap.getInstance();
 
         while (!openList.isEmpty()) {
             Node node = openList.poll();
@@ -55,17 +29,21 @@ public class AStar {
             int row = node.getRow();
             int col = node.getCol();
             List<Node> neighbors = new ArrayList<>();
-            if (gameMap[row + 1][col] != null) {
-                neighbors.add(gameMap[row + 1][col]);
+
+            if (levelMap.getHashAt(row + 1, col) == levelMap.getHash("grass")) {
+                neighbors.add(new Node(row + 1, col));
             }
-            if (gameMap[row][col + 1] != null) {
-                neighbors.add(gameMap[row][col + 1]);
+
+            if (levelMap.getHashAt(row, col + 1) == levelMap.getHash("grass")) {
+                neighbors.add(new Node(row, col + 1));
             }
-            if (gameMap[row - 1][col] != null) {
-                neighbors.add(gameMap[row - 1][col]);
+
+            if (levelMap.getHashAt(row - 1, col) == levelMap.getHash("grass")) {
+                neighbors.add(new Node(row - 1, col));
             }
-            if (gameMap[row][col - 1] != null) {
-                neighbors.add(gameMap[row][col - 1]);
+
+            if (levelMap.getHashAt(row, col - 1) == levelMap.getHash("grass")) {
+                neighbors.add(new Node(row, col - 1));
             }
 
             if (neighbors.size() == 0) {
@@ -101,13 +79,20 @@ public class AStar {
         return null;
     }
 
-    public List<Node> getPath(Node node) {
-        List<Node> path = new ArrayList<>();
+    private LinkedList<Node> getPath(Node node) {
+        LinkedList<Node> path = new LinkedList<>();
         while (node != null) {
             path.add(0, node);
             node = node.getParent();
         }
         return path;
+    }
+
+    private boolean isValidNode(Node node) {
+        char[][] mapHash = LevelMap.getInstance().getMapHash();
+        int i = node.getRow();
+        int j = node.getCol();
+        return i >= 0 && j >= 0 && i < mapHash.length && j < mapHash[0].length;
     }
 
 //    public void testPrintPath() {

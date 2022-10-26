@@ -39,7 +39,7 @@ public class BottomBar extends HBox {
         setSpacing(10);
 
         try {
-            ImageView imageView = new ImageView(new Image(getClass().getResource("/UI/Image.jpg").toURI().toString()));
+            ImageView imageView = new ImageView(new Image(getClass().getResource("/UI/avatar.png").toURI().toString()));
             imageView.setFitWidth(64);
             imageView.setFitHeight(64);
             getChildren().add(imageView);

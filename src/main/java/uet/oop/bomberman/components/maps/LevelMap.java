@@ -109,7 +109,7 @@ public class LevelMap {
     // Should be private later
     public void nextLevel() {
         level++;
-        level = (level > 8) ? 1 : level;
+        level = (level > GameConfig.LEVEL_MAX) ? 1 : level;
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
 
@@ -226,7 +226,7 @@ public class LevelMap {
                     mapHash[i][j] = hash;
                 }
             }
-            if (level == 8) return;
+            if (level >= 8) return;
             Random r = new Random();
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);

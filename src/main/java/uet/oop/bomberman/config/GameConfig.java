@@ -19,6 +19,7 @@ public class GameConfig {
             "src/main/resources/data/levels/Level6.txt",
             "src/main/resources/data/levels/Level7.txt",
             "src/main/resources/data/levels/Level8.txt",
+            "src/main/resources/data/levels/Level9.txt",
     };
     public static final int LEVEL_MAX = LEVEL_DATA.length;
 }

@@ -9,10 +9,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.algo.AStar;
 import uet.oop.bomberman.core.scenes.game.*;
+import uet.oop.bomberman.core.scenes.game.filter.NightMode;
 
 import java.util.List;
 
@@ -107,10 +110,6 @@ public class PlayScene {
 
             // Handle next level
             levelMap.update();
-
-//            Bomber player = entitiesManager.players.get(0);
-////        filter.update(player.getX() + player.getWidth() / 2.0 - camera.getX(),
-////                player.getY() + player.getHeight() / 2.0 - camera.getY());
         }
     }
 

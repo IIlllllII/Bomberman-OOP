@@ -34,7 +34,6 @@ public class AutoPlay extends Bomber {
 
     @Override
     public void move() {
-        System.out.println("Auto moving");
         iBomber = (int) (bomberBox.getY()) / GameConfig.TILE_SIZE;
         jBomber = (int) (bomberBox.getX() + bomberBox.getWidth() / 2.0) / GameConfig.TILE_SIZE;
 
@@ -47,7 +46,6 @@ public class AutoPlay extends Bomber {
                     currentDirection = findEntity("item");
                 } else if (EntitiesManager.getInstance().enemies.size() != 0) {
                     currentDirection = findEntity("enemy");
-//                    avoidEnemy();
                 } else if (!EntitiesManager.getInstance().portal.isAppear()) {
                     currentDirection = findEntity("brick");
                 } else if (EntitiesManager.getInstance().coins.size() == 0) {
@@ -55,7 +53,6 @@ public class AutoPlay extends Bomber {
                 } else {
                     currentDirection = findEntity("coin");
                 }
-
             }
             if (EntitiesManager.getInstance().bombs.size() == 0
                     && playerAction == Action.MOVING) {
