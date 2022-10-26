@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 public class GameMode extends VBox {
     private final double DEFAULT_WIDTH = 550;
     private final double DEFAULT_HEIGHT = 300;
+    private Image autoPlayImage;
     private Image classicImage;
 
     public GameMode() {
@@ -24,10 +25,16 @@ public class GameMode extends VBox {
         setSpacing(15);
 
         try {
+            autoPlayImage = new Image(this.getClass().getResource("/UI/GameMode/autoPlay.png").toURI().toString());
             classicImage = new Image(this.getClass().getResource("/UI/GameMode/classic.png").toURI().toString());
         } catch (URISyntaxException e) {
             System.out.println("game mode image");
         }
+
+        String[] describe = {
+                "Watch the AI play.",
+                "Kill enemy and get high score.",
+                "Coming soon."};
 
         Text title = new Text("GAME MODE");
         title.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
@@ -37,9 +44,9 @@ public class GameMode extends VBox {
         modes.setAlignment(Pos.CENTER);
         modes.setSpacing(30);
 
-        Mode classic = new Mode(classicImage, "Classic");
-        Mode training = new Mode(classicImage, "Training");
-        Mode autoPlay = new Mode(classicImage, "Auto Play");
+        Mode autoPlay = new Mode(autoPlayImage, "Auto Play", describe[0]);
+        Mode classic = new Mode(classicImage, "Classic", describe[1]);
+        Mode training = new Mode(autoPlayImage, "Training", describe[2]);
 
         modes.getChildren().addAll(autoPlay, classic, training);
 
@@ -70,7 +77,7 @@ public class GameMode extends VBox {
     }
 
     private class Mode extends VBox {
-        public Mode(Image image, String name) {
+        public Mode(Image image, String name, String describe) {
             reset();
             setAlignment(Pos.CENTER);
             setSpacing(5);
@@ -79,7 +86,8 @@ public class GameMode extends VBox {
             imageView.setFitWidth(DEFAULT_WIDTH / 3 - 10);
             imageView.setFitHeight(DEFAULT_HEIGHT - 150);
 
-            Text description = new Text("Description");
+            Text description = new Text(describe);
+            description.setFill(Color.LIGHTYELLOW);
 
             Label title = new Label(name);
             title.setFont(Font.font("Verdana", FontWeight.BOLD, 18));

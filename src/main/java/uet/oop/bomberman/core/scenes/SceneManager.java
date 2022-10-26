@@ -31,7 +31,7 @@ public class SceneManager {
         BackgroundMusic backgroundMusic = BackgroundMusic.getInstance();
 
         menuScene = MenuScene.getInstance();
-        playScene = new PlayScene();
+        playScene = PlayScene.getInstance();
 
         scene = new Scene(menuScene.getRoot());
         setCurrentScene(SCENES.MENU);

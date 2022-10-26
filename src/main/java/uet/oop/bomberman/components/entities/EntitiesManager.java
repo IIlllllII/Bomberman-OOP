@@ -13,6 +13,7 @@ import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.Action;
+import uet.oop.bomberman.core.scenes.game.BottomBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +121,7 @@ public class EntitiesManager {
             if (enemy.isDone()) {
                 enemies.remove(i);
                 i--;
+                BottomBar.getInstance().updateEnemy();
             } else {
                 BoxCollider enemyBox = null;
                 if (enemy instanceof Banana) {
