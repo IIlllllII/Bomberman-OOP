@@ -157,7 +157,6 @@ public class LevelMap {
                                 entitiesManager.bombers.get(0).setInitialLocation(
                                         j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10);
                                 entitiesManager.bombers.get(0).reset();
-                                entitiesManager.bombers.get(0).updateBoxCollider();
                             }
                             hash = getHash("grass");
                             break;
@@ -344,6 +343,9 @@ public class LevelMap {
     }
 
     public char getHashAt(int i, int j) {
+        if (i < 0 || j < 0 || i >= this.mapHash.length || j >= this.mapHash[0].length) {
+            return getHash("null");
+        }
         return mapHash[i][j];
     }
 
@@ -371,6 +373,9 @@ public class LevelMap {
                 break;
             case "portal":
                 output = 'x';
+                break;
+            case "null":
+                output = '!';
                 break;
             default:
                 break;
