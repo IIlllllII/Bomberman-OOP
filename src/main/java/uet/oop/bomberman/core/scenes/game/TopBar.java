@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.buttons.ButtonCustom;
 
@@ -45,7 +46,7 @@ public class TopBar extends HBox {
         score = 0;
         scoreLabel = new Label(String.format("SCORE: %06d", score));
         scoreLabel.setTextFill(Color.WHITE);
-        scoreLabel.setFont(Font.font(24));
+        scoreLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 
         getChildren().addAll(clock, scoreLabel);
     }

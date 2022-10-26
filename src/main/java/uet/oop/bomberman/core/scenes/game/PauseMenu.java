@@ -19,7 +19,7 @@ public class PauseMenu extends VBox {
     }
 
     private PauseMenu() {
-        setStyle("-fx-background-color: rgba(128, 128, 128, 0.5)");
+        setStyle("-fx-background-color: rgba(128, 128, 128, 0.2)");
         setAlignment(Pos.CENTER);
         setSpacing(40);
         reset();

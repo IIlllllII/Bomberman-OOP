@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 import java.util.concurrent.TimeUnit;
@@ -52,8 +53,8 @@ public class Clocks extends Label {
 
             this.time = time;
             setText(getClockString());
+            setFont(Font.font("Verdana", FontWeight.BOLD, 24));
             setTextFill(Color.WHITE);
-            setFont(Font.font(24));
 
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.5), this);
             scaleTransition.setToX(1.5);
