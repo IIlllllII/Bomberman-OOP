@@ -5,14 +5,18 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.game.*;
+import uet.oop.bomberman.core.scenes.game.filter.LightFilter;
 
 import java.util.List;
 
@@ -34,6 +38,7 @@ public class PlayScene {
     private final LevelMap levelMap = LevelMap.getInstance();
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
+    private final LightFilter filter;
 
     private static class SingletonHelper {
         private static final PlayScene INSTANCE = new PlayScene();
@@ -54,9 +59,17 @@ public class PlayScene {
         layout1 = new Group();
 
         Canvas canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
+
+        // lag
+//        DropShadow dropShadow = new DropShadow(20, Color.LIGHTBLUE);
+//        dropShadow.setSpread(0.8);
+//        canvas.setEffect(dropShadow);
+
         gc = canvas.getGraphicsContext2D();
 
-        layout1.getChildren().addAll(canvas);
+        filter = new LightFilter(150);  // filter 1
+
+        layout1.getChildren().addAll(canvas, filter.getFilter());
 
         // LAYOUT 2
         layout2 = new BorderPane();
@@ -95,6 +108,7 @@ public class PlayScene {
         levelMap.reset();   // level = 0 & bomber.clear() create new bomber
         topBar.reset();     // reset score
         bottomBar.reset();  // reset default item
+        filter.reset();
     }
 
     public void setStatus(STATUS status) {
@@ -160,9 +174,9 @@ public class PlayScene {
             // Handle next level
             levelMap.update();
 
-//            Bomber player = entitiesManager.players.get(0);
-////        filter.update(player.getX() + player.getWidth() / 2.0 - camera.getX(),
-////                player.getY() + player.getHeight() / 2.0 - camera.getY());
+            Bomber player = entitiesManager.bombers.get(0);
+            filter.update(player.getX() + player.getWidth() / 2.0 - camera.getX(),
+                player.getY() + player.getHeight() / 2.0 - camera.getY());
         }
     }
 

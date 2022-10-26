@@ -23,6 +23,7 @@ public class BottomBar extends HBox {
     private int flame = 1;
     private int speed = 1;
     private final Text contain;
+    private final Text day;
     private final LabelItem liveLabel;
     private final LabelItem bombLabel;
     private final LabelItem flameLabel;
@@ -44,9 +45,9 @@ public class BottomBar extends HBox {
         contain.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
         contain.setFill(Color.SNOW);
 
-        Text fps = new Text("      ");
-        fps.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-        fps.setFill(Color.SNOW);
+        day = new Text();
+        day.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        day.setFill(Color.SNOW);
 
         HBox playerInfo = new HBox(7);
         playerInfo.setAlignment(Pos.CENTER);
@@ -73,7 +74,7 @@ public class BottomBar extends HBox {
         itemLayout.getChildren().addAll(liveLabel, bombLabel, flameLabel, speedLabel);
         playerInfo.getChildren().add(itemLayout);
 
-        getChildren().addAll(contain, playerInfo, fps);
+        getChildren().addAll(contain, playerInfo, day);
     }
 
     public void updateEnemy() {
@@ -158,5 +159,9 @@ public class BottomBar extends HBox {
         public void setNumber(int count) {
             number.setText(String.valueOf(count));
         }
+    }
+
+    public void setDay(String status) {
+        day.setText(status);
     }
 }

@@ -94,6 +94,7 @@ public class LevelMap {
     public void prepareNextLevel() {
         levelComplete = true;
         TopBar.getInstance().setClock(15);
+        TopBar.getInstance().getClock().play();
         new Sound(Sound.LEVEL_COMPLETE).play();
 
         //Change all bricks left into coins:
