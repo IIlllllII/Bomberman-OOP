@@ -1,8 +1,32 @@
-# **Bài tập lớn OOP - Bomberman Game**
-## BTL nhóm 7 gồm các thành viên:
-- Trần Đức Vinh, MSV 21020098
-- Lê Viết Đạt, MSV 21020298
-- Nguyễn Ngọc Huy, MSV 21020765
+<h1 align="center"><project-name>Bomberman</h1>
+
+<p align="center"><project-description>Bài tập lớn môn lập trình hướng đối tượng</p>
+
+## Tác giả
+- [Trần Đúc Vinh - MSV 21020098](https://github.com/TORIOP23)
+- [Lê Viết Đạt - MSV 21020298](https://github.com/dat-roy)
+- [Nguyễn Ngọc Huy - MSV 21020765](https://github.com/huy165273)
+
+## Xây dụng với
+- [Java11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
+- [JavaFx](https://openjfx.io/openjfx-docs/)
+
+## Các kĩ thuật lập trình đã sử dụng
+``` bash
+- Lập trình hướng đối tượng
+- Singleton design pattern
+- Thuật toán BFS
+- Thuật toán A* 
+```
+
+## Các chức năng trong game
+``` bash
+- Lựa chọn chế độ chơi (Auto play, Classic)
+- Tùy chỉnh âm thanh 
+- Zoom màn hình 
+- Hiển thị bảng xếp hạng
+- Hiệu ứng ngày đêm 
+```
 
 ## Mô tả về các đối tượng trong trò chơi
 Nếu bạn đã từng chơi Bomberman, bạn sẽ cảm thấy quen thuộc với những đối tượng này. Chúng được được chia làm hai loại chính là nhóm đối tượng động (*Bomber*, *Monster*, *Bomb*) và nhóm đối tượng tĩnh (*Grass*, *Wall*, *Brick*, *Portal*, *Item*).
@@ -51,14 +75,4 @@ Có nhiều loại Enemy trong Bomberman:
 - Khi Bomb nổ, một Flame trung tâm tại vị trí Bomb nổ và bốn Flame tại bốn vị trí ô đơn vị xung quanh vị trí của Bomb xuất hiện theo bốn hướng trên/dưới/trái/phải. Độ dài bốn Flame xung quanh mặc định là 1 đơn vị, được tăng lên khi Bomber sử dụng các Item FlameUp.
 - Khi các Flame xuất hiện, nếu có một đối tượng thuộc loại Brick/Wall nằm trên vị trí một trong các Flame thì độ dài Flame đó sẽ được giảm đi để sao cho Flame chỉ xuất hiện đến vị trí đối tượng Brick/Wall theo hướng xuất hiện. Lúc đó chỉ có đối tượng Brick/Wall bị ảnh hưởng bởi Flame, các đối tượng tiếp theo không bị ảnh hưởng. Còn nếu vật cản Flame là một đối tượng Bomb khác thì đối tượng Bomb đó cũng sẽ nổ ngay lập tức.
 - Sau khi giết hết Enemy và tìm được Portal, tất cả các Brick còn lại sẽ hóa thành Coin, người chơi có nhiêm vụ ăn nhiều Coin nhất có thể trong 15s, hết 15s người chơi được qua màn tiếp theo.
-
-## Các chức năng trong game
-
-- Lựa chọn chế độ chơi (Auto Play, classic, training)
-- Tùy chỉnh âm thanh
-- Zoom màn hình
-- Hướng dẫn chơi
-- Hiện thị bảng xếp hạng
-
-
 

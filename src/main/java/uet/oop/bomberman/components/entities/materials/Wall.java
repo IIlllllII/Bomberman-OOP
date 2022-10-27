@@ -6,6 +6,7 @@ import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -54,7 +55,8 @@ public class Wall extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(walls.get(level - 1), x - camera.getX(), y - camera.getY());
+        gc.drawImage(walls.get(level - 1), x - camera.getX(), y - camera.getY()
+                , GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
     }
 
     @Override
