@@ -39,14 +39,14 @@ public class BottomBar extends HBox {
 
     private BottomBar() {
         setAlignment(Pos.CENTER);
-        setSpacing(180);
+        setSpacing(150);
 
         contain = new Text("ENEMY: " + EntitiesManager.getInstance().enemies.size());
         contain.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
         contain.setFill(Color.SNOW);
 
         day = new Text();
-        day.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        day.setFont(Font.font("Verdana", FontWeight.BOLD, 17));
         day.setFill(Color.SNOW);
 
         HBox playerInfo = new HBox(7);

@@ -59,11 +59,8 @@ public class PlayScene {
         layout1 = new Group();
 
         Canvas canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
-
-        // lag
-//        DropShadow dropShadow = new DropShadow(20, Color.LIGHTBLUE);
-//        dropShadow.setSpread(0.8);
-//        canvas.setEffect(dropShadow);
+        DropShadow dropShadow = new DropShadow(20, Color.LIGHTBLUE);
+        canvas.setEffect(dropShadow);
 
         gc = canvas.getGraphicsContext2D();
 
@@ -108,6 +105,7 @@ public class PlayScene {
         levelMap.reset();   // level = 0 & bomber.clear() create new bomber
         topBar.reset();     // reset score
         bottomBar.reset();  // reset default item
+        filter.reset();
     }
 
     public void setStatus(STATUS status) {
