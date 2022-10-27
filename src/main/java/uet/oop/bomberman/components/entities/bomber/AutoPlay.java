@@ -48,7 +48,9 @@ public class AutoPlay extends Bomber {
                     currentDirection = findEntity("item");
                 } else if (EntitiesManager.getInstance().enemies.size() != 0) {
                     currentDirection = findEntity("enemy");
-                    avoidEnemy();
+                    if(EntitiesManager.getInstance().bombs.size() == 0){
+                        avoidEnemy();
+                    }
                 } else if (!EntitiesManager.getInstance().portal.isAppear()) {
                     currentDirection = findEntity("brick");
                 } else if (EntitiesManager.getInstance().coins.size() == 0) {
