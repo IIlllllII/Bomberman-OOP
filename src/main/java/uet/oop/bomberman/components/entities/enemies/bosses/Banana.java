@@ -18,9 +18,15 @@ import java.util.Map;
 public class Banana extends Enemy {
     private final Map<String, Animation> animationDict = new HashMap<>();
 
+    private final int DEFAULT_BLOOD = 100;
+
     private final BoxCollider movingBox;
 
     private final BoxCollider deathBox;
+
+    private int blood = DEFAULT_BLOOD;
+
+    //private boolean hurt = false;
 
     private int lives = 1;
 
@@ -125,6 +131,14 @@ public class Banana extends Enemy {
     @Override
     public boolean isDone() {
         return animationDict.get("dead").isDone();
+    }
+
+    public void decreaseBlood() {
+        blood -= 1;
+        //System.out.println("Blood: " + blood + " (" + String.format("%.2f", blood / 2.5) + "%)");
+        if (blood <= 0) {
+            destroyed = true;
+        }
     }
 
     @Override

@@ -59,6 +59,7 @@ public class Komori extends Enemy {
         shadowBox = new BoxCollider(0, 0, 26 * 1.5f, 12 * 1.5f);
         updateShadowBox();
         speed = 1;
+        score = 20000;
 
         try {
             healthBar = new Image(getClass().getResource("/UI/bar.png").toURI().toString());
@@ -411,7 +412,7 @@ public class Komori extends Enemy {
         canMoveL = checkMapHash(i, j - 1);
         canMoveU = checkMapHash(i - 1, j);
         canMoveD = checkMapHash(i + 1, j);
-        if ((i - 1) == 1) {
+        if ((i - 1) == 3) {
             canMoveU = false;
         }
         checkMove();
@@ -448,9 +449,8 @@ public class Komori extends Enemy {
     public void decreaseBlood() {
         hurt = true;
         blood -= 1;
-        System.out.println("Blood: " + blood + " (" + String.format("%.2f", blood / 2.5) + "%)");
+        //System.out.println("Blood: " + blood + " (" + String.format("%.2f", blood / 2.5) + "%)");
         if (blood <= 0) {
-            //setDestroyed(true);
             action = Action.DEAD;
         }
     }
