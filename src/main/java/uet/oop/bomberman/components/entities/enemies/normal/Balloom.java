@@ -17,7 +17,7 @@ public class Balloom extends Enemy {
         animationRight.setLoop(true);
         initDirectionList();
 
-        currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        currentDirection = Direction.values()[random.nextInt(Direction.values().length)];
         randomAnimation = false;
         score = 100;
     }
@@ -36,7 +36,7 @@ public class Balloom extends Enemy {
 
             checkMove();
             if (moveY == 0 && moveX == 0 && directionList.size() != 0) {
-                int ran = r.nextInt(directionList.size());
+                int ran = random.nextInt(directionList.size());
                 currentDirection = directionList.get(ran);
             }
         }

@@ -34,13 +34,14 @@ public class Bomb extends Entity {
     public static void init() {
         if (!initialized) {
             bombs = new ArrayList<>();
-            SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            bombs.add(new Sprite(16, 0, 3 * 16, tiles).getFxImage());
-            bombs.add(new Sprite(16, 16, 3 * 16, tiles).getFxImage());
-            bombs.add(new Sprite(16, 32, 3 * 16, tiles).getFxImage());
-            bombs.add(new Sprite(16, 16, 3 * 16, tiles).getFxImage());
-            bombs.add(new Sprite(16, 0, 3 * 16, tiles).getFxImage());
-
+            SpriteSheet bombSheet = new SpriteSheet("/spriteSheet/bomb.png", 256, 128);
+            bombs.add(new Sprite(24, 0, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 24, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 0, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 24, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 0, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 24, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 24 * 3, 0, bombSheet).getFxImage());
             initialized = true;
         }
     }
@@ -234,8 +235,8 @@ public class Bomb extends Entity {
     @Override
     public void render(GraphicsContext gc) {
         if (time < timeBeforeExplode) {
-            gc.drawImage(image, x - camera.getX(), y - camera.getY());
-        } else if (time < timeBeforeExplode + flameTime) {
+            gc.drawImage(image, x - camera.getX(), y - camera.getY(), 28, 28);
+        } else if (time <= timeBeforeExplode + flameTime) {
             flameList.forEach(flame -> flame.render(gc));
         } else {
             done = true;

@@ -16,8 +16,8 @@ public class Dahl extends Enemy {
         animationRight.setLoop(true);
         randomAnimation = false;
         initDirectionList();
-        currentDirection = directionList.get(r.nextInt(directionList.size()));
-        speed = 2;
+        currentDirection = directionList.get(random.nextInt(directionList.size()));
+        speed = 1.6;
         score = 400;
     }
 
@@ -35,7 +35,7 @@ public class Dahl extends Enemy {
 
             checkMove();
             if (moveY == 0 && moveX == 0 && directionList.size() != 0) {
-                int ran = r.nextInt(directionList.size());
+                int ran = random.nextInt(directionList.size());
                 currentDirection = directionList.get(ran);
             }
         }

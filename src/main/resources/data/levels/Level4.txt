@@ -12,7 +12,7 @@
 #*# #*# # # #*# # # # # # # #*#
 #*  3       #*     4  * *    p#
 ###############################
-F B b s f F l l
+F B b b s s f F l l l l B W
 
 Mô tả cấu trúc tệp cấu hình màn chơi:
 1/ Dòng đầu tiên bao gồm 2 số nguyên R, C:

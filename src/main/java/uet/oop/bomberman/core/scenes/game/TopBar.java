@@ -3,10 +3,12 @@ package uet.oop.bomberman.core.scenes.game;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.buttons.ButtonCustom;
 
@@ -16,6 +18,7 @@ public class TopBar extends HBox {
     private final Clocks clock;
     private int score;
     private final Label scoreLabel;
+    private final Label livesLabel;
 
     private static class SingletonHelper {
         private static final TopBar INSTANCE = new TopBar();
@@ -29,7 +32,7 @@ public class TopBar extends HBox {
         setSpacing(50);
         setMaxHeight(40);
         setAlignment(Pos.CENTER);
-        setSpacing(200);
+        setSpacing(120);
 
         try {
             Image pause = new Image(getClass().getResource("/UI/button/pauseButton.png").toURI().toString());
@@ -49,12 +52,26 @@ public class TopBar extends HBox {
         scoreLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 
         getChildren().addAll(clock, scoreLabel);
+
+        try {
+            ImageView imageView = new ImageView(new Image(getClass().getResource("/UI/heart.png").toURI().toString()));
+            imageView.setFitWidth(30);
+            imageView.setFitHeight(25);
+            livesLabel = new Label(" x 0", imageView);
+            livesLabel.setTextFill(Color.WHITE);
+            livesLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+            getChildren().addAll(livesLabel);
+
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void reset() {
         score = 0;
         scoreLabel.setText(String.format("SCORE: %06d", score));
         clock.setTime(Clocks.DEFAULT_TIME);
+        livesLabel.setText(" x " + EntitiesManager.getInstance().bombers.get(0).getLives());
     }
 
     public void setClock(int time) {

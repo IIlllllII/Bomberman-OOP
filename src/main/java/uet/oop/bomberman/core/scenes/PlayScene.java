@@ -101,7 +101,7 @@ public class PlayScene {
     }
 
     public void reset() {
-        System.out.println("call reset");
+        //System.out.println("call reset");
         levelMap.reset();   // level = 0 & bomber.clear() create new bomber
         topBar.reset();     // reset score
         bottomBar.reset();  // reset default item

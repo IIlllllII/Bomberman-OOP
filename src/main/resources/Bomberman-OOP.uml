@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>D:/java/Bomberman-OOP</OriginalElement>
+  <nodes>
+    <node x="3662.73202295581" y="1044.2464070174633">uet.oop.bomberman.core.scenes.menu.Setting</node>
+    <node x="1895.4096003648374" y="1044.2464070174633">uet.oop.bomberman.core.scenes.game.PauseMenu</node>
+    <node x="2610.1688973468345" y="-1039.6275260313423">uet.oop.bomberman.components.entities.LivingEntity</node>
+    <node x="4838.946971349792" y="1044.2464070174633">uet.oop.bomberman.config.Action</node>
+    <node x="5934.62501802396" y="1645.5021556962784">uet.oop.bomberman.core.algo.Node</node>
+    <node x="3275.382966448158" y="1645.5021556962784">uet.oop.bomberman.components.graphics.SpriteSheet</node>
+    <node x="5148.785799320166" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.BombPass</node>
+    <node x="4918.448212775749" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.bosses.Banana</node>
+    <node x="4382.98350238556" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.LivesUp</node>
+    <node x="5404.053231631701" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.BrickPass</node>
+    <node x="5659.3206639432365" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.FlamePass</node>
+    <node x="5914.588096254772" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.SpeedUp</node>
+    <node x="4673.188553660451" y="1645.5021556962784">uet.oop.bomberman.components.maps.LevelMap</node>
+    <node x="4464.393234251296" y="1044.2464070174633">uet.oop.bomberman.core.scenes.menu.Leaderboards</node>
+    <node x="3024.828819397922" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.normal.Minvo</node>
+    <node x="6429.122960877842" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.Coin</node>
+    <node x="5289.470363608634" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.bosses.Komori</node>
+    <node x="2825.070811660324" y="1044.2464070174633">uet.oop.bomberman.core.scenes.game.TopBar</node>
+    <node x="3946.2857600543052" y="1044.2464070174633">uet.oop.bomberman.core.scenes.buttons.ButtonCustom</node>
+    <node x="4547.426061942864" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.bosses.Saru</node>
+    <node x="6173.855528566307" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.Invincible</node>
+    <node x="3083.6245487588194" y="1044.2464070174633">uet.oop.bomberman.core.scenes.SceneManager</node>
+    <node x="5389.054445546783" y="1044.2464070174633">uet.oop.bomberman.core.scenes.game.Clocks</node>
+    <node x="4638.2509346970955" y="-1043.1544037502836">uet.oop.bomberman.components.entities.materials.Portal</node>
+    <node x="2634.396283406498" y="1645.5021556962781">uet.oop.bomberman.core.scenes.game.SpriteAnimation</node>
+    <node x="1837.4096003648374" y="1645.5021556962781">uet.oop.bomberman.core.scenes.menu.SliderShow</node>
+    <node x="2750.535587631547" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.normal.Pass</node>
+    <node x="6554.658688781323" y="1645.5021556962784">uet.oop.bomberman.components.entities.BoxCollider</node>
+    <node x="5926.161919743775" y="1044.2464070174633">uet.oop.bomberman.core.sound.Sound</node>
+    <node x="4297.748235321312" y="-1039.6275260313423">uet.oop.bomberman.components.entities.materials.Wall</node>
+    <node x="4893.518367008631" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.FlameUp</node>
+    <node x="5034.889950463525" y="1645.5021556962784">uet.oop.bomberman.core.scenes.game.RightSideBar</node>
+    <node x="3227.3266867306" y="-1039.6275260313423">uet.oop.bomberman.components.entities.bomb.Bomb</node>
+    <node x="3299.122051164297" y="72.35907890307931">uet.oop.bomberman.components.entities.enemies.normal.Dahl</node>
+    <node x="6323.620531985386" y="-1039.6275260313423">uet.oop.bomberman.components.entities.enemies.bosses.Weapon</node>
+    <node x="2178.963337463333" y="1044.2464070174633">uet.oop.bomberman.components.entities.EntitiesManager</node>
+    <node x="3618.0843632512315" y="1645.5021556962784">uet.oop.bomberman.core.scenes.game.BottomBar</node>
+    <node x="4242.487156857378" y="1645.5021556962784">uet.oop.bomberman.components.graphics.Animation</node>
+    <node x="2485.517074561829" y="1044.2464070174633">uet.oop.bomberman.core.scenes.game.Camera</node>
+    <node x="3693.41797768372" y="63.481946615180505">uet.oop.bomberman.components.entities.enemies.normal.Doria</node>
+    <node x="6758.644546690258" y="1044.2464070174633">uet.oop.bomberman.core.scenes.game.filter.LightFilter</node>
+    <node x="4192.8394971528005" y="1044.2464070174633">uet.oop.bomberman.Main</node>
+    <node x="5794.988699633522" y="-1039.6275260313423">uet.oop.bomberman.components.entities.items.Item</node>
+    <node x="3935.7857600543052" y="1645.5021556962784">uet.oop.bomberman.core.Timers</node>
+    <node x="3992.420672436768" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.normal.Ovape</node>
+    <node x="4638.2509346970955" y="-234.84260093398723">uet.oop.bomberman.components.entities.items.item_types.BombUp</node>
+    <node x="3394.1782858573147" y="1044.2464070174633">uet.oop.bomberman.core.scenes.game.GameOver</node>
+    <node x="2951.889624927328" y="1645.5021556962784">uet.oop.bomberman.core.scenes.MenuScene</node>
+    <node x="3500.4152829306718" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.normal.Balloom</node>
+    <node x="1755.684166605787" y="464.9906583386485">uet.oop.bomberman.components.entities.bomber.Player</node>
+    <node x="5662.608182645279" y="1044.2464070174633">uet.oop.bomberman.core.HighScore</node>
+    <node x="6223.641853402642" y="1645.5021556962784">uet.oop.bomberman.core.scenes.PlayScene</node>
+    <node x="5319.256333448663" y="-1039.6275260313423">uet.oop.bomberman.components.entities.materials.Brick</node>
+    <node x="7492.127173636741" y="1055.2464070174633">uet.oop.bomberman.core.algo.AStar</node>
+    <node x="2276.9029418856676" y="1645.5021556962781">uet.oop.bomberman.core.sound.BackgroundMusic</node>
+    <node x="6904.675524160004" y="1645.5021556962784">uet.oop.bomberman.core.scenes.game.IntroLevel</node>
+    <node x="4123.935999275075" y="-1610.318495250239">uet.oop.bomberman.components.entities.Entity</node>
+    <node x="7186.692359538685" y="1645.5021556962784">uet.oop.bomberman.core.stages.GameStage</node>
+    <node x="2840.281523485129" y="-638.2088456645608">uet.oop.bomberman.components.entities.enemies.Enemy</node>
+    <node x="4978.753634072879" y="-1039.6275260313423">uet.oop.bomberman.components.entities.materials.Grass</node>
+    <node x="5107.500708448288" y="1044.2464070174633">uet.oop.bomberman.config.Direction</node>
+    <node x="6283.403233217016" y="1044.2464070174633">uet.oop.bomberman.components.graphics.Sprite</node>
+    <node x="2476.242355865172" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.normal.Oneal</node>
+    <node x="5630.608182645279" y="1645.5021556962784">uet.oop.bomberman.core.stages.IntroStage</node>
+    <node x="7133.885860163499" y="1044.2464070174633">uet.oop.bomberman.core.scenes.menu.GameMode</node>
+    <node x="3766.037461025956" y="-1039.6275260313423">uet.oop.bomberman.components.entities.bomb.Flame</node>
+    <node x="4278.423367189816" y="61.35907890307931">uet.oop.bomberman.components.entities.enemies.normal.Pontan</node>
+    <node x="5362.591347266598" y="1645.5021556962784">uet.oop.bomberman.config.GameConfig</node>
+    <node x="2134.9491240987973" y="-638.208845664561">uet.oop.bomberman.components.entities.bomber.Bomber</node>
+    <node x="2451.742355865172" y="464.9906583386485">uet.oop.bomberman.components.entities.bomber.AutoPlay</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="uet.oop.bomberman.components.entities.bomb.Bomb" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="-6.362549693240453" y="-327.05793252643343" />
+      <point x="3359.9641370373597" y="-1120.2849815992538" />
+      <point x="4241.518904175912" y="-1120.2849815992538" />
+      <point x="5.582904900837093" y="205.6740621138365" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.materials.Brick" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="1.5441925461245773" y="-183.19435683572965" />
+      <point x="5423.300525994788" y="-1120.2849815992538" />
+      <point x="4241.518904175912" y="-1120.2849815992538" />
+      <point x="5.582904900837093" y="204.81048642313272" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.materials.Portal" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="0.7003151989956677" y="-137.82641834354763" />
+      <point x="4740.7509346970955" y="-1041.4808220938312" />
+      <point x="4740.7509346970955" y="-1119.4730106407906" />
+      <point x="4240.655328485209" y="-1119.4730106407906" />
+      <point x="4.719329210133765" y="205.6740621138365" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.LivesUp" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="2.532152684580069E-4" y="-37.99953312589764" />
+      <point x="4460.483755600829" y="-299.73506348266477" />
+      <point x="5899.488671098636" y="-299.73506348266477" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.bosses.Banana" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="-2.6604230333759915E-4" y="-150.50019865867807" />
+      <point x="5048.447946733446" y="-51.97174100966663" />
+      <point x="2958.2884658054318" y="-51.97174100966663" />
+      <point x="8.506942320302642" y="261.3957018035706" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.bosses.Komori" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="-16.593027898658875" y="-362.0203452167257" />
+      <point x="5405.377335709975" y="-51.97174100966663" />
+      <point x="2958.2884658054318" y="-51.97174100966663" />
+      <point x="8.506942320302642" y="261.3957018035706" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.normal.Minvo" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="1.8226255747836149" y="-40.52034521672567" />
+      <point x="3119.6514449727056" y="-51.97174100966663" />
+      <point x="2958.6338960817134" y="-51.97174100966663" />
+      <point x="8.852372596584246" y="261.3957018035706" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.materials.Grass" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="-2.791499242296595" y="-84.62614468108154" />
+      <point x="5078.462134830583" y="-1120.2849815992538" />
+      <point x="4240.655328485209" y="-1120.2849815992538" />
+      <point x="4.719329210133765" y="205.2422742684846" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.Coin" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="-0.11268800879952323" y="-96.5611887606054" />
+      <point x="6531.510272869043" y="-299.7350634826648" />
+      <point x="5899.488671098636" y="-299.7350634826648" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.Item" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="-2.853488604159793E-5" y="-337.5002142579262" />
+      <point x="5899.488671098636" y="-1119.4730106407906" />
+      <point x="4241.518904175912" y="-1119.4730106407906" />
+      <point x="5.582904900837093" y="204.9906057628375" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.FlamePass" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="2.0710034732474014E-4" y="-37.99957747197908" />
+      <point x="5736.820871043584" y="-299.7350634826648" />
+      <point x="5899.488671098636" y="-299.7350634826648" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.normal.Dahl" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="0.805756301279871" y="-24.048946086786827" />
+      <point x="3356.4278074655767" y="-51.97174100966663" />
+      <point x="2958.2884658054318" y="-51.97174100966663" />
+      <point x="8.506942320302642" y="261.7411320798521" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.bosses.Saru" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="-1.3075321294309106E-4" y="-172.50040233334846" />
+      <point x="4677.425931189651" y="-51.97174100966663" />
+      <point x="2958.2884658054318" y="-51.97174100966663" />
+      <point x="8.506942320302642" y="261.0502715272891" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.normal.Doria" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="-3.797374047280755E-4" y="-49.00007849323168" />
+      <point x="3802.9175979463153" y="-51.97174100966663" />
+      <point x="2958.6338960817134" y="-51.97174100966663" />
+      <point x="8.852372596584246" y="260.7048412510076" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.BrickPass" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="-3.859457228827523E-4" y="-38.000135916160446" />
+      <point x="5481.552845685978" y="-299.73506348266477" />
+      <point x="5899.488699633522" y="-299.73506348266477" />
+      <point x="5899.488699633522" y="-338.73933662236" />
+      <point x="5899.488671098636" y="-338.73933662236" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.SpeedUp" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="-1.677036516412045E-4" y="-62.5003611082177" />
+      <point x="5994.08792855112" y="-299.73506348266477" />
+      <point x="5930.837923595806" y="-299.73506348266477" />
+      <point x="5930.837923595806" y="-300.3382085618696" />
+      <point x="5899.488671098636" y="-300.3382085618696" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.LivingEntity" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="2.7448255559647805E-4" y="-150.50010341074292" />
+      <point x="2727.16917182939" y="-1120.2849815992538" />
+      <point x="4241.518904175912" y="-1120.2849815992538" />
+      <point x="5.582904900837093" y="205.13370409472236" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.FlameUp" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="2.754141960394918E-4" y="-37.999811799040856" />
+      <point x="4971.018642422827" y="-299.73506348266477" />
+      <point x="5899.488671098636" y="-299.73506348266477" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.materials.Wall" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="8.7263736538398" y="-83.33078114502587" />
+      <point x="4408.974608975152" y="-1120.2849815992538" />
+      <point x="4240.655328485209" y="-1120.2849815992538" />
+      <point x="4.719329210133765" y="204.19857923807604" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.bomb.Flame" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="1.5702850868792666" y="-226.15436722824438" />
+      <point x="3903.1077461128352" y="-1120.2849815992538" />
+      <point x="4241.08711633056" y="-1120.2849815992538" />
+      <point x="5.151117055484974" y="205.2422742684846" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.normal.Ovape" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="4.437568259163527E-4" y="-95.50014457851881" />
+      <point x="4110.421116193595" y="-51.97174100966657" />
+      <point x="2958.6338960817134" y="-51.97174100966657" />
+      <point x="8.852372596584246" y="261.3957018035706" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.normal.Oneal" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="2.955736558760691E-4" y="-38.00017069031543" />
+      <point x="2569.242651438828" y="-51.97174100966663" />
+      <point x="2958.6338960817134" y="-51.97174100966663" />
+      <point x="8.852372596584246" y="261.3957018035706" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.BombUp" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="4.4021816393069457E-4" y="-37.999696200391384" />
+      <point x="4715.7513749152595" y="-299.73506348266477" />
+      <point x="5899.488671098636" y="-299.73506348266477" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.bosses.Weapon" target="uet.oop.bomberman.components.entities.Entity" relationship="GENERALIZATION">
+      <point x="9.423653687942533" y="-149.8341181563203" />
+      <point x="6442.544185673329" y="-1119.4730106407906" />
+      <point x="4241.518904175912" y="-1119.4730106407906" />
+      <point x="5.582904900837093" y="205.2422742684846" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.bomber.Player" target="uet.oop.bomberman.components.entities.bomber.Bomber" relationship="GENERALIZATION">
+      <point x="1.419732437852872E-4" y="-48.99984912327119" />
+      <point x="1869.6843085790306" y="340.47607468148686" />
+      <point x="2248.0284934605947" y="340.47607468148686" />
+      <point x="-13.42063063820251" y="456.26606253779687" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.BombPass" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="25.312371772149163" y="-37.99970626566051" />
+      <point x="5251.598171092315" y="-299.73506348266477" />
+      <point x="5899.488671098636" y="-299.73506348266477" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.normal.Pontan" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="10.639696702646688" y="-43.28464565175625" />
+      <point x="4398.563063892463" y="-51.97174100966663" />
+      <point x="2958.6338960817134" y="-51.97174100966663" />
+      <point x="8.852372596584246" y="261.3957018035706" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.Enemy" target="uet.oop.bomberman.components.entities.LivingEntity" relationship="GENERALIZATION">
+      <point x="15.00025050440945" y="-260.5001369555413" />
+      <point x="2964.7817739895386" y="-680.8381820029128" />
+      <point x="2729.6566040190787" y="-680.8381820029128" />
+      <point x="2.487706672244258" y="150.36523020925574" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.bomber.Bomber" target="uet.oop.bomberman.components.entities.LivingEntity" relationship="GENERALIZATION">
+      <point x="1.8507613003748702E-4" y="-458.50027025374425" />
+      <point x="2261.4493091749273" y="-680.8381820029128" />
+      <point x="2729.479355108561" y="-680.8381820029128" />
+      <point x="2.3104577617264113" y="148.31056774714898" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.normal.Balloom" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="1.8272752640768886E-5" y="-26.99954655853972" />
+      <point x="3556.9153012034244" y="-51.97174100966663" />
+      <point x="2958.2884658054318" y="-51.97174100966663" />
+      <point x="8.506942320302642" y="260.7048412510076" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.bomber.AutoPlay" target="uet.oop.bomberman.components.entities.bomber.Bomber" relationship="GENERALIZATION">
+      <point x="4.0906278136053515" y="-250.47193141976686" />
+      <point x="2573.3329836787775" y="340.47607468148686" />
+      <point x="2248.8718290960473" y="340.47607468148686" />
+      <point x="-12.577295002749906" y="458.0228650295162" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.items.item_types.Invincible" target="uet.oop.bomberman.components.entities.items.Item" relationship="GENERALIZATION">
+      <point x="2.153390023522661E-4" y="-38.00008862222637" />
+      <point x="6251.355743905309" y="-299.73506348266477" />
+      <point x="5899.488671098636" y="-299.73506348266477" />
+      <point x="-2.853488604159793E-5" y="337.4997857420738" />
+    </edge>
+    <edge source="uet.oop.bomberman.components.entities.enemies.normal.Pass" target="uet.oop.bomberman.components.entities.enemies.Enemy" relationship="GENERALIZATION">
+      <point x="-4.426983196026413E-6" y="-37.99970808636397" />
+      <point x="2843.535583204564" y="-51.97174100966663" />
+      <point x="2958.2884658054318" y="-51.97174100966663" />
+      <point x="8.506942320302642" y="261.7411320798521" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6071129672174438" showDependencies="false" x="4683.480644851474" y="-1047.0944149272518" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

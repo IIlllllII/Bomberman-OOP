@@ -57,7 +57,7 @@ public class Banana extends Enemy {
         animationDict.get("dead").setLoop(false);
 
         initDirectionList();
-        currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        currentDirection = Direction.values()[random.nextInt(Direction.values().length)];
         score = 2000;
     }
 
@@ -142,7 +142,7 @@ public class Banana extends Enemy {
         checkMove();
         if (moveY == 0 && moveX == 0) {
             if (directionList.size() != 0) {
-                int ran = r.nextInt(directionList.size());
+                int ran = random.nextInt(directionList.size());
                 currentDirection = directionList.get(ran);
             }
         }

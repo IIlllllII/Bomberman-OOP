@@ -146,7 +146,7 @@ public class Pontan extends Enemy {
             }
         }
 
-        int ran = r.nextInt(directionList.size());
+        int ran = random.nextInt(directionList.size());
         return directionList.get(ran);
     }
 }

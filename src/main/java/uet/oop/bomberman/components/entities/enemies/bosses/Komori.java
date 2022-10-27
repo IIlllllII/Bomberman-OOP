@@ -395,7 +395,7 @@ public class Komori extends Enemy {
         }
         checkMove();
         if (moveY == 0 && moveX == 0 && directionList.size() != 0) {
-            int ran = r.nextInt(directionList.size());
+            int ran = random.nextInt(directionList.size());
             currentDirection = directionList.get(ran);
         }
         centerX += moveX;

@@ -165,7 +165,7 @@ public class Pass extends Enemy {
         if (directionList.size() == 0) {
             return null;
         }
-        int ran = r.nextInt(directionList.size());
+        int ran = random.nextInt(directionList.size());
         return directionList.get(ran);
     }
 }
