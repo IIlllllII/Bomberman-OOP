@@ -39,8 +39,8 @@ public class Brick extends Entity {
                 bricks.add(new Sprite(16, 16, 5 * 16, newTiles).getFxImage());
                 bricks.add(new Sprite(16, 5 * 16, 0, newTiles).getFxImage());
                 //Map boss
-                bricks.add(new Sprite(16, 4 * 16, 0, newTiles).getFxImage());
-                bricks.add(new Sprite(16, 4 * 16, 0, newTiles).getFxImage());
+                bricks.add(new Sprite(16, 5 * 16, 0, newTiles).getFxImage());
+
 
                 brickExplodes.add(new Sprite(16, 7 * 16, 1 * 16, tiles).getFxImage());
                 brickExplodes.add(new Sprite(16, 7 * 16, 2 * 16, tiles).getFxImage());

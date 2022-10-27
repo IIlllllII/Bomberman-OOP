@@ -24,7 +24,7 @@ public abstract class Bomber extends LivingEntity {
     private static final Map<String, Sprite[]> spritesDict = new HashMap<>();
     private static boolean initialized = false;
     public static final double DEFAULT_SPEED = 2;
-    public static final int DEFAULT_LIVES = 3;
+    public static final int DEFAULT_LIVES = 5;
 
     private final List<Item> eatenItems = new ArrayList<>();
 

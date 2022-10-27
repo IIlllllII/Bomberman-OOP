@@ -78,13 +78,24 @@ public class EntitiesManager {
 
         if (LevelMap.getInstance().getLevel() >= 8) {
             if (enemies.isEmpty()) {
-                LevelMap.getInstance().getMapHash()[5][15]
+                LevelMap.getInstance().getMapHash()[1][16]
                         = LevelMap.getInstance().getHash("portal");
                 portal = new Portal(
-                        15 * GameConfig.TILE_SIZE,
-                        5 * GameConfig.TILE_SIZE
+                        16 * GameConfig.TILE_SIZE,
+                        GameConfig.TILE_SIZE
                 );
                 portal.setAppear(true);
+            }
+
+            if (enemies.size() == 1) {
+                if (LevelMap.getInstance().getMapHash()[20][16] == LevelMap.getInstance().getHash("wall")) {
+                    LevelMap.getInstance().setHashAt(20, 16, "brick");
+                    bricks.add(new Brick(
+                            16 * GameConfig.TILE_SIZE,
+                            20 * GameConfig.TILE_SIZE,
+                            LevelMap.getInstance().getLevel()
+                    ));
+                }
             }
         }
 
@@ -168,8 +179,7 @@ public class EntitiesManager {
                         if (enemy instanceof Banana) {
                             BoxCollider enemyBox = ((Banana) enemy).getDeathBox();
                             if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
-                                //TODO:
-                                ((Banana) enemy).decreaseLives();
+                                ((Banana) enemy).decreaseBlood();
                             }
                         } else if (enemy instanceof Komori) {
                             BoxCollider enemyBox = ((Komori) enemy).getShadowBox();
