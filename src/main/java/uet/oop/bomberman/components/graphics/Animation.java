@@ -3,7 +3,7 @@ package uet.oop.bomberman.components.graphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 
 public class Animation {
     private final Image image;
@@ -30,7 +30,7 @@ public class Animation {
     private boolean done;
     private boolean loop;
     // Get Delta Time between each frame
-    private Timer timer;
+    private Timers timers;
 
     /**
      *
@@ -59,7 +59,7 @@ public class Animation {
         this.dHeight = GameConfig.TILE_SIZE;
         this.paddingX = 0;
 
-        timer = Timer.getInstance();
+        timers = Timers.getInstance();
         timePerFrame = totalTime / count;
         reset();
     }
@@ -95,7 +95,7 @@ public class Animation {
         this.dHeight = dHeight;
         this.paddingX = paddingX;
 
-        timer = Timer.getInstance();
+        timers = Timers.getInstance();
         timePerFrame = totalTime / count;
         reset();
     }
@@ -123,7 +123,7 @@ public class Animation {
 
     public void update() {
         if (!done) {
-            calcTime += timer.getDeltaTime();
+            calcTime += timers.getDeltaTime();
             if (calcTime >= totalTime) {
                 if (loop) {
                     calcTime = 0.0f;

@@ -12,12 +12,13 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.bomb.Flame;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.core.HighScore;
 import uet.oop.bomberman.core.scenes.MenuScene;
+import uet.oop.bomberman.core.scenes.game.RightSideBar;
+import uet.oop.bomberman.core.sound.BackgroundMusic;
 
 import java.net.URISyntaxException;
 
@@ -39,7 +40,7 @@ public class IntroStage {
 
         Group root = new Group();
         try {
-            Image background = new Image(getClass().getResource("/intro.png").toURI().toString());
+            Image background = new Image(getClass().getResource("/UI/intro.jpg").toURI().toString());
             ImageView imageView = new ImageView(background);
             imageView.setFitWidth(GameConfig.SCENE_WIDTH);
             imageView.setFitHeight(GameConfig.SCENE_HEIGHT);
@@ -64,7 +65,7 @@ public class IntroStage {
         {
             progressBar.setPrefWidth(GameConfig.SCENE_WIDTH + 10);
             progressBar.setLayoutX(-5);
-            progressBar.setLayoutY(GameConfig.SCENE_HEIGHT * 7 / 8.0);
+            progressBar.setLayoutY(GameConfig.SCENE_HEIGHT * 10 / 11.0);
             ColorAdjust colorAdjust = new ColorAdjust();
             colorAdjust.setInput(new Reflection());
             progressBar.setEffect(colorAdjust);
@@ -75,9 +76,9 @@ public class IntroStage {
                 }
 
                 @Override
-                protected void interpolate(double frac) {
-                    colorAdjust.setHue(0.25 - frac / 2);
-                    progressBar.setProgress(frac);
+                protected void interpolate(double frag) {
+                    colorAdjust.setHue(0.25 - frag / 2);
+                    progressBar.setProgress(frag);
                 }
             };
             progressAnimation.play();
@@ -93,7 +94,8 @@ public class IntroStage {
 
         (new Thread(() -> {
             MenuScene.init();
-            HighScore.init();
+            BackgroundMusic.init();
+            RightSideBar.init();
             SpriteSheet.init();
             LevelMap.init();
             Bomb.init();

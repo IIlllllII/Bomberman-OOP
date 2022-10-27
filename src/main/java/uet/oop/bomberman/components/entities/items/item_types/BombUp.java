@@ -1,8 +1,9 @@
 package uet.oop.bomberman.components.entities.items.item_types;
 
+import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.items.Item;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.bomber.Bomber;
 
 public class BombUp extends Item {
     /**
@@ -14,9 +15,15 @@ public class BombUp extends Item {
 
     @Override
     public void changePower() {
-        Bomber bomber = EntitiesManager.getInstance().players.get(0);
-        bomber.setBombMax(bomber.getBombMax() + 1);
-        eaten = false;
+        Bomber bomber = EntitiesManager.getInstance().bombers.get(0);
+        if(bomber.getBombMax() < 10){
+            bomber.setBombMax(bomber.getBombMax() + 1);
+        }
         done = true;
+    }
+
+    @Override
+    public Image getImage() {
+        return bombUp;
     }
 }

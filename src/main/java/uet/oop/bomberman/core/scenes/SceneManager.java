@@ -2,7 +2,7 @@ package uet.oop.bomberman.core.scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import uet.oop.bomberman.core.sound.Music;
+import uet.oop.bomberman.core.sound.BackgroundMusic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,6 @@ public class SceneManager {
     private final MenuScene menuScene;
     private final PlayScene playScene;
     private final Scene scene;
-    private Music music;
 
     private final List<KeyCode> inputList = new ArrayList<>();
 
@@ -29,21 +28,16 @@ public class SceneManager {
     }
 
     private SceneManager() {
+        BackgroundMusic backgroundMusic = BackgroundMusic.getInstance();
+
         menuScene = MenuScene.getInstance();
-        playScene = new PlayScene();
+        playScene = PlayScene.getInstance();
 
         scene = new Scene(menuScene.getRoot());
         setCurrentScene(SCENES.MENU);
-
-        music = new Music("src/main/resources/sound/Customs/Outside-calvin-harris.mp3", true);
-        music.playMusic();
     }
 
-    public SCENES getCurrentScene() {
-        return currentScene;
-    }
-
-    void setCurrentScene(SCENES primaryScene) {
+    public void setCurrentScene(SCENES primaryScene) {
         if (primaryScene == SCENES.MENU) {
             currentScene = SCENES.MENU;
             scene.setRoot(menuScene.getRoot());
@@ -58,6 +52,7 @@ public class SceneManager {
         if (primaryScene == SCENES.PLAY) {
             currentScene = SCENES.PLAY;
             scene.setRoot(playScene.getRoot());
+            playScene.reset();
 
             scene.setOnKeyPressed(event -> {
                 KeyCode code = event.getCode();

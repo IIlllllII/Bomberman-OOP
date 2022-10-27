@@ -7,7 +7,7 @@ import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.ArrayList;
@@ -15,15 +15,16 @@ import java.util.List;
 
 public class Bomb extends Entity {
     public static boolean initialized = false;
+    public static final int DEFAULT_FLAME_LENGTH = 1;
     private Image image;
     private static List<Image> bombs;
     private LevelMap levelMap = LevelMap.getInstance();
     private final List<Flame> flameList = new ArrayList<>();
     private boolean allowPass = true;  // cho phép bomber vượt qua
     private boolean explode = false;
-    private static int flameLength = 1;
+    private static int flameLength = DEFAULT_FLAME_LENGTH;
     private double timeBeforeExplode = 2000;
-    private final double flameTime = 1000;
+    private final double flameTime = 500;
     private boolean hasFlame = false;
     private double time = 0;
     private boolean done = false;
@@ -34,10 +35,14 @@ public class Bomb extends Entity {
     public static void init() {
         if (!initialized) {
             bombs = new ArrayList<>();
-            SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            bombs.add(new Sprite(16, 0, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 16, 3 * 16, tiles, 15, 15).getFxImage());
-            bombs.add(new Sprite(16, 32, 3 * 16, tiles, 15, 15).getFxImage());
+            SpriteSheet bombSheet = new SpriteSheet("/spriteSheet/bomb.png", 256, 128);
+            bombs.add(new Sprite(24, 0, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 24, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 0, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 24, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 0, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 24, 0, bombSheet).getFxImage());
+            bombs.add(new Sprite(24, 24 * 3, 0, bombSheet).getFxImage());
             initialized = true;
         }
     }
@@ -96,12 +101,12 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-        time += Timer.getInstance().getDeltaTime();
+        time += Timers.getInstance().getDeltaTime();
         if (!explode) {
             if (allowPass) {
-                double subX = EntitiesManager.getInstance().players.get(0).getX() - this.x;
+                double subX = EntitiesManager.getInstance().bombers.get(0).getX() - this.x;
                 subX = Math.abs(subX);
-                double subY = EntitiesManager.getInstance().players.get(0).getY() - this.y;
+                double subY = EntitiesManager.getInstance().bombers.get(0).getY() - this.y;
                 subY = Math.abs(subY);
                 if (subX > 20 || subY > 20) {
                     allowPass = false;
@@ -116,9 +121,9 @@ public class Bomb extends Entity {
         } else {
             if (!hasFlame) {
                 explosion();
-                new Sound(Sound.EXPLODE_SOUND).playSound();
+                new Sound(Sound.EXPLODE, flameLength / 6.0).play();
             }
-            flameList.forEach(flame -> flame.update());
+            flameList.forEach(Flame::update);
         }
     }
 
@@ -231,8 +236,8 @@ public class Bomb extends Entity {
     @Override
     public void render(GraphicsContext gc) {
         if (time < timeBeforeExplode) {
-            gc.drawImage(image, x - camera.getX(), y - camera.getY());
-        } else if (time < timeBeforeExplode + flameTime) {
+            gc.drawImage(image, x - camera.getX(), y - camera.getY(), 28, 28);
+        } else if (time <= timeBeforeExplode + flameTime) {
             flameList.forEach(flame -> flame.render(gc));
         } else {
             done = true;

@@ -1,5 +1,6 @@
 package uet.oop.bomberman.components.entities.items.item_types;
 
+import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.items.Item;
 
@@ -9,16 +10,23 @@ public class BrickPass extends Item {
      */
     public BrickPass(double x, double y){
         super(x, y, brickPass);
-        setTimePowerUp(60000);
+        setTimePowerUp(45000);
     }
 
     @Override
     public void changePower() {
-        EntitiesManager.getInstance().players.get(0).setCanPassBrick(true);
+        EntitiesManager.getInstance().bombers.get(0).setCanPassBrick(true);
         if(time >= timePowerUp){
-            EntitiesManager.getInstance().players.get(0).setCanPassBrick(false);
-            eaten = false;
+            EntitiesManager.getInstance().bombers.get(0).setCanPassBrick(false);
             done = true;
+            EntitiesManager.getInstance().bombers.get(0).setCanResetLocation(true);
         }
     }
+
+    @Override
+    public Image getImage() {
+        return brickPass;
+    }
+
+
 }

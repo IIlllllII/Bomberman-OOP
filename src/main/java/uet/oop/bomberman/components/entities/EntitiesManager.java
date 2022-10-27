@@ -4,14 +4,16 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
+import uet.oop.bomberman.components.entities.enemies.bosses.Komori;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.Coin;
-import uet.oop.bomberman.components.entities.players.Bomber;
+import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
-import uet.oop.bomberman.config.CharacterStatus;
+import uet.oop.bomberman.config.Action;
+import uet.oop.bomberman.core.scenes.game.BottomBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.List;
  * https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
  */
 public class EntitiesManager {
-    public List<Bomber> players = new ArrayList<>();
+    public List<Bomber> bombers = new ArrayList<>();
     public List<Bomb> bombs = new ArrayList<>();
     public List<Brick> bricks = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
@@ -49,18 +51,53 @@ public class EntitiesManager {
         bombs.forEach(entity -> entity.render(gc));
         bricks.forEach(entity -> entity.render(gc));
         coins.forEach(entity -> entity.render(gc));
-        enemies.forEach(enemy -> enemy.render(gc));
-        players.forEach(player -> player.render(gc));
+        enemies.forEach(enemy -> {
+            if (!(enemy instanceof Banana || enemy instanceof Komori)) {
+                enemy.render(gc);
+            }
+            if (enemy instanceof Komori) {
+                ((Komori) enemy).renderShadow(gc);
+            }
+        });
+        bombers.forEach(player -> player.render(gc));
+        enemies.forEach(enemy -> {
+            if (enemy instanceof Banana || enemy instanceof Komori) {
+                enemy.render(gc);
+            }
+        });
     }
 
     public void update() {
-        players.forEach(Entity::update);
+        bombers.forEach(Entity::update);
         checkCollision();
 
         bricks.forEach(Brick::update);
         enemies.forEach(Entity::update);
         items.forEach(Entity::update);
         coins.forEach(Coin::update);
+
+        if (LevelMap.getInstance().getLevel() >= 8) {
+            if (enemies.isEmpty()) {
+                LevelMap.getInstance().getMapHash()[1][16]
+                        = LevelMap.getInstance().getHash("portal");
+                portal = new Portal(
+                        16 * GameConfig.TILE_SIZE,
+                        GameConfig.TILE_SIZE
+                );
+                portal.setAppear(true);
+            }
+
+            if (enemies.size() == 1) {
+                if (LevelMap.getInstance().getMapHash()[20][16] == LevelMap.getInstance().getHash("wall")) {
+                    LevelMap.getInstance().setHashAt(20, 16, "brick");
+                    bricks.add(new Brick(
+                            16 * GameConfig.TILE_SIZE,
+                            20 * GameConfig.TILE_SIZE,
+                            LevelMap.getInstance().getLevel()
+                    ));
+                }
+            }
+        }
 
         if (enemies.size() == 0) {
             portal.setCanPass(true);
@@ -80,13 +117,14 @@ public class EntitiesManager {
     }
 
     private void checkCollision() {
-        BoxCollider bomberBox = players.get(0).getBomberBox();
+        BoxCollider bomberBox = bombers.get(0).getBomberBox();
 
         items.forEach(item -> {
             if (item.isAppear()) {
                 BoxCollider itemBox = new BoxCollider(item.getX(), item.getY());
                 if (bomberBox.isCollidedWith(itemBox)) {
                     item.setEaten(true);
+                    bombers.get(0).addItem(item);
                 }
             }
         });
@@ -96,7 +134,7 @@ public class EntitiesManager {
                 BoxCollider coinBox = new BoxCollider(coin.getX(), coin.getY());
                 if (bomberBox.isCollidedWith(coinBox)) {
                     coin.setEaten(true);
-                    coin.setAppear(false);
+                    //coin.setAppear(false);
                 }
             }
         });
@@ -106,15 +144,23 @@ public class EntitiesManager {
             if (enemy.isDone()) {
                 enemies.remove(i);
                 i--;
+                BottomBar.getInstance().updateEnemy();
             } else {
-                BoxCollider enemyBox;
+                BoxCollider enemyBox = null;
                 if (enemy instanceof Banana) {
-                    enemyBox = ((Banana) enemy).getBoxCollider();
+                    enemyBox = ((Banana) enemy).getDeathBox();
+                } else if (enemy instanceof Komori) {
+                    enemyBox = ((Komori) enemy).getShadowBox();
+                    ((Komori) enemy).checkWeaponCollision(bomberBox);
                 } else {
                     enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
                 }
-                if ( bomberBox.isCollidedWith(enemyBox) && !players.get(0).isInvincible()) {
-                    players.get(0).setPlayerStatus(CharacterStatus.DEAD);
+                if (!enemy.isDestroyed() && bomberBox.isCollidedWith(enemyBox) && !bombers.get(0).isInvincible()) {
+                    if (enemy instanceof Komori) {
+                        ((Komori) enemy).setAction(Action.IDLE);
+                        ((Komori) enemy).setFlying(false);
+                    }
+                    bombers.get(0).setPlayerAction(Action.DEAD);
                 }
             }
         }
@@ -124,16 +170,21 @@ public class EntitiesManager {
                 if (! flame.isDone()) {
                     BoxCollider flameBox = new BoxCollider(flame.getX(), flame.getY());
 
-                    if (bomberBox.isCollidedWith(flameBox) && !players.get(0).isCanPassFlame()
-                            && !players.get(0).isInvincible()) {
-                        players.get(0).setPlayerStatus(CharacterStatus.DEAD);
+                    if (bomberBox.isCollidedWith(flameBox) && !bombers.get(0).isCanPassFlame()
+                            && !bombers.get(0).isInvincible()) {
+                        bombers.get(0).setPlayerAction(Action.DEAD);
                     }
 
                     enemies.forEach(enemy -> {
                         if (enemy instanceof Banana) {
-                            BoxCollider enemyBox = ((Banana) enemy).getBoxCollider();
+                            BoxCollider enemyBox = ((Banana) enemy).getDeathBox();
                             if (!enemy.isDestroyed() && enemyBox.isCollidedWith(flameBox)) {
-                                ((Banana) enemy).decreaseLives();
+                                ((Banana) enemy).decreaseBlood();
+                            }
+                        } else if (enemy instanceof Komori) {
+                            BoxCollider enemyBox = ((Komori) enemy).getShadowBox();
+                            if (((Komori) enemy).isHurt(enemyBox.isCollidedWith(flameBox))) {
+                                ((Komori) enemy).decreaseBlood();
                             }
                         } else {
                             BoxCollider enemyBox = new BoxCollider(enemy.getX(), enemy.getY(), 30, 30);
@@ -151,7 +202,7 @@ public class EntitiesManager {
      * Renew all entities when switching to another level
      */
     public void renewEntities() {
-        players.clear();
+        //players.clear();
         bombs.clear();
         bricks.clear();
         items.clear();

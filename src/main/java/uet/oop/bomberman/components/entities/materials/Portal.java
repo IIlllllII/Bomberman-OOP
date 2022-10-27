@@ -15,7 +15,7 @@ public class Portal extends Entity {
     public static void init() {
         if (!initialized) {
             SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            portal = new Sprite(16, 4 * 16, 0, tiles, 15, 15).getFxImage();
+            portal = new Sprite(16, 4 * 16, 0, tiles).getFxImage();
             initialized = true;
         }
     }

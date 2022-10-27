@@ -5,12 +5,13 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
-import uet.oop.bomberman.core.Timer;
+import uet.oop.bomberman.core.Timers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Flame extends Entity {
+    public static final int MAX_LENGTH = 6;
     private static boolean initialized = false;
     private static final List<Image> bombExploded = new ArrayList<>();
     private static final List<Image> explosionVertical = new ArrayList<>();
@@ -27,40 +28,47 @@ public class Flame extends Entity {
     private final FlameDirection flameDirection;
     private final boolean last;                 // Kiểm tra kết đuôi ngọn lửa
     private double time = 0;                    // Thời gian tính từ lúc lửa bắt đầu xuất hiện
-    private final double flameTime = 300;      // Thời gian lửa hiện lên
+    private final double flameTime = 500;      // Thời gian lửa hiện lên
 
     private boolean done;
 
     public static void init() {
         if (!initialized) {
-            SpriteSheet tiles = new SpriteSheet("/spriteSheet/classic.png", 256, 256);
-            bombExploded.add(new Sprite(16, 0, 4 * 16, tiles, 16, 16).getFxImage());
-            bombExploded.add(new Sprite(16, 0, 5 * 16, tiles, 16, 16).getFxImage());
-            bombExploded.add(new Sprite(16, 0, 6 * 16, tiles, 16, 16).getFxImage());
+            SpriteSheet tiles = new SpriteSheet("/spriteSheet/bomb.png", 256, 128);
+            bombExploded.add(new Sprite(24, 0, 4 * 24, tiles).getFxImage());
+            bombExploded.add(new Sprite(24, 0, 3 * 24, tiles).getFxImage());
+            bombExploded.add(new Sprite(24, 0, 2 * 24, tiles).getFxImage());
+            bombExploded.add(new Sprite(24, 0, 1 * 24, tiles).getFxImage());
 
-            explosionVertical.add(new Sprite(16, 1 * 16, 5 * 16, tiles, 16, 16).getFxImage());
-            explosionVertical.add(new Sprite(16, 2 * 16, 5 * 16, tiles, 16, 16).getFxImage());
-            explosionVertical.add(new Sprite(16, 3 * 16, 5 * 16, tiles, 16, 16).getFxImage());
+            explosionVertical.add(new Sprite(24, 5 * 24, 4 * 24, tiles).getFxImage());
+            explosionVertical.add(new Sprite(24, 5 * 24, 3 * 24, tiles).getFxImage());
+            explosionVertical.add(new Sprite(24, 5 * 24, 2 * 24, tiles).getFxImage());
+            explosionVertical.add(new Sprite(24, 5 * 24, 1 * 24, tiles).getFxImage());
 
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 7 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontal.add(new Sprite(16, 1 * 16, 9 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontal.add(new Sprite(24, 3 * 24, 4 * 24, tiles).getFxImage());
+            explosionHorizontal.add(new Sprite(24, 3 * 24, 3 * 24, tiles).getFxImage());
+            explosionHorizontal.add(new Sprite(24, 3 * 24, 2 * 24, tiles).getFxImage());
+            explosionHorizontal.add(new Sprite(24, 3 * 24, 1 * 24, tiles).getFxImage());
 
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 7 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalLeftLast.add(new Sprite(16, 0, 9 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(24, 2 * 24, 4 * 24, tiles).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(24, 2 * 24, 3 * 24, tiles).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(24, 2 * 24, 2 * 24, tiles).getFxImage());
+            explosionHorizontalLeftLast.add(new Sprite(24, 2 * 24, 1 * 24, tiles).getFxImage());
 
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 7 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 8 * 16, tiles, 16, 16).getFxImage());
-            explosionHorizontalRightLast.add(new Sprite(16, 2 * 16, 9 * 16, tiles, 16, 16).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(24, 4 * 24, 4 * 24, tiles).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(24, 4 * 24, 3 * 24, tiles).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(24, 4 * 24, 2 * 24, tiles).getFxImage());
+            explosionHorizontalRightLast.add(new Sprite(24, 4 * 24, 1 * 24, tiles).getFxImage());
 
-            explosionVerticalTopLast.add(new Sprite(16, 1* 16, 4 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalTopLast.add(new Sprite(16, 2 * 16, 4 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalTopLast.add(new Sprite(16, 3 * 16, 4 * 16, tiles, 16, 16).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(24, 6 * 24, 4 * 24, tiles).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(24, 6 * 24, 3 * 24, tiles).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(24, 6 * 24, 2 * 24, tiles).getFxImage());
+            explosionVerticalTopLast.add(new Sprite(24, 6 * 24, 1 * 24, tiles).getFxImage());
 
-            explosionVerticalDownLast.add(new Sprite(16, 1* 16, 6 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalDownLast.add(new Sprite(16, 2 * 16, 6 * 16, tiles, 16, 16).getFxImage());
-            explosionVerticalDownLast.add(new Sprite(16, 3 * 16, 6 * 16, tiles, 16, 16).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(24, 8 * 24, 4 * 24, tiles).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(24, 8 * 24, 3 * 24, tiles).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(24, 8 * 24, 2 * 24, tiles).getFxImage());
+            explosionVerticalDownLast.add(new Sprite(24, 8 * 24, 1 * 24, tiles).getFxImage());
             initialized = true;
         }
     }
@@ -75,7 +83,7 @@ public class Flame extends Entity {
 
     @Override
     public void update() {
-        time += Timer.getInstance().getDeltaTime();
+        time += Timers.getInstance().getDeltaTime();
         if (time <= flameTime) {
             switch (flameDirection) {
                 case UP:
@@ -121,7 +129,7 @@ public class Flame extends Entity {
     @Override
     public void render(GraphicsContext gc) {
         if (time <= flameTime) {
-            gc.drawImage(image, x - camera.getX(), y - camera.getY());
+            gc.drawImage(image, x - camera.getX(), y - camera.getY(), 32, 32);
         }
     }
 

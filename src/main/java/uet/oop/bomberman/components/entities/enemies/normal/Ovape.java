@@ -5,7 +5,6 @@ import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.graphics.Animation;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
-import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 
 public class Ovape extends Enemy {
@@ -27,7 +26,7 @@ public class Ovape extends Enemy {
         animationPassWallRight.setLoop(true);
         animationPassWallLeft.setLoop(true);
         initDirectionList();
-        lastDirection = directionList.get(r.nextInt(directionList.size()));
+        currentDirection = directionList.get(random.nextInt(directionList.size()));
 
         score = 2000;
     }
@@ -43,7 +42,7 @@ public class Ovape extends Enemy {
             checkWall = false;
         }
 
-        if (j * GameConfig.TILE_SIZE == x && i * GameConfig.TILE_SIZE == y) {
+        if (Math.abs((double) j * GameConfig.TILE_SIZE - x) < speed && Math.abs((double) i * GameConfig.TILE_SIZE - y) < speed) {
             moveX = 0;
             moveY = 0;
             canMoveR = checkMapHash(i, j + 1);
@@ -53,8 +52,8 @@ public class Ovape extends Enemy {
 
             checkMove();
             if (directionList.size() != 0) {
-                int ran = r.nextInt(directionList.size());
-                lastDirection = directionList.get(ran);
+                int ran = random.nextInt(directionList.size());
+                currentDirection = directionList.get(ran);
             }
         }
         x += moveX;

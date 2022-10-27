@@ -1,13 +1,14 @@
 package uet.oop.bomberman.components.entities.items.item_types;
 
-import uet.oop.bomberman.components.entities.EntitiesManager;
+import javafx.scene.image.Image;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.bomb.Flame;
 import uet.oop.bomberman.components.entities.items.Item;
-import uet.oop.bomberman.components.entities.players.Bomber;
 
 public class FlameUp extends Item {
+
     /**
-     * Increase the blast radius each bombs can make (Max. 2).
+     * Increase the blast radius each bombs can make (Max. 6).
      */
 
     public FlameUp(double x, double y){
@@ -16,8 +17,14 @@ public class FlameUp extends Item {
 
     @Override
     public void changePower() {
-        Bomb.setFlameLength(Bomb.getFlameLength() + 1);
-        eaten = false;
+        if (Bomb.getFlameLength() < Flame.MAX_LENGTH) {
+            Bomb.setFlameLength(Bomb.getFlameLength() + 1);
+        }
         done = true;
+    }
+
+    @Override
+    public Image getImage() {
+        return fireUp;
     }
 }
