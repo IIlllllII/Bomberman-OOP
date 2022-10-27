@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
 
 public class BottomBar extends HBox {
     private final HBox itemLayout;
-    private int live = Bomber.DEFAULT_LIVES;
+    private int lives = Bomber.DEFAULT_LIVES;
     private int bomb = 1;
     private int flame = 1;
     private int speed = 1;
@@ -66,7 +66,7 @@ public class BottomBar extends HBox {
             throw new RuntimeException(e);
         }
 
-        liveLabel = new LabelItem(Item.livesUp, live);
+        liveLabel = new LabelItem(Item.livesUp, lives);
         bombLabel = new LabelItem(Item.bombUp, bomb);
         flameLabel = new LabelItem(Item.fireUp, flame);
         speedLabel = new LabelItem(Item.speedUp, speed);
@@ -85,7 +85,7 @@ public class BottomBar extends HBox {
         if (item instanceof BombUp) {
             bombLabel.setNumber(++bomb);
         } else if (item instanceof LivesUp) {
-            liveLabel.setNumber(++live);
+            liveLabel.setNumber(++lives);
         } else if (item instanceof SpeedUp) {
             speedLabel.setNumber(++speed);
         } else if (item instanceof FlameUp) {
@@ -103,17 +103,17 @@ public class BottomBar extends HBox {
         });
     }
 
-    public void setLive(int live) {
-        this.live = live;
-        liveLabel.setNumber(live);
+    public void setLives(int lives) {
+        this.lives = lives;
+        liveLabel.setNumber(lives);
     }
 
     public void reset() {
-        live = Bomber.DEFAULT_LIVES;
+        lives = Bomber.DEFAULT_LIVES;
         bomb = 1;
         flame = 1;
         speed = 1;
-        liveLabel.setNumber(live);
+        liveLabel.setNumber(lives);
         bombLabel.setNumber(bomb);
         flameLabel.setNumber(flame);
         speedLabel.setNumber(speed);

@@ -5,6 +5,7 @@ import uet.oop.bomberman.components.entities.BoxCollider;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.LivingEntity;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.bomb.Flame;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.Invincible;
 import uet.oop.bomberman.components.graphics.Sprite;
@@ -14,6 +15,7 @@ import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.game.BottomBar;
+import uet.oop.bomberman.core.scenes.game.TopBar;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.util.*;
@@ -51,6 +53,9 @@ public abstract class Bomber extends LivingEntity {
         speed = DEFAULT_SPEED;
         currentDirection = Direction.DOWN;
         lives = DEFAULT_LIVES;
+        Bomb.setFlameLength(Bomb.DEFAULT_FLAME_LENGTH);
+        TopBar.getInstance().setLives(lives);
+        BottomBar.getInstance().setLives(lives);
         bomberBox = new BoxCollider(0, 0, 15, 20);
         updateBoxCollider();
     }
@@ -175,7 +180,8 @@ public abstract class Bomber extends LivingEntity {
             if (currentSpriteIndex / 8 >= spritesDict.get("dead").length) {
                 currentSpriteIndex = 0;
                 lives--;
-                BottomBar.getInstance().setLive(lives);
+                TopBar.getInstance().setLives(lives);
+                BottomBar.getInstance().setLives(lives);
                 playerAction = Action.IDLE;
 
                 //Return to initial position:
