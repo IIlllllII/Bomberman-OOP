@@ -24,11 +24,11 @@ public class LightFilter {
 
         Color[] darkColor = new Color[5];
 
-        darkColor[0] = new Color(0, 0, 0, 0.0f);
-        darkColor[1] = new Color(0, 0, 0, 0.25f);
-        darkColor[2] = new Color(0, 0, 0, 0.5f);
-        darkColor[3] = new Color(0, 0, 0, 0.75f);
-        darkColor[4] = new Color(0, 0, 0, 0.98);
+        darkColor[0] = new Color(0, 0, 0.05, 0.0f);
+        darkColor[1] = new Color(0, 0, 0.05, 0.25f);
+        darkColor[2] = new Color(0, 0, 0.05, 0.5f);
+        darkColor[3] = new Color(0, 0, 0.05, 0.75f);
+        darkColor[4] = new Color(0, 0, 0.05, 0.98);
 
         filter.setLayoutX(-width / 2.0);
         filter.setLayoutY(-width / 2.0);

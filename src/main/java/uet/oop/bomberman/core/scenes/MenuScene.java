@@ -2,6 +2,7 @@ package uet.oop.bomberman.core.scenes;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
@@ -109,6 +110,8 @@ public class MenuScene {
 
             VBox menu0 = new VBox(12);
             menu0.setMaxWidth(280);
+            menu0.setPadding(new Insets(30, 0, 0, 0));
+
             VBox menu1 = new VBox(15);
 
             getChildren().add(0, logo);
@@ -180,7 +183,7 @@ public class MenuScene {
                 System.exit(0);
             });
 
-            menu0.getChildren().addAll(buttonNewGame, btnLeaderboards, btnSetting, btnAbout, btnExit);
+            menu0.getChildren().addAll(buttonNewGame, btnLeaderboards, btnSetting, btnExit);
         }
     }
 }

@@ -6,6 +6,7 @@ import uet.oop.bomberman.components.entities.Entity;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
+import uet.oop.bomberman.config.GameConfig;
 
 import java.net.URISyntaxException;
 import java.util.LinkedList;
@@ -55,7 +56,8 @@ public class Grass extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(grasses.get(level - 1), x - camera.getX(), y - camera.getY());
+        gc.drawImage(grasses.get(level - 1), x - camera.getX(), y - camera.getY()
+                , GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
     }
 
     @Override

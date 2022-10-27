@@ -73,7 +73,7 @@ public class PauseMenu extends VBox {
             reset();
         });
 
-        menu0.getChildren().addAll(btnResume, btnLeaderboards, btnSetting, btnAbout, btnExit);
+        menu0.getChildren().addAll(btnResume, btnLeaderboards, btnSetting, btnExit);
     }
 
     private void reset() {
