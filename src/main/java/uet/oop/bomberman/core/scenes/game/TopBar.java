@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import uet.oop.bomberman.components.entities.EntitiesManager;
+import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.buttons.ButtonCustom;
 
@@ -17,6 +18,7 @@ import java.net.URISyntaxException;
 public class TopBar extends HBox {
     private final Clocks clock;
     private int score;
+    private int lives = Bomber.DEFAULT_LIVES;
     private final Label scoreLabel;
     private final Label livesLabel;
 
@@ -57,7 +59,7 @@ public class TopBar extends HBox {
             ImageView imageView = new ImageView(new Image(getClass().getResource("/UI/heart.png").toURI().toString()));
             imageView.setFitWidth(30);
             imageView.setFitHeight(25);
-            livesLabel = new Label(" x 0", imageView);
+            livesLabel = new Label(" x " + lives, imageView);
             livesLabel.setTextFill(Color.WHITE);
             livesLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
             getChildren().addAll(livesLabel);
@@ -71,7 +73,6 @@ public class TopBar extends HBox {
         score = 0;
         scoreLabel.setText(String.format("SCORE: %06d", score));
         clock.setTime(Clocks.DEFAULT_TIME);
-        livesLabel.setText(" x " + EntitiesManager.getInstance().bombers.get(0).getLives());
     }
 
     public void setClock(int time) {
@@ -89,5 +90,10 @@ public class TopBar extends HBox {
 
     public int getScore() {
         return score;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+        livesLabel.setText(" x " + lives);
     }
 }

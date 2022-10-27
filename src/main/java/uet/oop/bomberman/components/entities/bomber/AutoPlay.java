@@ -10,6 +10,8 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.config.Direction;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.game.BottomBar;
+import uet.oop.bomberman.core.scenes.game.TopBar;
 
 import java.util.*;
 
@@ -31,7 +33,9 @@ public class AutoPlay extends Bomber {
         initDirectionList();
         iBomber = (int) (y) / GameConfig.TILE_SIZE;
         jBomber = (int) (x) / GameConfig.TILE_SIZE;
-        lives = 5;
+        lives = 100;
+        TopBar.getInstance().setLives(100);
+        BottomBar.getInstance().setLives(100);
     }
 
     @Override

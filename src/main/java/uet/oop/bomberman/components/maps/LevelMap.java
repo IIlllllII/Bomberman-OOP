@@ -3,10 +3,12 @@ package uet.oop.bomberman.components.maps;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
+import uet.oop.bomberman.components.entities.bomber.AutoPlay;
+import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.components.entities.enemies.Enemy;
 import uet.oop.bomberman.components.entities.enemies.bosses.Banana;
-import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
 import uet.oop.bomberman.components.entities.enemies.bosses.Komori;
+import uet.oop.bomberman.components.entities.enemies.bosses.Saru;
 import uet.oop.bomberman.components.entities.enemies.normal.*;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.*;
@@ -14,13 +16,10 @@ import uet.oop.bomberman.components.entities.materials.Brick;
 import uet.oop.bomberman.components.entities.materials.Grass;
 import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.entities.materials.Wall;
-import uet.oop.bomberman.components.entities.bomber.AutoPlay;
-import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.game.BottomBar;
 import uet.oop.bomberman.core.scenes.game.Clocks;
-import uet.oop.bomberman.core.scenes.game.IntroLevel;
 import uet.oop.bomberman.core.scenes.game.TopBar;
 import uet.oop.bomberman.core.sound.Sound;
 
@@ -95,7 +94,11 @@ public class LevelMap {
         levelComplete = true;
         TopBar.getInstance().setClock(15);
         TopBar.getInstance().getClock().play();
-        new Sound(Sound.LEVEL_COMPLETE).play();
+
+        if (EntitiesManager.getInstance().portal.isCanPass()) {
+            new Sound(Sound.LEVEL_COMPLETE).play();
+            EntitiesManager.getInstance().portal.setCanPass(false);
+        }
 
         //Change all bricks left into coins:
         entitiesManager.bricks.forEach(brick -> {

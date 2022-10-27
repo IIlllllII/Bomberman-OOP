@@ -15,13 +15,14 @@ import java.util.List;
 
 public class Bomb extends Entity {
     public static boolean initialized = false;
+    public static final int DEFAULT_FLAME_LENGTH = 1;
     private Image image;
     private static List<Image> bombs;
     private LevelMap levelMap = LevelMap.getInstance();
     private final List<Flame> flameList = new ArrayList<>();
     private boolean allowPass = true;  // cho phép bomber vượt qua
     private boolean explode = false;
-    private static int flameLength = 1;
+    private static int flameLength = DEFAULT_FLAME_LENGTH;
     private double timeBeforeExplode = 2000;
     private final double flameTime = 500;
     private boolean hasFlame = false;

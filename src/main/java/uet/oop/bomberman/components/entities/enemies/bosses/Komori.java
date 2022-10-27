@@ -2,6 +2,7 @@ package uet.oop.bomberman.components.entities.enemies.bosses;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import uet.oop.bomberman.components.entities.BoxCollider;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.Entity;
@@ -12,16 +13,19 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.Action;
 import uet.oop.bomberman.config.GameConfig;
 
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class Komori extends Enemy {
     private final Map<String, Sprite[]> spritesDict = new HashMap<>();
+    private final int DEFAULT_BLOOD = 250;
     private double centerX;
     private double topY;
     private Action action;
-    private int blood = 250;
+    private int blood = DEFAULT_BLOOD;
     private boolean hurt = false;
     private final Image shadow;
+    private Image healthBar;
     private final BoxCollider shadowBox;
     private final List<Weapon> weaponList = new ArrayList<>();
     private int currentSpriteIndex = 0;
@@ -55,6 +59,12 @@ public class Komori extends Enemy {
         shadowBox = new BoxCollider(0, 0, 26 * 1.5f, 12 * 1.5f);
         updateShadowBox();
         speed = 1;
+
+        try {
+            healthBar = new Image(getClass().getResource("/UI/bar.png").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         spritesDict.put("appear", new Sprite[] {
                 new Sprite(50, 102, 0, 0, SpriteSheet.komoriSheet),
@@ -225,6 +235,17 @@ public class Komori extends Enemy {
                 weapon.render(gc);
             }
         });
+
+        //Render health bar
+        double barX = this.centerX - camera.getX() - 111.0 / 4 + 5;
+        double barY = this.topY - camera.getY() - 20;
+        if (isFlying) {
+            barX += 5;
+            barY -= 30;
+        }
+        gc.drawImage(healthBar, barX, barY, 111, 5);
+        gc.setFill(Color.RED);
+        gc.fillRect(barX + 1, barY + 1, (blood * 1.0 / DEFAULT_BLOOD) * 109, 3);
     }
 
     public void renderShadow(GraphicsContext gc) {
