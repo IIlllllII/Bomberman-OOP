@@ -1,3 +1,34 @@
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/dat-roy/Bomberman-OOP.git">
+    <img src="res/images/ttsalpha4.0@0.5x.png" alt="Logo" width="200" height="200">
+  </a>
+
+<h3 align="center">OOP BOMBERMAN PROJECT</h3>
+<h4 align="center">Nhóm 7 - Mã lớp học phần: INT2204 20</h4>
+
+  <p align="center">
+    From UET with love!
+    <br />
+    <br />
+    <a href="">DEMO VIDEO (UPDATE SOON)</a>
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+# Table of contents :round_pushpin:
+1. [Giới thiệu](#Introduction)
+2. [](#Game)
+3. [Biểu đồ lớp UML](#UML-class-diagram)
+4. [Features](#Features)
+5. [Challenges](#Challenges)
+6. [Acknowledgments](#Acknowledgments)
+7. [References](#References)
+
+
+
 # **Bài tập lớn OOP - Bomberman Game**
 ## BTL nhóm 7 gồm các thành viên:
 - Trần Đức Vinh, MSV 21020098
