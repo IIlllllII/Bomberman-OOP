@@ -152,10 +152,10 @@ public class PlayScene {
                 inputList.remove(KeyCode.ESCAPE);
             }
 
-            if (inputList.contains(KeyCode.N)) {
-                levelMap.nextLevel();
-                inputList.remove(KeyCode.N);
-            }
+//            if (inputList.contains(KeyCode.N)) {
+//                levelMap.nextLevel();
+//                inputList.remove(KeyCode.N);
+//            }
 
             if(entitiesManager.bombers.get(0) instanceof Player){
                 Player player = (Player) entitiesManager.bombers.get(0);
