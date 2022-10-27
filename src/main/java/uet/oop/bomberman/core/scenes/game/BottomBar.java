@@ -58,7 +58,7 @@ public class BottomBar extends HBox {
         itemLayout.setStyle("-fx-background-color: black; -fx-border-color: blue;");
 
         try {
-            ImageView imageView = new ImageView(new Image(getClass().getResource("/UI/Image.jpg").toURI().toString()));
+            ImageView imageView = new ImageView(new Image(getClass().getResource("/UI/avatar_2.png").toURI().toString()));
             imageView.setFitWidth(60);
             imageView.setFitHeight(60);
             playerInfo.getChildren().add(imageView);
