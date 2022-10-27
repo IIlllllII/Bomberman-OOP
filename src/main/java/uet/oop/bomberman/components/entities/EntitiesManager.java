@@ -13,6 +13,7 @@ import uet.oop.bomberman.components.entities.materials.Portal;
 import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.config.Action;
+import uet.oop.bomberman.core.scenes.game.BottomBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,18 @@ public class EntitiesManager {
         items.forEach(Entity::update);
         coins.forEach(Coin::update);
 
+        if (LevelMap.getInstance().getLevel() >= 8) {
+            if (enemies.isEmpty()) {
+                LevelMap.getInstance().getMapHash()[5][15]
+                        = LevelMap.getInstance().getHash("portal");
+                portal = new Portal(
+                        15 * GameConfig.TILE_SIZE,
+                        5 * GameConfig.TILE_SIZE
+                );
+                portal.setAppear(true);
+            }
+        }
+
         if (enemies.size() == 0) {
             portal.setCanPass(true);
         }
@@ -120,6 +133,7 @@ public class EntitiesManager {
             if (enemy.isDone()) {
                 enemies.remove(i);
                 i--;
+                BottomBar.getInstance().updateEnemy();
             } else {
                 BoxCollider enemyBox = null;
                 if (enemy instanceof Banana) {

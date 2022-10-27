@@ -17,6 +17,7 @@ import uet.oop.bomberman.components.entities.materials.Wall;
 import uet.oop.bomberman.components.entities.bomber.AutoPlay;
 import uet.oop.bomberman.components.entities.bomber.Player;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.game.BottomBar;
 import uet.oop.bomberman.core.scenes.game.Clocks;
 import uet.oop.bomberman.core.scenes.game.IntroLevel;
@@ -93,6 +94,7 @@ public class LevelMap {
     public void prepareNextLevel() {
         levelComplete = true;
         TopBar.getInstance().setClock(15);
+        TopBar.getInstance().getClock().play();
         new Sound(Sound.LEVEL_COMPLETE).play();
 
         //Change all bricks left into coins:
@@ -109,7 +111,7 @@ public class LevelMap {
     // Should be private later
     public void nextLevel() {
         level++;
-        level = (level > 8) ? 1 : level;
+        level = (level > GameConfig.LEVEL_MAX) ? 1 : level;
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
 
@@ -119,7 +121,7 @@ public class LevelMap {
         List<Enemy> enemyList = entitiesManager.enemies;
         Portal portal = entitiesManager.portal;
 
-        IntroLevel.getInstance().reset(level);
+        PlayScene.getInstance().setStatus(PlayScene.STATUS.INTRO);
         if (level > 1) {
             TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
             BottomBar.getInstance().resetNextLevel();  // remove item type pass
@@ -157,7 +159,6 @@ public class LevelMap {
                                 entitiesManager.bombers.get(0).setInitialLocation(
                                         j * GameConfig.TILE_SIZE, i * GameConfig.TILE_SIZE - 10);
                                 entitiesManager.bombers.get(0).reset();
-                                entitiesManager.bombers.get(0).updateBoxCollider();
                             }
                             hash = getHash("grass");
                             break;
@@ -227,7 +228,7 @@ public class LevelMap {
                     mapHash[i][j] = hash;
                 }
             }
-            if (level == 8) return;
+            if (level >= 8) return;
             Random r = new Random();
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);
@@ -298,6 +299,8 @@ public class LevelMap {
             System.out.println("next level read file");
             throw new RuntimeException(e);
         }
+
+        BottomBar.getInstance().updateEnemy();
     }
 
     public int getLevel() {
@@ -344,6 +347,9 @@ public class LevelMap {
     }
 
     public char getHashAt(int i, int j) {
+        if (i < 0 || j < 0 || i >= this.mapHash.length || j >= this.mapHash[0].length) {
+            return getHash("null");
+        }
         return mapHash[i][j];
     }
 
@@ -371,6 +377,9 @@ public class LevelMap {
                 break;
             case "portal":
                 output = 'x';
+                break;
+            case "null":
+                output = '!';
                 break;
             default:
                 break;

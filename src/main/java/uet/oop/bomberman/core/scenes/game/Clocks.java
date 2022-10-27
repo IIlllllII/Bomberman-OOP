@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 import java.util.concurrent.TimeUnit;
@@ -20,15 +21,21 @@ public class Clocks extends Label {
     public Clocks() {
         time = DEFAULT_TIME;
         setTime(DEFAULT_TIME);
-        stop();
+        pause();
     }
 
-    public Clocks(int time, int fontSize) {
-        setTime(time, fontSize);
+    public Clocks(int time, Color color) {
+        setTime(time, color);
     }
 
-    public void stop() {
-        timeline.stop();
+    public void pause() {
+        timeline.pause();
+    }
+
+    public void play() {
+        if (timeline != null) {
+            timeline.play();
+        }
     }
 
     public int getTime() {
@@ -41,16 +48,13 @@ public class Clocks extends Label {
      */
     public void setTime(int time) {
         if (this.time > time|| done || time == DEFAULT_TIME) {
-            if (time > 100) {
-                time += IntroLevel.getDefaultTime();
-            }
             System.out.println(time);
             done = false;
 
             this.time = time;
             setText(getClockString());
+            setFont(Font.font("Verdana", FontWeight.BOLD, 24));
             setTextFill(Color.WHITE);
-            setFont(Font.font(24));
 
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.5), this);
             scaleTransition.setToX(1.5);
@@ -73,25 +77,21 @@ public class Clocks extends Label {
             }));
 
             timeline.setCycleCount(time);
-            timeline.setOnFinished(event -> {
-                done = true;
-            });
-            timeline.play();
+            timeline.setOnFinished(event -> done = true);
         }
     }
 
     /**
      *
      * @param time time in second.
-     * @param fontSize font of label
+     * @param color color of label
      */
-    public void setTime(int time, int fontSize) {
+    private void setTime(int time, Color color) {
         this.time = time;
         done = false;
 
         setText(String.format("%d", time));
-        setTextFill(Color.WHITE);
-        setFont(Font.font(fontSize));
+        setTextFill(color);
 
         timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
             this.time -= 1;
@@ -99,9 +99,7 @@ public class Clocks extends Label {
         }));
 
         timeline.setCycleCount(time);
-        timeline.setOnFinished(event -> {
-            done = true;
-        });
+        timeline.setOnFinished(event -> done = true);
         timeline.play();
     }
 

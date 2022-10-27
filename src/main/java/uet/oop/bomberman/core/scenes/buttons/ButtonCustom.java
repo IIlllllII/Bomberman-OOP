@@ -4,6 +4,8 @@ import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -13,7 +15,7 @@ import javafx.scene.text.Text;
 import uet.oop.bomberman.core.sound.Sound;
 
 public class ButtonCustom extends StackPane {
-    private final Text text;
+    private Text text;
 
     /**
      * Button for menu
@@ -89,6 +91,22 @@ public class ButtonCustom extends StackPane {
 
         setOnMousePressed(mouseEvent -> setEffect(drop));
         setOnMouseReleased(mouseEvent -> setEffect(null));
+    }
+
+    public ButtonCustom(Image image, double width, double height) {
+        if (image != null) {
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(width);
+            imageView.setFitHeight(height);
+
+            getChildren().add(imageView);
+
+            DropShadow drop = new DropShadow(50, Color.WHITE);
+            drop.setInput(new Glow());
+
+            setOnMousePressed(mouseEvent -> setEffect(drop));
+            setOnMouseReleased(mouseEvent -> setEffect(null));
+        }
     }
 
     public void setFont(int size) {

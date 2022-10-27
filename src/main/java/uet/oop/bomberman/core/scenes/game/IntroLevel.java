@@ -11,12 +11,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import uet.oop.bomberman.config.GameConfig;
+import uet.oop.bomberman.core.scenes.PlayScene;
 
 import java.net.URISyntaxException;
 
 public class IntroLevel extends Group {
     private static final int DEFAULT_TIME = 500;
-    private boolean done = false;
     private final Animation animation;
     private final Text title;
 
@@ -62,23 +62,20 @@ public class IntroLevel extends Group {
                 74, 74
         );
         animation.setOnFinished(event -> {
-            done = true;
             setVisible(false);
+            setDisable(true);
+            PlayScene.getInstance().setStatus(PlayScene.STATUS.PLAYING);
         });
 
         getChildren().addAll(background, title, loading);
     }
 
     public void reset(int level) {
-        done = false;
         animation.setCycleCount(1);
         animation.play();
-        setVisible(true);
         title.setText("Stage " + level);
-    }
-
-    public boolean isDone() {
-        return done;
+        setVisible(true);
+        setDisable(false);
     }
 
     /**

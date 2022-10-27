@@ -29,6 +29,8 @@ public class Grass extends Entity {
                 grasses.add(new Sprite(16, 3 * 16, 0 * 16, newTiles).getFxImage());
                 //Map boss
                 grasses.add(new Sprite(16, 3 * 16, 0 * 16, newTiles).getFxImage());
+                grasses.add(new Sprite(16, 3 * 16, 0 * 16, newTiles).getFxImage());
+
 
 //                SpriteSheet newTiles = new SpriteSheet("/spriteSheet/TilesMap.png", 96, 96);
 //                grasses.add(new Sprite(16, 0, 0 * 16, newTiles, 16, 16).getFxImage());
