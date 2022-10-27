@@ -1,1 +1,0 @@
-Bomberman game: JDK 11 required.
