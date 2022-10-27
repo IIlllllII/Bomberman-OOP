@@ -51,7 +51,7 @@ public class Minvo extends Enemy {
         int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
         int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
 
-        int ran = r.nextInt(directionList.size());
+        int ran = random.nextInt(directionList.size());
         if (Math.abs(jBomber - j) > 2 || Math.abs(iBomber - i) > 2){
             return directionList.get(ran);
         }

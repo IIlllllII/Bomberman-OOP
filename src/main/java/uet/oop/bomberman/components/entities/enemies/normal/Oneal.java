@@ -33,7 +33,7 @@ public class Oneal extends Enemy {
         if (Math.abs((double) j * GameConfig.TILE_SIZE - x) < speed && Math.abs((double) i * GameConfig.TILE_SIZE - y) < speed) {
             moveX = 0;
             moveY = 0;
-            int temp = r.nextInt(3);
+            int temp = random.nextInt(3);
             speed = (temp == 0) ? 1 : temp;
 
             currentDirection = findWay(i, j);
@@ -55,7 +55,7 @@ public class Oneal extends Enemy {
         int jBomber = (int) (bomberX + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
         int iBomber = (int) (bomberY + GameConfig.TILE_SIZE / 2) / GameConfig.TILE_SIZE;
 
-        int ran = r.nextInt(directionList.size());
+        int ran = random.nextInt(directionList.size());
         if (Math.abs(jBomber - j) > 2 || Math.abs(iBomber - i) > 2){
             return directionList.get(ran);
         }

@@ -235,7 +235,7 @@ public class Bomb extends Entity {
     public void render(GraphicsContext gc) {
         if (time < timeBeforeExplode) {
             gc.drawImage(image, x - camera.getX(), y - camera.getY());
-        } else if (time < timeBeforeExplode + flameTime) {
+        } else if (time <= timeBeforeExplode + flameTime) {
             flameList.forEach(flame -> flame.render(gc));
         } else {
             done = true;

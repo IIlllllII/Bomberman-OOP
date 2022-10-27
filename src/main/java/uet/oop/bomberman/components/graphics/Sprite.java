@@ -15,13 +15,6 @@ public class Sprite {
     public int[] pixels;
     private SpriteSheet sheet;
 
-//    public Sprite(int width, int height, int color) {
-//        SPRITE_WIDTH = width;
-//        SPRITE_HEIGHT = height;
-//        pixels = new int[SPRITE_WIDTH * SPRITE_HEIGHT];
-//        Arrays.fill(pixels, color);
-//    }
-
     public Sprite(int side, int x, int y, SpriteSheet sheet) {
         this(side, side, x, y, sheet);
     }

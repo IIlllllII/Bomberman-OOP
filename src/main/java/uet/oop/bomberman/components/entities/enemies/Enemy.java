@@ -26,7 +26,7 @@ public abstract class Enemy extends LivingEntity {
     protected boolean canMoveL = false;
     protected boolean canMoveU = false;
     protected boolean canMoveD = false;
-    protected Random r = new Random();
+    protected Random random = new Random();
 
     protected List<Direction> directionList = new ArrayList<>();
     protected boolean randomAnimation = false; // left or right

@@ -68,7 +68,7 @@ public class Saru extends Enemy {
 
         initDirectionList();
         saruAction = Action.IDLE;
-        currentDirection = Direction.values()[r.nextInt(Direction.values().length)];
+        currentDirection = Direction.values()[random.nextInt(Direction.values().length)];
         score = 3000;
         speed = 4;
         lives = 3;
