@@ -2,6 +2,7 @@ package uet.oop.bomberman.core.scenes.menu;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -77,6 +78,8 @@ public class GameMode extends VBox {
     }
 
     private class Mode extends VBox {
+        private DropShadow normal = new DropShadow(20, Color.SILVER);
+        private DropShadow click = new DropShadow(20, Color.TOMATO);
         public Mode(Image image, String name, String describe) {
             reset();
             setAlignment(Pos.CENTER);
@@ -100,12 +103,14 @@ public class GameMode extends VBox {
 
         public void setOnClick() {
             setStyle("-fx-background-color: #65472F");
+            setEffect(click);
             setScaleX(1.1);
             setScaleY(1.1);
         }
 
         public void reset() {
             setStyle("-fx-background-color: darkslategray");
+            setEffect(normal);
             setScaleX(1);
             setScaleY(1);
         }

@@ -59,8 +59,10 @@ public class PlayScene {
         layout1 = new Group();
 
         Canvas canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
-        DropShadow dropShadow = new DropShadow(20, Color.LIGHTBLUE);
-        canvas.setEffect(dropShadow);
+
+        // can be lag
+//        DropShadow dropShadow = new DropShadow(20, Color.LIGHTBLUE);
+//        canvas.setEffect(dropShadow);
 
         gc = canvas.getGraphicsContext2D();
 

@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -72,6 +73,7 @@ public class Leaderboards extends VBox {
         title.setFill(Color.WHITE);
 
         TableView<HighScore> table = new TableView<>();
+        table.setEffect(new DropShadow(20, Color.MEDIUMSPRINGGREEN));
         table.setMaxWidth(DEFAULT_WIDTH);
         table.setMaxHeight(DEFAULT_HEIGHT);
 
@@ -80,6 +82,7 @@ public class Leaderboards extends VBox {
 
         TableColumn<HighScore, String> highScoreColumn = new TableColumn<>("High Score");
         highScoreColumn.setCellValueFactory(new PropertyValueFactory<>("highScore"));
+        highScoreColumn.setSortType(TableColumn.SortType.DESCENDING);
 
         TableColumn<HighScore, String> levelColumn = new TableColumn<>("Level");
         levelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
@@ -89,6 +92,7 @@ public class Leaderboards extends VBox {
 
         table.getColumns().addAll(nameColumn, highScoreColumn, levelColumn, dateColumn);
         table.setItems(highScoresList);
+        table.getSortOrder().add(highScoreColumn);
 
         getChildren().addAll(title,table);
     }
