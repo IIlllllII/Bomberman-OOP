@@ -1,6 +1,7 @@
 package uet.oop.bomberman.components.maps;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.bomber.AutoPlay;
@@ -21,6 +22,7 @@ import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.game.BottomBar;
 import uet.oop.bomberman.core.scenes.game.Clocks;
 import uet.oop.bomberman.core.scenes.game.TopBar;
+import uet.oop.bomberman.core.scenes.game.filter.Raining;
 import uet.oop.bomberman.core.sound.Sound;
 
 import java.io.File;
@@ -114,7 +116,10 @@ public class LevelMap {
     // Should be private later
     public void nextLevel() {
         level++;
-        level = (level > GameConfig.LEVEL_MAX) ? 1 : level;
+        if (level > GameConfig.LEVEL_MAX) {
+            PlayScene.getInstance().setStatus(PlayScene.STATUS.WIN);
+            return;
+        }
         grass = new Grass(0, 0, level);
         wall = new Wall(0, 0, level);
 
@@ -128,6 +133,17 @@ public class LevelMap {
         if (level > 1) {
             TopBar.getInstance().setClock(Clocks.DEFAULT_TIME);
             BottomBar.getInstance().resetNextLevel();  // remove item type pass
+            switch (level) {
+                case 3: case 5:
+                {
+                    Raining.getInstance().setColor(Color.rgb(255, 250, 250, 0.6));
+                    break;
+                }
+                default: {
+                    Raining.getInstance().setColor(Color.rgb(150,211,255,0.6));
+                    break;
+                }
+            }
         }
 
         System.out.println("Level: " + level);
@@ -231,7 +247,10 @@ public class LevelMap {
                     mapHash[i][j] = hash;
                 }
             }
-            if (level >= 8) return;
+            if (level == 8)
+            {
+                return;
+            }
             Random r = new Random();
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);

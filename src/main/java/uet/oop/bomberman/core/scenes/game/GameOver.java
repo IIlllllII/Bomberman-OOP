@@ -23,7 +23,6 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class GameOver extends HBox {
     private final Text highScore;
     private final TextField textField;

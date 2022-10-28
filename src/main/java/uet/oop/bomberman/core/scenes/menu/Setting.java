@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -18,8 +17,6 @@ import uet.oop.bomberman.core.sound.BackgroundMusic;
 import java.util.Objects;
 
 public class Setting extends VBox {
-    private final double DEFAULT_WIDTH = 400;
-    private final double DEFAULT_HEIGHT = 200;
     private final CheckBox isMute;
 
     private static class SingletonHelper {
@@ -39,7 +36,9 @@ public class Setting extends VBox {
         // TAB PANE
         TabPane tabPane = new TabPane();
         tabPane.setStyle("-fx-background-color: powderblue");
+        double DEFAULT_WIDTH = 400;
         tabPane.setMaxWidth(DEFAULT_WIDTH);
+        double DEFAULT_HEIGHT = 200;
         tabPane.setMaxHeight(DEFAULT_HEIGHT);
         tabPane.setTabMaxWidth(DEFAULT_WIDTH / 3);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -122,7 +121,7 @@ public class Setting extends VBox {
         graphicsContent.add(sliderZoom, 1, 0);
 
         // CONTROLS TAB
-        Tab controlsTab = new Tab("Controls");
+        // Tab controlsTab = new Tab("Controls");
 
         tabPane.getTabs().addAll(musicTab, graphicsTab);
         tabPane.setTabMinWidth(DEFAULT_WIDTH / 2 - 20);

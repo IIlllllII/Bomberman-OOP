@@ -16,8 +16,6 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import java.net.URISyntaxException;
 
 public class GameMode extends VBox {
-    private final double DEFAULT_WIDTH = 550;
-    private final double DEFAULT_HEIGHT = 300;
     private Image autoPlayImage;
     private Image classicImage;
 
@@ -77,16 +75,18 @@ public class GameMode extends VBox {
         getChildren().addAll(title, modes);
     }
 
-    private class Mode extends VBox {
-        private DropShadow normal = new DropShadow(20, Color.SILVER);
-        private DropShadow click = new DropShadow(20, Color.TOMATO);
+    private static class Mode extends VBox {
+        private final DropShadow normal = new DropShadow(20, Color.SILVER);
+        private final DropShadow click = new DropShadow(20, Color.TOMATO);
         public Mode(Image image, String name, String describe) {
             reset();
             setAlignment(Pos.CENTER);
             setSpacing(5);
 
             ImageView imageView = new ImageView(image);
+            double DEFAULT_WIDTH = 550;
             imageView.setFitWidth(DEFAULT_WIDTH / 3 - 10);
+            double DEFAULT_HEIGHT = 300;
             imageView.setFitHeight(DEFAULT_HEIGHT - 150);
 
             Text description = new Text(describe);

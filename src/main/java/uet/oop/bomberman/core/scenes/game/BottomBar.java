@@ -127,7 +127,7 @@ public class BottomBar extends HBox {
         itemLayout.getChildren().addAll(liveLabel, bombLabel, flameLabel, speedLabel);
     }
 
-    private class LabelItem extends StackPane {
+    private static class LabelItem extends StackPane {
         private Text number;
         private final Image image;
 

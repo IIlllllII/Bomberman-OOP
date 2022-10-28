@@ -66,7 +66,7 @@ public class RightSideBar extends VBox {
             } else {
                 pause = false;
                 buttonPlay.setImage(playImage);
-                music.unpause();
+                BackgroundMusic.unpause();
             }
         });
 

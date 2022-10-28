@@ -64,6 +64,7 @@ public class IntroStage {
         final ProgressBar progressBar = new ProgressBar(0);
         {
             progressBar.setPrefWidth(GameConfig.SCENE_WIDTH + 10);
+            progressBar.setMaxHeight(15);
             progressBar.setLayoutX(-5);
             progressBar.setLayoutY(GameConfig.SCENE_HEIGHT * 10 / 11.0);
             ColorAdjust colorAdjust = new ColorAdjust();

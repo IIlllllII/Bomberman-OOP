@@ -21,8 +21,6 @@ public class Leaderboards extends VBox {
     private static int minScore = Integer.MAX_VALUE;
     private static final String fileName = "src/main/resources/data/highScore.txt";
     private static ObservableList<HighScore> highScoresList = null;
-    private final double DEFAULT_WIDTH = 400;
-    private final double DEFAULT_HEIGHT = 200;
 
     public static void init() {
         if (highScoresList == null) {
@@ -74,13 +72,15 @@ public class Leaderboards extends VBox {
 
         TableView<HighScore> table = new TableView<>();
         table.setEffect(new DropShadow(20, Color.MEDIUMSPRINGGREEN));
+        double DEFAULT_WIDTH = 400;
         table.setMaxWidth(DEFAULT_WIDTH);
+        double DEFAULT_HEIGHT = 200;
         table.setMaxHeight(DEFAULT_HEIGHT);
 
         TableColumn<HighScore, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TableColumn<HighScore, String> highScoreColumn = new TableColumn<>("High Score");
+        TableColumn<HighScore, Integer> highScoreColumn = new TableColumn<>("High Score");
         highScoreColumn.setCellValueFactory(new PropertyValueFactory<>("highScore"));
         highScoreColumn.setSortType(TableColumn.SortType.DESCENDING);
 

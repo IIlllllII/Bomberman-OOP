@@ -8,7 +8,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import uet.oop.bomberman.components.entities.EntitiesManager;
 import uet.oop.bomberman.components.entities.bomber.Bomber;
 import uet.oop.bomberman.core.scenes.PlayScene;
 import uet.oop.bomberman.core.scenes.buttons.ButtonCustom;

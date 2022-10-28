@@ -17,6 +17,7 @@ import uet.oop.bomberman.components.maps.LevelMap;
 import uet.oop.bomberman.config.GameConfig;
 import uet.oop.bomberman.core.scenes.game.*;
 import uet.oop.bomberman.core.scenes.game.filter.LightFilter;
+import uet.oop.bomberman.core.scenes.game.filter.Raining;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class PlayScene {
     private final IntroLevel introLevel;    // LAYOUT 3
     private final PauseMenu pauseMenu;      // LAYOUT 4
     private final GameOver gameOver;        // LAYOUT 5
+    private final Win win;                  // LAYOUT 6
     private final LevelMap levelMap = LevelMap.getInstance();
     private final Camera camera = Camera.getInstance();
     private final EntitiesManager entitiesManager = EntitiesManager.getInstance();
@@ -68,7 +70,7 @@ public class PlayScene {
 
         filter = new LightFilter(150);  // filter 1
 
-        layout1.getChildren().addAll(canvas, filter.getFilter());
+        layout1.getChildren().addAll(canvas,Raining.getInstance(), filter.getFilter());
 
         // LAYOUT 2
         layout2 = new BorderPane();
@@ -95,7 +97,10 @@ public class PlayScene {
         // LAYOUT 5
         gameOver = new GameOver();
 
-        root.getChildren().addAll(layout1, layout2, introLevel, pauseMenu, gameOver);
+        // LAYOUT 6
+        win = new Win();
+
+        root.getChildren().addAll(layout1, layout2, introLevel, pauseMenu, gameOver, win);
 
         camera.setInfo(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
 
@@ -138,6 +143,7 @@ public class PlayScene {
                 break;
             }
             case WIN: {
+                win.setEnable();
                 layout2.setDisable(true);
                 topBar.getClock().pause();
                 break;
@@ -152,10 +158,10 @@ public class PlayScene {
                 inputList.remove(KeyCode.ESCAPE);
             }
 
-//            if (inputList.contains(KeyCode.N)) {
-//                levelMap.nextLevel();
-//                inputList.remove(KeyCode.N);
-//            }
+            if (inputList.contains(KeyCode.N)) {
+                levelMap.nextLevel();
+                inputList.remove(KeyCode.N);
+            }
 
             if(entitiesManager.bombers.get(0) instanceof Player){
                 Player player = (Player) entitiesManager.bombers.get(0);

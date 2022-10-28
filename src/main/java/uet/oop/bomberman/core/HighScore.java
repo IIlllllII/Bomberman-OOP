@@ -2,13 +2,13 @@ package uet.oop.bomberman.core;
 
 public class HighScore {
     private final String name;
-    private final String highScore;
+    private final Integer highScore;
     private final String level;
     private final String date;
 
     public HighScore(String name, int highScore, int level, String date) {
         this.name = name.trim();
-        this.highScore = String.valueOf(highScore);
+        this.highScore = highScore;
         this.level = String.valueOf(level);
         this.date = date.trim();
     }
@@ -19,7 +19,7 @@ public class HighScore {
         return name;
     }
 
-    public String getHighScore() {
+    public Integer getHighScore() {
         return highScore;
     }
 

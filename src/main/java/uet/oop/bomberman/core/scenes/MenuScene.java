@@ -110,7 +110,7 @@ public class MenuScene {
 
             VBox menu0 = new VBox(12);
             menu0.setMaxWidth(280);
-            menu0.setPadding(new Insets(30, 0, 0, 0));
+            menu0.setPadding(new Insets(25, 0, 0, 0));
 
             VBox menu1 = new VBox(15);
 
