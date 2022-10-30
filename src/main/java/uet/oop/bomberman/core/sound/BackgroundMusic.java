@@ -51,7 +51,7 @@ public class BackgroundMusic {
 
     private BackgroundMusic() {
         Random random = new Random();
-        theme = THEME.CUSTOMS;
+        theme = THEME.DEFAULT;
         volume = 0.5;
         //indexCustoms = random.nextInt(songsCustoms.size());
         indexCustoms = songsCustoms.size() - 2;

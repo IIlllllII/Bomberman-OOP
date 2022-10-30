@@ -2,6 +2,9 @@
 
 <p align="center"><project-description>Bài tập lớn môn lập trình hướng đối tượng</p>
 
+## Video demo 
+- [Demo](https://www.youtube.com/watch?v=w63WtuqQORM)
+
 ## Tác giả
 - [Trần Đúc Vinh - MSV 21020098](https://github.com/TORIOP23)
 - [Lê Viết Đạt - MSV 21020298](https://github.com/dat-roy)

@@ -79,7 +79,7 @@ public class Setting extends VBox {
         Text theme = new Text("Theme Music");
         ComboBox<String> choiceTheme = new ComboBox<>();
         choiceTheme.getItems().addAll("DEFAULT", "CUSTOMS");
-        choiceTheme.setValue("CUSTOMS");
+        choiceTheme.setValue("DEFAULT");
         choiceTheme.setOnAction(event -> {
             if (Objects.equals(choiceTheme.getValue(), BackgroundMusic.THEME.CUSTOMS.toString())) {
                 BackgroundMusic.getInstance().setTheme(BackgroundMusic.THEME.CUSTOMS);

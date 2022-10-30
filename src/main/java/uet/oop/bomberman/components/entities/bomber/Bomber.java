@@ -8,6 +8,7 @@ import uet.oop.bomberman.components.entities.bomb.Bomb;
 import uet.oop.bomberman.components.entities.bomb.Flame;
 import uet.oop.bomberman.components.entities.items.Item;
 import uet.oop.bomberman.components.entities.items.item_types.Invincible;
+import uet.oop.bomberman.components.entities.items.item_types.LivesUp;
 import uet.oop.bomberman.components.graphics.Sprite;
 import uet.oop.bomberman.components.graphics.SpriteSheet;
 import uet.oop.bomberman.components.maps.LevelMap;
@@ -215,6 +216,9 @@ public abstract class Bomber extends LivingEntity {
     public void addItem(Item item) {
         eatenItems.add(item);
         BottomBar.getInstance().add(item);
+        if (item instanceof LivesUp) {
+            TopBar.getInstance().setLives(lives + 1);
+        }
     }
 
     public void placeBomb() {
