@@ -10,7 +10,7 @@ public class Invincible extends Item {
      */
 
     public Invincible(double x, double y){
-        super(x, y, bombPass);
+        super(x, y, invincible);
         setTimePowerUp(30000);
     }
     @Override
