@@ -17,8 +17,10 @@
   <h2>Bài tập lớn Lập trình hướng đối tượng</h2>
   <h3>Nhóm 7 - INT2204 20 - Kì 1 (2022-2023)</h3>
 
-  <a href="https://www.youtube.com/watch?v=w63WtuqQORM">View Demo</a>
-  ·
+  <a href="https://www.youtube.com/watch?v=w63WtuqQORM">View Demo Player</a>
+
+  <a href="https://www.youtube.com/watch?v=X66kX0T9RpI">View Demo Auto Play</a>
+
   <a href="https://github.com/dat-roy/Bomberman-OOP/issues">Report bug</a>
   <br />
 </div>
