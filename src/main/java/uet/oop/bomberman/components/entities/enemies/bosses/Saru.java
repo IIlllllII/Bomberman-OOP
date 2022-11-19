@@ -220,6 +220,12 @@ public class Saru extends Enemy {
                 suicide = false;
                 saruAction = Action.IDLE;
             }
+
+            if (cellXPlayer != cellX && cellYPlayer != cellY) {
+                System.out.println("Hello");
+                suicide = false;
+                saruAction = Action.IDLE;
+            }
             return;
         }
 
