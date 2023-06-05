@@ -99,7 +99,7 @@ public class EntitiesManager {
             }
         }
 
-        if (enemies.size() == 0) {
+        if (enemies.size() == 0 && !LevelMap.getInstance().isLevelComplete()) {
             portal.setCanPass(true);
         }
         for (int i = 0; i < bombs.size(); i++) {

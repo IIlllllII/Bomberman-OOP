@@ -32,9 +32,7 @@ public class Portal extends Entity {
     }
 
     @Override
-    public void update() {
-
-    }
+    public void update() {}
 
     public boolean isAppear() {
         return appear;

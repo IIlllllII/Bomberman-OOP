@@ -98,8 +98,10 @@ public class LevelMap {
         TopBar.getInstance().getClock().play();
 
         if (EntitiesManager.getInstance().portal.isCanPass()) {
-            new Sound(Sound.LEVEL_COMPLETE).play();
             EntitiesManager.getInstance().portal.setCanPass(false);
+            new Thread(() -> {
+                new Sound(Sound.LEVEL_COMPLETE).play();
+            }).start();
         }
 
         //Change all bricks left into coins:
@@ -247,10 +249,7 @@ public class LevelMap {
                     mapHash[i][j] = hash;
                 }
             }
-            if (level == 8)
-            {
-                return;
-            }
+            if (level == 8) return;
             Random r = new Random();
             int index = r.nextInt(brickList.size());
             System.out.println("Portal index: " + index);

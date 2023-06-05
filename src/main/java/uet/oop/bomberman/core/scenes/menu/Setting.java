@@ -34,11 +34,12 @@ public class Setting extends VBox {
         title.setFill(Color.WHITE);
 
         // TAB PANE
+        final double DEFAULT_WIDTH = 400;
+        final double DEFAULT_HEIGHT = 200;
+
         TabPane tabPane = new TabPane();
         tabPane.setStyle("-fx-background-color: powderblue");
-        double DEFAULT_WIDTH = 400;
         tabPane.setMaxWidth(DEFAULT_WIDTH);
-        double DEFAULT_HEIGHT = 200;
         tabPane.setMaxHeight(DEFAULT_HEIGHT);
         tabPane.setTabMaxWidth(DEFAULT_WIDTH / 3);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);

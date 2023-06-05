@@ -28,7 +28,7 @@ public class Main extends Application {
             Image icon = new Image(getClass().getResource(GameConfig.ICON_PATH).toURI().toString());
             mainStage.getIcons().add(icon);
         } catch (URISyntaxException e) {
-            System.out.println("icon path");
+            e.printStackTrace();
         }
 
         mainStage.setScene(introStage.getScene());
